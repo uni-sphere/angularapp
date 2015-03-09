@@ -1,0 +1,60 @@
+#view-lesson{
+  position: relative;
+
+  margin-left: 10%;
+  height: 100%;
+  width: 100%;
+}
+
+#header-lesson{
+  position: relative;
+
+  height: 50px;
+  width: 100%;
+}
+
+#header-chapter{
+  position: relative;
+
+  height: 30px;
+  width: 100%;
+}
+
+#chapters-container{
+  position: relative;
+  float: left;
+
+  height: 100%;
+  width: 10%;
+}
+
+#view-document{
+  position: relative;
+  float: left;
+
+  height: 100%;
+  width: 90%;
+}
+
+#document-groups-container{
+  position: relative;
+  float: left;
+
+  height: 100%;
+  width: 80%;
+}
+.document-group-container{
+  position: relative;
+  float: left;
+
+  height: 100%;
+  width: 50%;
+}
+
+#documents-actions-container{
+  position: relative;
+  float: left;
+
+  height: 100%;
+  width: 20%;
+}

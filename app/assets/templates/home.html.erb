@@ -1,0 +1,26 @@
+<div id="view-lesson">
+  <div id="header-lesson">1 ere S</div>
+
+  <div id="header-chapter">{{selectedChapter}}</div>
+
+  <div id="chapters-container">
+    <div id="chapters-title">Chapters</div>
+    <div id="chapters-list">
+      <div ng-repeat="chapter in chapters" ui-sref-active="active" ng-click="selectChapter($index)">{{chapter | limitTo:10}}</div>
+    </div>
+  </div>
+
+  <div id="view-document">
+    <div id="document-groups-container">
+      <div class="document-group-container">
+        <div class="document-group-title">Cours</div>
+        <div class="document-list">
+          <div ng-repeat="document in documents" ui-sref-active="active">{{document}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="documents-actions-container">
+    </div>
+  </div>
+</div>

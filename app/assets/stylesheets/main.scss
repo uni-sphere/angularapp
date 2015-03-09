@@ -1,0 +1,26 @@
+@import "global";
+@import "dashboard";
+@import "lesson";
+
+html, body{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  
+  height: 100%;
+  width: 100%;
+
+  margin: 0px;
+  padding: 0px;
+}
+
+.main-view-container{
+  position: relative;
+
+  height: calc(100% - 50px);
+  width: 100%;
+
+  margin-top: 50px;
+}
+
+
