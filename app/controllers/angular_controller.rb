@@ -1,8 +1,8 @@
 class AngularController < ApplicationController
 
   def index
-    # render layout: layout_name
-    render json: {key: 'my_stuff'}.to_json
+    render layout: layout_name
+    # render json: {name: {["1- Algèbre", "name": "2- Matrice", "name": "3- Polynome", "name": "4- Géométrie"]}}.to_json
   end
 
 
