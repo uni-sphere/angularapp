@@ -1,7 +1,8 @@
 class AngularController < ApplicationController
 
   def index
-    render layout: layout_name
+    # render layout: layout_name
+    render json: {key: 'my_stuff'}.to_json
   end
 
 
