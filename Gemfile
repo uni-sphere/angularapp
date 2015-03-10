@@ -22,8 +22,12 @@ gem 'autoprefixer-rails'
 gem 'bower-rails'
 gem 'angular-rails-templates'
 
+
 #db
 gem 'sqlite3'
+
+#doc
+gem 'railroady'
 
 group :production do
   gem 'mysql'

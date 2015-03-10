@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   
   # before_filter :parse_request, :authenticate_user_from_token!
   
-  respond_to :json
+  # respond_to :json
   
   private
   

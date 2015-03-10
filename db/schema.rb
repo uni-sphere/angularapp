@@ -13,10 +13,42 @@
 
 ActiveRecord::Schema.define(version: 20150310082038) do
 
+  create_table "awsdocuments", force: :cascade do |t|
+    t.string   "name"
+    t.string   "key"
+    t.string   "url"
+    t.integer  "user_id"
+    t.integer  "node_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "chapters", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "nodes", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "parent_id"
+    t.integer  "organization_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "organizations", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "organization_token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "login"
+    t.boolean  "admin"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

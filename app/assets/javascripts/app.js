@@ -8,7 +8,7 @@
         controller: 'HomeCtrl',
         resolve: {
           chapters: ['$http', function($http){
-            return $http.get('/assets/templates/api/chapters.json').then(function(response){
+            return $http.get('api/chapters.json').then(function(response){
               return response.data;
             })
           }]

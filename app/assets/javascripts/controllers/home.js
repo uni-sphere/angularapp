@@ -1,7 +1,7 @@
 angular
   .module('myApp')
-  .controller('HomeCtrl', ['$scope','chapters', function ($scope, chapters) {
-    $scope.chapters =  chapters;
+  .controller('HomeCtrl', ['$scope', function ($scope) {
+    // $scope.chapters =  chapters;
     $scope.documents = ['polynome 1er', 'polynome 2iem', 'factorisation'];
     $scope.selectedChapter = 'Algèbre';
 
@@ -11,7 +11,7 @@ angular
 
     $scope.addChapter = function(){
       $scope.chapters.push({
-        
+
       })
     }
   }]);
