@@ -1,14 +1,20 @@
 // angular
 //   .module('app')
-//   .factory('Chapters', function(){
-//     return{
-//       get: function(){
-//         return [
-//           {"name": "1- Algèbre"},
-//           {"name": "2- Matrice"},
-//           {"name": "3- Polynome"},
-//           {"name": "4- Géométrie"}
-//         ]
-//       }
-//     }
-//   })
+//   .factory('chapters', function(){
+//     var o = {
+//       posts: []
+//     };
+//     return o;
+
+
+    // return{
+    //   get: function(){
+    //     return [
+    //       {"name": "1- Algèbre"},
+    //       {"name": "2- Matrice"},
+    //       {"name": "3- Polynome"},
+    //       {"name": "4- Géométrie"}
+    //     ]
+    //   }
+    // }
+  // })

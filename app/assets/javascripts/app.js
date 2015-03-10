@@ -6,6 +6,13 @@
         url: '/',
         templateUrl: 'home.html',
         controller: 'HomeCtrl',
+        resolve: {
+          chapters: ['$http', function($http){
+            return $http.get('/assets/templates/api/chapters.json').then(function(response){
+              return response.data;
+            })
+          }]
+        }
       })
       
      .state('dashboard', {
