@@ -3,30 +3,44 @@ class NodesController < ActionController::Base
   before_action :get_node, only: [:show, :update, :destroy]
 	
   def create
-    @node = current_organization.nodes.new(node_params)
-    respond_with @awsdocument.save ? @awsdocument : @awsdocument.errors
+    node = current_organization.nodes.new(node_params)
+    if user.save
+      render json: node, status: 201, location: node
+    else
+      render json: node.errors, status: 422
+    end
   end
   
   def show
-    respond_with @node.nil? ? {error: true}.to_json : @node
+    render json: @node, status: 200
   end
   
   def update
-    respond_with @node.save ? @awsdocument : @node.errors
+    if @node.update(node_params)
+      render json: @node, status: 200
+    else
+      render json: @node.errors, status: 422
+    end
   end
   
   def destroy
-    respond_with @node.nil? ? {error: 'node unknown'}.to_json : @node.destroy
+    @node.destroy
+    head 204
   end
   
   def index
-    @nodes = current_organization.nodes.all
+    nodes = current_organization.nodes.all
+    render json: nodes, status: 200
   end
   
   private
   
   def get_node
-    @node = current_organization.nodes.find params[:id]
+    if current_organization.nodes.exists? params[:id]
+      @node = current_organization.nodes.find params[:id]
+    else
+      render json: {error: "resource not found"}.to_json, status: 404
+    end
   end
   
   def node_params

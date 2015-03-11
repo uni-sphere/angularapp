@@ -4,29 +4,32 @@ ruby '2.1.2'
 
 gem 'rails'
 
-#server
+# server
 gem 'puma'
 
-# logs
+#  logs
 gem 'rails_12factor'
 
-# Asset pipeline
+#  Asset pipeline
 gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'uglifier'
 gem 'sass-rails'
 
-#front-end
+# front-end
 gem 'font-awesome-rails'
 gem 'jquery-rails'
 gem 'autoprefixer-rails'
 gem 'bower-rails'
 gem 'angular-rails-templates'
 
+# back-end
+gem "paperclip"
+gem 'aws-sdk'
 
-#db
+# db
 gem 'sqlite3'
 
-#doc
+# doc
 gem 'railroady'
 
 group :production do

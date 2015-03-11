@@ -15,10 +15,13 @@ ActiveRecord::Schema.define(version: 20150310082038) do
 
   create_table "awsdocuments", force: :cascade do |t|
     t.string   "name"
-    t.string   "key"
-    t.string   "url"
+    t.string   "content_file_name"
+    t.string   "content_content_type"
+    t.integer  "content_file_size"
+    t.datetime "content_updated_at"
     t.integer  "user_id"
     t.integer  "node_id"
+    t.boolean  "archived",             default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

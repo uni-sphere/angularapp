@@ -1,4 +1,16 @@
 Rails.application.configure do
+  
+  # amazon S3 specifications
+  
+  config.paperclip_defaults = {
+    storage: :s3,
+    s3_credentials: {
+      bucket: ENV['unisphere'],
+      access_key_id: ENV['AKIAIHURXGDEFIFZNGEQ'],
+      secret_access_key: ENV['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']
+    }
+  }
+  
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on

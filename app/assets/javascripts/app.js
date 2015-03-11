@@ -1,18 +1,18 @@
 (function(){
   angular.module('myApp', ['ngAnimate','ui.router','templates']).config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
-   
+		console.log('hello');
     $stateProvider
       .state('home', {
         url: '/',
         templateUrl: 'home.html',
         controller: 'HomeCtrl',
-        // resolve: {
-        //   chapters: ['$http', function($http){
-        //     return $http.get('/assets/templates/api/chapters.json').then(function(response){
-        //       return response.data;
-        //     })
-        //   }]
-        // }
+        resolve: {
+          chapters: ['$http', function($http){
+            return $http.get('api/chapters.json').then(function(response){
+              return response.data;
+            })
+          }]
+        }
       })
       
      .state('dashboard', {
