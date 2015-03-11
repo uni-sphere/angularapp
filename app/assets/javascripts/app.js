@@ -1,18 +1,20 @@
 (function(){
-  angular.module('myApp', ['ngAnimate','ui.router','templates']).config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+  angular
+  .module('myApp', ['ngAnimate','ui.router','templates','ngResource'])
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
    
     $stateProvider
       .state('home', {
         url: '/',
         templateUrl: 'home.html',
-        controller: 'HomeCtrl',
-        resolve: {
-          chapters: ['$http', function($http){
-            return $http.get('api/chapters.json').then(function(response){
-              return response.data;
-            })
-          }]
-        }
+        controller: 'HomeCtrl'
+        // resolve: {
+        //   chapters: ['Chapters', function(Chapters){
+        //     return Chapters.get(function(){
+        //       console.log(Chapters.get());
+        //     });
+        //   }]
+        // }
       })
       
      .state('dashboard', {

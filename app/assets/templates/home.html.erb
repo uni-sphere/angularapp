@@ -6,7 +6,7 @@
   <div id="chapters-container">
     <div id="chapters-title">Chapters</div>
     <div id="chapters-list">
-      <div ng-repeat="chapter in chapters" ui-sref-active="active" ng-click="selectChapter($index)">{{chapter | limitTo:10}}</div>
+      <div ng-repeat="chapter in chapters">{{chapter.name}}</div>
     </div>
   </div>
 
