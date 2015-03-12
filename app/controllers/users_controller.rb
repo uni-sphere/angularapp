@@ -3,7 +3,7 @@ class UsersController < ActionController::Base
   before_action :get_user, only: [:show, :update, :destroy]
 	
   def create
-    user = current_organization.users.new(user_params)
+    user = User.new(user_params)
     if user.save
       render json: user, status: 201, location: user
     else

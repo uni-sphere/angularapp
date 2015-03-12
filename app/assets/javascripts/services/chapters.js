@@ -1,20 +1,24 @@
+// (function(){
 // angular
-//   .module('app')
-//   .factory('chapters', function(){
-//     var o = {
-//       posts: []
-//     };
-//     return o;
+//   .module('myApp')
+//   .factory('chapters', ['$http', function($http){
+//     return{
+//       get: function(){
+//         return $http.get('api/chapters.json').then(function(response){
+//             return response.data;
+//         });
+//       }
+//     }
+//   }])
+// })();
 
-
-    // return{
-    //   get: function(){
-    //     return [
-    //       {"name": "1- Algèbre"},
-    //       {"name": "2- Matrice"},
-    //       {"name": "3- Polynome"},
-    //       {"name": "4- Géométrie"}
-    //     ]
-    //   }
-    // }
-  // })
+(function(){
+  angular
+  .module('myApp')
+  .service('chapters', ['$http', function($http) {
+    // delete $http.defaults.headers.common['X-Requested-With'];
+    this.get = function() {
+      return $http.get('api/chapters.json');
+    }
+  }]);
+})();

@@ -7,8 +7,11 @@ class AngularController < ApplicationController
   end
 
   def show
-    render json: {name: "hello"}.to_json
+    render json: {
+      chapters: [{name: '1- Algèbre'}, {name: '2- Matrice'}]
+    }.to_json
   end
+
 
   private
 

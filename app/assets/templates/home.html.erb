@@ -6,7 +6,7 @@
   <div id="chapters-container">
     <div id="chapters-title">Chapters</div>
     <div id="chapters-list">
-      <div ng-repeat="chapter in chapters" ui-sref-active="active" ng-click="selectChapter($index)">{{chapter | limitTo:10}}</div>
+      <div ng-repeat="chapter in chapters">{{chapter.name}}</div>
     </div>
   </div>
 
@@ -25,4 +25,9 @@
   </div>
 </div>
 
+<!--form upload s3 a traduire en angular -->
 
+<%#= form_tag create_document_path, method: :post, multipart: true do %>
+	<%#= file_field_tag :content %>
+	<%#= submit_tag %>
+<%# end %>
