@@ -1,7 +1,18 @@
-<div id="view-lesson">
-  <div id="header-lesson">1 ere S</div>
+<div id="view-tree" class="tree-deployed">
+  <i id="arrow-right" class="fa fa-arrow-right" ng-click="showTree()"></i>
+   <collapsible-tree nodes = 'nodes' ></collapsible-tree>
+</div>
 
-  <div id="header-chapter">{{selectedChapter}}</div>
+
+
+
+<div id="view-group">
+ <!--  <div id="header-group">
+    {{currentGroup}}
+    <i class="fa fa-gear" id="group-options"></i>
+  </div>
+
+  
 
   <div id="chapters-container">
     <div id="chapters-title">Chapters</div>
@@ -10,7 +21,13 @@
     </div>
   </div>
 
-  <div id="view-document">
+  <div v id="view-document">
+
+    <div id="header-chapter">
+      {{currentChapter}}
+      <i class="fa fa-gear" id="chapter-options"></i>
+    </div>
+
     <div id="document-groups-container">
       <div class="document-group-container">
         <div class="document-group-title">Cours</div>
@@ -22,5 +39,8 @@
 
     <div id="documents-actions-container">
     </div>
-  </div>
+
+  </div> -->
 </div>
+
+

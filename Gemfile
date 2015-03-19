@@ -16,11 +16,11 @@ gem 'uglifier'
 gem 'sass-rails'
 
 #front-end
-gem 'font-awesome-rails'
 gem 'jquery-rails'
 gem 'autoprefixer-rails'
 gem 'bower-rails'
 gem 'angular-rails-templates'
+gem 'font-awesome-rails'
 
 
 #db

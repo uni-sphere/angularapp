@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   # get "*path", to: "angular#index"
 
   get "/api/chapters", to: "angular#show"
+  get "/api/nodes", to: "angular#nodes"
 
 end

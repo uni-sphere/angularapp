@@ -16,3 +16,6 @@
 !/log/.keep
 /tmp
 *~
+
+/lib/assets/bower_components/*
+/lib/assets/bower_components

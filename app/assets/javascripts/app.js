@@ -1,20 +1,20 @@
 (function(){
-  angular
-  .module('myApp', ['ngAnimate','ui.router','templates','ngResource'])
+  angular.module('myApp', ['ngAnimate','ui.router','templates','ngResource', 'myApp.directives','myApp.controllers'])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
    
     $stateProvider
       .state('home', {
         url: '/',
         templateUrl: 'home.html',
-        controller: 'HomeCtrl'
-        // resolve: {
-        //   chapters: ['Chapters', function(Chapters){
-        //     return Chapters.get(function(){
-        //       console.log(Chapters.get());
-        //     });
-        //   }]
-        // }
+        controller: 'HomeCtrl',
+        resolve: {
+          nodes: ['Nodes', function(Nodes){
+            return Nodes.get().then(function(response) {
+              return response.data;
+              // console.log(response.data);
+            });
+          }]
+        }
       })
       
      .state('dashboard', {
@@ -42,4 +42,10 @@
 
     $locationProvider.html5Mode(true);
   });
+
+  angular.module('d3', []);
+  angular.module('myApp.controllers', []);
+  angular.module('myApp.directives', ['d3']);
+
+  
 })();

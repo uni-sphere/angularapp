@@ -10,6 +10,35 @@ class AngularController < ApplicationController
     }.to_json
   end
 
+  def nodes
+    render json:
+    {
+      name: "Lycée Freppel",
+      children: 
+      [
+        {
+          name: "1 ère",
+          children: [
+            {name: "1d"},
+            {name: "23"},
+            {name: "33"},
+            {name: "34"},
+            {name: "35"},
+            {name: "37"}
+          ]
+        },
+        {
+          name: "2 nd",
+          children: [
+            {name: "1"},
+            {name: "1"},
+            {name: "3"}
+          ]
+        }
+      ]
+    }.to_json
+  end
+
 
   private
 
