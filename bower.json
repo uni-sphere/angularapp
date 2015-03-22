@@ -6,7 +6,9 @@
       "angular-ui-router": "latest",
       "angular-animate": "latest",
       "angular-resource": "latest",
-      "d3": "latest"
+      "d3": "latest",
+      "angular-ui-tree": "latest",
+      "underscore": "latest"
     }
   },
   "vendor": {

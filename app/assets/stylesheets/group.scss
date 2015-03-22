@@ -13,6 +13,42 @@
 
 }
 
+collapsible-tree{
+  position: relative;
+  float: left;
+  width: calc(100% - 200px);
+  height: calc(100% - 4px);
+}
+
+#node-management{
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  width: 200px;
+
+  // background: blue;
+}
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 0.1em;
+}
+
+.node text {
+  font: 1em sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 0.1em;
+}
+
 .tree-deployed{
   width: 90%;
 

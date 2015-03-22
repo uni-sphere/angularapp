@@ -4,5 +4,7 @@
 //= require angular-rails-templates
 //= require angular-resource
 //= require d3
+//= require angular-ui-tree
+//= require underscore
 //= require_tree .
 //= require_tree ../templates

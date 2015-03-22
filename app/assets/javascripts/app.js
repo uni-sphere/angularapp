@@ -1,5 +1,5 @@
 (function(){
-  angular.module('myApp', ['ngAnimate','ui.router','templates','ngResource', 'myApp.directives','myApp.controllers'])
+  angular.module('myApp', ['ngAnimate','ui.router','templates','ngResource','ui.tree', 'myApp.directives','myApp.controllers','myApp.filters'])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
    
     $stateProvider
@@ -44,8 +44,7 @@
   });
 
   angular.module('d3', []);
+  angular.module('myApp.filters', []);
   angular.module('myApp.controllers', []);
   angular.module('myApp.directives', ['d3']);
-
-  
 })();
