@@ -6,5 +6,8 @@ Rails.application.routes.draw do
 
   get "/api/chapters", to: "angular#show"
   get "/api/nodes", to: "angular#nodes"
+  get "/api/cookiesNode", to: "angular#cookies"
+
+  post "/api/create", to: "angular#create" 
 
 end

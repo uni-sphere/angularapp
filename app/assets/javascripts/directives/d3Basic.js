@@ -2,27 +2,60 @@
   'use strict';
 
   angular.module('myApp.directives')
-    .directive('collapsibleTree', ['d3', function(d3) {
+    .directive('collapsibleTree', ['d3','$cookies', '$filter', 'Restangular', function(d3, $cookies, $filter, Restangular) {
       return {
         restrict: 'EA',
         scope: {
-          nodes: '=',
+          branch: '=',
           currentNode: '='
         },
         link: function(scope, iElement, iAttrs) {
-        
-          // console.log(currentNode);
+          var margin = {top: 0, right: 20, bottom: 0, left: 150};
+
+          var removeUnwantedAttribute = function(key, value){
+            if(key == 'parent' || key == 'reqParams' || key == 'fromServer' || key == 'parentResource' || key == 'restangularCollection' || key == 'route' || key == 'restangularEtag' || key == 'id' || key == 'depth' || key == 'x' || key == 'y' || key == 'x0' || key == 'y0'){
+              return;
+            } else{
+              return value;
+            }
+          };
+
+          var plop = function(key, value){
+            if(key == 'parent' || key == 'id' || key == 'depth' || key == 'x' || key == 'y' || key == 'x0' || key == 'y0'){
+              return;
+            } else{
+              return value;
+            }
+          };
+
+          // var backendNode = Restangular.one('api');
+
+          var svg = d3.select(iElement[0])
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+          var getCookies = $cookies.get('nodeCookies');
+          var getCookieArray;
+          
+          if( typeof getCookies !== "undefined" ){
+            getCookieArray = getCookies.split(',');
+          }
+         
+          
           // on window resize, re-render d3 canvas
           window.onresize = function() {
-
-            console.log("plop");
             return scope.$apply();
           };
 
           scope.$watch(function(){
               return angular.element(window)[0].innerWidth;
-            }, function(){
-              return scope.render(scope.nodes, iElement);
+            }, function(d){
+
+              // console.log(scope.branch);
+              return scope.render(scope.branch, iElement, getCookieArray);
             }
           );
 
@@ -41,23 +74,14 @@
           // }, true);
 
 
-          // console.log(scope.nodes)
-
           // define render function
-          scope.render = function(nodes, iElement){
-            // console.log(nodes);
+          scope.render = function(branch, iElement, getCookieArray){
+            svg.selectAll("*").remove();
 
-             // setup variables
-            var margin = {top: 0, right: 20, bottom: 0, left: 150};
+            // setup variables
             var i = 0;
             var duration = 750;
 
-            var svg = d3.select(iElement[0])
-              .append("svg")
-              .attr("width", "100%")
-              .attr("height", "100%")
-              .append("g")
-              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             var width = d3.select(iElement[0])[0][0].offsetWidth - margin.right - margin.left;
             var height = d3.select(iElement[0])[0][0].offsetHeight - margin.top - margin.bottom;
@@ -68,26 +92,44 @@
             var diagonal = d3.svg.diagonal()
               .projection(function(d) { return [d.y, d.x]; });
 
-            // console.log(nodes)
-            var root = nodes;
+            var root = branch;
             root.x0 = height / 2;
             root.y0 = 0;
 
-            function collapse(d) {
-              if (d.children) {
-                d._children = d.children;
-                d._children.forEach(collapse);
-                d.children = null;
-              }
-
-              // console.log("yo");
+            function isInArray(value, array) {
+              return array.indexOf(value.toString()) > -1;
             }
 
-            root.children.forEach(collapse);
+            function collapseSelectively(d) {
+              if (d.children){
+                d.children.forEach(collapseSelectively);
+
+                if(isInArray(d.num,getCookieArray)){
+                  d._children = d.children;
+                  d.children = null;
+                }
+              }
+            }
+
+            function collapseAll(d) {
+              if (d.children) {
+                d._children = d.children;
+                d._children.forEach(collapseAll);
+                d.children = null;
+              }
+            }
+
+            if(getCookieArray == undefined){
+              root.children.forEach(collapseAll);
+            } else{
+              root.children.forEach(collapseSelectively);
+            }
+
             update(root);
 
 
             function update(source) {
+
 
 
               // Compute the new tree layout.
@@ -97,25 +139,6 @@
               // Normalize for fixed-depth.
               nodes.forEach(function(d) { d.y = d.depth * 180; });
 
-              // var oldNode = svg.selectAll("g.node")
-              //   .data(nodes, function(d) { 
-              //     if(d.children != null){
-              //     console.log(d);
-              //     return d.id || (d.id = ++i); 
-              //     }
-              //   });
-
-              // var oldNodeEnter = oldNode.enter().append("g")
-              //   .attr("class", "oldNode")
-              //   .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-
-              // oldNodeEnter.append("circle")
-              //   .attr("class", "addNode")
-              //   .attr("cx", "-10px")
-              //   .attr("cy", "-20px")
-              //   .attr("r", 3)
-              //   .style("fill", "blue")
-              //   .on("click", addNode)
 
               // Update the nodes…
               var node = svg.selectAll("g.node")
@@ -132,7 +155,6 @@
                 })
 
 
-              // console.log(nodeEnter);
               nodeEnter.append("circle")
                 .attr("r", 1e-6)
                 // .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
@@ -163,18 +185,6 @@
                 
                 .style("fill-opacity", 1e-6)
                 .on("click", renameNode)
-               
-              // nodeEnter.append("text")
-              //   .attr("x", "2em")
-              //   .attr("dy", "1.5em")
-              //   .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-              //   .text(function(d) { return "add node"; })
-              //   .style("font-size", ".8em")
-              //   .on("click", addNode)
-              //   // .style("fill-opacity", 1e-6)
-              //   // .style("fill-opacity", 1e-5)
-
-              //   // .fadeIn('slow');
 
               // Transition nodes to their new position.
               var nodeUpdate = node.transition()
@@ -187,13 +197,7 @@
                 // .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
               nodeUpdate.select("circle.addNode")
-                .attr("r", function(d){
-                  if(d.children == null){
-                    return 0;
-                  } else{
-                    return 3;
-                  }
-                })
+                .attr("r", function(d){ return d._children ? 0 : 3; })
                 .style("fill", "blue")
 
               nodeUpdate.select("circle")
@@ -244,12 +248,9 @@
 
               // Stash the old positions for transition.
               nodes.forEach(function(d) {
-                // console.log(d.name);
                 d.x0 = d.x;
                 d.y0 = d.y;
               });
-
-              // console.log("yo");
 
             }
 
@@ -258,17 +259,69 @@
               if (d.children) {
                 d._children = d.children;
                 d.children = null;
-                // console.log("children");
-                // console.log(d);
               } else {
                 d.children = d._children;
                 d._children = null;
-                // console.log("no children")
-                // console.log(d);
               }
-              scope.currentNode = d;
+
+              var postCookies = [];
+              function saveCollapse(d){
+                if(d.children){
+                  d.children.forEach(saveCollapse);
+                }
+                if(d._children){
+                  d._children.forEach(saveCollapse);
+                  postCookies.push(d.num);
+                }
+              }
+
+              saveCollapse(branch);
+              // console.log(postCookies);
+              $cookies.put('nodeCookies', postCookies);
+            
+
+
+              // var ooo = function(key, value){
+              //   if(key == 'parent' || key == 'reqParams' || key == 'fromServer' || key == 'parentResource' || key == 'restangularCollection' || key == 'route' || key == 'restangularEtag' || key == 'depth' || key == 'x' || key == 'y' || key == 'x0' || key == 'y0'){
+              //     return;
+              //   } else if(key == '_children'){
+              //     return true;
+              //   } 
+              //   else{
+              //     return value;
+              //   }
+              // };
+
+
+              // var postCookies = JSON.stringify(scope.nodes, ooo);
+              // console.log(postCookies);
+
+              // $cookies.put('nodeCookies', postCookies);
+
+              // function pp(d) {
+              //   console.log(d);
+              //   if (d.children) {
+              //     // console.log(d.children);
+              //     if(d._children){
+              //       // console.log(d.children)
+              //       d._children = d.children;
+              //       d._children.forEach(pp);
+              //       // d.collapse = true;
+              //     }
+              //     d.children = null;
+              //   }
+              // }
+
+              // nodes.children.forEach(pp);
+              // console.log(scope.nodes);
+
+              // console.log(scope.nodes.children.forEach(pp));
+
+
+
               scope.$apply();
               update(d);
+              
             }
 
             function deleteNode(d){
@@ -279,26 +332,42 @@
                 }
                 scope.$apply();
                 update(d);
+
+                // scope.nodes.save();
+
+
+                // console.log(JSON.stringify(scope.nodes, plop));
+
+
               }
             }
 
             function addNode(d){
-              var a = {"name": "new"};
+              var max = 0;
+              function findHighest(d){
+                // console.log(d.num)
+                if(parseInt(d.num) > parseInt(max)){
+                  max = d.num;
+                }
+                if(d.children){
+                  d.children.forEach(findHighest);
+                }
+                if(d._children){
+                  d._children.forEach(findHighest);
+                }
+              }
+
+              findHighest(scope.branch);
+              max ++;
+
+
+              var a = {name: "new", num: max};
+
+              if( d.children === undefined || d.children == null ){
+                d.children = [];
+              }
               d.children.push(a);
-
-
-              // console.log(d.children);
-
-              // if(typeof d.children === 'undefined'){
-              //   d.children = [a];
-              // } else if (d.children == null) {
-              //   d.children = d._children;
-              //   d.children.push(a);
-              //   d._children = null;
-              // } else{
-              //   d.children.push(a);
-              //   // console.log("yo");
-              // }
+              
 
               scope.$apply();
               update(d);

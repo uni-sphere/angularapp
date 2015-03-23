@@ -6,5 +6,7 @@
 //= require d3
 //= require angular-ui-tree
 //= require underscore
+//= require angular-cookies
+//= require restangular
 //= require_tree .
 //= require_tree ../templates

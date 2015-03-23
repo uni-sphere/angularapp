@@ -1,19 +1,6 @@
 <div id="view-tree" class="tree-deployed">
   <i id="arrow-right" class="fa fa-arrow-right" ng-click="showTree()"></i>
-   <collapsible-tree nodes = 'nodes' current-node = 'currentNode' ></collapsible-tree>
-
-   <div id="node-management">
-    
-      <div id="node-management-title">Node management</div>
-      <!-- <div ng-repeat="node in nodes = node.nodes">{{node.name}}</div> -->
-
-      <div id="add-node">
-        <div id="add-node-title">Add node</div>
-        <input type="text" ng-model="newNode">
-        {{newNode}}
-        <button  ng-click="saveNewNode()">Save</button>
-     </div>
-    </div>
+   <collapsible-tree branch = 'nodes' current-node = 'currentNode' cookies = 'cookies' ></collapsible-tree>
 </div>
 
 

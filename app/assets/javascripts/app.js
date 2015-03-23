@@ -1,6 +1,22 @@
 (function(){
-  angular.module('myApp', ['ngAnimate','ui.router','templates','ngResource','ui.tree', 'myApp.directives','myApp.controllers','myApp.filters'])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+  angular.module('myApp', [
+    'ngAnimate',
+    'ui.router',
+    'templates',
+    'ngResource',
+    'ui.tree', 
+    'myApp.directives',
+    'myApp.controllers',
+    'myApp.filters',
+    'ngCookies',
+    'restangular'
+  ])
+  .config(function (
+    $stateProvider,
+    $urlRouterProvider,
+    $locationProvider,
+    RestangularProvider
+  ) {
    
     $stateProvider
       .state('home', {
@@ -8,12 +24,16 @@
         templateUrl: 'home.html',
         controller: 'HomeCtrl',
         resolve: {
-          nodes: ['Nodes', function(Nodes){
-            return Nodes.get().then(function(response) {
-              return response.data;
-              // console.log(response.data);
-            });
-          }]
+          // nodes: ['Nodes', function(Nodes){
+          //   return Nodes.get().then(function(response) {
+          //     return response.data;
+          //     // console.log(response.data);
+          //   });
+          // }]
+          nodes: function(Restangular){
+            // console.log(Restangular.one('nodes').get())
+            return Restangular.one('nodes').get();
+          }
         }
       })
       
@@ -41,6 +61,13 @@
     $urlRouterProvider.otherwise('/');
 
     $locationProvider.html5Mode(true);
+
+    RestangularProvider.setBaseUrl('api');
+    // RestangularProvider.setParentless();
+      // .setRequestSuffix('.json');
+      // .setParentless();
+      
+
   });
 
   angular.module('d3', []);
