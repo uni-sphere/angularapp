@@ -9,8 +9,7 @@
     'myApp.controllers',
     'myApp.filters',
     'ngCookies',
-    'restangular',
-    'ngWebsocket'
+    'restangular'
   ])
   .config(function (
     $stateProvider,
@@ -32,8 +31,10 @@
           //   });
           // }]
           nodes: function(Restangular){
-            // console.log(Restangular.one('nodes').get())
             return Restangular.one('nodes').get();
+          },
+          documents: function(Restangular){
+            return Restangular.one('documents').get();
           }
         }
       })
@@ -91,8 +92,8 @@
   });
   
 
-  angular.module('d3', []);
+  // angular.module('d3', []);
   angular.module('myApp.filters', []);
   angular.module('myApp.controllers', []);
-  angular.module('myApp.directives', ['d3']);
+  angular.module('myApp.directives', []);
 })();

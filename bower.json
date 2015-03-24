@@ -10,8 +10,7 @@
       "angular-ui-tree": "latest",
       "underscore": "latest",
       "angular-cookies": "~1.4",
-      "restangular": "latest",
-      "ng-websocket": "latest"
+      "restangular": "latest"
     }
   },
   "vendor": {

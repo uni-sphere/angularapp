@@ -1,0 +1,73 @@
+#document-tree{
+  position: relative;
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 40px;
+}
+
+
+.btn {
+  width: 24px !important;
+  height: 24px !important;
+  margin-right: 8px;
+  display: inline-block;
+  // margin-bottom: 0; // For input.btn
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  // background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  // border: 1px solid transparent;
+  // white-space: nowrap;
+
+  &:hover,
+  &:focus,
+  &.focus {
+    color: black;
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    background-image: none;
+    .box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+  }
+}
+
+.btn-collapse{
+  // background: green;
+  // color: white;
+}
+
+.btn-delete{
+  float: right;
+  margin-right: 10px;
+}
+
+.btn-add{
+  float: right;
+  margin-right: 20px;
+}
+
+.angular-ui-tree-handle {
+  background: #f8faff;
+  border: 1px solid #dae2ea;
+  color: #7c9eb2;
+  padding: 10px 10px;
+}
+.angular-ui-tree-handle:hover {
+  color: #438eb9;
+  background: #f4f6f7;
+  border-color: #dce2e8;
+}
+.angular-ui-tree-placeholder {
+  background: #f0f9ff;
+  border: 2px dashed #bed2db;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.group-title {
+  background-color: #687074 !important;
+  color: #FFF !important;
+}

@@ -35,5 +35,10 @@ module Gab
     # config.assets.paths << Rails.root.join("lib","assets","bower_components","underscore");
     # config.assets.paths << Rails.root.join("lib","assets","bower_components","angular-cookies");
     config.assets.paths << Rails.root.join("lib","assets","bower_components");
+    # config.assets.paths << Rails.root.join("lib","assets","bower_components","angular-ui-tree","dist");
+    # config.assets.paths << Rails.root.join("lib","assets","bower_components","bootstrap","dist","js");
+    # config.assets.paths << Rails.root.join("lib","assets","bower_components","bootstrap","dist","css");
+    # config.assets.paths << Rails.root.join("lib","assets","bower_components","bootstrap","dist","fonts");
+
   end
 end

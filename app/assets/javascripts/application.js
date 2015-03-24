@@ -4,10 +4,9 @@
 //= require angular-rails-templates
 //= require angular-resource
 //= require d3
-//= require angular-ui-tree
+//= require angular-ui-tree/dist/angular-ui-tree
 //= require underscore
 //= require angular-cookies
 //= require restangular
-//= require ng-websocket
 //= require_tree .
 //= require_tree ../templates

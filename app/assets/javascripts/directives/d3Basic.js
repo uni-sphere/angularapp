@@ -2,12 +2,11 @@
   'use strict';
 
   angular.module('myApp.directives')
-    .directive('collapsibleTree', ['d3','$cookies','$timeout', '$filter', 'Restangular', function(d3, $cookies, $timeout, $filter, Restangular) {
+    .directive('collapsibleTree', ['$cookies','$timeout', 'Restangular', function($cookies, $timeout, Restangular) {
       return {
         restrict: 'EA',
         scope: {
-          branch: '=',
-          currentNode: '='
+          branch: '='
         },
         link: function(scope, iElement, iAttrs) {
 
@@ -16,17 +15,17 @@
 
           /*==========  Periodical get  ==========*/
           
-          function retrieveNodes() {
-            restAngularNode.get().then(function(response) {
-              scope.branch = response;
-              console.log("Objects get");
-              $timeout(retrieveNodes, 5000);
-            }, function() {
-              console.log("There was an error getting");
-            });
-          }
+          // function retrieveNodes() {
+          //   restAngularNode.get().then(function(response) {
+          //     scope.branch = response;
+          //     console.log("Objects get");
+          //     $timeout(retrieveNodes, 5000);
+          //   }, function() {
+          //     console.log("There was an error getting");
+          //   });
+          // }
 
-          $timeout(retrieveNodes, 5000);
+          // $timeout(retrieveNodes, 5000);
 
           /*==========  Svg creation  ==========*/
           

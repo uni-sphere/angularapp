@@ -1,6 +1,7 @@
 @import "global";
 @import "dashboard";
-@import "group";
+@import "view-tree";
+@import "view-document";
 
 html, body{
   position: absolute;
@@ -14,10 +15,15 @@ html, body{
   padding: 0px;
 }
 
+.hidden{
+  display: none;
+}
+
 body{
   cursor: default;
   font-size: 1em;
   font-family: "ubuntu", "Lato";
+  user-select: none;
 }
 
 #navbar{
@@ -43,6 +49,32 @@ body{
   width: 100%;
 
   margin-top: 50px;
+}
+
+#view-tree{
+  position: relative;
+  float: left;
+  z-index: 5;
+
+  height: 100%;
+  width: 65%;
+
+  background: $tree-bg;
+
+  box-shadow: 2px 0px 2px 1px rgba(0, 0, 0, 0.4);
+
+}
+
+
+#view-group{
+  position: relative;
+  float: left;
+
+  // margin-top: 4px;
+  // margin-left: 4px;
+
+  height: calc(100%);
+  width: calc(35%);
 }
 
 

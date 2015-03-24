@@ -1,9 +1,6 @@
-// @import "font-awesome-sprockets";
 @import "font-awesome";
-@import "angular-ui-tree.min";
-
-
-
+// @import "fontawesome/css/font-awesome";
+@import "angular-ui-tree/dist/angular-ui-tree.min";
 
 @font-face {
   font-family: "Lato";
@@ -15,7 +12,7 @@
 $mega-light-grey: #FCFCFC;
 $ultra-light-grey: #FAFAFA;
 $supra-light-grey: #F2F2F2;
-$super-light-grey: #EEEEEE;
+$super-light-grey: #EEEEEE; // use for side
 
 $light-grey: #CDCDCD;
 
