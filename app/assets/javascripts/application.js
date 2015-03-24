@@ -8,5 +8,6 @@
 //= require underscore
 //= require angular-cookies
 //= require restangular
+//= require ng-websocket
 //= require_tree .
 //= require_tree ../templates

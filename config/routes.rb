@@ -8,6 +8,6 @@ Rails.application.routes.draw do
   get "/api/nodes", to: "angular#nodes"
   get "/api/cookiesNode", to: "angular#cookies"
 
-  post "/api/create", to: "angular#create" 
+  post "/api/nodes/create", to: "angular#create" 
 
 end

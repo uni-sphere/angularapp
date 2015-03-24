@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('myApp.directives')
-    .directive('collapsibleTree', ['d3','$cookies', '$filter', 'Restangular', function(d3, $cookies, $filter, Restangular) {
+    .directive('collapsibleTree', ['d3','$cookies','$timeout', '$filter', 'Restangular', function(d3, $cookies, $timeout, $filter, Restangular) {
       return {
         restrict: 'EA',
         scope: {
@@ -10,26 +10,26 @@
           currentNode: '='
         },
         link: function(scope, iElement, iAttrs) {
+
           var margin = {top: 0, right: 20, bottom: 0, left: 150};
+          var restAngularNode = Restangular.one('nodes');
 
-          var removeUnwantedAttribute = function(key, value){
-            if(key == 'parent' || key == 'reqParams' || key == 'fromServer' || key == 'parentResource' || key == 'restangularCollection' || key == 'route' || key == 'restangularEtag' || key == 'id' || key == 'depth' || key == 'x' || key == 'y' || key == 'x0' || key == 'y0'){
-              return;
-            } else{
-              return value;
-            }
-          };
+          /*==========  Periodical get  ==========*/
+          
+          function retrieveNodes() {
+            restAngularNode.get().then(function(response) {
+              scope.branch = response;
+              console.log("Objects get");
+              $timeout(retrieveNodes, 5000);
+            }, function() {
+              console.log("There was an error getting");
+            });
+          }
 
-          var plop = function(key, value){
-            if(key == 'parent' || key == 'id' || key == 'depth' || key == 'x' || key == 'y' || key == 'x0' || key == 'y0'){
-              return;
-            } else{
-              return value;
-            }
-          };
+          $timeout(retrieveNodes, 5000);
 
-          // var backendNode = Restangular.one('api');
-
+          /*==========  Svg creation  ==========*/
+          
           var svg = d3.select(iElement[0])
             .append("svg")
             .attr("width", "100%")
@@ -37,6 +37,8 @@
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+          /*==========  Cookie gestion  ==========*/
+          
           var getCookies = $cookies.get('nodeCookies');
           var getCookieArray;
           
@@ -44,8 +46,8 @@
             getCookieArray = getCookies.split(',');
           }
          
+          /*==========  Renders Tree  ==========*/
           
-          // on window resize, re-render d3 canvas
           window.onresize = function() {
             return scope.$apply();
           };
@@ -74,7 +76,10 @@
           // }, true);
 
 
-          // define render function
+          /*=======================================
+          =            Render function            =
+          =======================================*/
+          
           scope.render = function(branch, iElement, getCookieArray){
             svg.selectAll("*").remove();
 
@@ -100,24 +105,6 @@
               return array.indexOf(value.toString()) > -1;
             }
 
-            function collapseSelectively(d) {
-              if (d.children){
-                d.children.forEach(collapseSelectively);
-
-                if(isInArray(d.num,getCookieArray)){
-                  d._children = d.children;
-                  d.children = null;
-                }
-              }
-            }
-
-            function collapseAll(d) {
-              if (d.children) {
-                d._children = d.children;
-                d._children.forEach(collapseAll);
-                d.children = null;
-              }
-            }
 
             if(getCookieArray == undefined){
               root.children.forEach(collapseAll);
@@ -128,9 +115,11 @@
             update(root);
 
 
+            /*=======================================
+            =            Update function            =
+            =======================================*/
+            
             function update(source) {
-
-
 
               // Compute the new tree layout.
               var nodes = tree.nodes(root).reverse();
@@ -144,9 +133,6 @@
               var node = svg.selectAll("g.node")
                 .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
-              // node.transition().duration(750).call(cell);
-
-
               // Enter any new nodes at the parent's previous position.
               var nodeEnter = node.enter().append("g")
                 .attr("class", "node")
@@ -154,13 +140,10 @@
                   return "translate(" + source.y0 + "," + source.x0 + ")"; 
                 })
 
-
               nodeEnter.append("circle")
                 .attr("r", 1e-6)
                 // .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
                 .on("click", openNode)
-
-           
 
               nodeEnter.append("circle")
                 .attr("class", "addNode")
@@ -177,7 +160,6 @@
                 .on("click", deleteNode)
                 // .call(add_node, "name");
 
-              
               nodeEnter.append("text")
                 .attr("x", function(d) { return d.children || d._children ? -15 : 10; })
                 .attr("dy", ".275em")
@@ -254,8 +236,45 @@
 
             }
 
-            // Toggle children on click.
+            /*==========================================
+            =            Collapse functions            =
+            ==========================================*/
+            
+            function collapseSelectively(d) {
+              if (d.children){
+                d.children.forEach(collapseSelectively);
+
+                if(isInArray(d.num,getCookieArray)){
+                  d._children = d.children;
+                  d.children = null;
+                }
+              }
+            }
+
+            function collapseAll(d) {
+              if (d.children) {
+                d._children = d.children;
+                d._children.forEach(collapseAll);
+                d.children = null;
+              }
+            }
+
+            function unCollapse(d){
+              if(d._children){
+                d.children = d._children;
+                d._children = null;
+              }
+              if(d.children){
+                d.children.forEach(unCollapse);
+              }
+            }
+
+            /*======================================
+            =            Open and Close            =
+            ======================================*/
+            
             function openNode(d) {
+
               if (d.children) {
                 d._children = d.children;
                 d.children = null;
@@ -264,67 +283,33 @@
                 d._children = null;
               }
 
+              /*==========  Save cookies  ==========*/
+              
               var postCookies = [];
-              function saveCollapse(d){
+              function findCookiestoSave(d){
                 if(d.children){
-                  d.children.forEach(saveCollapse);
+                  d.children.forEach(findCookiestoSave);
                 }
                 if(d._children){
-                  d._children.forEach(saveCollapse);
+                  d._children.forEach(findCookiestoSave);
                   postCookies.push(d.num);
                 }
               }
 
-              saveCollapse(branch);
-              // console.log(postCookies);
+              findCookiestoSave(root);
               $cookies.put('nodeCookies', postCookies);
-            
-
-
-              // var ooo = function(key, value){
-              //   if(key == 'parent' || key == 'reqParams' || key == 'fromServer' || key == 'parentResource' || key == 'restangularCollection' || key == 'route' || key == 'restangularEtag' || key == 'depth' || key == 'x' || key == 'y' || key == 'x0' || key == 'y0'){
-              //     return;
-              //   } else if(key == '_children'){
-              //     return true;
-              //   } 
-              //   else{
-              //     return value;
-              //   }
-              // };
-
-
-              // var postCookies = JSON.stringify(scope.nodes, ooo);
-              // console.log(postCookies);
-
-              // $cookies.put('nodeCookies', postCookies);
-
-              // function pp(d) {
-              //   console.log(d);
-              //   if (d.children) {
-              //     // console.log(d.children);
-              //     if(d._children){
-              //       // console.log(d.children)
-              //       d._children = d.children;
-              //       d._children.forEach(pp);
-              //       // d.collapse = true;
-              //     }
-              //     d.children = null;
-              //   }
-              // }
-
-              // nodes.children.forEach(pp);
-              // console.log(scope.nodes);
-
-              // console.log(scope.nodes.children.forEach(pp));
-
 
 
               scope.$apply();
               update(d);
-              
             }
 
+            /*=============================================
+            =            Suppression of a node            =
+            =============================================*/
+            
             function deleteNode(d){
+
               if (d.parent && d.parent.children){
                 var nodeToDelete = _.where(d.parent.children, {id: d.id});
                 if (nodeToDelete){
@@ -332,61 +317,118 @@
                 }
                 scope.$apply();
                 update(d);
-
-                // scope.nodes.save();
-
-
-                // console.log(JSON.stringify(scope.nodes, plop));
-
-
               }
-            }
 
-            function addNode(d){
-              var max = 0;
-              function findHighest(d){
-                // console.log(d.num)
-                if(parseInt(d.num) > parseInt(max)){
-                  max = d.num;
-                }
+              /*==========  Save suppression  ==========*/
+              
+              var nodeToDelete = []
+
+              function saveNodeToDelete(d){
+                nodeToDelete.push(d.num);
                 if(d.children){
-                  d.children.forEach(findHighest);
+                  d.children.forEach(saveNodeToDelete);
                 }
                 if(d._children){
-                  d._children.forEach(findHighest);
+                  d._children.forEach(saveNodeToDelete);
                 }
               }
+              saveNodeToDelete(d);
 
-              findHighest(scope.branch);
-              max ++;
+              restAngularNode.post("delete", nodeToDelete).then(function() {
+                console.log("Objects deleted");
+              }, function() {
+                console.log("There was an error deleting");
+              });
+
+            }
+
+            /*==========================================
+            =            Creation of a node            =
+            ==========================================*/
+            
+            function addNode(d){
+
+              // //  find the new id
+              // var max = 0;
+              // function findHighest(d){
+              //   // console.log(d.num)
+              //   if(parseInt(d.num) > parseInt(max)){
+              //     max = d.num;
+              //   }
+              //   if(d.children){
+              //     d.children.forEach(findHighest);
+              //   }
+              //   if(d._children){
+              //     d._children.forEach(findHighest);
+              //   }
+              // }
+
+              // findHighest(root);
+              // max ++;
+
+              // // var a = {name: "new", num: max};
 
 
-              var a = {name: "new", num: max};
+              var a = {name: "new"}
 
               if( d.children === undefined || d.children == null ){
                 d.children = [];
               }
               d.children.push(a);
-              
+
+              /*==========  Save the new branch  ==========*/
+
+              var newBranch = {parentId: d.num, name: "new"}
+
+              restAngularNode.post("create", newBranch).then(function() {
+                console.log("Object saved OK");
+              }, function(d) {
+                // console.log(d.data);
+                console.log(d.status);
+                // console.log(d.header);
+                console.log(d.config);
+
+                // console.log("There was an error saving");
+              });
+
+
+              // // SEND WHOLE TREE
+              // var rootCopy = Restangular.copy(root)
+              // unCollapse(rootCopy);
+
+
+              // // restAngularNode.post(root);
+              // restAngularNode.post(rootCopy).then(function() {
+              //   console.log("Object saved OK");
+              // }, function() {
+              //   console.log("There was an error saving");
+              // });
 
               scope.$apply();
               update(d);
             }
 
+            /*========================================
+            =            Rename of a node            =
+            ========================================*/
+            
             function renameNode(d){
               var result = prompt('Change the name of the node',d.name);
               if(result) {
                 d.name = result;
+
+                scope.$apply();
+                update(d);
+
+                var nodeUpdate = {num: d.num, name: result}
+
+                restAngularNode.post("update", nodeUpdate).then(function() {
+                  console.log("Object updated");
+                }, function(d) {
+                  console.log("There was an error updating");
+                });
               }
-              // svg.selectAll("*").remove();
-              scope.$apply();
-              update(d);
             }
-
-            function openGroupView(d){
-              // console.log("yo");
-            }
-
           };
         }
       };

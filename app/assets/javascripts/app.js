@@ -9,7 +9,8 @@
     'myApp.controllers',
     'myApp.filters',
     'ngCookies',
-    'restangular'
+    'restangular',
+    'ngWebsocket'
   ])
   .config(function (
     $stateProvider,
@@ -63,12 +64,32 @@
     $locationProvider.html5Mode(true);
 
     RestangularProvider.setBaseUrl('api');
-    // RestangularProvider.setParentless();
-      // .setRequestSuffix('.json');
-      // .setParentless();
-      
+    RestangularProvider.setRequestInterceptor(function(element, operation, route, url) {
 
+      // // SEND WHOLE TREE
+      // function deleteAttributes(d){
+      //   delete d.x0;
+      //   delete d.y0;
+      //   delete d.x;
+      //   delete d.y;
+      //   delete d._children;
+      //   delete d.parent;
+      //   delete d.depth;
+      //   delete d.id;
+      //   if(d.children){
+      //     d.children.forEach(deleteAttributes);
+      //   }
+      // }
+
+      // if(operation == "put" || operation == "post"){
+      //   deleteAttributes(element);
+      // }
+
+      return element;
+    });
+    // RestangularProvider.setParentless(['api/nodes','nodes']);
   });
+  
 
   angular.module('d3', []);
   angular.module('myApp.filters', []);

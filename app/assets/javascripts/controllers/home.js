@@ -2,7 +2,7 @@
 angular
   .module('myApp.controllers')
   .controller('HomeCtrl', ['$scope', 'chapters', 'nodes', function ($scope, chapters, nodes) {
-    $scope.chapters = null;
+
 
     // console.log(nodes);
 
