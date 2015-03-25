@@ -4,21 +4,28 @@
 
 <div id="view-group">
   <script type="text/ng-template" id="items_renderer.html">
-    <div ui-tree-handle>
-      <a class="btn btn-collapse" nodrag ng-click="toggleItems(this)"><span class="fa" ng-class="{'fa-chevron-right': collapsed, 'fa-chevron-down': !collapsed}"></span></a>
+    <div ui-tree-handle ng-class="{isdocument: item.document}" >
+
+      <a class="btn btn-document" ng-if="item.document" nodrag ng-click=""><span class="fa fa-file-o"></span></a>
+
+      <a class="btn btn-collapse" nodrag ng-if="!item.document" ng-click="toggleItems(this)" ng-init="collapseItems(this)"><span class="fa" ng-class="{'fa fa-chevron-right': collapsed && this.$childNodesScope.$$nextSibling != null, 'fa fa-chevron-down': !collapsed && this.$childNodesScope.$$nextSibling != null}"></span></a>
       {{item.title}}
-      <a class="btn btn-add" nodrag ng-click="newSubItem(this)"><span class="fa fa-plus"></span></a>
+
       <a class="btn btn-delete" nodrag ng-click="removeItems(this)"><span class="fa fa-trash"></span></a>
+
+      <a class="btn btn-add" nodrag ng-if="!item.document" ng-click="newSubItem(this)"><span class="fa fa-plus"></span></a>
+      <a class="btn btn-add-document" ng-if="!
+      item.document" nodrag ng-click="newDocument(this)"><span class="fa fa-file-o"></span></a>
+
     </div>
-    <ol ui-tree-nodes="options" ng-model="item.items" ng-class="{hidden: collapsed}">
-      <li ng-repeat="item in item.items" ui-tree-node ng-include="'items_renderer.html'">
-      </li>
+    <ol ui-tree-nodes="options" ng-model="item.items"  ng-class="{hidden: collapsed}" >
+      <li ng-repeat="item in item.items" ui-tree-node ng-include="'items_renderer.html'"></li>
     </ol>
   </script>
 
   <div id="document-tree">
-    <div ui-tree="options">
-      <ol ui-tree-nodes ng-model="list" >
+    <div ui-tree="options" >
+      <ol ui-tree-nodes ng-model="list">
         <li ng-repeat="item in list" ui-tree-node ng-include="'items_renderer.html'"></li>
       </ol>
     </div>

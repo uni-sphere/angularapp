@@ -41,13 +41,23 @@
 
 .btn-delete{
   float: right;
-  margin-right: 10px;
+  margin-right: 20px;
 }
 
 .btn-add{
   float: right;
-  margin-right: 20px;
+  margin-right: 10px;
 }
+.btn-document{
+
+}
+
+.btn-add-document{
+  float: right;
+  margin-right: 10px;
+}
+
+
 
 .angular-ui-tree-handle {
   background: #f8faff;
@@ -70,4 +80,10 @@
 .group-title {
   background-color: #687074 !important;
   color: #FFF !important;
+}
+
+.isdocument{
+  border: none;
+  background: white;
+  // background: red !important;
 }

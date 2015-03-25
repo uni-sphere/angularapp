@@ -319,19 +319,21 @@
               }
 
               /*==========  Save suppression  ==========*/
-              
-              var nodeToDelete = []
 
-              function saveNodeToDelete(d){
-                nodeToDelete.push(d.num);
-                if(d.children){
-                  d.children.forEach(saveNodeToDelete);
-                }
-                if(d._children){
-                  d._children.forEach(saveNodeToDelete);
-                }
-              }
-              saveNodeToDelete(d);
+              var nodeToDelete = d.num;
+              
+              // var nodeToDelete = []
+
+              // function saveNodeToDelete(d){
+              //   nodeToDelete.push(d.num);
+              //   if(d.children){
+              //     d.children.forEach(saveNodeToDelete);
+              //   }
+              //   if(d._children){
+              //     d._children.forEach(saveNodeToDelete);
+              //   }
+              // }
+              // saveNodeToDelete(d);
 
               restAngularNode.post("delete", nodeToDelete).then(function() {
                 console.log("Objects deleted");
