@@ -8,29 +8,61 @@ class AngularController < ApplicationController
   def documents
     render json: 
     {
-      name: "Algèbre",
-      num: 0,
-      children:[
-        { name: "Cours",
-          num: 1,
-          children:[
-            { name: "bonjour",
-              num: 2},
-            { name: "plop",
-              num: 3}
-          ]
-        },
-        { name: "TD",
-          num: 4,
-          children:[
-            { name: "2",
-              num: 5},
-            { name: "fsd",
-              num: 6}
-          ]
-        }
-      ]
-    }.to_json
+      id: 0,
+      items: [{
+        id: 2,
+        title: "Matrice",
+        items: [{
+          id: 21,
+          title: "Produit matricielle",
+          items: [{
+            id: 211,
+            title: "Cours",
+            items: [{
+              id: 2111,
+              title: "produit simple",
+              document: true,
+              items: []
+            }, 
+            {
+              id: 2112,
+              title: "produit combiné",
+              document: true,
+              items: []
+            }],
+          }, 
+          {
+            id: 212,
+            title: "TD",
+            items: []
+          }],
+        }, 
+        {
+          id: 22,
+          title: "Determinant",
+          items: [{
+            id: 221,
+            title: "Cours",
+            items: []
+          }, 
+          {
+            id: 222,
+            title: "TD",
+            items: []
+          }],
+        }],
+      }, 
+      {
+        id: 3,
+        title: "Algèbre",
+        items: []
+      }, 
+      {
+        id: 4,
+        title: "Aritmétique",
+        items: []
+      }
+    ]}.to_json
   end
 
   def create

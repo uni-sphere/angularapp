@@ -16,6 +16,8 @@ $super-light-grey: #EEEEEE; // use for side
 
 $light-grey: #CDCDCD;
 
+$dark: #252525;
+
 
 $navbar-bg: $ultra-light-grey;
 $tree-bg: $super-light-grey;
@@ -25,6 +27,12 @@ $chapter-header-bg: $mega-light-grey;
 $chapter-list-bg: $supra-light-grey;
 $group-doc-bg: white;
 $separation-lines: $light-grey;
+
+
+$document-color: $dark;
+$document-bg-hover: $ultra-light-grey;
+$document-folded-bg: $super-light-grey;
+// $document-border-color: $super-light-grey;
 
 
 @import "main";

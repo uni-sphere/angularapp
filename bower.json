@@ -10,7 +10,8 @@
       "angular-ui-tree": "latest",
       "underscore": "latest",
       "angular-cookies": "~1.4",
-      "restangular": "latest"
+      "restangular": "latest",
+      "ng-file-upload": "latest"
     }
   },
   "vendor": {

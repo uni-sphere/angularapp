@@ -2,6 +2,7 @@
 @import "dashboard";
 @import "view-tree";
 @import "view-document";
+@import "dragndrop";
 
 html, body{
   position: absolute;
@@ -66,6 +67,7 @@ body{
 }
 
 
+
 #view-group{
   position: relative;
   float: left;
@@ -76,7 +78,6 @@ body{
   height: calc(100%);
   width: calc(35%);
 }
-
 
 
 @media (max-width: 700px) {

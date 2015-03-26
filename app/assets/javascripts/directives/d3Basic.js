@@ -54,26 +54,14 @@
           scope.$watch(function(){
               return angular.element(window)[0].innerWidth;
             }, function(d){
-
-              // console.log(scope.branch);
               return scope.render(scope.branch, iElement, getCookieArray);
             }
           );
 
-          // watch for data changes and re-render
-          // scope.$watch('nodes', function(newVals, oldVals) {
+          // // watch for data changes and re-render
+          // scope.$watch('branch', function(newVals, oldVals) {
           //   console.log(newVals);
-          //   // update(root);
-          //   // return scope.$apply();
-          //   // scope.render(oldVals, iElement);
           // }, true);
-
-          // scope.$watch('nodes', function(newVals, oldVals) {
-          //   // console.log(oldVals);
-          //   console.log(newVals);
-          //   // return scope.render(newVals, iElement);
-          // }, true);
-
 
           /*=======================================
           =            Render function            =

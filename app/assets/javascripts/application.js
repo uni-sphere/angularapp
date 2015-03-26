@@ -8,5 +8,7 @@
 //= require underscore
 //= require angular-cookies
 //= require restangular
+//= require ng-file-upload/angular-file-upload-shim.min
+//= require ng-file-upload/angular-file-upload.min
 //= require_tree .
 //= require_tree ../templates

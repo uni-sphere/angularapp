@@ -9,7 +9,8 @@
     'myApp.controllers',
     'myApp.filters',
     'ngCookies',
-    'restangular'
+    'restangular',
+    'angularFileUpload'
   ])
   .config(function (
     $stateProvider,
