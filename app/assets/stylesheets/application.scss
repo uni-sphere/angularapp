@@ -1,1 +1,39 @@
-@import "main"
+@import "font-awesome";
+// @import "fontawesome/css/font-awesome";
+@import "angular-ui-tree/dist/angular-ui-tree.min";
+
+@font-face {
+  font-family: "Lato";
+  font-style: normal;
+  src: local("Lato Black"), local("Lato-Black"), url("https://fonts.gstatic.com/s/lato/v10/BVtM30trf7q_jfqYeHfjtA.woff") format("woff");
+}
+
+
+$mega-light-grey: #FCFCFC;
+$ultra-light-grey: #FAFAFA;
+$supra-light-grey: #F2F2F2;
+$super-light-grey: #EEEEEE; // use for side
+
+$light-grey: #CDCDCD;
+
+$dark: #252525;
+
+
+$navbar-bg: $ultra-light-grey;
+$tree-bg: $super-light-grey;
+$group-bg: $ultra-light-grey;
+$group-header-bg: $ultra-light-grey;
+$chapter-header-bg: $mega-light-grey;
+$chapter-list-bg: $supra-light-grey;
+$group-doc-bg: white;
+$separation-lines: $light-grey;
+
+
+$document-color: $dark;
+$document-bg-hover: $ultra-light-grey;
+$document-folded-bg: $super-light-grey;
+// $document-border-color: $super-light-grey;
+
+
+@import "main";
+@import "navbar";

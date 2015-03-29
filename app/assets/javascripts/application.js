@@ -3,5 +3,12 @@
 //= require angular-ui-router
 //= require angular-rails-templates
 //= require angular-resource
+//= require d3
+//= require angular-ui-tree/dist/angular-ui-tree
+//= require underscore
+//= require angular-cookies
+//= require restangular
+//= require ng-file-upload/angular-file-upload-shim.min
+//= require ng-file-upload/angular-file-upload.min
 //= require_tree .
 //= require_tree ../templates

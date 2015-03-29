@@ -1,0 +1,34 @@
+ <div id="header-group">
+    {{currentGroup}}
+    <i class="fa fa-gear" id="group-options"></i>
+  </div>
+
+  
+
+  <div id="chapters-container">
+    <div id="chapters-title">Chapters</div>
+    <div id="chapters-list">
+      <div ng-repeat="chapter in chapters">{{chapter.name}}</div>
+    </div>
+  </div>
+
+  <div v id="view-document">
+
+    <div id="header-chapter">
+      {{currentChapter}}
+      <i class="fa fa-gear" id="chapter-options"></i>
+    </div>
+
+    <div id="document-groups-container">
+      <div class="document-group-container">
+        <div class="document-group-title">Cours</div>
+        <div class="document-list">
+          <div ng-repeat="document in documents" ui-sref-active="active">{{document}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="documents-actions-container">
+    </div>
+
+  </div>

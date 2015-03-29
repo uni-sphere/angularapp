@@ -17,5 +17,10 @@
 /tmp
 *~
 
+
 # Ignore uploads.
 /uploads/*
+
+/lib/assets/bower_components/*
+/lib/assets/bower_components
+

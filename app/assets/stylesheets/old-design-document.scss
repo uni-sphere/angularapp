@@ -1,0 +1,129 @@
+
+
+
+#header-group{
+  position: relative;
+
+  height: 50px;
+  width: 100%;
+
+  z-index: 2;
+
+  display: inline-block;
+  text-align: center;
+  
+  line-height: 50px;
+  font-size: 1.1em;
+
+  background: $group-header-bg;
+  // border-bottom: 1px solid $separation-lines;
+  box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.2);
+
+
+  #group-options{
+    margin-left: 5px;
+    color: grey;
+    font-size: 1em;
+    &:hover{
+      color: black;
+      cursor: pointer;
+    }
+  }
+
+}
+
+#chapters-container{
+  position: relative;
+  float: left;
+
+  z-index: 1;
+
+  height: calc(100% - 55px);
+  width: calc(10% - 5px);
+  padding-left: 5px;
+  padding-top: 5px;
+
+  // border-right: 1px solid $separation-lines;
+  box-shadow: 1px 0px 1px 1px rgba(0, 0, 0, 0.2);
+
+  background: $chapter-list-bg;
+
+  // background: blue;
+}
+
+#chapters-title{
+  position: relative;
+  text-align: center;
+  width: 100%;
+
+  margin-bottom: 5px;
+  display: inline-block;
+
+  font-weight: 500;
+  font-family: Arial;  
+}
+
+
+#view-document{
+  position: relative;
+  float: left;
+
+  height: calc(100% - 82px);
+  width: 90%;
+
+  // background: red;
+
+  #header-chapter{
+   position: relative;
+
+    height: 30px;
+    width: calc(90% - 10px);
+    padding-right: calc(10% + 10px);
+
+    display: inline-block;
+    text-align: center;
+    
+    line-height: 30px;
+    font-size: 1.1em;
+
+    background: $chapter-header-bg;
+    // border-bottom: 1px solid $separation-lines;
+
+    #chapter-options{
+      margin-left: 5px;
+      color: grey;
+      font-size: 1em;
+      &:hover{
+        color: black;
+        cursor: pointer;
+      }
+    }
+  }
+
+}
+
+#document-groups-container{
+  position: relative;
+  float: left;
+
+  height: calc(100% - 5px);
+  width: calc(80% - 7px);
+  padding-left: 7px;
+  padding-top: 5px;
+}
+
+.document-group-container{
+  position: relative;
+  float: left;
+
+  height: 100%;
+  width: 50%;
+}
+
+#documents-actions-container{
+  position: relative;
+  float: left;
+
+  height: 100%;
+  width: 20%;
+}
