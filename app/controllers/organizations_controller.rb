@@ -1,6 +1,6 @@
 class OrganizationsController < ActionController::Base
 	
-  before_action :get_organization, only: [:show, :update, :destroy]
+  skip_before_action :authenticate_organization, only: :create
   
   def create
     organization = Organization.new(organization_params)
@@ -35,16 +35,8 @@ class OrganizationsController < ActionController::Base
   
   private
   
-  def get_organization
-    if Organization.exists? params[:id]
-      @organization = Organization.find params[:id]
-    else
-      render json: {error: "resource not found"}.to_json, status: 404
-    end
-  end
-  
   def organization_params
-    params.require(:organization).permit(:name, :organization_token)
+    params.require(:organization).permit(:name, :classes)
   end
   
 end

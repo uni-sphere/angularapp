@@ -23,7 +23,9 @@ gem 'bower-rails'
 gem 'angular-rails-templates'
 
 # back-end
-gem "paperclip"
+gem 'carrierwave'
+gem 'rmagick'
+gem 'fog'
 gem 'aws-sdk'
 
 # db

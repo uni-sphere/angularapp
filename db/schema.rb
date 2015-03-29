@@ -15,13 +15,9 @@ ActiveRecord::Schema.define(version: 20150310082038) do
 
   create_table "awsdocuments", force: :cascade do |t|
     t.string   "name"
-    t.string   "content_file_name"
-    t.string   "content_content_type"
-    t.integer  "content_file_size"
-    t.datetime "content_updated_at"
-    t.integer  "user_id"
+    t.string   "content"
     t.integer  "node_id"
-    t.boolean  "archived",             default: false
+    t.boolean  "archived",   default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -42,14 +38,7 @@ ActiveRecord::Schema.define(version: 20150310082038) do
 
   create_table "organizations", force: :cascade do |t|
     t.string   "name"
-    t.integer  "organization_token"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string   "login"
-    t.boolean  "admin"
+    t.string   "token"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

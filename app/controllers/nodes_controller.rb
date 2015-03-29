@@ -1,10 +1,11 @@
 class NodesController < ActionController::Base
   
-  before_action :get_node, only: [:show, :update, :destroy]
+  before_action :get_node(params[:id]), only: [:show, :update, :destroy]
 	
   def create
-    node = current_organization.nodes.new(node_params)
-    if user.save
+    node = @organization.nodes.new(node_params)
+    node.user_id = @user.id
+    if node.save
       render json: node, status: 201, location: node
     else
       render json: node.errors, status: 422
@@ -29,19 +30,15 @@ class NodesController < ActionController::Base
   end
   
   def index
-    nodes = current_organization.nodes.all
-    render json: nodes, status: 200
+    if @superadmin
+      nodes = @organization.nodes.all
+      render json: nodes, status: 200
+    else
+      render json: {error: 'unauthorized'}.to_json, status: 401
+    end
   end
   
   private
-  
-  def get_node
-    if current_organization.nodes.exists? params[:id]
-      @node = current_organization.nodes.find params[:id]
-    else
-      render json: {error: "resource not found"}.to_json, status: 404
-    end
-  end
   
   def node_params
     params.require(:node).permit(:name, :parent_id, :organization_id)

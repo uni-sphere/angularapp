@@ -8,9 +8,12 @@ Rails.application.routes.draw do
     resources :organizations, only: [:create, :show, :index, :update, :destroy]
     resources :awsdocuments, only: [:create, :show, :index, :update, :destroy] do
       member do
-        put 'archive'
+        get 'download'
+        put 'unarchive'
       end
     end
+    
+    get 'awsdocuments/archives', to: 'awsdocuments#archives'
     
   end
 
