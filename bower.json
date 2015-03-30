@@ -1,22 +1,17 @@
 {
-  "lib": {
-    "name": "bower-rails generated lib assets",
-    "dependencies": {
-      "angular": "~1.4",
-      "angular-ui-router": "latest",
-      "angular-animate": "latest",
-      "angular-resource": "latest",
-      "d3": "latest",
-      "angular-ui-tree": "latest",
-      "underscore": "latest",
-      "angular-cookies": "~1.4",
-      "restangular": "latest",
-      "ng-file-upload": "latest"
-    }
-  },
-  "vendor": {
-    "name": "bower-rails generated vendor assets",
-    "dependencies": {
-    }
+  "name": "unisphere",
+  "version": "0.0.0",
+  "dependencies": {
+    "angular": "~1.4",
+    "angular-ui-router": "latest",
+    "angular-animate": "latest",
+    "angular-resource": "latest",
+    "d3": "latest",
+    "angular-ui-tree": "latest",
+    "underscore": "latest",
+    "angular-cookies": "~1.4",
+    "restangular": "latest",
+    "ng-file-upload": "latest",
+    "ngDialog": "latest"
   }
 }

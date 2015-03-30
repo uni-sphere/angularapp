@@ -10,7 +10,7 @@
     'myApp.filters',
     'ngCookies',
     'restangular',
-    'angularFileUpload'//,
+    'angularFileUpload',
     'ngDialog'
   ])
   .config(function (

@@ -24,7 +24,7 @@ gem 'angular-rails-templates'
 
 # back-end
 gem 'carrierwave'
-gem 'rmagick'
+# gem 'rmagick'
 gem 'fog'
 gem 'aws-sdk'
 
