@@ -10,7 +10,8 @@
     'myApp.filters',
     'ngCookies',
     'restangular',
-    'angularFileUpload'
+    'angularFileUpload',
+    'ngDialog'
   ])
   .config(function (
     $stateProvider,
@@ -31,7 +32,7 @@
           //     // console.log(response.data);
           //   });
           // }]
-          nodes: function(Restangular){
+          nodesflat: function(Restangular){
             return Restangular.one('nodes').get();
           },
           documents: function(Restangular){

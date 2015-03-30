@@ -27,6 +27,10 @@ body{
   user-select: none;
 }
 
+*:focus{
+  outline: none;
+}
+
 #navbar{
   position: fixed;
   top: 0px;
@@ -186,3 +190,6 @@ body{
 // .col-lg-6 {
 // width: 100%;
 // }
+
+
+

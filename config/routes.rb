@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   
-  
   constraints subdomain: 'api' do
     
     resources :users, only: [:create, :show, :index, :update, :destroy]

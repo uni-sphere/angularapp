@@ -6,18 +6,34 @@ collapsible-tree{
 
 }
 
+#admin-button{
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  border: 2px solid grey;
+  padding: 10px 10px;
+  border-radius: 20px;
+
+  cursor: pointer;
+
+  &:hover{
+    background: grey;
+    color: white;
+  }
+}
+
 .node {
   cursor: pointer;
 }
 
 .node circle {
   fill: #fff;
-  stroke: steelblue;
   stroke-width: 0.1em;
 }
 
 .node text {
-  font: 1em sans-serif;
+  font-size: 1em;
+  fill: $view-tree-color;
 }
 
 .link {
@@ -25,3 +41,279 @@ collapsible-tree{
   stroke: #ccc;
   stroke-width: 0.1em;
 }
+
+.link-active{
+  fill: none;
+  stroke: rgb(0,249,111);
+  stroke-width: 0.1em;
+}
+
+// .popup{
+//   height: 40%;
+//   width: 50%;
+//   top: 25%;
+//   left: 25%;
+
+//   background: white;
+
+// }
+
+#admin-popup-content{
+  // margin-top: 20px;
+  // margin-bottom: 20px;
+}
+
+
+
+
+@-webkit-keyframes ngdialog-flyin {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ngdialog-flyin {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes ngdialog-flyout {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+}
+
+@keyframes ngdialog-flyout {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+}
+
+.admin-popup {
+  padding-bottom: 160px;
+  padding-top: 160px;
+
+  color: #2C3A33;
+}
+#admin-popup-input{
+  padding-left: 20px;
+  padding-bottom: 5px;
+  font-size: .8em;
+  width: 200px;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: 1px solid grey;
+  background: #f0f0f0;
+}
+
+// #admin-popup-input{
+//   font-size: .8em;
+//   padding: 7px 10px;
+//   border-radius: 10px;
+//   // border: 1px solid #f0f0f0;
+//   // box-shadow: inset 1px 1px 2px 0px #f0f0f0;
+
+//   &:focus, &.focus{
+
+//     // border-color: #f0f0f0;
+//     border-top: 1px solid #f0f0f0;
+//     border-left: 2px solid #f0f0f0;
+//     box-shadow: 1px 1px 2px 1px $popup-button-bg;
+//     box-shadow: -1px -1px 2px 1px $popup-button-bg;
+
+//   }
+//   // border: none;
+//   // border: 1px solid black;
+// }
+
+
+
+
+#admin-popup-button{
+  margin-left: 40px;
+  border-radius: 10px;
+  background: $popup-button-bg;
+  padding: 3px 10px;
+  font-size: .8em;
+  display: inline-block;
+
+  border: 1px solid green;
+
+
+  box-shadow: 0px 1px 1px 1px green;
+
+  cursor: pointer;
+  &:hover, &:focus, &.focus{
+    // animation: ngdialog-pulse 1.1s infinite;
+    border-radius: 10px;
+    border: 1px solid $popup-button-hover-bg;
+
+    background: $popup-button-hover-bg;
+    // box-shadow: inset 0px 1px 1px 1px rgba(0, 0, 0, 0.6);
+  }
+
+}
+
+.admin-popup.ngdialog-closing .ngdialog-content {
+  animation: ngdialog-flyout .5s;
+}
+
+.admin-popup .ngdialog-content {
+  animation: ngdialog-flyin .5s;
+  background: #f0f0f0;
+  border-radius: 5px;
+  // color: #444;
+  // font-family: 'Helvetica',sans-serif;
+  font-size: 1.1em;
+  line-height: 1.5em;
+  margin: 0 auto;
+  max-width: 100%;
+  padding: 3.5em 1em 1.5em 1em;
+  position: relative;
+  width: 450px;
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.3);
+}
+
+#admin-popup-title{
+  position: absolute;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  left: 0px;
+  top: 0px;
+  padding-left: 1em;
+  line-height: 2em;
+  width: 100%;
+  height: 2em;
+  background: $popup-header-bg;
+  border-bottom: 1px solid $dark-grey;
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);
+  // margin-top: 5px;
+}
+
+.admin-popup .ngdialog-close {
+  // border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  right: .5em;
+  top: 0;
+  font-size: 1.5em;
+  line-height: 1.5em;
+  color: #454A47;
+
+  &:hover{
+    color: black;
+  }
+
+
+  // &:before{
+  //   width: 30px;
+  //   height: 30px;
+
+
+  //   background: transparent;
+  //   // border-radius: 3px;
+  //   color: #bbb;
+  //   content: '\00D7';
+  //   font-size: 26px;
+  //   font-weight: 400;
+  //   line-height: 26px;
+  //   position: absolute;
+  //   right: 3px;
+  //   text-align: center;
+  //   top: 3px;
+  // }
+
+}
+
+
+
+// .ngdialog.ngdialog-theme-default .ngdialog-input textarea,
+// .ngdialog.ngdialog-theme-default .ngdialog-input input[type="text"],
+// .ngdialog.ngdialog-theme-default .ngdialog-input input[type="password"],
+// .ngdialog.ngdialog-theme-default .ngdialog-input input[type="email"],
+// .ngdialog.ngdialog-theme-default .ngdialog-input input[type="url"] {
+//   background: #fff;
+//   border: 0;
+//   border-radius: 3px;
+//   font-family: inherit;
+//   font-size: inherit;
+//   font-weight: inherit;
+//   margin: 0 0 .25em;
+//   min-height: 2.5em;
+//   padding: .25em .67em;
+//   width: 100%;
+// }
+
+
+// .ngdialog.ngdialog-theme-default .ngdialog-buttons {
+//   *zoom: 1;
+// }
+
+// .ngdialog.ngdialog-theme-default .ngdialog-buttons:after {
+//   content: '';
+//   display: table;
+//   clear: both;
+// }
+
+// .ngdialog.ngdialog-theme-default .ngdialog-button {
+//   border: 0;
+//   border-radius: 3px;
+//   cursor: pointer;
+//   float: right;
+//   font-family: inherit;
+//   font-size: .8em;
+//   letter-spacing: .1em;
+//   line-height: 1em;
+//   margin: 0 0 0 .5em;
+//   padding: .75em 2em;
+//   text-transform: uppercase;
+// }
+
+// .ngdialog.ngdialog-theme-default .ngdialog-button:focus {
+//   -webkit-animation: ngdialog-pulse 1.1s infinite;
+//   animation: ngdialog-pulse 1.1s infinite;
+//   outline: none;
+// }
+
+// @media (max-width: 568px) {
+//   .ngdialog.ngdialog-theme-default .ngdialog-button:focus {
+//     -webkit-animation: none;
+//     animation: none;
+//   }
+// }
+
+// .ngdialog.ngdialog-theme-default .ngdialog-button.ngdialog-button-primary {
+//   background: #3288e6;
+//   color: #fff;
+// }
+
+// .ngdialog.ngdialog-theme-default .ngdialog-button.ngdialog-button-secondary {
+//   background: #e0e0e0;
+//   color: #777;
+// }

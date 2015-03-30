@@ -1,10 +1,11 @@
 <div id="view-tree">
- <collapsible-tree branch = 'nodes' current-node = 'currentNode'></collapsible-tree>
+  <collapsible-tree branch = 'nodes' current-node = 'currentNode'></collapsible-tree>
+  <div id="admin-button" ng-click="openPlain()">connect as admin</div>
 </div>
 
 <div id="view-group">
   <script type="text/ng-template" id="items_renderer.html">
-    <div ui-tree-handle ng-class="{isdocument: item.document, 'collapsed': collapsed}" ng-if="item.id !=0">
+    <div ui-tree-handle ng-class="{isdocument: item.document, 'collapsed': collapsed && this.$childNodesScope.$modelValue != '', 'isNew' : this.$modelValue.title == 'new chapter'}" ng-if="item.id !=0">
 
       <i ng-if="item.document" nodrag class="fa fa-minus caret"></i>
     
@@ -12,7 +13,8 @@
       <a class="btn btn-collapse" nodrag ng-if="!item.document" ng-click="toggleItems(this)" ng-init="collapseItems(this)"><span ng-class="{'fa fa-angle-right': collapsed && this.$childNodesScope.$modelValue != '', 'fa fa-angle-down': !collapsed && this.$childNodesScope.$modelValue != ''}"></span></a>
 
       <div ng-init="printChapter(this)" class="chapter-number">{{item.chapter}}</div>
-      {{item.title}}
+      
+      <div class="item-name">{{item.title}}</div>
 
       <a class="btn btn-delete" nodrag ng-click="removeItems(this)"><span class="fa fa-times"></span></a>
 
@@ -36,3 +38,12 @@
   </div>
 
 </div>
+
+
+<script type="text/ng-template" id="firstDialogId">
+  <div id="admin-popup-title">Connect as an administrator</div>
+  <div id="admin-popup-content">
+    <input type="password" placeholder="type your password" id="admin-popup-input" autofocus> 
+    <div id="admin-popup-button" >Validate</div>
+  </div>
+</script>

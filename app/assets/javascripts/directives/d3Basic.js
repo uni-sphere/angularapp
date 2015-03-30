@@ -38,12 +38,30 @@
 
           /*==========  Cookie gestion  ==========*/
           
+          function isInArray(value, array) {
+            return array.indexOf(value.toString()) > -1;
+          }
+
           var getCookies = $cookies.get('nodeCookies');
           var getCookieArray;
           
           if( typeof getCookies !== "undefined" ){
             getCookieArray = getCookies.split(',');
           }
+
+          var getActiveNodes = $cookies.get('activeNodes');
+          var getActiveNodesArray; 
+
+          if( typeof getActiveNodes !== "undefined" ){
+            getActiveNodesArray = getActiveNodes.split(',');
+          }
+
+          // console.log(getActiveNodesArray);
+
+         
+         
+         
+
          
           /*==========  Renders Tree  ==========*/
           
@@ -88,15 +106,14 @@
             root.x0 = height / 2;
             root.y0 = 0;
 
-            function isInArray(value, array) {
-              return array.indexOf(value.toString()) > -1;
-            }
-
-
             if(getCookieArray == undefined){
               root.children.forEach(collapseAll);
             } else{
               root.children.forEach(collapseSelectively);
+            }
+
+            if(getActiveNodesArray != undefined){
+              root.children.forEach(colorActiveNodes)
             }
 
             update(root);
@@ -128,52 +145,84 @@
                 })
 
               nodeEnter.append("circle")
+                .attr("class", "circleCollapse")
                 .attr("r", 1e-6)
                 // .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
                 .on("click", openNode)
 
-              nodeEnter.append("circle")
-                .attr("class", "addNode")
-                .attr("cx", "-10px")
-                .attr("cy", "-20px")
-                .attr("r", 1e-6)
-                .on("click", addNode)
-
-              nodeEnter.append("circle")
-                .attr("class", "deleteNode")
-                .attr("cx", "10px")
-                .attr("cy", "-20px")
-                .attr("r", 1e-6)
-                .on("click", deleteNode)
-                // .call(add_node, "name");
+              // nodeEnter.append("circle")
+              //   .attr("class", "addNode")
+              //   .attr("cx", "-10px")
+              //   .attr("cy", "-20px")
+              //   .attr("r", 1e-6)
+              //   .on("click", addNode)
 
               nodeEnter.append("text")
+                .attr("class", "addNode")
+                .attr("x", "-16px")
+                .attr("y", "-20px")
+                // .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+                .text("+")
+                .style("fill-opacity", 1e-6)
+                .on("click", addNode)
+
+              // nodeEnter.append("circle")
+              //   .attr("class", "deleteNode")
+              //   .attr("cx", "10px")
+              //   .attr("cy", "-20px")
+              //   .attr("r", 1e-6)
+              //   .on("click", deleteNode)
+              //   // .call(add_node, "name");
+
+              nodeEnter.append("text")
+                .attr("class", "deleteNode")
+                .attr("x", "10px")
+                .attr("y", "-20px")
+                // .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+                .text("x")
+                .style("fill-opacity", 1e-6)
+                .on("click", deleteNode)
+
+
+              nodeEnter.append("text")
+                .attr("class", "nameNode")
                 .attr("x", function(d) { return d.children || d._children ? -15 : 10; })
                 .attr("dy", ".275em")
                 .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-                
                 .style("fill-opacity", 1e-6)
                 .on("click", renameNode)
+
 
               // Transition nodes to their new position.
               var nodeUpdate = node.transition()
                 .duration(duration)
                 .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
-              nodeUpdate.select("circle.deleteNode")
-                .attr("r", 3)
-                .style("fill", "red")
-                // .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+              // nodeUpdate.select("circle.deleteNode")
+              //   .attr("r", 3)
+              //   .style("fill", "red")
+              //   .style("stroke", "#A90707")
 
-              nodeUpdate.select("circle.addNode")
+               nodeUpdate.select("text.deleteNode")
+                .style("fill", "red")
+                .style("fill-opacity", 1)
+
+              // nodeUpdate.select("circle.addNode")
+              //   .attr("r", function(d){ return d._children ? 0 : 3; })
+              //   .style("fill", "blue")
+              //   .style("stroke", "#05008E")
+
+              nodeUpdate.select("text.addNode")
                 .attr("r", function(d){ return d._children ? 0 : 3; })
                 .style("fill", "blue")
+                .style("fill-opacity",  function(d){ return d._children ? 1e-6 : 1; })
 
-              nodeUpdate.select("circle")
-                .attr("r", 4.5)
+              nodeUpdate.select("circle.circleCollapse")
+                .attr("r", 6)
+                .style("stroke", "steelblue")
                 .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
-              nodeUpdate.select("text")
+              nodeUpdate.select("text.nameNode")
                 .style("fill-opacity", 1)
                 .text(function(d) { return d.name; });
 
@@ -183,10 +232,10 @@
                 .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
                 .remove();
 
-              nodeExit.select("circle")
+                nodeExit.select("circle.circleCollapse")
                 .attr("r", 1e-6);
 
-              nodeExit.select("text")
+              nodeExit.select("text.nameNode")
                 .style("fill-opacity", 1e-6);
 
               // Update the links…
@@ -195,7 +244,6 @@
 
               // Enter any new links at the parent's previous position.
               link.enter().insert("path", "g")
-                .attr("class", "link")
                 .attr("d", function(d) {
                   var o = {x: source.x0, y: source.y0};
                   return diagonal({source: o, target: o});
@@ -204,7 +252,9 @@
               // Transition links to their new position.
               link.transition()
                 .duration(duration)
-                .attr("d", diagonal);
+                .attr("d", diagonal)
+                .attr("class", function(d) { return d.target.active ? "link link-active" : "link"; })
+                // .attr("class", function(d) { return d.target.active ? "link link-active" : "link"; })
 
               // Transition exiting nodes to the parent's new position.
               link.exit().transition()
@@ -222,6 +272,22 @@
               });
 
             }
+
+            /*===================================
+            =            Color nodes            =
+            ===================================*/
+            
+            
+            function colorActiveNodes(d) {
+              if(isInArray(d.num,getActiveNodesArray)){
+                  d.active = true;
+                }
+              if (d.children){
+                d.children.forEach(colorActiveNodes);
+              }
+            }
+
+            
 
             /*==========================================
             =            Collapse functions            =
@@ -261,6 +327,7 @@
             ======================================*/
             
             function openNode(d) {
+              var clickedNode = d;
 
               if (d.children) {
                 d._children = d.children;
@@ -273,19 +340,44 @@
               /*==========  Save cookies  ==========*/
               
               var postCookies = [];
-              function findCookiestoSave(d){
+              var activeNodes = [];
+
+              function findNodesOpen(d){
                 if(d.children){
-                  d.children.forEach(findCookiestoSave);
+                  d.children.forEach(findNodesOpen);
                 }
                 if(d._children){
-                  d._children.forEach(findCookiestoSave);
+                  d._children.forEach(findNodesOpen);
                   postCookies.push(d.num);
                 }
               }
 
-              findCookiestoSave(root);
-              $cookies.put('nodeCookies', postCookies);
+              function findLastNodePath(d){
+                activeNodes.push(d.num);
+                if(d.parent){
+                  findLastNodePath(d.parent)
+                }
+              }
 
+              function intInArray(value, array) {
+                return array.indexOf(value) > -1;
+              }
+
+              function colornodePath(d) {
+                d.active = false;
+                if(intInArray(d.num,activeNodes)){
+                  d.active = true;
+                }
+                if (d.children){
+                  d.children.forEach(colornodePath);
+                }
+              }
+
+              findLastNodePath(d);
+              findNodesOpen(root);
+              colornodePath(root);
+              $cookies.put('nodeCookies', postCookies);
+              $cookies.put('activeNodes', activeNodes);
 
               scope.$apply();
               update(d);

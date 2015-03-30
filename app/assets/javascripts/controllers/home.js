@@ -1,8 +1,50 @@
 (function(){
 angular
   .module('myApp.controllers')
-  .controller('HomeCtrl', ['$scope', 'documents', 'nodes', '$cookies','$timeout', 'Restangular', '$upload', function ($scope, documents, nodes, $cookies, $timeout, Restangular, $upload) {
+  .controller('HomeCtrl', ['$scope', 'documents', 'nodesflat', '$cookies','$timeout', 'Restangular', '$upload', 'ngDialog', function ($scope, documents, nodesflat, $cookies, $timeout, Restangular, $upload, ngDialog) {
+    
+    $scope.openPlain = function () {
+      // $rootScope.theme = 'ngdialog-theme-plain';
+      ngDialog.open({
+        template: 'firstDialogId',
+        className: 'admin-popup',
+      });
+    };
 
+    /*==========  transform flat to nested data  ==========*/
+
+    // var data = [
+    // { "name" : "Level 2: A", "parent":"Top Level" },
+    // { "name" : "Top Level", "parent":"null" },
+    // { "name" : "Son of A", "parent":"Level 2: A" },
+    // { "name" : "Daughter of A", "parent":"Level 2: A" },
+    // { "name" : "Level 2: B", "parent":"Top Level" }
+    // ];
+
+    var dataMap = nodesflat.reduce(function(map, node) {
+      map[node.name] = node;
+      return map;
+    }, {});
+
+    var treeData = [];
+    nodesflat.forEach(function(node) {
+      // add to parent
+      var parent = dataMap[node.parent];
+      if (parent) {
+        // create child array if it doesn't exist
+        (parent.children || (parent.children = []))
+          // add node to child array
+          .push(node);
+      } else {
+        // parent is null or missing
+        treeData.push(node);
+      }
+    });
+
+    console.log(nodesflat);
+    console.log(treeData);
+
+    $scope.nodes = treeData;
 
     var plop = [{
       "id": 0,
@@ -44,7 +86,7 @@ angular
     // console.log(plop);
     // console.log([documents]);
 
-    $scope.nodes = nodes;
+    // $scope.nodes = nodes;
 
     $scope.list = documents.items;
     // console.log( $scope.list);
