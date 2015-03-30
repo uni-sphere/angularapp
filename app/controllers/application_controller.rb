@@ -1,14 +1,10 @@
 class ApplicationController < ActionController::Base
 
+  include AuthenticationHelper
+  
   protect_from_forgery with: :null_session
   
-  # protect_from_forgery with: :null_session
-  #
-  # before_action :authenticate_client
-  # before_action :authenticate_organization
-  # before_action :datas?
-  # before_action :read_datas
-  # before_action :admin_rights?, only: [:create, :upldate, :destroy]
-  # before_action :superadmin_rights?, only: [:index, :archives, :unarchive]
+  before_action :authentication
+  # before_action :has_admin_rights?, only: [:create, :upldate, :destroy, :index, :archives, :unarchive]
   
 end

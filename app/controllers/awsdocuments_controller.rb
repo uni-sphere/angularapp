@@ -1,8 +1,8 @@
 class AwsdocumentsController < ActionController::Base
 	
-  # before_action :get_node, only: [:show, :update, :destroy, :create, :unarchive]
-#   before_action :get_awsdocument, only: [:show, :update, :destroy, :download, :unarchive, :archives]
-  
+  before_action :get_node(params[:node_id]), only: [:show, :update, :destroy, :create, :unarchive]
+  before_action :get_awsdocument, only: [:show, :update, :destroy, :download, :unarchive, :archives]
+
   def create
     awsdocument = @node.awsdocuments.new(awsdocument_params)
     if awsdocument.save
@@ -17,11 +17,7 @@ class AwsdocumentsController < ActionController::Base
   end
   
   def archives
-    if @node.awsdocuments.exists?(archived: false)
-      @awsdocuments = @node.awsdocuments.where(archived: false)
-    else
-      render json: {error: 'unauthorized'}.to_json, status: 401
-    end
+    @awsdocuments = @node.awsdocuments.where(archived: false)
   end
   
   def unarchive
@@ -52,12 +48,8 @@ class AwsdocumentsController < ActionController::Base
   end
   
   def index
-    if @superadmin
-      awsdocuments = @oganization.nodes.awsdocuments.where(archived: false)
-      render json: awsdocuments, status: 200
-    else
-      render json: {error: 'unauthorized'}.to_json, status: 401
-    end
+    awsdocuments = @oganization.nodes.awsdocuments.where(archived: false)
+    render json: awsdocuments, status: 200
   end
   
   private
@@ -66,7 +58,7 @@ class AwsdocumentsController < ActionController::Base
     if Awsdocuments.exists? params[:id]
       @awsdocument = @node.awsdocuments.find_unarchived params[:id]
     else
-      render json: {error: "resource not found"}.to_json, status: 404
+      send_error('resource not found', 404)
     end
   end
   

@@ -1,10 +1,11 @@
 class OrganizationsController < ActionController::Base
 	
-  skip_before_action :authenticate_organization, only: :create
+  # skip_before_action :authenticate_organization, only: :create
   
   def create
     organization = Organization.new(organization_params)
-    if user.save
+    node = organization.nodes.new(name: params[:name], parent_id: 0)
+    if organization.save and node.save
       render json: organization, status: 201, location: organization
     else
       render json: organization.errors, status: 422
@@ -36,7 +37,7 @@ class OrganizationsController < ActionController::Base
   private
   
   def organization_params
-    params.require(:organization).permit(:name, :classes)
+    params.require(:organization).permit(:name)
   end
   
 end

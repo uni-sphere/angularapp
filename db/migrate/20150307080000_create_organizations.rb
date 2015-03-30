@@ -3,7 +3,6 @@ class CreateOrganizations < ActiveRecord::Migration
     create_table :organizations do |t|
       t.string :name
       t.string :token
-      t.boolean :classes, default: fakse
 			
       t.timestamps
     end

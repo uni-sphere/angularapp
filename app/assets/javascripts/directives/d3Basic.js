@@ -308,7 +308,7 @@
 
               /*==========  Save suppression  ==========*/
 
-              var nodeToDelete = d.num;
+              var nodeToDelete = {id: d.num, client_token: "6632398822f1d84468ebde3c837338fb"};
               
               // var nodeToDelete = []
 
@@ -323,7 +323,7 @@
               // }
               // saveNodeToDelete(d);
 
-              restAngularNode.post("delete", nodeToDelete).then(function() {
+              restAngularNode.delete("delete", nodeToDelete).then(function() {
                 console.log("Objects deleted");
               }, function() {
                 console.log("There was an error deleting");
@@ -367,7 +367,7 @@
 
               /*==========  Save the new branch  ==========*/
 
-              var newBranch = {parentId: d.num, name: "new"}
+              var newBranch = {parentId: d.num, name: "new", client_token: "6632398822f1d84468ebde3c837338fb"}
 
               restAngularNode.post("create", newBranch).then(function() {
                 console.log("Object saved OK");
@@ -409,9 +409,9 @@
                 scope.$apply();
                 update(d);
 
-                var nodeUpdate = {num: d.num, name: result}
+                var nodeUpdate = {num: d.num, name: result, client_token: "6632398822f1d84468ebde3c837338fb"}
 
-                restAngularNode.post("update", nodeUpdate).then(function() {
+                restAngularNode.put("update", nodeUpdate).then(function() {
                   console.log("Object updated");
                 }, function(d) {
                   console.log("There was an error updating");

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   
   constraints subdomain: 'api' do
     
-    resources :users, only: [:create, :show, :index, :update, :destroy]
+    resources :users, only: [:show, :password_forgoten, :update]
     resources :nodes, only: [:create, :show, :index, :update, :destroy]
     resources :organizations, only: [:create, :show, :index, :update, :destroy]
     resources :awsdocuments, only: [:create, :show, :index, :update, :destroy] do

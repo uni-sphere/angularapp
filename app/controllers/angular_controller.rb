@@ -1,11 +1,19 @@
 class AngularController < ApplicationController
-
+  
+  skip_before_action :authenticate_client, only: :index
+  skip_before_action :authenticate_organization, only: :index
+  skip_before_action :datas?, only: :index
+  skip_before_action :read_datas, only: :index
+  skip_before_action :admin_rights?, only: :index
+  skip_before_action :superadmin_rights?, only: :index
+  
   def index
     # render nothing: true
     # render layout: layout_name
     # render json: {name: 'crotte'}.to_json
   end
 
+  # droite
   
   def documents
     render json: 
@@ -71,7 +79,7 @@ class AngularController < ApplicationController
     logger.info params.inspect
   end 
 
-
+  # gauche
   def nodes
     render json:
     {

@@ -4,7 +4,6 @@ class NodesController < ActionController::Base
 	
   def create
     node = @organization.nodes.new(node_params)
-    node.user_id = @user.id
     if node.save
       render json: node, status: 201, location: node
     else
@@ -30,18 +29,17 @@ class NodesController < ActionController::Base
   end
   
   def index
-    if @superadmin
-      nodes = @organization.nodes.all
-      render json: nodes, status: 200
-    else
-      render json: {error: 'unauthorized'}.to_json, status: 401
+    nodes = []
+    @organization.nodes.each do |node|
+      nodes << {name: node.name, num: node.id, parent: node.parent_id}.to_json
     end
+    render json: nodes, status: 200
   end
   
   private
   
   def node_params
-    params.require(:node).permit(:name, :parent_id, :organization_id)
+    params.require(:node).permit(:name, :parent_id)
   end
   
 end

@@ -10,7 +10,8 @@
     'myApp.filters',
     'ngCookies',
     'restangular',
-    'angularFileUpload'
+    'angularFileUpload'//,
+    'ngDialog'
   ])
   .config(function (
     $stateProvider,
@@ -31,11 +32,11 @@
           //     // console.log(response.data);
           //   });
           // }]
-          nodes: function(Restangular){
-            return Restangular.one('nodes').get();
+          nodesflat: function(Restangular){
+            return Restangular.one('nodes').get({client_token: "6632398822f1d84468ebde3c837338fb"});
           },
           documents: function(Restangular){
-            return Restangular.one('documents').get();
+            return Restangular.one('documents').get({client_token: "6632398822f1d84468ebde3c837338fb"});
           }
         }
       })

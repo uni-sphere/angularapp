@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150310082038) do
+ActiveRecord::Schema.define(version: 20150330082038) do
 
   create_table "awsdocuments", force: :cascade do |t|
     t.string   "name"
@@ -39,6 +39,15 @@ ActiveRecord::Schema.define(version: 20150310082038) do
   create_table "organizations", force: :cascade do |t|
     t.string   "name"
     t.string   "token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "access"
+    t.string   "access_alias"
+    t.string   "email"
+    t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
