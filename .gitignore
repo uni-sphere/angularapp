@@ -21,5 +21,4 @@
 # Ignore uploads.
 /uploads/*
 
-/vendor/assets/
-
+/lib/assets/bower_components/
