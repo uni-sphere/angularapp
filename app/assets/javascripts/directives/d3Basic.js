@@ -6,26 +6,36 @@
       return {
         restrict: 'EA',
         scope: {
-          branch: '='
+          flatData: '=',
+          nodeEnd: '='
         },
         link: function(scope, iElement, iAttrs) {
 
-          var margin = {top: 0, right: 20, bottom: 0, left: 150};
-          var restAngularNode = Restangular.one('nodes');
 
-          /*==========  Periodical get  ==========*/
+          /*==========  flat data to nested data  ==========*/
           
-          // function retrieveNodes() {
-          //   restAngularNode.get().then(function(response) {
-          //     scope.branch = response;
-          //     console.log("Objects get");
-          //     $timeout(retrieveNodes, 5000);
-          //   }, function() {
-          //     console.log("There was an error getting");
-          //   });
-          // }
+          var dataMap = scope.flatData.reduce(function(map, node) {
+            map[node.num] = node;
+            return map;
+          }, {});
 
-          // $timeout(retrieveNodes, 5000);
+          function createTreeData(){
+            var treeData = [];
+            scope.flatData.forEach(function(node) {
+              var parent = dataMap[node.parent];
+              if (parent) {
+                (parent.children || (parent.children = []))
+                  .push(node);
+              } else {
+                treeData.push(node);
+              }
+            });
+            return treeData[0];
+          }
+          
+          var margin = {top: 0, right: 20, bottom: 0, left: 150};
+          var restAngularNode = Restangular.one();
+
 
           /*==========  Svg creation  ==========*/
           
@@ -58,11 +68,25 @@
 
           // console.log(getActiveNodesArray);
 
-         
-         
-         
+          // /*==========  Periodical get  ==========*/
+          
 
-         
+          // function retrieveNodes() {
+          //   Restangular.one('nodes').get().then(function(response) {
+          //     scope.branch = response;
+          //     // scope.$apply();
+          //     // update(scope.branch);
+          //     // console.log(scope.branch);
+          //     scope.render(createTreeData(), iElement, getCookieArray);
+          //     console.log("Objects get");
+          //     $timeout(retrieveNodes, 5000);
+          //   }, function() {
+          //     console.log("There was an error getting");
+          //   });
+          // }
+
+          // $timeout(retrieveNodes, 5000);
+
           /*==========  Renders Tree  ==========*/
           
           window.onresize = function() {
@@ -72,7 +96,7 @@
           scope.$watch(function(){
               return angular.element(window)[0].innerWidth;
             }, function(d){
-              return scope.render(scope.branch, iElement, getCookieArray);
+              return scope.render(createTreeData(), iElement, getCookieArray);
             }
           );
 
@@ -204,7 +228,7 @@
               //   .style("stroke", "#A90707")
 
                nodeUpdate.select("text.deleteNode")
-                .style("fill", "red")
+                .style("fill", "#F76565")
                 .style("fill-opacity", 1)
 
               // nodeUpdate.select("circle.addNode")
@@ -214,12 +238,12 @@
 
               nodeUpdate.select("text.addNode")
                 .attr("r", function(d){ return d._children ? 0 : 3; })
-                .style("fill", "blue")
+                .style("fill", "cornflowerblue")
                 .style("fill-opacity",  function(d){ return d._children ? 1e-6 : 1; })
 
               nodeUpdate.select("circle.circleCollapse")
                 .attr("r", 6)
-                .style("stroke", "steelblue")
+                .style("stroke", "cornflowerblue")
                 .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
               nodeUpdate.select("text.nameNode")
@@ -354,6 +378,7 @@
 
               function findLastNodePath(d){
                 activeNodes.push(d.num);
+                
                 if(d.parent){
                   findLastNodePath(d.parent)
                 }
@@ -373,11 +398,23 @@
                 }
               }
 
+              function findNodeEnd(d){
+                if(!d.children && !d._children){
+                  scope.nodeEnd = [d.num, d.name];
+                  $cookies.put('nodeEnd', [d.num, d.name]);
+                } else{
+                  scope.nodeEnd = false;
+                  $cookies.put('nodeEnd', false);
+                }
+              }
+
               findLastNodePath(d);
+              findNodeEnd(d);
               findNodesOpen(root);
               colornodePath(root);
               $cookies.put('nodeCookies', postCookies);
               $cookies.put('activeNodes', activeNodes);
+
 
               scope.$apply();
               update(d);
@@ -388,34 +425,17 @@
             =============================================*/
             
             function deleteNode(d){
+              var nodeSelected = d;
 
-              if (d.parent && d.parent.children){
-                var nodeToDelete = _.where(d.parent.children, {id: d.id});
-                if (nodeToDelete){
-                  d.parent.children = _.without(d.parent.children, nodeToDelete[0]);
+              Restangular.all('nodes/' + d.num).remove().then(function() {
+
+                if (nodeSelected.parent && nodeSelected.parent.children){
+                  var nodeToDelete = _.where(nodeSelected.parent.children, {id: nodeSelected.id});
+                  if (nodeToDelete){
+                    nodeSelected.parent.children = _.without(nodeSelected.parent.children, nodeToDelete[0]);
+                  }
+                  update(nodeSelected);
                 }
-                scope.$apply();
-                update(d);
-              }
-
-              /*==========  Save suppression  ==========*/
-
-              var nodeToDelete = {id: d.num, client_token: "6632398822f1d84468ebde3c837338fb"};
-              
-              // var nodeToDelete = []
-
-              // function saveNodeToDelete(d){
-              //   nodeToDelete.push(d.num);
-              //   if(d.children){
-              //     d.children.forEach(saveNodeToDelete);
-              //   }
-              //   if(d._children){
-              //     d._children.forEach(saveNodeToDelete);
-              //   }
-              // }
-              // saveNodeToDelete(d);
-
-              restAngularNode.delete("delete", nodeToDelete).then(function() {
                 console.log("Objects deleted");
               }, function() {
                 console.log("There was an error deleting");
@@ -429,64 +449,27 @@
             
             function addNode(d){
 
-              // //  find the new id
-              // var max = 0;
-              // function findHighest(d){
-              //   // console.log(d.num)
-              //   if(parseInt(d.num) > parseInt(max)){
-              //     max = d.num;
-              //   }
-              //   if(d.children){
-              //     d.children.forEach(findHighest);
-              //   }
-              //   if(d._children){
-              //     d._children.forEach(findHighest);
-              //   }
-              // }
+              var nodeSelected = d
+              var newBranch = {parent_id: d.num, name: "new branch"}
 
-              // findHighest(root);
-              // max ++;
-
-              // // var a = {name: "new", num: max};
-
-
-              var a = {name: "new"}
-
-              if( d.children === undefined || d.children == null ){
-                d.children = [];
-              }
-              d.children.push(a);
-
-              /*==========  Save the new branch  ==========*/
-
-              var newBranch = {parentId: d.num, name: "new", client_token: "6632398822f1d84468ebde3c837338fb"}
-
-              restAngularNode.post("create", newBranch).then(function() {
+              Restangular.all('nodes').post(newBranch).then(function(d) {
                 console.log("Object saved OK");
+                var a = {name: "new", num: d.id}
+
+                if( nodeSelected.children === undefined || nodeSelected.children == null ){
+                  nodeSelected.children = [];
+                }
+                nodeSelected.children.push(a);
+
+                update(nodeSelected);
               }, function(d) {
                 // console.log(d.data);
-                console.log(d.status);
+                // console.log(d.status);
                 // console.log(d.header);
-                console.log(d.config);
-
-                // console.log("There was an error saving");
+                // console.log(d.config);
+                console.log("There was an error saving");
               });
 
-
-              // // SEND WHOLE TREE
-              // var rootCopy = Restangular.copy(root)
-              // unCollapse(rootCopy);
-
-
-              // // restAngularNode.post(root);
-              // restAngularNode.post(rootCopy).then(function() {
-              //   console.log("Object saved OK");
-              // }, function() {
-              //   console.log("There was an error saving");
-              // });
-
-              scope.$apply();
-              update(d);
             }
 
             /*========================================
@@ -494,20 +477,30 @@
             ========================================*/
             
             function renameNode(d){
+              var nodeSelected = d;
+
+
               var result = prompt('Change the name of the node',d.name);
               if(result) {
-                d.name = result;
+                
 
-                scope.$apply();
-                update(d);
+                var nodeUpdate = {name: result}
 
-                var nodeUpdate = {num: d.num, name: result, client_token: "6632398822f1d84468ebde3c837338fb"}
+                // Restangular.all('node/' + d.num).remove().then(function() {
+                Restangular.one('nodes/'+ d.num).put(nodeUpdate).then(function(d) {
+                // restAngularNode.put("update", nodeUpdate).then(function() {
 
-                restAngularNode.put("update", nodeUpdate).then(function() {
+                  nodeSelected.name = result;
+                  update(nodeSelected);
+
+                  
                   console.log("Object updated");
                 }, function(d) {
                   console.log("There was an error updating");
                 });
+                // scope.$apply();
+                // console.log(d);
+                
               }
             }
           };

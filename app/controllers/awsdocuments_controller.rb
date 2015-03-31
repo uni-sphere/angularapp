@@ -1,7 +1,8 @@
-class AwsdocumentsController < ActionController::Base
+class AwsdocumentsController < ApplicationController
 	
-  before_action :get_node(params[:node_id]), only: [:show, :update, :destroy, :create, :unarchive]
-  before_action :get_awsdocument, only: [:show, :update, :destroy, :download, :unarchive, :archives]
+  # before_action :get_node
+#   before_action :get_chapter
+#   before_action :get_awsdocument, only: [:show, :update, :destroy, :download, :unarchive, :archives]
 
   def create
     awsdocument = @node.awsdocuments.new(awsdocument_params)
@@ -48,8 +49,65 @@ class AwsdocumentsController < ActionController::Base
   end
   
   def index
-    awsdocuments = @oganization.nodes.awsdocuments.where(archived: false)
-    render json: awsdocuments, status: 200
+    # awsdocuments = @oganization.nodes.awsdocuments.where(archived: false)
+#     render json: awsdocuments, status: 200
+render json: 
+{
+  id: 0,
+  items: [{
+    id: 2,
+    title: "Matrice",
+    items: [{
+      id: 21,
+      title: "Produit matricielle",
+      items: [{
+        id: 211,
+        title: "Cours",
+        items: [{
+          id: 2111,
+          title: "produit simple",
+          document: true,
+          items: []
+        }, 
+        {
+          id: 2112,
+          title: "produit combiné",
+          document: true,
+          items: []
+        }],
+      }, 
+      {
+        id: 212,
+        title: "TD",
+        items: []
+      }],
+    }, 
+    {
+      id: 22,
+      title: "Determinant",
+      items: [{
+        id: 221,
+        title: "Cours",
+        items: []
+      }, 
+      {
+        id: 222,
+        title: "TD",
+        items: []
+      }],
+    }],
+  }, 
+  {
+    id: 3,
+    title: "Algèbre",
+    items: []
+  }, 
+  {
+    id: 4,
+    title: "Aritmétique",
+    items: []
+  }
+]}.to_json
   end
   
   private
@@ -63,7 +121,7 @@ class AwsdocumentsController < ActionController::Base
   end
   
   def awsdocument_params
-    params.require(:awsdocument).permit(:content, :node_id, :archived, :name, :type)
+    params.require(:awsdocument).permit(:content, :chapter_id, :archived, :name, :type)
   end
   
 end

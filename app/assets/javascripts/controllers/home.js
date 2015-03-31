@@ -1,7 +1,7 @@
 (function(){
 angular
   .module('myApp.controllers')
-  .controller('HomeCtrl', ['$scope', 'documents', 'nodesflat', '$cookies','$timeout', 'Restangular', '$upload', 'ngDialog', function ($scope, documents, nodesflat, $cookies, $timeout, Restangular, $upload, ngDialog) {
+  .controller('HomeCtrl', ['$scope', 'nodesflat', '$cookies','$timeout', 'Restangular', '$upload', 'ngDialog', function ($scope, nodesflat, $cookies, $timeout, Restangular, $upload, ngDialog) {
     
     $scope.openPlain = function () {
       // $rootScope.theme = 'ngdialog-theme-plain';
@@ -21,30 +21,43 @@ angular
     // { "name" : "Level 2: B", "parent":"Top Level" }
     // ];
 
-    var dataMap = nodesflat.reduce(function(map, node) {
-      map[node.name] = node;
-      return map;
-    }, {});
+    // console.log(data);
 
-    var treeData = [];
-    nodesflat.forEach(function(node) {
-      // add to parent
-      var parent = dataMap[node.parent];
-      if (parent) {
-        // create child array if it doesn't exist
-        (parent.children || (parent.children = []))
-          // add node to child array
-          .push(node);
-      } else {
-        // parent is null or missing
-        treeData.push(node);
-      }
-    });
 
-    console.log(nodesflat);
-    console.log(treeData);
+    function makeNested(flatData){
 
-    $scope.nodes = treeData;
+      var dataMap = flatData.reduce(function(map, node) {
+        map[node.id] = node;
+        return map;
+      }, {});
+
+
+      var treeData = [];
+      flatData.forEach(function(node) {
+        var parent = dataMap[node.parent];
+        if (parent) {
+          (parent.items || (parent.items = []))
+            .push(node);
+        } else {
+          treeData.push(node);
+        }
+      });
+
+      return treeData;
+    }
+
+
+    // console.log(makeNested(data));
+    
+
+    // console.log(nodesflat);
+    // console.log(treeData[0]);
+
+    // $scope.nodes = treeData[0];
+    $scope.nodes = nodesflat;
+
+
+    
 
     var plop = [{
       "id": 0,
@@ -88,7 +101,7 @@ angular
 
     // $scope.nodes = nodes;
 
-    $scope.list = documents.items;
+   
     // console.log( $scope.list);
     $scope.selectedItem = {};
     $scope.options = {};
@@ -121,6 +134,20 @@ angular
     // $timeout(retrieveDocuments, 5000);
 
     /*==========  Cookie gestion  ==========*/
+
+    getNodeEnd = $cookies.get('nodeEnd');
+
+
+    if( getNodeEnd != undefined && getNodeEnd != 'false'){
+      getNodeEndArray = getNodeEnd.split(',');
+    }else{
+      getNodeEndArray = false;
+    }
+
+    $scope.nodeEnd =  getNodeEndArray;
+
+    console.log($scope.nodeEnd);
+
     function isInArray(value, array) {
       return array.indexOf(value.toString()) > -1;
     }
@@ -140,6 +167,8 @@ angular
     }else{
       getCookieArray =["0"];
     }
+
+   
 
     upload = function (files, dragAndDrop) {
       if (files && files.length) {
@@ -225,7 +254,7 @@ angular
     ========================================*/
 
     $scope.toggleItems = function(scope) {
-      if(scope.$childNodesScope.$modelValue !=""){
+      if(scope.$childNodesScope.$modelValue != undefined){
         scope.toggle();
         addToCookie(scope.$modelValue.id);
 
@@ -255,127 +284,85 @@ angular
     $scope.initCounter = function(){
       $scope.j = 0;
       $scope.k = 0;
-
     }
-
-    // for (items in $scope.list){
-    //   console.log(item);
-    // }
 
     $scope.initI = function(){
       $scope.i ++;
     }
 
-    // plop = function(d){
-    //   if()
-    //   console.log(d);
-    //   if(d.items){
-    //     d.items.forEach(plop);
-    //   }
-    // }
+    $scope.$watch('nodeEnd', function(newVals, oldVals) {
+      if(newVals){
+        documentFlat = Restangular.one('chapters').get({node_id: newVals[0]}).then(function (document) {
 
-    // plop(documents);
-   
+          var documentsNested = makeNested(document);
+          // console.log(documentsNested);
+          // console.log( typeof documentsNested);
+          $scope.list = [{
+            "id": 0,
+            "items": documentsNested
+          }];
 
-    // watch for data changes and re-render
-    $scope.$watch('list', function(newVals, oldVals) {
+          console.log($scope.list);
 
-      var j = 1;
-      var chap = [];
-      var savedValueByDepth = [];
-      var previousDepth = 0;
+          // console.log(plop);
 
-      createChap = function(d){
-        if(!d.document){
-          var depth = d.id.toString().split('').length
-          newValueByDepth = savedValueByDepth;
-          if(depth == previousDepth){
-            // console.log("==");
-            newValueByDepth[depth - 1] = savedValueByDepth[[depth - 1]] + 1;
-            savedValueByDepth = newValueByDepth;
-          }
-          if(depth > previousDepth){
-            // console.log(">");
-            if(savedValueByDepth[[depth - 1]] == undefined){
-              newValueByDepth[depth - 1] = 1;
-            } else{
-              newValueByDepth[depth - 1] = savedValueByDepth[[depth - 1]] + 1;
-            }
-            savedValueByDepth = newValueByDepth;
-          }
-          if(depth < previousDepth){
-            var diff = previousDepth - depth;
-            newValueByDepth[depth -1 ] = savedValueByDepth[depth - 1] + 1;
-            for(i= 0; i < diff; i++){
-              newValueByDepth.pop();
-            }
-            
-            savedValueByDepth[depth - 1] = savedValueByDepth[depth - 1];
-          }
+          // $scope.$watch('list', function(newVals, oldVals) {
+          //   var j = 1;
+          //   var chap = [];
+          //   var savedValueByDepth = [];
+          //   var previousDepth = 0;
 
-          previousDepth = depth;
-          // console.log(newValueByDepth.join('.'));
-          d.chapter = newValueByDepth.join('.');
-        }
+          //   createChap = function(d){
+          //     if(!d.document){
+          //       var depth = d.id.toString().split('').length
+          //       newValueByDepth = savedValueByDepth;
+          //       if(depth == previousDepth){
+          //         // console.log("==");
+          //         newValueByDepth[depth - 1] = savedValueByDepth[[depth - 1]] + 1;
+          //         savedValueByDepth = newValueByDepth;
+          //       }
+          //       if(depth > previousDepth){
+          //         // console.log(">");
+          //         if(savedValueByDepth[[depth - 1]] == undefined){
+          //           newValueByDepth[depth - 1] = 1;
+          //         } else{
+          //           newValueByDepth[depth - 1] = savedValueByDepth[[depth - 1]] + 1;
+          //         }
+          //         savedValueByDepth = newValueByDepth;
+          //       }
+          //       if(depth < previousDepth){
+          //         var diff = previousDepth - depth;
+          //         newValueByDepth[depth -1 ] = savedValueByDepth[depth - 1] + 1;
+          //         for(i= 0; i < diff; i++){
+          //           newValueByDepth.pop();
+          //         }
+                  
+          //         savedValueByDepth[depth - 1] = savedValueByDepth[depth - 1];
+          //       }
+
+          //       previousDepth = depth;
+          //       // console.log(newValueByDepth.join('.'));
+          //       d.chapter = newValueByDepth.join('.');
+          //     }
+          //   }
+
+          //   iterate = function (d){
+          //     createChap(d);
+          //     if(d.items){
+          //       d.items.forEach(iterate);
+          //     }
+          //   }
+
+          //   newVals.forEach(iterate);
+
+          // }, true);
+
+
+
+        });
+
       }
-
-      iterate = function (d){
-        createChap(d);
-        if(d.items){
-          d.items.forEach(iterate);
-        }
-      }
-
-      newVals.forEach(iterate);
-
-    }, true);
-
-    // $scope.printChapter = function(scope){
-
-    //   $scope.j++
-
-
-      // createChap = function (d){
-        
-      //   $scope.chap.push($scope.j + '.');
-         
-      //   if(d.depth() != 1){
-      //     createChap(d.$parentNodeScope);
-      //   } else{
-      //     $scope.chaptersNumber.push($scope.chap.join(""));
-      //     // console.log(d.$modelValue);
-      //     // console.log(typeof $scope.chap.join(""))
-      //     d.$modelValue.chapter = $scope.chap.join("");
-      //     console.log(d.$modelValue);
-      //     $scope.chap = [];
-      //     // console.log($scope.chaptersNumber);
-      //   }
-      // }
-
-      // createChap(scope);
-
-
-
-    //   // if(scope.depth() == currentDepth){
-    //   //   // console.log(scope.depth())
-
-    //   //   $scope.chaptersNumber.push($scope.j + '.');
-    //   //   $scope.j ++;
-    //   // } else{
-    //   //   currentDepth ++;
-
-    //   //   var plop ="";
-    //   //   $scope.$parentNodeScope
-    //   //   createChap( '.' + $scope.j + '.');
-    //   //   $scope.j ++;
-    //   // }
-    //   // console.log($scope.chaptersNumber);
-
-
-    //   // $scope.i ++;
-    //   // console.log(scope.depth());
-    //   // console.log(scope.$parentNodeScope.$modelValue.items.length);
-    // }
+    });
 
 
     function addToCookie(nb){
@@ -420,6 +407,8 @@ angular
         items: []
       }
 
+      // Restangular.all('nodes').post(newBranch).then(function(d) {
+        
       restAngularDocuments.post("create", nodeToCreate).then(function() {
         console.log("Item created");
        
@@ -435,13 +424,5 @@ angular
     };
 
 
-    /*===========================================
-    =            Create new document            =
-    ===========================================*/
-    
-
-   
-    
-    
   }]);
 })();

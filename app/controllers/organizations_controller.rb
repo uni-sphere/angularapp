@@ -1,4 +1,4 @@
-class OrganizationsController < ActionController::Base
+class OrganizationsController < ApplicationController
 	
   # skip_before_action :authenticate_organization, only: :create
   

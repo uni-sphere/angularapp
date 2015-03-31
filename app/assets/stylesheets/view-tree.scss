@@ -8,16 +8,17 @@ collapsible-tree{
 
 #admin-button{
   position: absolute;
+	color: cornflowerblue;
   top: 40px;
   left: 40px;
-  border: 2px solid grey;
+  border: 2px solid cornflowerblue;
   padding: 10px 10px;
   border-radius: 20px;
 
   cursor: pointer;
 
   &:hover{
-    background: grey;
+    background: cornflowerblue;
     color: white;
   }
 }
@@ -44,7 +45,7 @@ collapsible-tree{
 
 .link-active{
   fill: none;
-  stroke: rgb(0,249,111);
+  stroke: cornflowerblue;
   stroke-width: 0.1em;
 }
 

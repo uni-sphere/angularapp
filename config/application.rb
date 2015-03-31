@@ -32,5 +32,13 @@ module Uni2
     config.active_record.raise_in_transactional_callbacks = true
 
     config.assets.paths << Rails.root.join("lib","assets","bower_components");
+    
+    config.middleware.insert_before 0, "Rack::Cors" do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :delete, :put, :options]
+      end
+    end
+      
   end
 end

@@ -2,7 +2,7 @@
 
 class DocumentUploader < CarrierWave::Uploader::Base
 
-  include CarrierWave::RMagick
+  # include CarrierWave::RMagick
 
   storage :fog
   
@@ -13,20 +13,20 @@ class DocumentUploader < CarrierWave::Uploader::Base
     nil
   end
   
-  def cover 
-    manipulate! do |frame, index|
-      frame if index.zero?
-    end
-  end   
-
-  version :thumb do
-    process :cover
-    process :resize_to_fill => [150, 210]
-    process :convert => :jpg
-
-    def full_filename (for_file = model.source.file)
-      super.chomp(File.extname(super)) + '.jpg'
-    end
-  end
+  # def cover
+#     manipulate! do |frame, index|
+#       frame if index.zero?
+#     end
+#   end
+#
+#   version :thumb do
+#     process :cover
+#     process :resize_to_fill => [150, 210]
+#     process :convert => :jpg
+#
+#     def full_filename (for_file = model.source.file)
+#       super.chomp(File.extname(super)) + '.jpg'
+#     end
+#   end
 
 end

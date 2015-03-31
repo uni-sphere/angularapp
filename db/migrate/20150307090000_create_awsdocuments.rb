@@ -4,7 +4,7 @@ class CreateAwsdocuments < ActiveRecord::Migration
       t.string :content
       t.string :type
       t.string :name
-			t.integer :node_id
+			t.integer :chapter_id
       t.boolean :archived, default: false
 			
       t.timestamps

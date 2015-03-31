@@ -1,16 +1,16 @@
 <div id="view-tree">
-  <collapsible-tree branch = 'nodes' current-node = 'currentNode'></collapsible-tree>
+  <collapsible-tree node-end = 'nodeEnd' flat-data = 'nodes' current-node = 'currentNode'></collapsible-tree>
   <div id="admin-button" ng-click="openPlain()">connect as admin</div>
 </div>
 
 <div id="view-group">
   <script type="text/ng-template" id="items_renderer.html">
-    <div ui-tree-handle ng-class="{isdocument: item.document, 'collapsed': collapsed && this.$childNodesScope.$modelValue != '', 'isNew' : this.$modelValue.title == 'new chapter'}" ng-if="item.id !=0">
+    <div ui-tree-handle ng-class="{isdocument: item.document, 'collapsed': collapsed && this.$childNodesScope.$modelValue != undefined, 'isNew' : this.$modelValue.title == 'new chapter'}" ng-if="item.id !=0">
 
       <i ng-if="item.document" nodrag class="fa fa-minus caret"></i>
     
 
-      <a class="btn btn-collapse" nodrag ng-if="!item.document" ng-click="toggleItems(this)" ng-init="collapseItems(this)"><span ng-class="{'fa fa-angle-right': collapsed && this.$childNodesScope.$modelValue != '', 'fa fa-angle-down': !collapsed && this.$childNodesScope.$modelValue != ''}"></span></a>
+      <a class="btn btn-collapse" nodrag ng-if="!item.document" ng-click="toggleItems(this)" ng-init="collapseItems(this)"><span ng-class="{'fa fa-angle-right': collapsed && this.$childNodesScope.$modelValue != undefined, 'fa fa-angle-down': !collapsed && this.$childNodesScope.$modelValue != undefined}"></span></a>
 
       <div ng-init="printChapter(this)" class="chapter-number">{{item.chapter}}</div>
       
@@ -30,7 +30,8 @@
   </script>
 
   <div id="document-tree">
-    <div ui-tree="options" >
+    {{nodeEnd[1]}}
+    <div ui-tree="options" ng-if="nodeEnd" >
       <ol ui-tree-nodes ng-model="list" >
         <li ng-repeat="item in list" ui-tree-node ng-include="'items_renderer.html'"></li>
       </ol>

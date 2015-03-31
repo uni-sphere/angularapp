@@ -1,10 +1,10 @@
 class Awsdocument < ActiveRecord::Base
   
-	belongs_to :node
+	belongs_to :chapter
   
   mount_uploader :content, DocumentUploader
   # validates :name, presence: true
-  validates :content, presence: true
+  # validates :content, presence: true
   
   def self.find_unarchived(id)
     find_by(id: id, archived: false)

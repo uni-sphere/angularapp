@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :users, only: [:show, :password_forgoten, :update]
     resources :nodes, only: [:create, :show, :index, :update, :destroy]
     resources :organizations, only: [:create, :show, :index, :update, :destroy]
+    resources :chapters, only: [:create, :show, :index, :update, :destroy]
     resources :awsdocuments, only: [:create, :show, :index, :update, :destroy] do
       member do
         get 'download'

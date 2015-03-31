@@ -5,7 +5,6 @@ module AuthenticationHelper
   def authentication
     
     @organization = Organization.first
-    
     # authenticate_client
     # authenticate_organization
   end
@@ -15,12 +14,8 @@ module AuthenticationHelper
   end
   
   def authenticate_client
-    if params[:client_token]
-      send_error('client_token not correct', 401) if params[:client_token] != '6632398822f1d84468ebde3c837338fb'
-    else
-      logger.info params.inspect
-      send_error('client_token not received', 400)
-    end
+    clear_logs(request.headers.inspect)
+    send_error('Unauthorized client', 401) unless token == '6632398822f1d84468ebde3c837338fb'
   end
   
   def authenticate_organization
@@ -34,21 +29,17 @@ module AuthenticationHelper
 #       send_error('organization_token not received', 400)
 #     end
 
-    if subdomain
-      @organization = Organization.find_by?(name: subdomain)
-    else
-      send_error('organization not recognized', 400)
-    end
+      if Organization.exists?(name: params[:subdomain])
+        @organization = Organization.find_by(name: params[:subdomain])
+      else
+        send_error('organization not found', 404)
+      end
   end
 
   def set_admin_cookies(access)
     if @organization.users.exists?(access: access) or @organization.users.exists?(access_alias: access)
       cookies.signed[:unisphere_api_admin] = access
     end
-  end
-  
-  def is_admin?
-    return true if @organization.users.find_by(access: cookies.signed[:unisphere_api_admin])
   end
   
   def has_admin_rights?
@@ -59,34 +50,31 @@ module AuthenticationHelper
     # return admin = @organization.users.find_by(access: ) ? admin : nil
   end
   
-  def nodes_search(id)
-    @nodes.each do |node|
-      return node if node.id == id
-    end
-    return nil
-  end
-  
-  def nodes_exists?(id)
-    response = nil
-    @nodes.each do |node|
-      response = true if node.id == id
-    end
-    return response
-  end
-  
-  def get_node(id)
-    if id
-      if nodes_exists?(id)
-        @node = nodes_search(id)
+  def get_node
+    params[:node_id] = params[:id] if request.url.include? 'node'
+    if params[:node_id]
+      if @organization.nodes.exists? params[:node_id]
+        @node = @organization.nodes.find params[:node_id]
       else
-        send_error('resource not found', 404)
+        send_error('node not found', 404)
       end
     else
-      send_error('id not received', 400)
+      send_error('node id not received', 400)
     end
   end
   
-  
+  def get_chapter
+    params[:chapter_id] = params[:id] if request.url.include? 'chapter'
+    if params[:chapter_id]
+      if @node.chapters.exists? params[:chapter_id]
+        @chapter = @node.chapters.find params[:chapter_id]
+      else
+        send_error('chapter not found', 404)
+      end
+    else
+      send_error('chapter id not received', 400)
+    end
+  end
   
 end  
   

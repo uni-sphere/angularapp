@@ -14,9 +14,10 @@
 ActiveRecord::Schema.define(version: 20150330082038) do
 
   create_table "awsdocuments", force: :cascade do |t|
-    t.string   "name"
     t.string   "content"
-    t.integer  "node_id"
+    t.string   "type"
+    t.string   "name"
+    t.integer  "chapter_id"
     t.boolean  "archived",   default: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -24,8 +25,10 @@ ActiveRecord::Schema.define(version: 20150330082038) do
 
   create_table "chapters", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "node_id"
+    t.integer  "parent_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "nodes", force: :cascade do |t|
