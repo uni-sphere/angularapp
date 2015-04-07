@@ -32,20 +32,6 @@ module AuthenticationHelper
       @organization = Organization.last
     end
   end
-
-  def set_admin_cookies(access)
-    if @organization.users.exists?(access: access) or @organization.users.exists?(access_alias: access)
-      cookies.signed[:unisphere_api_admin] = access
-    end
-  end
-  
-  def has_admin_rights?
-    send_error('unauthorized', 401) unless is_admin?
-  end
-  
-  def current_admin
-    # return admin = @organization.users.find_by(access: ) ? admin : nil
-  end
   
   def get_node
     params[:node_id] = params[:id] if request.url.split('?').first.include? 'node'
@@ -73,6 +59,20 @@ module AuthenticationHelper
     else
       send_error('chapter id not received', 400)
     end
+  end
+  
+  def set_admin_cookies(access)
+    if @organization.users.exists?(access: access) or @organization.users.exists?(access_alias: access)
+      cookies.signed[:unisphere_api_admin] = access
+    end
+  end
+  
+  def has_admin_rights?
+    send_error('unauthorized', 401) unless is_admin?
+  end
+  
+  def current_admin
+    # return admin = @organization.users.find_by(access: ) ? admin : nil
   end
   
 end  

@@ -464,7 +464,7 @@
             function addNode(d){
 
               var nodeSelected = d
-              var newBranch = {parent_id: d.num, name: "new branch"}
+              var newBranch = {parent_id: d.num, name: "new"}
 
               Restangular.all('nodes').post(newBranch).then(function(d) {
 
