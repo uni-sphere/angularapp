@@ -1,6 +1,6 @@
 class ChaptersController < ApplicationController
   
-  # before_action :get_node
+  before_action :get_node
   before_action :get_chapter, only: [:show, :update, :destroy]
 	
   def create
@@ -25,17 +25,19 @@ class ChaptersController < ApplicationController
   end
   
   def destroy
+    Chapter.where(parent_id: @chapter.id).each do |chapter|
+      chapter.destroy
+    end
     @chapter.destroy
     head 204
   end
   
   def index
-    @node = @organization.nodes.last
     tree = []
     @node.chapters.each do |chapter|
-      tree << {title: chapter.name, id: chapter.id, parent: chapter.parent_id}
+      tree << {title: chapter.title, id: chapter.id, parent: chapter.parent_id}
       chapter.awsdocuments.each do |document|
-        tree << {title: document.name, doc_id: document.id, parent: document.chapter_id, document: true}
+        tree << {title: document.title, doc_id: document.id, parent: document.chapter_id, document: true, preview_link: document.content.url} if !document.archived 
       end
     end
     render json: tree, status: 200
@@ -44,7 +46,7 @@ class ChaptersController < ApplicationController
   private
   
   def chapter_params
-    params.require(:chapter).permit(:name, :parent_id)
+    params.require(:chapter).permit(:title, :parent_id)
   end
   
 end

@@ -1,11 +1,11 @@
 class AwsdocumentsController < ApplicationController
 	
-  # before_action :get_node
-#   before_action :get_chapter
-#   before_action :get_awsdocument, only: [:show, :update, :destroy, :download, :unarchive, :archives]
+  before_action :get_node, except: [:destroy]
+  before_action :get_chapter, except: [:destroy]
+  before_action :get_awsdocument, only: [:show, :update, :download, :unarchive, :archives]
 
   def create
-    awsdocument = @node.awsdocuments.new(awsdocument_params)
+    awsdocument = @chapter.awsdocuments.new(title: params[:title], content: params[:file])
     if awsdocument.save
       render json: awsdocument, status: 201, location: awsdocument
     else
@@ -30,9 +30,40 @@ class AwsdocumentsController < ApplicationController
   end
   
   def download
-    uploader = DocumentUploader.new
-    uploader.retrieve_from_store!('getting_starteds.txt')
-    send_file uploader.file.path, :disposition => 'attachment', :url_based_filename => false
+    # uploader = DocumentUploader.new
+    # uploader.retrieve_from_store!('getting_started.txt')
+    # send_file uploader.file.path.split('/').last, :disposition => 'attachment', :url_based_filename => false
+    
+    # url = Awsdocument.last.content.url
+    # uploader = DocumentUploader.new
+    # uploader.download! url
+    # send_file uploader.retrieve_from_cache!(uploader.cache_name)
+    
+    # doc = Awsdocument.last.content
+#     file = open(doc.url).read
+#     send_file(file, filename: "getting_started.txt", disposition: 'attachment')
+  
+  # data = open(Awsdocument.last.content.url)
+  # send_data data.read, :type => data.content_type, :x_sendfile => true, :url_based_filename => true
+  
+  # data = "Hello World!"
+  # file = "my_file.txt"
+  # File.open(file, "w"){ |f| f << data }
+  # File.open(file, "r")
+  # send_data( file )
+  
+  # send_file('/my_file.txt', type: 'text/excel')
+  
+  # data = "Hello World!"
+#   file = "my_file.txt"
+#   File.open(file, "w"){ |f| f << data }
+#   send_file( file )
+
+send_file(
+    "#{Rails.root}/public/uploads/tmp/1428389933-25294-4468/getting_started.txt",
+    filename: "getting_started.txt"
+  )
+
   end
   
   def update
@@ -44,70 +75,13 @@ class AwsdocumentsController < ApplicationController
   end
   
   def destroy
-    @awsdocument.archive
+    Awsdocument.find(params[:id]).archive
     head 204
   end
   
   def index
     # awsdocuments = @oganization.nodes.awsdocuments.where(archived: false)
 #     render json: awsdocuments, status: 200
-render json: 
-{
-  id: 0,
-  items: [{
-    id: 2,
-    title: "Matrice",
-    items: [{
-      id: 21,
-      title: "Produit matricielle",
-      items: [{
-        id: 211,
-        title: "Cours",
-        items: [{
-          id: 2111,
-          title: "produit simple",
-          document: true,
-          items: []
-        }, 
-        {
-          id: 2112,
-          title: "produit combiné",
-          document: true,
-          items: []
-        }],
-      }, 
-      {
-        id: 212,
-        title: "TD",
-        items: []
-      }],
-    }, 
-    {
-      id: 22,
-      title: "Determinant",
-      items: [{
-        id: 221,
-        title: "Cours",
-        items: []
-      }, 
-      {
-        id: 222,
-        title: "TD",
-        items: []
-      }],
-    }],
-  }, 
-  {
-    id: 3,
-    title: "Algèbre",
-    items: []
-  }, 
-  {
-    id: 4,
-    title: "Aritmétique",
-    items: []
-  }
-]}.to_json
   end
   
   private
@@ -121,7 +95,7 @@ render json:
   end
   
   def awsdocument_params
-    params.require(:awsdocument).permit(:content, :chapter_id, :archived, :name, :type)
+    params.require(:awsdocument).permit(:content, :chapter_id, :archived, :title)
   end
   
 end

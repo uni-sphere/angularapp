@@ -1,8 +1,8 @@
 class Chapter < ActiveRecord::Base
   
-	has_many :awsdocuments
+	has_many :awsdocuments, dependent: :delete_all
   belongs_to :node
   
-  validates :name, :parent_id, presence: true
+  validates :title, :parent_id, presence: true
   
 end

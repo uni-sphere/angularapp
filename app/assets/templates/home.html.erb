@@ -1,11 +1,19 @@
+<div id="error-prompt" ng-show="showError" ng-init="showError=false" ng-class="{'ready-to-disappear': !showError, 'ready-to-appear': showError}">
+  <div id="close-error-prompt" ng-click="hideError()" class="fa fa-close"></div>
+  <div id="error-prompt-title">Error </div>
+  <div id="error-prompt-text">
+    <div ng-repeat="error in listError"><i ng-if="listError.length > 1" class="fa fa-caret-right"></i>{{error}}</div>
+  </div>
+</div>
+
 <div id="view-tree">
-  <collapsible-tree node-end = 'nodeEnd' flat-data = 'nodes' current-node = 'currentNode'></collapsible-tree>
-  <div id="admin-button" ng-click="openPlain()">connect as admin</div>
+  <collapsible-tree node-end = 'nodeEnd' flat-data = 'nodes' display-error ='displayError' current-node = 'currentNode'></collapsible-tree>
+  <div id="admin-button" ng-click="openPlain()">Administrator</div>
 </div>
 
 <div id="view-group">
   <script type="text/ng-template" id="items_renderer.html">
-    <div ui-tree-handle ng-class="{isdocument: item.document, 'collapsed': collapsed && this.$childNodesScope.$modelValue != undefined, 'isNew' : this.$modelValue.title == 'new chapter'}" ng-if="item.id !=0">
+    <div ui-tree-handle ng-class="{isdocument: item.document, 'collapsed': collapsed && this.$childNodesScope.$modelValue != undefined, 'isNew' : this.$modelValue.title == 'new chapter'}" ng-if="item.parent!=0">
 
       <i ng-if="item.document" nodrag class="fa fa-minus caret"></i>
     
@@ -42,7 +50,7 @@
 
 
 <script type="text/ng-template" id="firstDialogId">
-  <div id="admin-popup-title">Connect as an administrator</div>
+  <div id="admin-popup-title">Connect as administrator</div>
   <div id="admin-popup-content">
     <input type="password" placeholder="type your password" id="admin-popup-input" autofocus> 
     <div id="admin-popup-button" >Validate</div>

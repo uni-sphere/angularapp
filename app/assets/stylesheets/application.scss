@@ -14,7 +14,11 @@
 }
 
 
-
+$border-error-prompt: #E9BCBC;
+$error-promt-color-dark: #9F1D1D;
+$error-promt-color-light: #B23B3B;
+$error-promt-bg: #F2DEDE;
+$error-promt-color-very-light: #C45858;
 
 
 $mega-light-grey: #FCFCFC;
@@ -59,8 +63,8 @@ $button-active-color: $very-dark-grey;
 
 
 $popup-header-bg: #00BC5E;
-$popup-button-bg: #00D269;
-$popup-button-hover-bg: #1FDF7F;
+$popup-button-bg: whitesmoke;
+$popup-button-hover-bg: $navbar-bg;
 
 
 

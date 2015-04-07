@@ -2,38 +2,35 @@ module AuthenticationHelper
   
   private
   
-  def authentication
-    
-    @organization = Organization.first
-    # authenticate_client
-    # authenticate_organization
-  end
+  $TOKEN = '6632398822f1d84468ebde3c837338fb'
   
-  def send_error(error, code)
-    render json: {error: error}.to_json, status: code
+  def authentication
+    authenticate_client unless request.path == '/'
+    authenticate_organization(request.path)
   end
   
   def authenticate_client
-    clear_logs(request.headers.inspect)
-    send_error('Unauthorized client', 401) unless token == '6632398822f1d84468ebde3c837338fb'
+    authenticate_with_http_token do |token, options|
+       send_error('Bad token', 401) unless token == $TOKEN
+    end
   end
   
-  def authenticate_organization
-    # if params[:organization_token]
-#       if Organization.exists?(token: params[:organization_token])
-#         @organization = Organization.find_by?(token: params[:organization_token])
-#       else
-#         send_error('unauthorized', 401)
-#       end
-#     else
-#       send_error('organization_token not received', 400)
-#     end
-
-      if Organization.exists?(name: params[:subdomain])
-        @organization = Organization.find_by(name: params[:subdomain])
+  def authenticate_organization(path)
+    if Rails.env.production?
+      if path == '/'
+        subdomain = request.env['HTTP_HOST'].split('.').first
+      else
+        uri = URI.parse(request.env['HTTP_ORIGIN']).host
+        subdomain = uri.split('.').first
+      end
+      if Organization.exists?(subdomain: subdomain)
+        @organization = Organization.find_by(subdomain: subdomain)
       else
         send_error('organization not found', 404)
       end
+    else
+      @organization = Organization.last
+    end
   end
 
   def set_admin_cookies(access)
@@ -51,7 +48,7 @@ module AuthenticationHelper
   end
   
   def get_node
-    params[:node_id] = params[:id] if request.url.include? 'node'
+    params[:node_id] = params[:id] if request.url.split('?').first.include? 'node'
     if params[:node_id]
       if @organization.nodes.exists? params[:node_id]
         @node = @organization.nodes.find params[:node_id]
@@ -64,10 +61,12 @@ module AuthenticationHelper
   end
   
   def get_chapter
-    params[:chapter_id] = params[:id] if request.url.include? 'chapter'
+    params[:chapter_id] = params[:id] if request.url.split('?').first.include? 'chapter'
     if params[:chapter_id]
       if @node.chapters.exists? params[:chapter_id]
         @chapter = @node.chapters.find params[:chapter_id]
+      elsif params[:chapter_id] == 0
+        @chapter = @node.chapters.first
       else
         send_error('chapter not found', 404)
       end

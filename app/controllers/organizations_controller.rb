@@ -1,14 +1,15 @@
 class OrganizationsController < ApplicationController
 	
-  # skip_before_action :authenticate_organization, only: :create
+  skip_before_action :authenticate_organization, only: :create
   
   def create
     organization = Organization.new(organization_params)
+    organization.subdomain = format_subdomain organization.name
     node = organization.nodes.new(name: params[:name], parent_id: 0)
-    if organization.save and node.save
+    if organization.save and node.save and create_pointer(organization.subdomain)
       render json: organization, status: 201, location: organization
     else
-      render json: organization.errors, status: 422
+      send_error('Problem occured while organization creation', '500')
     end
   end
   

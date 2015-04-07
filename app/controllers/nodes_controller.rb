@@ -4,8 +4,8 @@ class NodesController < ApplicationController
 	
   def create
     node = @organization.nodes.new(node_params)
-    chapter = node.chapters.new(name: 'My first chapter', parent_id: 0)
-    if node.save and chapter.save
+    chapter = node.chapters.new(title: 'main', parent_id: 0)
+    if node.save
       render json: node, status: 201, location: node
     else
       render json: node.errors, status: 422

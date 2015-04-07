@@ -28,6 +28,7 @@ gem 'carrierwave'
 gem 'fog'
 gem 'aws-sdk'
 gem 'rack-cors', require: 'rack/cors'
+gem 'rest-client'
 
 # db
 gem 'sqlite3'

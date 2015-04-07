@@ -3,13 +3,13 @@
 //= require angular-ui-router
 //= require d3
 //= require angular-resource
-//= require angular-ui-tree/dist/angular-ui-tree
+//= require angular-ui-tree
 //= require underscore
 //= require angular-cookies
-//= require ng-file-upload/angular-file-upload-shim.min
-//= require ng-file-upload/angular-file-upload.min
+//= require ng-file-upload/angular-file-upload-shim
+//= require ng-file-upload/angular-file-upload
 //= require restangular
-//= require ngDialog/js/ngDialog.min
+//= require ngDialog
 
 
 //= require angular-rails-templates

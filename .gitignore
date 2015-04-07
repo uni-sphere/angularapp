@@ -19,6 +19,4 @@
 
 
 # Ignore uploads.
-/uploads/*
-
-/lib/assets/bower_components/
+/public/uploads/*

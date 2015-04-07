@@ -12,6 +12,7 @@
     "angular-cookies": "~1.4",
     "restangular": "latest",
     "ng-file-upload": "latest",
-    "ngDialog": "latest"
+    "ngDialog": "latest",
+    "ng-pageslide-directive": "latest"
   }
 }

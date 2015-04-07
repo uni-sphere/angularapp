@@ -15,8 +15,7 @@ ActiveRecord::Schema.define(version: 20150330082038) do
 
   create_table "awsdocuments", force: :cascade do |t|
     t.string   "content"
-    t.string   "type"
-    t.string   "name"
+    t.string   "title"
     t.integer  "chapter_id"
     t.boolean  "archived",   default: false
     t.datetime "created_at"
@@ -24,7 +23,7 @@ ActiveRecord::Schema.define(version: 20150330082038) do
   end
 
   create_table "chapters", force: :cascade do |t|
-    t.string   "name"
+    t.string   "title"
     t.integer  "node_id"
     t.integer  "parent_id"
     t.datetime "created_at"
@@ -41,7 +40,7 @@ ActiveRecord::Schema.define(version: 20150330082038) do
 
   create_table "organizations", force: :cascade do |t|
     t.string   "name"
-    t.string   "token"
+    t.string   "subdomain"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
