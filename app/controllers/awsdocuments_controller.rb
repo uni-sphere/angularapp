@@ -1,8 +1,8 @@
 class AwsdocumentsController < ApplicationController
 	
-  before_action :get_node, except: [:destroy]
-  before_action :get_chapter, except: [:destroy]
-  before_action :get_awsdocument, only: [:show, :update, :download, :unarchive, :archives]
+  before_action :get_node, except: [:destroy, :show]
+  before_action :get_chapter, except: [:destroy, :show]
+  # before_action :get_awsdocument, only: [:update, :download, :unarchive, :archives]
 
   def create
     awsdocument = @chapter.awsdocuments.new(title: params[:title], content: params[:file])
@@ -14,7 +14,9 @@ class AwsdocumentsController < ApplicationController
   end
   
   def show
-    render json: @awsdocument, status: 200
+    awsdocument = Awsdocument.find_unarchived params[:id]
+    preview_link = awsdocument.content.file.authenticated_url
+    render json: preview_link, status: 200
   end
   
   def archives
@@ -27,43 +29,6 @@ class AwsdocumentsController < ApplicationController
     else
       render json: @awsdocument.errors, status: 422
     end
-  end
-  
-  def download
-    # uploader = DocumentUploader.new
-    # uploader.retrieve_from_store!('getting_started.txt')
-    # send_file uploader.file.path.split('/').last, :disposition => 'attachment', :url_based_filename => false
-    
-    # url = Awsdocument.last.content.url
-    # uploader = DocumentUploader.new
-    # uploader.download! url
-    # send_file uploader.retrieve_from_cache!(uploader.cache_name)
-    
-    # doc = Awsdocument.last.content
-#     file = open(doc.url).read
-#     send_file(file, filename: "getting_started.txt", disposition: 'attachment')
-  
-  # data = open(Awsdocument.last.content.url)
-  # send_data data.read, :type => data.content_type, :x_sendfile => true, :url_based_filename => true
-  
-  # data = "Hello World!"
-  # file = "my_file.txt"
-  # File.open(file, "w"){ |f| f << data }
-  # File.open(file, "r")
-  # send_data( file )
-  
-  # send_file('/my_file.txt', type: 'text/excel')
-  
-  # data = "Hello World!"
-#   file = "my_file.txt"
-#   File.open(file, "w"){ |f| f << data }
-#   send_file( file )
-
-# send_file(
-#     "#{Rails.root}/public/uploads/tmp/1428389933-25294-4468/getting_started.txt",
-#     filename: "getting_started.txt"
-#   )
-
   end
   
   def update

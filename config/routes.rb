@@ -8,7 +8,6 @@ Rails.application.routes.draw do
     resources :chapters, only: [:create, :show, :index, :update, :destroy]
     resources :awsdocuments, only: [:create, :show, :index, :update, :destroy] do
       member do
-        get 'download'
         put 'unarchive'
       end
     end
