@@ -37,7 +37,7 @@ class ChaptersController < ApplicationController
     @node.chapters.each do |chapter|
       tree << {title: chapter.title, id: chapter.id, parent: chapter.parent_id}
       chapter.awsdocuments.each do |document|
-        tree << {title: document.title, doc_id: document.id, parent: document.chapter_id, document: true, preview_link: document.content.url} if !document.archived 
+        tree << {title: document.title, doc_id: document.id, parent: document.chapter_id, document: true, preview_link: document.content.url, type: document.type_file} if !document.archived 
       end
     end
     render json: tree, status: 200
