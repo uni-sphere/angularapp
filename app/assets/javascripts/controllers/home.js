@@ -209,6 +209,8 @@ angular
 
           if(document.plain().length == 0){
             $scope.documentAbsent = true;
+          } else{
+            $scope.documentAbsent = false;
           }
           // console.log(document.plain());
 
@@ -349,8 +351,7 @@ angular
     =            Upload funcion            =
     ========================================*/
 
-    var savedPath;
-    $scope.arrayFiles;
+    
     upload = function (files, dragAndDrop) {
 
       orderFiles = function(files){
@@ -510,7 +511,7 @@ angular
             }
           }).then(function(d) {
             console.log(d);
-            var a = {title: d.data.title, doc_id: d.data.id, document: true, preview_link: d.data.content.url}
+            var a = {title: d.data.title, doc_id: d.data.id, document: true, type: d.data.type_file, preview_link: d.data.content.url}
 
             console.log(file.type)
             // console.log("merde: " + arrayFiles);
@@ -581,6 +582,8 @@ angular
 
       // $scope.arrayFiles = [];
       if (files && files.length) {
+        var savedPath;
+        $scope.arrayFiles = undefined;
 
         if(!dragAndDrop){
           var masternodeData = $scope.lastClick.$modelValue;
@@ -599,7 +602,7 @@ angular
         orderFiles(files);
 
         // console.log(arrayFiles);
-        uploadItems($scope.arrayFiles);
+        uploadItems();
       }
 
     };
