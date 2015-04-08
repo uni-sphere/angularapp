@@ -207,6 +207,11 @@ angular
         // console.log(newVals);
         documentFlat = Restangular.one('chapters').get({node_id: newVals[0]}).then(function (document) {
 
+          if(document.plain().length == 0){
+            $scope.documentAbsent = true;
+          }
+          console.log(document.plain());
+
           var documentsNested = makeNested(document);
         
           $scope.list = documentsNested
@@ -381,20 +386,21 @@ angular
         }
 
         // console.log(arrayFiles);
-        for (var i = 0; i < files.length; i++){
-          for(var j = 0; j <  $scope.arrayFiles.length; j++){
-            if(files[i].type != "directory"){
-              var dir = files[i].path.split("/");
-              dir.pop();
-              if(dir.join('/') == $scope.arrayFiles[j][0].path){
-                $scope.arrayFiles[j].push(files[i]);
+        
+        if($scope.arrayFiles == undefined){
+          $scope.arrayFiles  = [files];
+        } else{
+          for (var i = 0; i < files.length; i++){
+            for(var j = 0; j <  $scope.arrayFiles.length; j++){
+              if(files[i].type != "directory"){
+                var dir = files[i].path.split("/");
+                dir.pop();
+                if(dir.join('/') == $scope.arrayFiles[j][0].path){
+                  $scope.arrayFiles[j].push(files[i]);
+                }
               }
             }
           }
-        }
-
-        if($scope.arrayFiles.length == 0){
-          $scope.arrayFiles  = [files];
         }
       }
 

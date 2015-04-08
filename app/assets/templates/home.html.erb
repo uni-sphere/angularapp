@@ -12,6 +12,9 @@
 </div>
 
 <div id="view-group">
+  {{nodeEnd[1]}}
+  <div ng-show="documentAbsent">HELLO</div>
+
   <script type="text/ng-template" id="items_renderer.html">
     <div ui-tree-handle ng-class="{isdocument: item.document, 'collapsed': collapsed && this.$childNodesScope.$modelValue != undefined, 'isNew' : this.$modelValue.title == 'new chapter'}" ng-if="item.parent!=0">
 
@@ -38,13 +41,14 @@
   </script>
 
   <div id="document-tree">
-    {{nodeEnd[1]}}
+   
     <div ui-tree="options" ng-if="nodeEnd" >
       <ol ui-tree-nodes ng-model="list" >
         <li ng-repeat="item in list" ui-tree-node ng-include="'items_renderer.html'"></li>
       </ol>
     </div>
   </div>
+
 
 </div>
 
