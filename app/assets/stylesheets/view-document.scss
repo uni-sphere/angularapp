@@ -62,6 +62,11 @@
   margin-right: 10px;
 }
 
+.btn-rename{
+  float: right;
+  margin-right: 10px;
+}
+
 
 .btn-delete{
   float: right;
@@ -78,7 +83,7 @@
   margin-right: 10px;
 }
 
-.btn-add, .btn-delete, .btn-add-document, .btn-preview, .btn-download{
+.btn-add, .btn-delete, .btn-rename, .btn-add-document, .btn-preview, .btn-download{
   display: none;
 }
 
@@ -105,7 +110,7 @@
 }
 .angular-ui-tree-handle:hover {
   background: $document-bg-hover;
-  .btn-add, .btn-delete, .btn-add-document, .btn-preview, .btn-download{
+  .btn-add, .btn-delete, .btn-rename, .btn-add-document, .btn-preview, .btn-download{
     display: inline-block;
     color: $button-hover-color;
   }

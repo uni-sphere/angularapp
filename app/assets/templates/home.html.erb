@@ -28,6 +28,8 @@
 
       <a class="btn btn-delete" nodrag ng-click="removeItems(this)"><span class="fa fa-times"></span></a>
 
+      <a class="btn btn-rename" nodrag ng-click="renameItems(this)"><span class="fa fa-pencil"></span></a>
+
       <a class="btn btn-add" nodrag ng-if="!item.document" ng-click="newSubItem(this)"><span class="fa fa-plus"></span></a>
 
       <a class="btn btn-add-document" ng-multiple="true" ng-file-select ng-model="fileStore.files" ng-click="storeClick(this)" ng-if="!

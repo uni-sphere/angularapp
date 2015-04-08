@@ -331,6 +331,33 @@ angular
       });
     };
 
+    /*====================================
+    =            Rename items            =
+    ====================================*/
+
+    $scope.renameItems = function(scope){
+      var nodeToUpdate = scope.$modelValue;
+      if(nodeToUpdate.document){
+        var nodeToUpdateId = nodeToUpdate.doc_id;
+      } else{
+        var nodeToUpdateId = nodeToUpdate.id;
+      }
+
+      var result = prompt('Change the name of the item',scope.title);
+      if(result) {
+        var nodeUpdate = {name: result}
+
+        Restangular.one('chapters/' + nodeToUpdateId).put($scope.nodeEnd[0]).then(function(d) {
+          nodeToUpdate.title = result;
+
+          console.log("Object updated");
+        }, function(d) {
+          console.log("There was an error updating");
+          scope.displayError(["Try again to change this node's name"]);
+        });
+      }
+    }
+
     /*======================================
     =            Upload funcion            =
     ========================================*/
