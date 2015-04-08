@@ -3,7 +3,6 @@ class CreateAwsdocuments < ActiveRecord::Migration
     create_table :awsdocuments do |t|
       t.string :content
       t.string :title
-      t.string :type_file
 			t.integer :chapter_id
       t.boolean :archived, default: false
 			

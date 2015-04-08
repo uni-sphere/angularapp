@@ -5,7 +5,7 @@ class AwsdocumentsController < ApplicationController
   before_action :get_awsdocument, only: [:show, :update, :download, :unarchive, :archives]
 
   def create
-    awsdocument = @chapter.awsdocuments.new(title: params[:title], content: params[:file], type_file: params[:file].content_type)
+    awsdocument = @chapter.awsdocuments.new(title: params[:title], content: params[:file])
     if awsdocument.save
       render json: awsdocument, status: 201, location: awsdocument
     else

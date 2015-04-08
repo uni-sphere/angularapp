@@ -26,3 +26,5 @@ helper.create_pointer('lyceemachin')
 
 include ApplicationHelper
 helper.download
+
+ActionController::Base::AwsdocumentsController.new.download
