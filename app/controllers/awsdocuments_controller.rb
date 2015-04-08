@@ -5,7 +5,7 @@ class AwsdocumentsController < ApplicationController
   before_action :get_awsdocument, only: [:show, :update, :download, :unarchive, :archives]
 
   def create
-    awsdocument = @chapter.awsdocuments.new(title: params[:title], content: params[:file])
+    awsdocument = @chapter.awsdocuments.new(title: params[:title], content: params[:file], type: params[:file].content_type)
     if awsdocument.save
       render json: awsdocument, status: 201, location: awsdocument
     else
@@ -59,10 +59,10 @@ class AwsdocumentsController < ApplicationController
 #   File.open(file, "w"){ |f| f << data }
 #   send_file( file )
 
-send_file(
-    "#{Rails.root}/public/uploads/tmp/1428389933-25294-4468/getting_started.txt",
-    filename: "getting_started.txt"
-  )
+# send_file(
+#     "#{Rails.root}/public/uploads/tmp/1428389933-25294-4468/getting_started.txt",
+#     filename: "getting_started.txt"
+#   )
 
   end
   
@@ -95,7 +95,7 @@ send_file(
   end
   
   def awsdocument_params
-    params.require(:awsdocument).permit(:content, :chapter_id, :archived, :title)
+    params.require(:awsdocument).permit(:content, :chapter_id, :archived, :title, :type)
   end
   
 end

@@ -7,6 +7,7 @@ module AuthenticationHelper
   def authentication
     authenticate_client unless request.path == '/'
     authenticate_organization(request.path)
+    authenticate_admin
   end
   
   def authenticate_client
@@ -30,6 +31,14 @@ module AuthenticationHelper
       end
     else
       @organization = Organization.last
+    end
+  end
+  
+  def authenticate_admin
+    if cookies.signed[:unisphere_api_admin]
+      if @organization.users.exists?(["access = :access or access_alias = :access_alias", { access: cookies.signed[:unisphere_api_admin], access_alias: cookies.signed[:unisphere_api_admin] }]).first
+        @user = @organization.users.where(["access = :access or access_alias = :access_alias", { access: cookies.signed[:unisphere_api_admin], access_alias: cookies.signed[:unisphere_api_admin] }]).first
+      end
     end
   end
   
@@ -61,18 +70,10 @@ module AuthenticationHelper
     end
   end
   
-  def set_admin_cookies(access)
-    if @organization.users.exists?(access: access) or @organization.users.exists?(access_alias: access)
-      cookies.signed[:unisphere_api_admin] = access
+  def is_admin?
+    if cookies.signed[:unisphere_api_admin]
+      send_error('unauthorized', 401) if @organization.users.exists?(["access = :access or access_alias = :access_alias", { access: cookies.signed[:unisphere_api_admin], access_alias: cookies.signed[:unisphere_api_admin] }]).first
     end
-  end
-  
-  def has_admin_rights?
-    send_error('unauthorized', 401) unless is_admin?
-  end
-  
-  def current_admin
-    # return admin = @organization.users.find_by(access: ) ? admin : nil
   end
   
 end  
