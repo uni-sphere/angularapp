@@ -210,11 +210,18 @@ angular
           if(document.plain().length == 0){
             $scope.documentAbsent = true;
           }
-          console.log(document.plain());
+          // console.log(document.plain());
 
           var documentsNested = makeNested(document);
         
           $scope.list = documentsNested
+
+          // console.log($scope.list);
+          // for(document in $scope.list){
+          //   if(document.document){
+          //     console.log(document);
+          //   }
+          // }
 
           // console.log($scope.list);
 
@@ -502,9 +509,10 @@ angular
               content: file
             }
           }).then(function(d) {
-            var a = {title: d.data.title, doc_id: d.data.id, document: true}
+            console.log(d);
+            var a = {title: d.data.title, doc_id: d.data.id, document: true, preview_link: d.data.content.url}
 
-          
+            console.log(file.type)
             // console.log("merde: " + arrayFiles);
 
 
