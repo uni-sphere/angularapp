@@ -38,7 +38,7 @@
 
       <a ng-href={{item.preview_link}} download class="btn btn-download" ng-show="item.document" nodrag><span class="fa fa-arrow-circle-o-down"></span></a>
 
-      <a ng-href={{item.preview_link}} class="btn btn-preview" target="_blank" ng-show="item.document && item.type="pdf" nodrag ><span class="fa fa-eye"></span></a>
+      <a ng-href={{item.preview_link}} class="btn btn-preview" target="_blank" ng-show="item.document && item.type == 'application/pdf' " nodrag ><span class="fa fa-eye"></span></a>
 
     </div>
     <ol ui-tree-nodes="options" ng-model="item.items" ng-class="{hidden: collapsed}" ng-init="initCounter()">
