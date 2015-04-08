@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   
   validates :access, :email, presence: true
   validates :email, format: { with: email_regex }, uniqueness: { case_sensitive: false }
+  validates :access_alias, uniqueness: true
   
   before_save :set_admin_access
   

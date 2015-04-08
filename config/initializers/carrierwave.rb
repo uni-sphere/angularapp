@@ -7,6 +7,7 @@ CarrierWave.configure do |config|
     endpoint:              "https://s3-eu-central-1.amazonaws.com",
     region:                'eu-central-1'
   }
-  config.fog_directory  = 'unisphere'                             # required
-  config.fog_public     = false                                 # optional, defaults to true
+  config.fog_directory  = 'unisphere'                             
+  config.fog_public     = false
+  config.fog_authenticated_url_expiration = 5.years                                
 end

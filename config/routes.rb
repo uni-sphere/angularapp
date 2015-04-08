@@ -8,7 +8,6 @@ Rails.application.routes.draw do
     resources :chapters, only: [:create, :show, :index, :update, :destroy]
     resources :awsdocuments, only: [:create, :show, :index, :update, :destroy] do
       member do
-        get 'download'
         put 'unarchive'
       end
     end
@@ -18,14 +17,5 @@ Rails.application.routes.draw do
   end
 
   root 'angular#index'
-
-  # get "*path.html", to: "angular#index", layout: 0
-  # get "*path", to: "angular#index"
-
-  get "/api/documents", to: "angular#documents"
-  get "/api/nodes", to: "angular#nodes"
-  get "/api/cookiesNode", to: "angular#cookies"
-
-  post "/api/nodes/create", to: "angular#create" 
 
 end

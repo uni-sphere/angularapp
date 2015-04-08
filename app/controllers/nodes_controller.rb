@@ -5,7 +5,13 @@ class NodesController < ApplicationController
   def create
     node = @organization.nodes.new(node_params)
     chapter = node.chapters.new(title: 'main', parent_id: 0)
+    parent = @organization.nodes.find params[:parent_id]
     if node.save
+      if parent.chapters.count >= 2
+        Chapter.where(node_id: parent.id).each do |chapter|
+          chapter.update(node_id: node.id)
+        end
+      end
       render json: node, status: 201, location: node
     else
       render json: node.errors, status: 422

@@ -2,29 +2,72 @@
 angular
   .module('myApp.controllers')
   .controller('HomeCtrl', ['$scope', 'nodesflat', '$cookies','$timeout', 'Restangular', '$upload', 'ngDialog', function ($scope, nodesflat, $cookies, $timeout, Restangular, $upload, ngDialog) {
+
+    $scope.nodes = nodesflat;
+    $scope.selectedItem = {};
+    $scope.options = {};
+    $scope.fileStore=[];
+    $scope.chaptersNumber = [];
+    $scope.i = -1;
+
+    $scope.$watch('fileStore.files', function () {
+      upload($scope.fileStore.files,false);
+    });
+
+    $scope.$watch('files', function () {
+      upload($scope.files, true);
+    });
+
+
+    $scope.storeClick = function(scope){
+      $scope.lastClick = scope;
+    }
+
+    /*=====================================
+    =            Error gestion            =
+    =====================================*/
+    
+    $scope.displayError = function(errorString){
+      if($scope.listError.length == 0){
+         $scope.listError = [errorString];
+      } else{
+        $scope.listError.push(errorString);
+      }
+      $scope.showError = true;
+    }
+    
+    $scope.hideError = function(){
+      $scope.listError = [];
+      $scope.showError = false;
+    }
+
+    /*=======================================
+    =            Counter gestion            =
+    =======================================*/
+
+    $scope.initCounter = function(){
+      $scope.j = 0;
+      $scope.k = 0;
+    }
+
+    $scope.initI = function(){
+      $scope.i ++;
+    }
+
+    /*========================================
+    =            Show admin popup            =
+    ========================================*/
     
     $scope.openPlain = function () {
-      // $rootScope.theme = 'ngdialog-theme-plain';
       ngDialog.open({
         template: 'firstDialogId',
         className: 'admin-popup',
       });
     };
 
-
-    /*==========  transform flat to nested data  ==========*/
-
-    // var data = [
-    // { "name" : "Level 2: A", "parent":"Top Level" },
-    // { "name" : "Top Level", "parent":"null" },
-    // { "name" : "Son of A", "parent":"Level 2: A" },
-    // { "name" : "Daughter of A", "parent":"Level 2: A" },
-    // { "name" : "Level 2: B", "parent":"Top Level" }
-    // ];
-
-    // console.log(data);
-
-
+    /*==========================================================
+    =            Transform flat data to nested data            =
+    ==========================================================*/
 
     function makeNested(flatData){
 
@@ -32,7 +75,6 @@ angular
         map[node.id] = node;
         return map;
       }, {});
-
 
       var treeData = [];
       flatData.forEach(function(node) {
@@ -48,28 +90,12 @@ angular
       return treeData;
     }
 
-    $scope.nodes = nodesflat;
-
-    $scope.selectedItem = {};
-    $scope.options = {};
-    $scope.fileStore=[];
-    $scope.$watch('fileStore.files', function () {
-      upload($scope.fileStore.files,false);
-    });
-    var restAngularDocuments = Restangular.one('documents');
-
-    $scope.$watch('files', function () {
-      upload($scope.files, true);
-    });
-
-    $scope.storeClick = function(scope){
-      $scope.lastClick = scope;
-    }
-
-    /*==========  Periodical get  ==========*/
+    /*======================================
+    =            Periodical Get            =
+    ======================================*/
     
     // function retrieveDocuments() {
-    //   restAngularDocuments.get().then(function(response) {
+    //   Restangular.one('documents').get().then(function(response) {
     //     $scope.list = response;
     //     console.log("Objects get");
     //     $timeout(retrieveDocuments, 5000);
@@ -81,22 +107,17 @@ angular
     // $timeout(retrieveDocuments, 5000);
 
     /*========================================
-    =            Random functions            =
+    =            utility functions            =
     ========================================*/
     
     function isInArray(value, array) {
       return array.indexOf(value.toString()) > -1;
     }
+
+    /*===========================================
+    =            get the environment            =
+    ===========================================*/
     
-    $scope.initCounter = function(){
-      $scope.j = 0;
-      $scope.k = 0;
-    }
-
-    $scope.initI = function(){
-      $scope.i ++;
-    }
-
     getEnvironment = function(){
       var host = window.location.host;
       if(host == 'localhost:3000'){
@@ -104,9 +125,7 @@ angular
       } else{
         $scope.urlPath = "http://api.unisphere.eu"
       }
-    }
-
-    getEnvironment();
+    }();
 
     /*======================================
     =            Cookie gestion            =
@@ -148,33 +167,11 @@ angular
       $cookies.put('documentCookies', documentFoldedArray);
     }
 
-    // $scope.showError = false;
-
-    $scope.displayError = function(errorString){
-      if($scope.listError.length == 0){
-         $scope.listError = [errorString];
-      } else{
-        $scope.listError.push(errorString);
-      }
-      $scope.showError = true;
-    }
-    $scope.hideError = function(){
-      $scope.listError = [];
-      $scope.showError = false;
-    }
-
-    $scope.chaptersNumber = [];
-    $scope.i = -1;
-
-    // $scope.displayError(["hello", "salut", "ads"]);
-
     /*========================================
     =            Toogle documents            =
     ========================================*/
 
-    // console.log($scope.lastDeployedPosition);
     $scope.toggleItems = function(scope) {
-      
       
       if(scope.$childNodesScope.$modelValue != undefined){
         scope.toggle();
@@ -187,7 +184,6 @@ angular
           $scope.lastDeployedPosition = scope;
         }
       }
-      // console.log($scope.lastDeployedPosition);
     };
 
     $scope.collapseItems = function(scope){
@@ -200,20 +196,29 @@ angular
       }
     }
 
-   
-
+    /*=============================================================================
+    =            Watches which node is selected and gets the documents            =
+    =============================================================================*/
+    
     $scope.$watch('nodeEnd', function(newVals, oldVals) {
       if(newVals){
-        // console.log(newVals);
         documentFlat = Restangular.one('chapters').get({node_id: newVals[0]}).then(function (document) {
+
+          if(document.plain().length == 0){
+            $scope.documentAbsent = true;
+          } else{
+            $scope.documentAbsent = false;
+          }
 
           var documentsNested = makeNested(document);
         
           $scope.list = documentsNested
 
-          // console.log($scope.list);
-
-          // console.log(plop);
+          // for(document in $scope.list){
+          //   if(document.document){
+          //     console.log(document);
+          //   }
+          // }
 
           // $scope.$watch('list', function(newVals, oldVals) {
           //   var j = 1;
@@ -265,9 +270,6 @@ angular
           //   newVals.forEach(iterate);
 
           // }, true);
-
-
-
         });
 
       }
@@ -279,8 +281,6 @@ angular
     ========================================*/
 
     $scope.removeItems = function(scope) {
-      
-
       if(scope.$modelValue.document){
         var nodeToDelete = scope.$modelValue.doc_id;
         Restangular.all('awsdocuments/' + nodeToDelete).remove().then(function() {
@@ -301,7 +301,6 @@ angular
         });
       }
     };
-
 
     /*===========================================
     =            Create new item                =
@@ -332,46 +331,37 @@ angular
       });
     };
 
-
     /*======================================
     =            Upload funcion            =
     ========================================*/
 
-    var savedPath;
-    $scope.arrayFiles;
     upload = function (files, dragAndDrop) {
 
+      /*==========  Order the files (one folder and than all files inside)  ==========*/
+
       orderFiles = function(files){
-        // console.log(files);
         for (var i = 0; i < files.length; i++){
-          // console.log(files[i].type);
           if(files[i].type == "directory"){
-            // console.log(files[i]);
 
             var path  = files[i].path.split("/");
             var postPath = [];
 
             for (var j = 0; j < path.length; j++){
-              // console.log(savedPath);
               if(savedPath == undefined){
-                // console.log("path undef")
                 postPath.push(0);
                 savedPath = [[path[j]]];
               } else if(savedPath[j] == undefined){
                 savedPath.push([path[j]]);
                 postPath.push(0);
               } else if(isInArray(path[j],savedPath[j])){
-                // console.log("path exist")
                 postPath.push(savedPath[j].indexOf(path[j].toString()));
               } else{
-                // console.log("path new")
                 postPath.push(savedPath[j].length);
                 savedPath[j].push(path[j]);
               }
 
             }
             files[i].way = postPath;
-            // console.log(files[i]);
             if($scope.arrayFiles == undefined){
               $scope.arrayFiles = [[files[i]]]
             } else{
@@ -380,43 +370,30 @@ angular
           }
         }
 
-        // console.log(arrayFiles);
-        for (var i = 0; i < files.length; i++){
-          for(var j = 0; j <  $scope.arrayFiles.length; j++){
-            if(files[i].type != "directory"){
-              var dir = files[i].path.split("/");
-              dir.pop();
-              if(dir.join('/') == $scope.arrayFiles[j][0].path){
-                $scope.arrayFiles[j].push(files[i]);
+        if($scope.arrayFiles == undefined){
+          $scope.arrayFiles  = [files];
+        } else{
+          for (var i = 0; i < files.length; i++){
+            for(var j = 0; j <  $scope.arrayFiles.length; j++){
+              if(files[i].type != "directory"){
+                var dir = files[i].path.split("/");
+                dir.pop();
+                if(dir.join('/') == $scope.arrayFiles[j][0].path){
+                  $scope.arrayFiles[j].push(files[i]);
+                }
               }
             }
           }
         }
-
-        if($scope.arrayFiles.length == 0){
-          $scope.arrayFiles  = [files];
-        }
       }
 
+      /*==========  Upload the dir first  ==========*/
+      
       uploadDir = function(files){
         folder = files.shift();
 
-        // if(!dragAndDrop){
-        //   var masterodeData = $scope.lastClick.$modelValue;
-        // } else{
-        //   if($scope.lastDeployedPosition == undefined){
-        //     var nodeData = $scope.list[0];
-        //   } else{
-        //     var nodeData = $scope.lastDeployedPosition.$modelValue;
-        //   }
-        // }
-
-        // // console.log(nodeData);
         var path = folder.way;
         path[0] = nextNodeData;
-        // console.log(nextNodeData);
-        // console.log("PATH " + path);
-
         nodeData = masternodeData;
 
         placeFolder = function(){
@@ -429,18 +406,12 @@ angular
               }
             }
             nodeData = nodeData.items[path[0] + num_doc];
-
             path.shift();
-
             placeFolder();
           } 
-
         }
 
         placeFolder();
-        // console.log("nodeData")
-        // console.log(nodeData);
-
 
         var chapterToCreate ={
           title: folder.name,
@@ -451,8 +422,6 @@ angular
         Restangular.all('chapters').post(chapterToCreate).then(function(d) {
           var a = {title: folder.name, id: d.id}
 
-          // console.log(nodeData);
-
           if(nodeData.items == undefined){
             nodeData.items = [a];
             nodeDocData = nodeData.items[0];
@@ -461,15 +430,8 @@ angular
             nodeDocData = nodeData.items[nodeData.items.length -1];
           }
 
-          // if($scope.lastDeployedPosition != undefined){
-          //   $scope.lastDeployedPosition = $scope.lastDeployedPosition.$childNodesScope
-          // }
-         
-          
           console.log("OK chapter created:" + folder.name);
           uploadFiles(files)
-
-          // scope.expand();
 
         }, function(d) {
           $scope.displayError("Failed to create chapter:" + folder.name);
@@ -477,10 +439,10 @@ angular
         });
       }
 
+      /*==========  Upload all files in a directory  ==========*/
+
       uploadFiles = function(files){
         for (var i = 0; i < files.length; i++) {
-
-          // console.log("merde: " + arrayFiles);
 
           var file = files[i];
           var numberItems = 0;
@@ -496,17 +458,12 @@ angular
               content: file
             }
           }).then(function(d) {
-            var a = {title: d.data.title, doc_id: d.data.id, document: true}
-
-          
-            // console.log("merde: " + arrayFiles);
-
+            var a = {title: d.data.title, doc_id: d.data.id, document: true, type: d.data.file_type, preview_link: d.data.content.url}
 
             numberItems ++;
             console.log("OK document uploaded:" + d.data.title);
             if(numberItems == files.length){
               console.log("OK upload of this level finished")
-              // console.log("merde: " + arrayFiles);
 
               $scope.dirUploaded = true;
             }
@@ -516,7 +473,6 @@ angular
             } else{
               nodeDocData.items.unshift(a);
             }
-
 
             if(!dragAndDrop){
               $scope.lastClick.expand(); 
@@ -535,25 +491,23 @@ angular
         }
       }
 
+      /*==========  Upload function  ==========*/
+      
       uploadItems = function(){
-        // console.log(arrayFiles);
         if( $scope.arrayFiles[0][0].type == "directory"){
           uploadDir( $scope.arrayFiles[0]);
         } else{
           uploadFiles( $scope.arrayFiles[0]);
         }
          $scope.arrayFiles.shift();
-        // console.log("hello");
 
         $scope.$watch('dirUploaded', function () {
           var promise = new Promise(function(resolve, reject){
-            // console.log("putain" +  $scope.arrayFiles);
             if($scope.dirUploaded){
               $scope.dirUploaded = false;
               resolve();
             }
           }).then(function(){
-            // console.log(arrayFiles.length);
             if( $scope.arrayFiles.length != 0){
               console.log("|| MORE FOLDER TO UPLOAD");
               console.log("---------");
@@ -565,15 +519,15 @@ angular
         });
       }
 
-      // $scope.arrayFiles = [];
       if (files && files.length) {
+        var savedPath;
+        $scope.arrayFiles = undefined;
 
         if(!dragAndDrop){
           var masternodeData = $scope.lastClick.$modelValue;
         } else{
           if($scope.lastDeployedPosition == undefined){
             var masternodeData = $scope.list[0];
-            // console.log($scope.list[0]);
             var nextNodeData = $scope.list[0].items.length;
           } else{
             var masternodeData = $scope.lastDeployedPosition.$modelValue;
@@ -583,9 +537,7 @@ angular
 
         nodeDocData = masternodeData;
         orderFiles(files);
-
-        // console.log(arrayFiles);
-        uploadItems($scope.arrayFiles);
+        uploadItems();
       }
 
     };

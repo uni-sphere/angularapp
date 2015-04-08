@@ -14,36 +14,7 @@
 
           scope.copyFlatData = Restangular.copy(scope.flatData);
           scope.dataChanged = false;
-
-
-
-          /*==========  flat data to nested data  ==========*/
-          
-          function createTreeData(flatData){
-            var dataMap = flatData.reduce(function(map, node) {
-              map[node.num] = node;
-              return map;
-            }, {});
-
-            var treeData = [];
-            flatData.forEach(function(node) {
-              var parent = dataMap[node.parent];
-              if (parent) {
-                (parent.children || (parent.children = []))
-                  .push(node);
-              } else {
-                treeData.push(node);
-              }
-            });
-            return treeData[0];
-          }
-
-          // console.log(scope.flatData[0]);
-
-          
           var margin = {top: 0, right: 20, bottom: 0, left: 150};
-          // var restAngularNode = Restangular.one();
-
 
           /*==========  Svg creation  ==========*/
           
@@ -55,10 +26,6 @@
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
           /*==========  Cookie gestion  ==========*/
-          
-          function isInArray(value, array) {
-            return array.indexOf(value.toString()) > -1;
-          }
 
           var getCookies = $cookies.get('nodeCookies');
           var getCookieArray;
@@ -73,8 +40,6 @@
           if( typeof getActiveNodes !== "undefined" ){
             getActiveNodesArray = getActiveNodes.split(',');
           }
-
-          // console.log(getActiveNodesArray);
 
           /*==========  Periodical get  ==========*/
 
@@ -96,80 +61,6 @@
 
           // $timeout(retrieveNodes, 5000);
 
-          var car = [{num:1, type:"Fiat", model:500, color:"white"},{num:2, type:"Fiat", model:500, color:"noire"}];
-          var ppd = [{num:1, type:"Fiat", model:500, color:"white"},{num:2, type:"Fiat", model:500, color:"noire"},{num:3, type:"Fiat", model:500, color:"noire"}];
-
-          // console.log(compareObjectsArray(car,ppd));
-
-          function compareObjects(x, y) {
-            var objectId = false;
-            for(var propertyName in x) {
-              if(y == undefined){
-                objectId = x.num;
-                break;
-              }
-              if(x[propertyName] !== y[propertyName]) {
-                objectId = x.num;
-                break;
-              }
-            }
-            return objectId;
-          }
-
-          function compareObjectsArray(a,b){
-            var objectId = false;
-            // console.log(a);
-
-            if(a.length > b.length){
-              for (var i=0; i < a.length; i ++){
-                var idFound = false
-                for(var j=0; j < b.length; j ++){
-                  if(a[i].num == b[j].num){
-                    idFound = true;
-                  }
-                }
-                if(!idFound){
-                  objectId = a[i].num;
-                }
-              }
-              return objectId;
-            }
-
-            if(a.length == b.length){
-              var objectId = false;
-              for (var i=0; i < a.length; i ++){
-                for(var j=0; j < b.length; j ++){
-                  if(a[i].num == b[j].num){
-                    var compare = compareObjects(a[i],b[j]);
-                    if(compare){
-                      objectId = compareObjects(a[i],b[j]);
-                    };
-                  } 
-                } 
-              }
-              return objectId;
-            }
-
-            if(a.length < b.length){
-              console.log("youhouu");
-              var listObjectsId =[];
-              for (var j=0; j < b.length; j ++){
-                // console.log(b[j]);
-                var idFound = false;
-                for(var i=0; i < a.length; i ++){
-                  if(a[i].num == b[j].num){
-                    idFound = true;
-                  } 
-                } 
-                if(!idFound){
-                  console.log(b[j].num)
-                  listObjectsId.push(b[j].num);
-                }
-              }
-              return listObjectsId;
-            }
-            
-          }
 
           /*==========  Renders Tree  ==========*/
           
@@ -207,8 +98,6 @@
           //   scope.update(scope.root);
           // }
 
-
-
           /*=======================================
           =            Update function            =
           =======================================*/
@@ -220,16 +109,12 @@
             var nodes = scope.tree.nodes(scope.root).reverse();
             var links = scope.tree.links(nodes);
 
-            // console.log(nodes);
-
             // Normalize for fixed-depth.
             nodes.forEach(function(d) { d.y = d.depth * 180; });
-
 
             // Update the nodes…
             var node = svg.selectAll("g.node")
               .data(nodes, function(d) { return d.id || (d.id = ++scope.i); });
-
 
             // Enter any new nodes at the parent's previous position.
             var nodeEnter = node.enter().append("g")
@@ -238,20 +123,11 @@
                 return "translate(" + source.y0 + "," + source.x0 + ")";
               })
 
-            // console.log(nodeEnter);
-
             nodeEnter.append("circle")
               .attr("class", "circleCollapse")
               .attr("r", 1e-6)
               // .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
               .on("click", openNode)
-
-            // nodeEnter.append("circle")
-            //   .attr("class", "addNode")
-            //   .attr("cx", "-10px")
-            //   .attr("cy", "-20px")
-            //   .attr("r", 1e-6)
-            //   .on("click", addNode)
 
             nodeEnter.append("text")
               .attr("class", "addNode")
@@ -262,14 +138,6 @@
               .style("fill-opacity", 1e-6)
               .on("click", addNode)
 
-            // nodeEnter.append("circle")
-            //   .attr("class", "deleteNode")
-            //   .attr("cx", "10px")
-            //   .attr("cy", "-20px")
-            //   .attr("r", 1e-6)
-            //   .on("click", deleteNode)
-            //   // .call(add_node, "name");
-
             nodeEnter.append("text")
               .attr("class", "deleteNode")
               .attr("x", "10px")
@@ -279,7 +147,6 @@
               .style("fill-opacity", 1e-6)
               .on("click", deleteNode)
 
-
             nodeEnter.append("text")
               .attr("class", "nameNode")
               .attr("x", function(d) { return d.children || d._children ? -15 : 10; })
@@ -287,7 +154,6 @@
               .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
               .style("fill-opacity", 1e-6)
               .on("click", renameNode)
-
 
             // Transition nodes to their new position.
             var nodeUpdate = node.transition()
@@ -340,7 +206,6 @@
               .duration(duration)
               .attr("d", scope.diagonal)
               .attr("class", function(d) { return d.target.active ? "link link-active" : "link"; })
-              // .attr("class", function(d) { return d.target.active ? "link link-active" : "link"; })
 
             // Transition exiting nodes to the parent's new position.
             link.exit().transition()
@@ -357,7 +222,6 @@
               d.y0 = d.y;
             });
 
-
             /*======================================
             =            Open and Close            =
             ======================================*/
@@ -373,11 +237,11 @@
                 d._children = null;
               }
 
-              /*==========  Save cookies  ==========*/
-              
               var postCookies = [];
               var activeNodes = [];
 
+              /*==========  Find the node that are collapsed and add them to cookies  ==========*/
+              
               function findNodesOpen(d){
                 if(d.children){
                   d.children.forEach(findNodesOpen);
@@ -388,18 +252,18 @@
                 }
               }
 
+              /*==========  Find the node path and add it to active nodes ( in ordrer to color nodes)  ==========*/
+              
               function findLastNodePath(d){
                 activeNodes.push(d.num);
-                
+
                 if(d.parent){
                   findLastNodePath(d.parent)
                 }
               }
 
-              function intInArray(value, array) {
-                return array.indexOf(value) > -1;
-              }
-
+              /*==========  Use activeNodes to color the nodes  ==========*/
+              
               function colornodePath(d) {
                 d.active = false;
                 if(intInArray(d.num,activeNodes)){
@@ -410,6 +274,8 @@
                 }
               }
 
+              /*==========  Save in cookies if the current node is an end node  ==========*/
+              
               function findNodeEnd(d){
                 if(!d.children && !d._children){
                   scope.nodeEnd = [d.num, d.name];
@@ -426,7 +292,6 @@
               colornodePath(scope.root);
               $cookies.put('nodeCookies', postCookies);
               $cookies.put('activeNodes', activeNodes);
-
 
               scope.$apply();
               scope.update(d);
@@ -475,17 +340,11 @@
                   nodeSelected.children = [];
                 }
 
-              
                 nodeSelected.children.push(a);
 
-                // scope.$apply;
                 scope.update(nodeSelected);
               }, function(d) {
                 scope.displayError(["Try again to create a node"]);
-                // console.log(d.data);
-                // console.log(d.status);
-                // console.log(d.header);
-                // console.log(d.config);
                 console.log("There was an error saving");
               });
 
@@ -498,33 +357,21 @@
             function renameNode(d){
               var nodeSelected = d;
 
-
               var result = prompt('Change the name of the node',d.name);
               if(result) {
-                
-
                 var nodeUpdate = {name: result}
 
-                // Restangular.all('node/' + d.num).remove().then(function() {
                 Restangular.one('nodes/'+ d.num).put(nodeUpdate).then(function(d) {
-                // restAngularNode.put("update", nodeUpdate).then(function() {
-
                   nodeSelected.name = result;
                   scope.update(nodeSelected);
-                 
-                  
                   console.log("Object updated");
                 }, function(d) {
                   console.log("There was an error updating");
                   scope.displayError(["Try again to change this node's name"]);
                 });
-                // scope.$apply();
-                // console.log(d);
-                
               }
             }
           }
-
 
           /*=======================================
           =            Render function            =
@@ -548,8 +395,6 @@
             scope.diagonal = d3.svg.diagonal()
               .projection(function(d) { return [d.y, d.x]; });
 
-           
-
             if(getCookieArray == undefined){
               branch.children.forEach(collapseAll);
             } else{
@@ -561,7 +406,6 @@
             }
 
             scope.update(scope.root);
-
 
             /*==========================================
             =            Collapse functions            =
@@ -599,8 +443,6 @@
             /*===================================
             =            Color nodes            =
             ===================================*/
-            
-            
             function colorActiveNodes(d) {
               if(isInArray(d.num,getActiveNodesArray)){
                   d.active = true;
@@ -611,6 +453,111 @@
             }
 
           }
+
+          /*========================================
+          =            Utility function            =
+          ========================================*/
+
+          /*==========  flat data to nested data  ==========*/
+          
+          function createTreeData(flatData){
+            var dataMap = flatData.reduce(function(map, node) {
+              map[node.num] = node;
+              return map;
+            }, {});
+
+            var treeData = [];
+            flatData.forEach(function(node) {
+              var parent = dataMap[node.parent];
+              if (parent) {
+                (parent.children || (parent.children = []))
+                  .push(node);
+              } else {
+                treeData.push(node);
+              }
+            });
+            return treeData[0];
+          }
+          
+
+          /*==========  Compare objects  ==========*/
+          
+          function compareObjects(x, y) {
+            var objectId = false;
+            for(var propertyName in x) {
+              if(y == undefined){
+                objectId = x.num;
+                break;
+              }
+              if(x[propertyName] !== y[propertyName]) {
+                objectId = x.num;
+                break;
+              }
+            }
+            return objectId;
+          }
+
+          function isInArray(value, array) {
+            return array.indexOf(value.toString()) > -1;
+          }
+
+          function intInArray(value, array) {
+            return array.indexOf(value) > -1;
+          }
+
+
+          /*==========  Compares two arrays of objects  ==========*/
+
+          function compareObjectsArray(a,b){
+            var objectId = false;
+
+            if(a.length > b.length){
+              for (var i=0; i < a.length; i ++){
+                var idFound = false
+                for(var j=0; j < b.length; j ++){
+                  if(a[i].num == b[j].num){
+                    idFound = true;
+                  }
+                }
+                if(!idFound){
+                  objectId = a[i].num;
+                }
+              }
+              return objectId;
+            }
+
+            if(a.length == b.length){
+              var objectId = false;
+              for (var i=0; i < a.length; i ++){
+                for(var j=0; j < b.length; j ++){
+                  if(a[i].num == b[j].num){
+                    var compare = compareObjects(a[i],b[j]);
+                    if(compare){
+                      objectId = compareObjects(a[i],b[j]);
+                    };
+                  } 
+                } 
+              }
+              return objectId;
+            }
+
+            if(a.length < b.length){
+              var listObjectsId =[];
+              for (var j=0; j < b.length; j ++){
+                var idFound = false;
+                for(var i=0; i < a.length; i ++){
+                  if(a[i].num == b[j].num){
+                    idFound = true;
+                  } 
+                } 
+                if(!idFound){
+                  listObjectsId.push(b[j].num);
+                }
+              }
+              return listObjectsId;
+            }
+          }
+
         }
       };
     }]);

@@ -24,11 +24,14 @@ gem 'angular-rails-templates'
 
 # back-end
 gem 'carrierwave'
-# gem 'rmagick'
 gem 'fog'
 gem 'aws-sdk'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rest-client'
+
+group :development, :test do
+  gem 'rspec-rails'
+end
 
 # db
 gem 'sqlite3'

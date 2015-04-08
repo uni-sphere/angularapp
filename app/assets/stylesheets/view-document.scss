@@ -52,6 +52,16 @@
   // color: white;
 }
 
+.btn-download{
+  float: right;
+  margin-right: 10px;
+}
+
+.btn-preview{
+  float: right;
+  margin-right: 10px;
+}
+
 
 .btn-delete{
   float: right;
@@ -68,7 +78,7 @@
   margin-right: 10px;
 }
 
-.btn-add, .btn-delete, .btn-add-document{
+.btn-add, .btn-delete, .btn-add-document, .btn-preview, .btn-download{
   display: none;
 }
 
@@ -95,7 +105,7 @@
 }
 .angular-ui-tree-handle:hover {
   background: $document-bg-hover;
-  .btn-add, .btn-delete, .btn-add-document{
+  .btn-add, .btn-delete, .btn-add-document, .btn-preview, .btn-download{
     display: inline-block;
     color: $button-hover-color;
   }

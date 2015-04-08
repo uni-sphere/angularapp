@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20150330082038) do
   create_table "awsdocuments", force: :cascade do |t|
     t.string   "content"
     t.string   "title"
+    t.string   "type_file"
     t.integer  "chapter_id"
     t.boolean  "archived",   default: false
     t.datetime "created_at"

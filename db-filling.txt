@@ -14,8 +14,7 @@ node.chapters.create(title: "Produit scalaire", parent_id: 2)
 node.chapters.create(title: "Analyse", parent_id: 1)
 node.chapters.create(title: "Fonctions", parent_id: 5)
 node.chapters.create(title: "Derivees", parent_id: 5)
-Chapter.last.awsdocuments.create(title: 'cours')
-Chapter.last.awsdocuments.create(title: 'TD')
+
 
 Awsdocument.all.each do |a|
 a.destroy
@@ -26,3 +25,5 @@ helper.create_pointer('lyceemachin')
 
 include ApplicationHelper
 helper.download
+
+ActionController::Base::AwsdocumentsController.new.download

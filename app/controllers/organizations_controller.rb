@@ -6,8 +6,12 @@ class OrganizationsController < ApplicationController
     organization = Organization.new(organization_params)
     organization.subdomain = format_subdomain organization.name
     node = organization.nodes.new(name: params[:name], parent_id: 0)
-    if organization.save and node.save and create_pointer(organization.subdomain)
-      render json: organization, status: 201, location: organization
+    user = @organization.users.new(access: params[:password])
+    if (organization.save 
+         and node.save 
+         and create_pointer(organization.subdomain) 
+         and user.create)
+      render json: {organization: organization, user: user}.to_json, status: 201, location: organization
     else
       send_error('Problem occured while organization creation', '500')
     end
@@ -38,7 +42,7 @@ class OrganizationsController < ApplicationController
   private
   
   def organization_params
-    params.require(:organization).permit(:name)
+    params.require(:organization).permit(:name, :password)
   end
   
 end
