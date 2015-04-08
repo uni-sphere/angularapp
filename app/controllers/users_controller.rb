@@ -1,4 +1,16 @@
 class UsersController < ApplicationController
+
+  def create
+    
+  end
+  
+  def update
+    if @user.update(user_params)
+      render json: @user, status: 200
+    else
+      render json: @user.errors, status: 422
+    end
+  end
   
   def password_forgoten
     if params[:email]
@@ -9,17 +21,11 @@ class UsersController < ApplicationController
     end
   end
   
-  def show
-    # render json: @user, status: 200
-  end
-  
-  def update
-    # if @user.update(user_params)
-    #   render json: @user, status: 200
-    # else
-    #   render json: @user.errors, status: 422
-    # end
-  end
+  # def set_admin_cookies(access)
+  #   if @organization.users.exists?(access: access) or @organization.users.exists?(access_alias: access)
+  #     cookies.signed[:unisphere_api_admin] = access
+  #   end
+  # end
   
   private
   
