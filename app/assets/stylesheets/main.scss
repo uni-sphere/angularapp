@@ -71,14 +71,10 @@ body{
 
 }
 
-
-
-#view-group{
+#view-document{
   position: relative;
   float: left;
-
-  // margin-top: 4px;
-  // margin-left: 4px;
+  background: $document-bg;
 
   height: calc(100%);
   width: calc(35%);
@@ -142,6 +138,10 @@ body{
   // border-radius: 5px;
 }
 
+.singleError{
+  text-align: center;
+}
+
 #error-prompt-title{
     color: $error-promt-color-dark;
     padding-left: calc(50% - 25px);
@@ -169,10 +169,9 @@ body{
   }
 }
 
-
- #error-prompt-text{
+#error-prompt-text{
   color: $error-promt-color-light;
-  padding: 10px 10px 10px 10px;
+  padding: 10px 10px 0px 10px;
   background: $error-promt-bg;
   background: white;
   border: 1px solid $border-error-prompt;
@@ -181,106 +180,15 @@ body{
   border-bottom-left-radius: 5px;
 
   .fa{
-    margin-right: 5px;
+    position: absolute;
+    margin-top: 5px;
+  }
+  .error{
+    display: inline-block;
+    position: relative;
+    margin-left: 10px;
+    margin-bottom: 10px;
   }
 }
-
-
-
-
-
-
-
-// .tree-node {
-// border: 1px solid #dae2ea;
-// background: #f8faff;
-// color: #7c9eb2;
-// }
-// .tree-node-content {
-// margin: 10px;
-// }
-// .tree-handle {
-// padding: 10px;
-// background: #428bca;
-// color: #FFF;
-// margin-right: 10px;
-// }
-// .angular-ui-tree-handle:hover {
-// }
-// .angular-ui-tree-placeholder {
-// background: #f0f9ff;
-// border: 2px dashed #bed2db;
-// -webkit-box-sizing: border-box;
-// -moz-box-sizing: border-box;
-// box-sizing: border-box;
-// }
-
-// .btn {
-//   margin-right: 8px;
-// }
-// .angular-ui-tree-handle {
-//   background: #f8faff;
-//   border: 1px solid #dae2ea;
-//   color: #7c9eb2;
-//   padding: 10px 10px;
-// }
-// .angular-ui-tree-handle:hover {
-//   color: #438eb9;
-//   background: #f4f6f7;
-//   border-color: #dce2e8;
-// }
-// .angular-ui-tree-placeholder {
-//   background: #f0f9ff;
-//   border: 2px dashed #bed2db;
-//   -webkit-box-sizing: border-box;
-//   -moz-box-sizing: border-box;
-//   box-sizing: border-box;
-// }
-// .group-title {
-//   background-color: #687074 !important;
-//   color: #FFF !important;
-// }
-
-// .btn {
-// margin: 0 5px;
-// }
-// .angular-ui-tree-handle {
-// background: #f8faff;
-// border: 1px solid #dae2ea;
-// color: #7c9eb2;
-// padding: 10px 5px;
-// }
-// .angular-ui-tree-handle:hover {
-// color: #438eb9;
-// background: #f4f6f7;
-// border-color: #dce2e8;
-// }
-// .angular-ui-tree-placeholder {
-// background: #f0f9ff;
-// border: 2px dashed #bed2db;
-// -webkit-box-sizing: border-box;
-// -moz-box-sizing: border-box;
-// box-sizing: border-box;
-// margin: 0 5px;
-// }
-// .angular-ui-tree-node,
-// .angular-ui-tree-placeholder,
-// .angular-ui-tree-nodes,
-// .angular-ui-tree {
-// display: inline-block;
-// vertical-align: top;
-// }
-// .angular-ui-tree-node,
-// .angular-ui-tree-placeholder {
-// line-height: 0;
-// }
-// .group-title {
-// background-color: #687074 !important;
-// color: #FFF !important;
-// }
-// .col-lg-6 {
-// width: 100%;
-// }
-
 
 

@@ -1,8 +1,8 @@
-<div id="error-prompt" ng-show="showError" ng-init="showError=false" ng-class="{'ready-to-disappear': !showError, 'ready-to-appear': showError}">
+<div id="error-prompt" ng-show="showError" ng-class="{'ready-to-disappear': !showError, 'ready-to-appear': showError}">
   <div id="close-error-prompt" ng-click="hideError()" class="fa fa-close"></div>
   <div id="error-prompt-title">Error </div>
   <div id="error-prompt-text">
-    <div ng-repeat="error in listError"><i ng-if="listError.length > 1" class="fa fa-caret-right"></i>{{error}}</div>
+    <div ng-repeat="error in listError track by $index" ng-class="{'singleError' : listError.length == 1}"><i ng-show="listError.length > 1" class="fa fa-caret-right"></i><span class="error">{{error}}</span></div>
   </div>
 </div>
 
@@ -11,22 +11,28 @@
   <div id="admin-button" ng-click="openPlain()">Administrator</div>
 </div>
 
-<div id="view-group">
-  {{nodeEnd[1]}}
-  <div ng-show="documentAbsent">HELLO</div>
+<div id="view-document">
+  <div id="breadcrumb">
+    <div id="breadcrumb-container">
+      <span id="breadcrumb-title">{{nodeEnd[1]}}</span>
+      <i id="breadcrumb-new-chapter" class="fa fa-plus"></i>
+      <i id="breadcrumb-new-document" class="fa fa-upload"></i>
+    </div>
+  </div>
+
 
   <script type="text/ng-template" id="items_renderer.html">
     <div ui-tree-handle ng-class="{isdocument: item.document, 'collapsed': collapsed && this.$childNodesScope.$modelValue != undefined, 'isNew' : this.$modelValue.title == 'new chapter'}" ng-if="item.parent!=0">
 
       <i ng-show="item.document" nodrag class="fa fa-minus caret"></i>
 
-      <a class="btn btn-collapse" nodrag ng-if="!item.document" ng-click="toggleItems(this)" ng-init="collapseItems(this)"><span ng-class="{'fa fa-angle-right': collapsed && this.$childNodesScope.$modelValue != undefined, 'fa fa-angle-down': !collapsed && this.$childNodesScope.$modelValue != undefined}"></span></a>
+      <a class="btn btn-collapse" nodrag ng-if="!item.document" ng-click="toggleItems(this)" ng-init="collapseItems(this)"><span ng-class="{'fa fa-angle-right': collapsed && this.$childNodesScope.$modelValue != undefined && this.$modelValue.items.length != 0, 'fa fa-angle-down': !collapsed && this.$childNodesScope.$modelValue != undefined && this.$modelValue.items.length != 0}"></span></a>
 
       <div ng-init="printChapter(this)" class="chapter-number">{{item.chapter}}</div>
       
       <div class="item-name">{{item.title}}</div>
 
-      <a class="btn btn-delete" nodrag ng-click="removeItems(this)"><span class="fa fa-times"></span></a>
+      <a class="btn btn-delete" nodrag ng-click="removeItem(this)"><span class="fa fa-times"></span></a>
 
       <a class="btn btn-rename" nodrag ng-click="renameItems(this)"><span class="fa fa-pencil"></span></a>
 
@@ -35,7 +41,7 @@
       <a class="btn btn-add-document" ng-multiple="true" ng-file-select ng-model="fileStore.files" ng-click="storeClick(this)" ng-if="!
       item.document" nodrag><span class="fa fa-upload" ></span></a>
 
-      <a ng-href={{item.preview_link}} download class="btn btn-download" ng-show="item.document" nodrag><span class="fa fa-arrow-circle-o-down"></span></a>
+      <a ng-href={{item.preview_link}} download="hello.png" class="btn btn-download" ng-show="item.document" nodrag><span class="fa fa-arrow-circle-o-down"></span></a>
 
       <a ng-href={{item.preview_link}} class="btn btn-preview" target="_blank" ng-show="item.document && item.type == 'application/pdf'" nodrag ><span class="fa fa-eye"></span></a>
 
@@ -45,13 +51,41 @@
     </ol>
   </script>
 
-  <div id="document-tree">
+  <div id="document-tree" ng-class="{'no-docs' : documentAbsent}">
    
     <div ui-tree="options" ng-if="nodeEnd" >
       <ol ui-tree-nodes ng-model="list" >
         <li ng-repeat="item in list" ui-tree-node ng-include="'items_renderer.html'"></li>
       </ol>
     </div>
+
+      
+    <div ng-show="documentAbsent" id="document-absent">
+      <div id="document-absent-title">This is a new subject</div>
+
+      <div id="document-absent-subtitle">Here you can directy upload your files or organise them into chapters.</div>
+      
+      <div id="document-absent-dropzone">
+        <!-- <div id="document-absent-text">No files and no chapters here!</div> -->
+        <i id="document-absent-dropzone-image" class="fa fa-arrow-circle-o-down">
+        </i>
+
+        <div id="document-absent-text-under-pic">
+          <div id="document-absent-text-drop">DROP ZONE</div>
+          <div id="document-absent-type-item-droppable" ng-show="IsChrome">You can even drop folders containing folders containing folders ... <i class="fa fa-smile-o"></i></div>
+        </div>
+      </div>
+
+      <div id="document-absent-buttons-container">
+        <div id="document-absent-buttons">
+        <!-- hello -->
+          <div id="create-first-document" ng-multiple="true" ng-file-select ng-model="firstFiles">Pick documents</div>
+          <div id="create-first-chapter" ng-click="newSubItem()">Create a chapter</div>
+        </div>
+      </div>
+    
+    </div>
+
   </div>
 
 

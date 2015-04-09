@@ -1,7 +1,7 @@
 (function(){
 angular
   .module('myApp.controllers')
-  .controller('HomeCtrl', ['$scope', 'nodesflat', '$cookies','$timeout', 'Restangular', '$upload', 'ngDialog', function ($scope, nodesflat, $cookies, $timeout, Restangular, $upload, ngDialog) {
+  .controller('HomeCtrl', ['$scope', 'browser', 'nodesflat', '$cookies','$timeout', 'Restangular', '$upload', 'ngDialog', function ($scope, browser, nodesflat, $cookies, $timeout, Restangular, $upload, ngDialog) {
 
     $scope.nodes = nodesflat;
     $scope.selectedItem = {};
@@ -9,15 +9,20 @@ angular
     $scope.fileStore=[];
     $scope.chaptersNumber = [];
     $scope.i = -1;
+    $scope.showError = false;
+    $scope.IsChrome = checkIfChrome();
 
-    $scope.$watch('fileStore.files', function () {
-      upload($scope.fileStore.files,false);
-    });
-
-    $scope.$watch('files', function () {
-      upload($scope.files, true);
-    });
-
+    /*======================================================
+    =            Check if the browser is chrome            =
+    ======================================================*/
+    
+    function checkIfChrome(){
+      if(browser() == "chrome"){
+        return true;
+      } else{
+        return false;
+      }
+    }
 
     $scope.storeClick = function(scope){
       $scope.lastClick = scope;
@@ -28,7 +33,7 @@ angular
     =====================================*/
     
     $scope.displayError = function(errorString){
-      if($scope.listError.length == 0){
+      if($scope.listError == undefined || $scope.listError.length == 0){
          $scope.listError = [errorString];
       } else{
         $scope.listError.push(errorString);
@@ -172,7 +177,6 @@ angular
     ========================================*/
 
     $scope.toggleItems = function(scope) {
-      
       if(scope.$childNodesScope.$modelValue != undefined){
         scope.toggle();
         addToDocumentFoldedCookie(scope.$modelValue.id);
@@ -204,15 +208,14 @@ angular
       if(newVals){
         documentFlat = Restangular.one('chapters').get({node_id: newVals[0]}).then(function (document) {
 
-          if(document.plain().length == 0){
+          // console.log(document.plain());
+          if(document.plain().length == 1){
             $scope.documentAbsent = true;
           } else{
             $scope.documentAbsent = false;
           }
 
-          var documentsNested = makeNested(document);
-        
-          $scope.list = documentsNested
+          $scope.list = makeNested(document);
 
           // for(document in $scope.list){
           //   if(document.document){
@@ -280,26 +283,45 @@ angular
     =            Delete Documents            =
     ========================================*/
 
-    $scope.removeItems = function(scope) {
-      if(scope.$modelValue.document){
-        var nodeToDelete = scope.$modelValue.doc_id;
-        Restangular.all('awsdocuments/' + nodeToDelete).remove().then(function() {
-          scope.remove();
+    $scope.removeItem = function(scope) {
+      var nodeToDelete = scope;
+      var parent = nodeToDelete.$parentNodeScope;
+
+      // Delete the documents
+      if(nodeToDelete.$modelValue.document){
+        Restangular.all('awsdocuments/' + nodeToDelete.$modelValue.doc_id).remove().then(function() {
+          nodeToDelete.remove();
           console.log("document deleted");
+
+
+          // console.log($scope.list[0].items);
+          // console.log($scope.list[0].items[0]);
+
+          if($scope.list[0].items.length == 0){
+            $scope.documentAbsent = true;
+          }
         }, function() {
-          scope.displayError("Try again to delete this document");
-          console.log("There was an error deleting the document");
-        });
-      } else{
-        var nodeToDelete = scope.$modelValue.id;
-        Restangular.all('chapters/' + nodeToDelete).remove({node_id: $scope.nodeEnd[0]}).then(function() {
-          scope.remove();
-          console.log("chapter deleted");
-        }, function() {
-          scope.displayError("Try again to delete this chapter");
-          console.log("There was an error deleting the chapter");
+          scope.displayError("Try again to delete: " + nodeToDelete.$modelValue.title);
+          console.log("Try again to delete: " + nodeToDelete.$modelValue.title);
         });
       }
+      //delete the chapters
+      else{
+        Restangular.all('chapters/' + nodeToDelete.$modelValue.id).remove({node_id: $scope.nodeEnd[0]}).then(function() {
+          nodeToDelete.remove();
+          console.log("chapter deleted");
+
+          if($scope.list[0].items.length == 0){
+            $scope.documentAbsent = true;
+          }
+
+        }, function() {
+          scope.displayError("There was an error deleting: " + nodeToDelete.$modelValue.title);
+          console.log("There was an error deleting: " + nodeToDelete.$modelValue.title);
+        });
+      }
+      // If we deleted all documents / chapters display the page for no docs
+
     };
 
     /*===========================================
@@ -308,11 +330,19 @@ angular
     
     $scope.newSubItem = function(scope) {
 
-      var nodeData = scope.$modelValue;
+      if(scope == undefined){
+        var nodeData = $scope.list[0];
+      } else{
+        var nodeData = scope.$modelValue;
+      }
+
+      // console.log($scope.list[0]);
+      // console.log(nodeData);
+
       var nodeToCreate ={
         node_id: $scope.nodeEnd[0],
         title: "new chapter",
-        parent_id: scope.$modelValue.id
+        parent_id: nodeData.id
       }
 
       Restangular.all('chapters').post(nodeToCreate).then(function(d) {
@@ -323,44 +353,88 @@ angular
         } else{
           nodeData.items.push(a);
         }
-        addToDocumentFoldedCookie(scope.$modelValue.id);
-        scope.expand();
+        addToDocumentFoldedCookie(nodeData.id);
+        if(!$scope.documentAbsent){
+          scope.expand();
+        } else{
+          $scope.documentAbsent = false;
+        }
+
       }, function(d) {
         $scope.displayError("Try again to create a chapter");
         console.log("There was an error saving");
       });
     };
 
+    // $scope.createFirstChapter = function(){
+    //   console.log("hello");
+    // }
+
     /*====================================
     =            Rename items            =
     ====================================*/
 
     $scope.renameItems = function(scope){
-      var nodeToUpdate = scope.$modelValue;
-      if(nodeToUpdate.document){
-        var nodeToUpdateId = nodeToUpdate.doc_id;
-      } else{
-        var nodeToUpdateId = nodeToUpdate.id;
+      var itemToUpdate = scope.$modelValue;
+
+      //If it is a document
+      if(itemToUpdate.document){
+        var documentToUpdateId = itemToUpdate.doc_id;
+
+        var result = prompt('Change the name of the document',scope.title);
+        if(result) {
+          var nodeUpdate = {title: result}
+
+          Restangular.one('awsdocuments/' + documentToUpdateId).put(nodeUpdate).then(function(d) {
+            itemToUpdate.title = result;
+
+            console.log("Object updated");
+          }, function(d) {
+            console.log("There was an error updating the document");
+            scope.displayError("Try again to change this document's name");
+          });
+        }
       }
 
-      var result = prompt('Change the name of the item',scope.title);
-      if(result) {
-        var nodeUpdate = {name: result}
+      //If it is a chapter 
+      else{
+        var chapterToUpdateId = itemToUpdate.id;
 
-        Restangular.one('chapters/' + nodeToUpdateId).put($scope.nodeEnd[0]).then(function(d) {
-          nodeToUpdate.title = result;
+        var result = prompt('Change the name of the chapter',scope.title);
+        if(result) {
+          var nodeUpdate = {title: result, node_id: $scope.nodeEnd[0]}
 
-          console.log("Object updated");
-        }, function(d) {
-          console.log("There was an error updating");
-          scope.displayError(["Try again to change this node's name"]);
-        });
+          Restangular.one('chapters/' + chapterToUpdateId).put(nodeUpdate).then(function(d) {
+            itemToUpdate.title = result;
+
+            console.log("Object updated");
+          }, function(d) {
+            console.log("There was an error updating");
+            scope.displayError("Try again to change this chapter's name");
+          });
+        }
       }
+
+
     }
+
+
 
     /*======================================
     =            Upload funcion            =
     ========================================*/
+
+    $scope.$watch('fileStore.files', function () {
+      upload($scope.fileStore.files,false);
+    });
+
+    $scope.$watch('files', function () {
+      upload($scope.files, true);
+    });
+
+    $scope.$watch('firstFiles', function () {
+      upload($scope.firstFiles, false);
+    });
 
     upload = function (files, dragAndDrop) {
 
@@ -474,6 +548,8 @@ angular
           var file = files[i];
           var numberItems = 0;
 
+          // console.log($scope.nodeEnd[0]);
+
           $upload.upload({
             url: $scope.urlPath + '/awsdocuments',
             fields: {'username': $scope.username},
@@ -501,9 +577,13 @@ angular
               nodeDocData.items.unshift(a);
             }
 
-            if(!dragAndDrop){
+            if(!dragAndDrop && !$scope.documentAbsent){
               $scope.lastClick.expand(); 
-            } //else{
+            } else if($scope.documentAbsent){
+              $scope.documentAbsent = false;
+            } 
+
+            //else{
             //   console.log($scope.lastClick);
             //   console.log($scope.lastDeployedPosition);
             //   console.log($scope.lastDeployedPosition.$$nextSibling);
@@ -511,8 +591,8 @@ angular
             // }
 
           }, function(d) {
-            $scope.displayError("Failed to upload document:" + d.data.title);
-            console.log("Failed to upload document:" + d.data.title);
+            $scope.displayError("Failed to upload document:" +  file.name);
+            console.log("Failed to upload document:" +  file.name);
           });
 
         }
@@ -521,13 +601,18 @@ angular
       /*==========  Upload function  ==========*/
       
       uploadItems = function(){
+        //IF the first element of the array is a directory we upload the dir
         if( $scope.arrayFiles[0][0].type == "directory"){
           uploadDir( $scope.arrayFiles[0]);
-        } else{
+        } 
+        //If the first element is a file we upload the file(s)
+        else{
           uploadFiles( $scope.arrayFiles[0]);
         }
-         $scope.arrayFiles.shift();
+        // We remove the array we uploaded
+        $scope.arrayFiles.shift();
 
+        // We wait until the directory is uploaded
         $scope.$watch('dirUploaded', function () {
           var promise = new Promise(function(resolve, reject){
             if($scope.dirUploaded){
@@ -546,12 +631,22 @@ angular
         });
       }
 
+
       if (files && files.length) {
+        // console.log(files);
+
         var savedPath;
         $scope.arrayFiles = undefined;
 
         if(!dragAndDrop){
-          var masternodeData = $scope.lastClick.$modelValue;
+          // If we upload the first file
+          if($scope.lastClick == undefined){
+            var masternodeData = $scope.list[0];
+          }
+          // If we upload a normal file
+          else{
+            var masternodeData = $scope.lastClick.$modelValue;
+          }
         } else{
           if($scope.lastDeployedPosition == undefined){
             var masternodeData = $scope.list[0];

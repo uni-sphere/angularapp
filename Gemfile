@@ -31,6 +31,7 @@ gem 'rest-client'
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
 end
 
 # db

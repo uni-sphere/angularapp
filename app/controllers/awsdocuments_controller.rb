@@ -1,9 +1,9 @@
 class AwsdocumentsController < ApplicationController
 	
-  before_action :get_node, except: [:destroy, :show]
-  before_action :get_chapter, except: [:destroy, :show]
-  # before_action :get_awsdocument, only: [:update, :download, :unarchive, :archives]
-
+  before_action :get_node, except: [:destroy, :show, :update, :destroy]
+  before_action :get_chapter, except: [:destroy, :show, :update, :destroy]
+  before_action :get_awsdocument, only: [:archives, :unarchives, :update, :destroy]
+  
   def create
     awsdocument = @chapter.awsdocuments.new(title: params[:title], content: params[:file])
     if awsdocument.save
@@ -14,8 +14,7 @@ class AwsdocumentsController < ApplicationController
   end
   
   def show
-    awsdocument = Awsdocument.find_unarchived params[:id]
-    preview_link = awsdocument.content.file.authenticated_url
+    preview_link = @awsdocument.content.file.authenticated_url
     render json: preview_link, status: 200
   end
   
@@ -32,7 +31,7 @@ class AwsdocumentsController < ApplicationController
   end
   
   def update
-    if @awsdocument.update(awsdocument_params)
+    if @awsdocument.update(title: params[:title])
       render json: @awsdocument, status: 200
     else
       render json: @awsdocument.errors, status: 422
@@ -40,7 +39,7 @@ class AwsdocumentsController < ApplicationController
   end
   
   def destroy
-    Awsdocument.find(params[:id]).archive
+    @awsdocument.archive
     head 204
   end
   
@@ -52,8 +51,8 @@ class AwsdocumentsController < ApplicationController
   private
   
   def get_awsdocument
-    if Awsdocuments.exists? params[:id]
-      @awsdocument = @node.awsdocuments.find_unarchived params[:id]
+    if Awsdocument.exists? params[:id]
+      @awsdocument = Awsdocument.find_unarchived params[:id]
     else
       send_error('resource not found', 404)
     end

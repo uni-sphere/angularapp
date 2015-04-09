@@ -25,6 +25,8 @@ $mega-light-grey: #FCFCFC;
 $ultra-light-grey: #FAFAFA;
 $supra-light-grey: #F2F2F2;
 $super-light-grey: #EEEEEE; // use for side
+$grey: #E6E6E6;
+$slight-dark-grey: #9A999E; 
 $dark-grey: #6C6B80;
 $very-dark-grey: #4A4A58;
 
@@ -39,7 +41,7 @@ $dark: #4E4646;
 $navbar-bg: #4169E1;
 $navbar: #F5F5F5;
 
-$tree-bg: white;
+
 $group-bg: $ultra-light-grey;
 $group-header-bg: $ultra-light-grey;
 $chapter-header-bg: $mega-light-grey;
@@ -55,6 +57,7 @@ $document-folded-bg: $super-light-grey;
 
 /*==========  view tree  ==========*/
 
+$tree-bg: white;
 $view-tree-color: $dark;
 $button-hover-color: $dark-grey;
 $button-active-color: $very-dark-grey;
@@ -66,6 +69,17 @@ $popup-header-bg: #00BC5E;
 $popup-button-bg: whitesmoke;
 $popup-button-hover-bg: $navbar-bg;
 
+
+
+/*==========  View document  ==========*/
+
+$document-bg: white;
+
+// $no-document-image-color: $grey;
+$no-document-text-color: $ultra-light-grey;
+
+$document-absent-bg: $ultra-light-grey;
+$breadcrumb-bg: $grey;
 
 
 // $place-holder: red;

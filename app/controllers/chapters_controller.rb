@@ -17,7 +17,7 @@ class ChaptersController < ApplicationController
   end
   
   def update
-    if @chapter.update(name: params[:name])
+    if @chapter.update(title: params[:title])
       render json: @chapter, status: 200
     else
       render json: @chapter.errors, status: 422
