@@ -1,11 +1,9 @@
 class NodesController < ApplicationController
-  
-  before_action :get_node, only: [:show, :update, :destroy]
 	
   def create
-    node = @organization.nodes.new(node_params)
+    node = current_organization.nodes.new(name: params[:name], parent_id: params[:parent_id])
     chapter = node.chapters.new(title: 'main', parent_id: 0)
-    parent = @organization.nodes.find params[:parent_id]
+    parent = current_organization.nodes.find params[:parent_id]
     if node.save and chapter.save
       if parent.chapters.count >= 2
         Chapter.where(node_id: parent.id).each do |chapter|
@@ -19,20 +17,20 @@ class NodesController < ApplicationController
   end
   
   def show
-    render json: @node, status: 200
+    render json: current_node, status: 200
   end
   
   def update
-    if @node.update(name: params[:name])
-      render json: @node, status: 200
+    if current_node.update(name: params[:name])
+      render json: current_node, status: 200
     else
-      render json: @node.errors, status: 422
+      render json: current_node.errors, status: 422
     end
   end
   
   def destroy
-    if @node.parent_id != 0
-      @node.destroy
+    if current_node.parent_id != 0
+      current_node.destroy
       head 204
     else
       send_error('You can not destroy the root of your tree', 400)
@@ -41,7 +39,7 @@ class NodesController < ApplicationController
   
   def index
     nodes = []
-    @organization.nodes.each do |node|
+    current_organization.nodes.each do |node|
       nodes << {name: node.name, num: node.id, parent: node.parent_id}
     end
     render json: nodes, status: 200

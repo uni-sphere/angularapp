@@ -17,7 +17,7 @@ gem 'sass-rails'
 
 # front-end
 gem 'font-awesome-rails'
-gem 'jquery-rails'
+# gem 'jquery-rails'
 gem 'autoprefixer-rails'
 gem 'bower-rails'
 gem 'angular-rails-templates'
@@ -28,10 +28,14 @@ gem 'fog'
 gem 'aws-sdk'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rest-client'
+gem 'rails-i18n'
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'shoulda-matchers'
+  gem 'guard-rspec'
+  gem 'spring-commands-rspec'
+  gem 'rb-fsevent'
+  # gem 'terminal-notifier-guard'
 end
 
 # db

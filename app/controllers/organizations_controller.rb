@@ -1,38 +1,36 @@
 class OrganizationsController < ApplicationController
-	
+  
   skip_before_action :authenticate_organization, only: :create
   
   def create
     organization = Organization.new(name: params[:name])
     organization.subdomain = format_subdomain organization.name
     node = organization.nodes.new(name: params[:name], parent_id: 0)
-    user = @organization.users.new(access_alias: params[:password])
-    if (organization.save and 
-        node.save and 
-        create_pointer(organization.subdomain) and
-        user.create)
-        
-      UserMailer.welcome_email(user.access_alias, organization.name, user.email).deliver
-      render json: {organization: organization, user: user}.to_json, status: 201, location: organization
+    user = organization.users.new(access_alias: params[:password], email: params[:email])
+    logger.info organization.inspect
+    if organization.save and node.save and user.save# and create_pointer(organization.subdomain)
+      UserMailer.welcome_email(user.access_alias, organization.name, user.email, "http://#{organization.subdomain}.unisphere.eu").deliver
+      render json: { organization: organization, user: user, url: "http://#{organization.subdomain}.unisphere.eu" }.to_json, status: 201, location: organization
     else
+      logger.info user.errors
       send_error('Problem occured while organization creation', '500')
     end
   end
   
   def show
-    render json: @organization, status: 200
+    render json: current_organization, status: 200
   end
   
   def update
-    if @organization.update(organization_params)
-      render json: @organization, status: 200
+    if current_organization.update(organization_params)
+      render json: current_organization, status: 200
     else
-      render json: @organization.errors, status: 422
+      render json: current_organization.errors, status: 422
     end
   end
   
   def destroy
-    @organization.destroy
+    current_organization.destroy
     head 204
   end
   

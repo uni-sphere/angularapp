@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   
   def password_forgoten
     if params[:email]
-      user = @organization.users.find_by(email: params[:email])
+      user = current_organization.users.find_by(email: params[:email])
       # send email with new token
     else
       send_error('email not received', 400)
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   end
   
   # def set_admin_cookies(access)
-  #   if @organization.users.exists?(access: access) or @organization.users.exists?(access_alias: access)
+  #   if current_organization.users.exists?(access: access) or current_organization.users.exists?(access_alias: access)
   #     cookies.signed[:unisphere_api_admin] = access
   #   end
   # end

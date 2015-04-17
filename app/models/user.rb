@@ -2,25 +2,23 @@ class User < ActiveRecord::Base
   
   belongs_to :organization
   
+  before_save :set_admin_access
+  
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   
-  validates :access, :email, presence: true
-  validates :email, format: { with: email_regex }, uniqueness: { case_sensitive: false }
-  validates :access_alias, uniqueness: true
-  
-  before_save :set_admin_access
+  validates :email, format: { with: email_regex }
+  validates :access_alias, :email , presence: true
   
   private
   
   def set_admin_access
-    return if self.access.present?
     self.access = generate_admin_access
   end
   
   def generate_admin_access
     loop do
       access = SecureRandom.hex
-      break access unless self.class.exists?(access: access)
+      break access unless User.exists?(access: access)
     end
   end
   

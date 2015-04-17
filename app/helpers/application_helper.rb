@@ -1,7 +1,7 @@
 module ApplicationHelper
   
   def format_subdomain(subdomain)
-    I18n.transliterate().delete(subdomain).downcase
+    (ActiveSupport::Inflector.transliterate subdomain.delete('_').downcase).gsub(/[^a-z0-9]/i, "")
   end
   
   def show_params
@@ -9,7 +9,7 @@ module ApplicationHelper
   end
   
   def clear_logs(log)
-    logger.info "************************************  #{log} ************************************"
+    logger.info "************************************  #{log}  ************************************"
   end
   
   private

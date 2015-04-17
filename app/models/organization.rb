@@ -1,6 +1,6 @@
 class Organization < ActiveRecord::Base
   
-	has_many :nodes
+	has_many :nodes, dependent: :delete_all
   has_many :users
   
   validates :name, presence: true
