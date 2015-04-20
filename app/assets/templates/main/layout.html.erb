@@ -1,0 +1,42 @@
+
+<div id="demo-app-home" ng-show="home">
+  <div ng-include="'home/demo-app-navbar.html'"></div>
+  <dragndrop-view></dragndrop-view>
+
+  <div id="main-view-container">
+
+    <errorDisplay></errorDisplay>
+
+    <div id="view-tree">
+      <collapsible-tree node-end = 'nodeEnd' flat-data = 'nodes' display-error ='displayError' current-node = 'currentNode'></collapsible-tree>
+    </div>
+
+    <ui-tree-perso></ui-tree-perso>
+  </div>
+</div>
+
+<div ng-hide="home" id="main-container" ng-file-drop ng-model="files" drag-over-class="{accept:'dragoverAccept', reject:'dragoverReject', delay:100}"  ng-multiple="true" allow-dir="true" accept=".jpg,.png,.pdf">
+
+  <div ng-include="'main/navbar.html'"></div>
+  <dragndrop-view></dragndrop-view>
+
+  <div id="main-view-container">
+
+    <errorDisplay></errorDisplay>
+
+    <div id="view-tree">
+      <collapsible-tree node-end = 'nodeEnd' flat-data = 'nodes' display-error ='displayError' current-node = 'currentNode'></collapsible-tree>
+      <div id="admin-button" ng-click="openPlain()">Administrator</div>
+    </div>
+
+    <ui-tree-perso></ui-tree-perso>
+  </div>
+</div>
+
+<script type="text/ng-template" id="firstDialogId">
+  <div id="admin-popup-title">Connect as administrator</div>
+  <div id="admin-popup-content">
+    <input type="password" placeholder="type your password" id="admin-popup-input" autofocus> 
+    <div id="admin-popup-button" >Validate</div>
+  </div>
+</script>

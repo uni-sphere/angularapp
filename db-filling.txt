@@ -35,7 +35,7 @@ ActionController::Base::OrganizationsController.new.create
 
 app.post('http://api.unisphere-dev.eu/organizations', {"name" => "organization_name", "email" => "clement@muller.uk.net", "password" => "organization_password"})
 
-UserMailer.welcome_email('access', 'Lycée Machin', 'gabriel@muller.uk.net', "http://lyceemachin.unisphere.eu").deliver
+UserMailer.welcome_email('access', 'Lycée Machin', 'clement@muller.uk.net', "http://lyceemachin.unisphere.eu").deliver
 
 UserMailer.password_forgoten('gabriel@muller.uk.net', Organization.last).deliver
 

@@ -32,7 +32,6 @@ module AuthenticationHelper
     end
   end
   
-  
   def current_awsdocument
     if Awsdocument.exists? params[:id]
       @awsdocument = Awsdocument.find_unarchived params[:id]

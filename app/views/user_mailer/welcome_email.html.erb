@@ -40,7 +40,6 @@ table td {
     BODY & CONTAINER
 ------------------------------------- */
 body {
-	text-align: center;
   background-color: #f6f6f6;
 }
 
@@ -68,7 +67,6 @@ body {
     HEADER, FOOTER, MAIN
 ------------------------------------- */
 .main {
-	text-align: center;
   background-color: #fff;
   border: 1px solid #e9e9e9;
   border-radius: 3px;
@@ -92,7 +90,6 @@ body {
   clear: both;
   color: #999;
   padding: 20px;
-	font-style: italic;
 }
 .footer a {
   color: #999;
@@ -189,6 +186,10 @@ a {
   clear: both;
 }
 
+.italic {
+  font-style: italic;
+}
+
 /* -------------------------------------
     ALERTS
     Change the class depending on warning email, good email or bad email
@@ -270,20 +271,19 @@ a {
 					<tr>
 						<td class="content-wrap">
 							<table width="100%" cellpadding="0" cellspacing="0">
-								<tr>
+								<tr class="aligncenter">
 									<td class="content-block">
 										You created a new organization
 									</td>
 								</tr>
-								<tr>
+								<tr class="aligncenter">
 									<td class="content-block">
 										<a class="btn-primary" href="<%= @url %>"><%= @organization %></a>
 									</td>
 								</tr>
-								<tr>
+								<tr class="aligncenter">
 									<td class="content-block">
-										Your administrator password is </br>
-										<strong><%= @password %></strong>
+										Your administrator password is <strong><%= @password %></strong>
 									</td>
 								</tr>
 							</table>
@@ -292,8 +292,8 @@ a {
 				</table>
 				<div class="footer">
 					<table width="100%">
-						<tr>
-							<td class="aligncenter content-block">Thanks for joining! <a href="http://www.unisphere.eu">Unisphere</a> 2015</td>
+						<tr class="italic">
+							<td class="aligncenter content-block">Thanks for joining <a href="http://www.unisphere.eu">Unisphere</a>!</td>
 						</tr>
 					</table>
 				</div></div>

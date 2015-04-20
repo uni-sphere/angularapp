@@ -18,4 +18,6 @@ Rails.application.routes.draw do
 
   root 'angular#index'
 
+  get '/home', to: 'angular#index'
+
 end

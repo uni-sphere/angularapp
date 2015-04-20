@@ -1,194 +1,103 @@
-@import "global";
-@import "dashboard";
-@import "view-tree";
-@import "view-document";
-@import "dragndrop";
+@import "angular-ui-tree/dist/angular-ui-tree.min";
+@import "ngDialog/css/ngDialog.min";
 
-html, body{
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  
-  height: 100%;
-  width: 100%;
+@import "font-awesome";
 
-  margin: 0px;
-  padding: 0px;
-}
 
-.hidden{
-  display: none;
-}
+// @import "fontawesome/css/font-awesome";
+// @import "ngDialog/css/ngDialog-theme-default.min";
 
-body{
-  cursor: default;
-  font-size: 1em;
-  font-family: "ubuntu", "Lato";
-  user-select: none;
-}
-
-*:focus{
-  outline: none;
-}
-
-#navbar{
-  position: fixed;
-	color: $navbar;
-  top: 0px;
-  left: 0px;
-
-  z-index: 10;
-
-  width: 100%;
-  height: 50px;
-
-  font-size: 1.2em;
-  background: $navbar-bg;
-
-  box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.4);
-}
-
-#main-view-container{
-  position: relative;
-
-  height: calc(100% - 50px);
-  width: 100%;
-
-  margin-top: 50px;
-}
-
-#view-tree{
-  position: relative;
-  float: left;
-  z-index: 5;
-
-  height: 100%;
-  width: 65%;
-
-  background: $tree-bg;
-
-  box-shadow: 2px 0px 2px 1px rgba(0, 0, 0, 0.4);
-
-}
-
-#view-document{
-  position: relative;
-  float: left;
-  background: $document-bg;
-
-  height: calc(100%);
-  width: calc(35%);
+@font-face {
+  font-family: "Lato";
+  font-style: normal;
+  src: local("Lato Black"), local("Lato-Black"), url("https://fonts.gstatic.com/s/lato/v10/BVtM30trf7q_jfqYeHfjtA.woff") format("woff");
 }
 
 
-@media (max-width: 700px) {
-    html { font-size: 80%; }
-}
+$border-error-prompt: #E9BCBC;
+$error-promt-color-dark: #9F1D1D;
+$error-promt-color-light: #B23B3B;
+$error-promt-bg: #F2DEDE;
+$error-promt-color-very-light: #C45858;
 
 
-@media (min-width: 700px) {
-    html { font-size: 100%; }
-}
+$mega-light-grey: #FCFCFC;
+$ultra-light-grey: #FAFAFA;
+$supra-light-grey: #F2F2F2;
+$super-light-grey: #EEEEEE; // use for side
+$grey: #E6E6E6;
+$slight-dark-grey: #9A999E; 
+$dark-grey: #6C6B80;
+$very-dark-grey: #4A4A58;
 
-@media (min-width: 1200px) {
-    html { font-size: 120%; }
-}
+$light-grey: #CDCDCD;
+
+
+$dark: #4E4646;
+
+
+//$navbar-bg: #DC143C;
+//$navbar-bg: #6495ED;
+$navbar-bg: #4169E1;
+$navbar: #F5F5F5;
+
+
+$group-bg: $ultra-light-grey;
+$group-header-bg: $ultra-light-grey;
+$chapter-header-bg: $mega-light-grey;
+$chapter-list-bg: $supra-light-grey;
+$group-doc-bg: white;
+$separation-lines: $light-grey;
+
+
+$document-color: $dark;
+$document-bg-hover: $ultra-light-grey;
+$document-folded-bg: $super-light-grey;
+// $document-border-color: $super-light-grey;
+
+/*==========  view tree  ==========*/
+
+$tree-bg: white;
+$view-tree-color: $dark;
+$button-hover-color: $dark-grey;
+$button-active-color: $very-dark-grey;
 
 
 
-@keyframes flyout {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
 
-  100% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-}
+$popup-header-bg: #00BC5E;
+$popup-button-bg: whitesmoke;
+$popup-button-hover-bg: $navbar-bg;
 
-@keyframes flyin {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
 
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-.ready-to-disappear{
-  animation: flyout .5s;
-}
-.ready-to-appear{
-  animation: flyin .5s;
-}
+/*==========  View document  ==========*/
 
-#error-prompt{
-  position: absolute;
-  top: 10px;
-  z-index: 10;
-  width: 20%;
-  height: 50px;
-  left: 40%;
- 
-  // border-radius: 5px;
-}
+$document-bg: white;
 
-.singleError{
-  text-align: center;
-}
+// $no-document-image-color: $grey;
+$no-document-text-color: $ultra-light-grey;
 
-#error-prompt-title{
-    color: $error-promt-color-dark;
-    padding-left: calc(50% - 25px);
-    padding-top: 8px;
-    padding-bottom: 8px;
-    background: $error-promt-bg;
-    border: 1px solid $border-error-prompt;
-    // border-bottom: none;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
-}
+$document-absent-bg: $ultra-light-grey;
+$breadcrumb-bg: $grey;
 
-#close-error-prompt{
-  font-size: .8em;
-  font-weight: bold;
-  position: absolute;
-  right: 10px;
-  padding: 0px 10px;
-  cursor: pointer;
-  color: $error-promt-color-very-light;
-  line-height: 42px;
 
-  &:hover{
-    color: $error-promt-color-dark;
-  }
-}
+// $place-holder: red;
+// $input-bg: green;
 
-#error-prompt-text{
-  color: $error-promt-color-light;
-  padding: 10px 10px 0px 10px;
-  background: $error-promt-bg;
-  background: white;
-  border: 1px solid $border-error-prompt;
-  border-top: none;
-  border-bottom-right-radius: 5px;
-  border-bottom-left-radius: 5px;
+// input::-webkit-input-placeholder {color: $place-holder;}
+// input::-moz-placeholder {color: $place-holder;}
+// input:-moz-placeholder {color: $place-holder;}
+// input:-ms-input-placeholder {color: $place-holder;}
 
-  .fa{
-    position: absolute;
-    margin-top: 5px;
-  }
-  .error{
-    display: inline-block;
-    position: relative;
-    margin-left: 10px;
-    margin-bottom: 10px;
-  }
-}
+// input:-webkit-autofill {
+//   -webkit-box-shadow: 0 0 0px 1000px $input-bg inset;
+// }
+// input:-webkit-autofill:focus {
+//   -webkit-box-shadow: 0px 0 1px 2px blue, inset 0 1px 2px 1000px pink;
+// }
 
+
+@import "main/**/*";
+@import "home/**/*";
 

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  angular.module('myApp.directives')
+  angular.module('mainApp.directives')
     .directive('isdocument', [function() {
       return {
         restrict: 'EA',

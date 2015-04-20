@@ -5,14 +5,27 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
+  
+  # EMAIL PAR GANDI
+  # config.action_mailer.smtp_settings = {
+  #   address: "mail.gandi.net",
+  #   port: 587,
+  #   authentication: :login,
+  #   user_name: 'hello@unisphere.eu',
+  #   domain: 'unisphere.eu',
+  #   password: '//11hello',
+  #   enable_starttls_auto: true
+  # }
+  
+  # EMAIL PAR MANDRIL
   config.action_mailer.smtp_settings = {
-    address: "mail.gandi.net",
+    address: "smtp.mandrillapp.com",
     port: 587,
-    authentication: :login,
-    user_name: 'hello@unisphere.eu',
-    domain: 'unisphere.eu',
-    password: '//11hello',
-    enable_starttls_auto: true
+    user_name: 'clement_muller@hotmail.fr',
+    password: 'R4-uL_WwBCbZKnZHoyAZuQ',
+    enable_starttls_auto: true,
+    authentication: 'login',
+    domain: 'unisphere.eu'
   }
   
   # In the development environment your application's code is reloaded on

@@ -13,6 +13,7 @@
     "restangular": "latest",
     "ng-file-upload": "latest",
     "ngDialog": "latest",
-    "ng-pageslide-directive": "latest"
+    "ng-pageslide-directive": "latest",
+    "angulartics": "0.17.2"
   }
 }
