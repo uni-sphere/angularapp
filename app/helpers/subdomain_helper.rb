@@ -9,9 +9,11 @@ module SubdomainHelper
   end
 
   def create_pointer(newsubdomain)
-    scalingo_resources[:subdomain].post({domain: {name: "#{newsubdomain.to_s}.unisphere.eu" }}) { |response, request, result, &block|
-      send_error('Problem occured while creating subdomain', '500') if response.code != 200
-    }
+    if Rails.env.production?
+      scalingo_resources[:subdomain].post({domain: {name: "#{newsubdomain.to_s}.unisphere.eu" }}) { |response, request, result, &block|
+        send_error('Problem occured while creating subdomain', '500') if response.code != 200
+      }
+    end
   end
   
 end

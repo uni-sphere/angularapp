@@ -13,6 +13,8 @@
 //= require	angulartics/dist/angulartics.min
 //= require	angulartics/dist/angulartics-ga.min
 //= require	angulartics/dist/angulartics-gtm.min
+//= require	angular-translate/angular-translate.min
+//= require	angular-dropdowns/dist/angular-dropdowns
 
 
 //= require angular-rails-templates

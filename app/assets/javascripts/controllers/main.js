@@ -1,95 +1,160 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('MainCtrl', ['$scope', 'browser', 'nodesflat', '$cookies','$timeout', 'Restangular', '$upload', 'ngDialog', function ($scope, browser, nodesflat, $cookies, $timeout, Restangular, $upload, ngDialog) {
-
+  .controller('MainCtrl', ['$scope', 'browser', 'nodesflat', '$cookies','$timeout', 'Restangular', '$upload', 'ngDialog', '$translate', function ($scope, browser, nodesflat, $cookies, $timeout, Restangular, $upload, ngDialog, $translate) {
+    
+    
+    // We sent nodes to d3
     $scope.nodes = nodesflat;
-    $scope.selectedItem = {};
-    $scope.options = {};
-    $scope.fileStore=[];
-    $scope.chaptersNumber = [];
-    $scope.i = -1;
-    $scope.showError = false;
+
+
+    $scope.$watch('activeNodes', function(newVals, oldVals){
+      if(newVals){
+
+        //breadcrumb
+        $scope.breadcrumb = []
+        for(var i = $scope.activeNodes.length - 1; i >= 0; i--){
+          $scope.breadcrumb.push($scope.activeNodes[i][1]);
+        }
+
+
+        // $scope.nodeEnd =  $scope.activeNodes[0][0];
+        // console.log($scope.nodeEnd);
+        //Loads docs
+
+
+        if($scope.nodeEnd){
+
+          documentFlat = Restangular.one('chapters').get({node_id: $scope.nodeEnd[0]}).then(function (document) {
+
+            // console.log(document.plain());
+            
+            document.shift();
+
+            if(document.plain().length == 0){
+              $scope.documentAbsent = true;
+            } else{
+              $scope.documentAbsent = false;
+            }
+
+            $scope.list = makeNested(document);
+
+            $scope.$watch('list', function(newVals, oldVals) {
+              if(newVals){
+                var j = 1;
+                var chap = [];
+                var savedValueByDepth = [];
+                var previousDepth = 0;
+
+                createChap = function(d){
+                  if(!d.document){
+                    newValueByDepth = savedValueByDepth;
+                    if(d.depth == previousDepth){
+                      // console.log("==");
+                      if(savedValueByDepth[[d.depth]] != undefined){
+                        newValueByDepth[d.depth] = savedValueByDepth[[d.depth]] + 1;
+                      } else{
+                        newValueByDepth[d.depth] = 1;
+                      }
+                      // console.log(newValueByDepth);
+                      savedValueByDepth = newValueByDepth;
+                    }
+                    if(d.depth > previousDepth){
+                      // console.log(">");
+                      if(savedValueByDepth[[d.depth]] == undefined){
+                        newValueByDepth[d.depth] = 1;
+                      } else{
+                        newValueByDepth[d.depth] = savedValueByDepth[[d.depth]] + 1;
+                      }
+                      savedValueByDepth = newValueByDepth;
+                    }
+                    if(d.depth < previousDepth){
+                      // console.log("<")
+                      var diff = previousDepth - d.depth;
+                      newValueByDepth[d.depth] = savedValueByDepth[d.depth] + 1;
+                      for(i= 0; i < diff; i++){
+                        newValueByDepth.pop();
+                      }
+                      
+                      savedValueByDepth[d.depth] = savedValueByDepth[d.depth];
+                    }
+
+                    previousDepth = d.depth;
+                    d.chapter = newValueByDepth.join('.');
+                    // console.log(d.chapter);
+                  }
+                }
+
+                iterate = function (d){
+                  createChap(d);
+                  if(d.items){
+                    d.items.forEach(iterate);
+                  }
+                }
+
+                newVals.forEach(iterate);
+              }
+
+            }, true);
+
+          });
+        }
+
+
+      }
+    })
+
+    // We watch the items
+    $scope.$watch('list', function(newVals, oldVals) {
+      if(newVals){
+        // console.log($scope.list);
+      }
+    },true);
+
+
+    // Languages options
+    $scope.ddSelectOptions = [
+      {
+        text: 'French',
+        value: 'fr'
+      },
+      {
+        text: 'English',
+        value: 'en'
+      }
+    ];
+
+    // Set the default language
+    if($translate.use().indexOf("fr") > -1){
+      $scope.ddSelectSelected = {text: 'French', value: 'fr'};
+    } else{
+      $scope.ddSelectSelected = {text: 'English', value: 'en'};
+    }
+
+    $scope.changeLanguage = function() {
+      if ($scope.ddSelectSelected.value == 'fr') {
+        $translate.use('fr');
+      } else {
+        $translate.use('en');
+      }
+    }
+      
+    // get university name for navbar
+    Restangular.one('organization').get().then(function (university) {
+      $scope.university = university['name'];
+    }, function(){
+      console.log("There getting the university name");
+      $scope.displayError(["Sorry there was a mistake, refresh please"]);
+    });;
+
     $scope.IsChrome = checkIfChrome();
 
-    /*======================================================
-    =            Check if the browser is chrome            =
-    ======================================================*/
+
+    /*=================================
+    =            Fonctions            =
+    =================================*/
     
-    function checkIfChrome(){
-      if(browser() == "chrome"){
-        return true;
-      } else{
-        return false;
-      }
-    }
-
-    $scope.storeClick = function(scope){
-      $scope.lastClick = scope;
-    }
-
-    /*==================================================
-    =            Check if home or subdomain            =
-    ==================================================*/
-    
-    
-    checkLocation = function(){
-      var host = window.location.host;
-      var pathname = window.location.pathname
-      if(pathname == '/home' || host == 'unisphere.eu'){
-        $scope.home = true
-      } else{
-        $scope.home = false;
-      }
-    }();
-    
-
-    /*=====================================
-    =            Error gestion            =
-    =====================================*/
-    
-    $scope.displayError = function(errorString){
-      if($scope.listError == undefined || $scope.listError.length == 0){
-         $scope.listError = [errorString];
-      } else{
-        $scope.listError.push(errorString);
-      }
-      $scope.showError = true;
-    }
-    
-    $scope.hideError = function(){
-      $scope.listError = [];
-      $scope.showError = false;
-    }
-
-    /*=======================================
-    =            Counter gestion            =
-    =======================================*/
-
-    $scope.initCounter = function(){
-      $scope.j = 0;
-      $scope.k = 0;
-    }
-
-    $scope.initI = function(){
-      $scope.i ++;
-    }
-
-    /*========================================
-    =            Show admin popup            =
-    ========================================*/
-    
-    $scope.openPlain = function () {
-      ngDialog.open({
-        template: 'firstDialogId',
-        className: 'admin-popup',
-      });
-    };
-
-    /*==========================================================
-    =            Transform flat data to nested data            =
-    ==========================================================*/
-
+    // Take flat data and make them nested
     function makeNested(flatData){
 
       var dataMap = flatData.reduce(function(map, node) {
@@ -99,358 +164,119 @@ angular
 
       var treeData = [];
       flatData.forEach(function(node) {
+
+        node.depth = 0;
+
+        if(node.chapter_id){
+          node.parent = node.chapter_id
+          node.doc_id = node.id
+          node.document = true
+          node.preview_link = node.url
+          delete node.id
+          delete node.chapter_id
+          delete node.url
+        } else{
+          node.parent = node.parent_id
+          delete node.parent_id
+        }
+      });
+
+      flatData.forEach(function(node) {
+        console.log(node);
+        node.items = [];
+
         var parent = dataMap[node.parent];
         if (parent) {
-          (parent.items || (parent.items = []))
-            .push(node);
+          node.depth = node.depth + 1;
+          (parent.items || (parent.items = [])).push(node);
         } else {
+          // console.log(node);
           treeData.push(node);
         }
       });
 
+      // console.log(treeData);
+
       return treeData;
     }
 
-    /*======================================
-    =            Periodical Get            =
-    ======================================*/
-    
-    // function retrieveDocuments() {
-    //   Restangular.one('documents').get().then(function(response) {
-    //     $scope.list = response;
-    //     console.log("Objects get");
-    //     $timeout(retrieveDocuments, 5000);
-    //   }, function() {
-    //     console.log("There was an error getting");
-    //   });
-    // }
 
-    // $timeout(retrieveDocuments, 5000);
+    function checkIfChrome(){
+      if(browser().browserName == "chrome"){
+        return true;
+      } else{
+        return false;
+      }
+    }
 
-    /*========================================
-    =            utility functions            =
-    ========================================*/
-    
-    function isInArray(value, array) {
+        function isInArray(value, array) {
       return array.indexOf(value.toString()) > -1;
     }
 
-    /*===========================================
-    =            get the environment            =
-    ===========================================*/
-    
-    getEnvironment = function(){
+    getApiUrl = function(){
       var host = window.location.host;
       if(host == 'localhost:3000'){
-        $scope.urlPath = "http://api.unisphere-dev.com:3000"
+        return "http://api.unisphere-dev.com:3000"
       } else{
-        $scope.urlPath = "http://api.unisphere.eu"
-      }
-    }();
-
-    /*======================================
-    =            Cookie gestion            =
-    ======================================*/
-
-    /*==========  Cookie to find the last node and thus the chapters/document to display  ==========*/
-    
-    getNodeEnd = $cookies.get('nodeEnd');
-
-    if( getNodeEnd != undefined && getNodeEnd != 'false'){
-      getNodeEndArray = getNodeEnd.split(',');
-      $scope.nodeEnd =  [parseInt(getNodeEndArray[0]),getNodeEndArray[1]];
-    }else{
-      $scope.nodeEnd = false;
-    }
-
-    /*==========  Cookie to find which chapter are collapsed  ==========*/
-    
-    var getDocumentFolded = $cookies.get('documentCookies');
-
-    if( getDocumentFolded != undefined ){
-      documentFoldedArray = getDocumentFolded.split(',');
-      if(!isInArray(0,documentFoldedArray)){
-        documentFoldedArray.push("0");
-      }
-    }else{
-      documentFoldedArray =["0"];
-    }
-
-    function addToDocumentFoldedCookie(nb){
-      if(documentFoldedArray == undefined){
-        documentFoldedArray = [nb.toString()];
-      } else if(isInArray(nb,documentFoldedArray)){
-        var index = documentFoldedArray.indexOf(nb.toString());
-        documentFoldedArray.splice(index, 1);
-      } else{
-        documentFoldedArray.push(nb.toString());
-      };
-      $cookies.put('documentCookies', documentFoldedArray);
-    }
-
-    /*========================================
-    =            Toogle documents            =
-    ========================================*/
-
-    $scope.toggleItems = function(scope) {
-      if(scope.$childNodesScope.$modelValue != undefined){
-        scope.toggle();
-        addToDocumentFoldedCookie(scope.$modelValue.id);
-
-        // save latest collapse position in case of dropped file
-        if(scope.collapsed && scope.$parentNodeScope!= undefined){
-          $scope.lastDeployedPosition = scope.$parentNodeScope;
-        } else{
-          $scope.lastDeployedPosition = scope;
-        }
-      }
-    };
-
-    $scope.collapseItems = function(scope){
-      if(documentFoldedArray == undefined){
-        scope.toggle();
-      } else{
-        if(!isInArray(scope.$modelValue.id,documentFoldedArray)){
-          scope.toggle();
-        };
+        return "http://api.unisphere.eu"
       }
     }
 
-    /*=============================================================================
-    =            Watches which node is selected and gets the documents            =
-    =============================================================================*/
-    
-    $scope.$watch('nodeEnd', function(newVals, oldVals) {
-      if(newVals){
-        documentFlat = Restangular.one('chapters').get({node_id: newVals[0]}).then(function (document) {
-
-          // console.log(document.plain());
-          if(document.plain().length == 1){
-            $scope.documentAbsent = true;
-          } else{
-            $scope.documentAbsent = false;
-          }
-
-          $scope.list = makeNested(document);
-
-          // for(document in $scope.list){
-          //   if(document.document){
-          //     console.log(document);
-          //   }
-          // }
-
-          // $scope.$watch('list', function(newVals, oldVals) {
-          //   var j = 1;
-          //   var chap = [];
-          //   var savedValueByDepth = [];
-          //   var previousDepth = 0;
-
-          //   createChap = function(d){
-          //     if(!d.document){
-          //       var depth = d.id.toString().split('').length
-          //       newValueByDepth = savedValueByDepth;
-          //       if(depth == previousDepth){
-          //         // console.log("==");
-          //         newValueByDepth[depth - 1] = savedValueByDepth[[depth - 1]] + 1;
-          //         savedValueByDepth = newValueByDepth;
-          //       }
-          //       if(depth > previousDepth){
-          //         // console.log(">");
-          //         if(savedValueByDepth[[depth - 1]] == undefined){
-          //           newValueByDepth[depth - 1] = 1;
-          //         } else{
-          //           newValueByDepth[depth - 1] = savedValueByDepth[[depth - 1]] + 1;
-          //         }
-          //         savedValueByDepth = newValueByDepth;
-          //       }
-          //       if(depth < previousDepth){
-          //         var diff = previousDepth - depth;
-          //         newValueByDepth[depth -1 ] = savedValueByDepth[depth - 1] + 1;
-          //         for(i= 0; i < diff; i++){
-          //           newValueByDepth.pop();
-          //         }
-                  
-          //         savedValueByDepth[depth - 1] = savedValueByDepth[depth - 1];
-          //       }
-
-          //       previousDepth = depth;
-          //       // console.log(newValueByDepth.join('.'));
-          //       d.chapter = newValueByDepth.join('.');
-          //     }
-          //   }
-
-          //   iterate = function (d){
-          //     createChap(d);
-          //     if(d.items){
-          //       d.items.forEach(iterate);
-          //     }
-          //   }
-
-          //   newVals.forEach(iterate);
-
-          // }, true);
-        });
-
-      }
-    });
-
-
-    /*========================================
-    =            Delete Documents            =
-    ========================================*/
-
-    $scope.removeItem = function(scope) {
-      var nodeToDelete = scope;
-      var parent = nodeToDelete.$parentNodeScope;
-
-      // Delete the documents
-      if(nodeToDelete.$modelValue.document){
-        Restangular.all('awsdocuments/' + nodeToDelete.$modelValue.doc_id).remove().then(function() {
-          nodeToDelete.remove();
-          console.log("document deleted");
-
-
-          // console.log($scope.list[0].items);
-          // console.log($scope.list[0].items[0]);
-
-          if($scope.list[0].items.length == 0){
-            $scope.documentAbsent = true;
-          }
-        }, function() {
-          scope.displayError("Try again to delete: " + nodeToDelete.$modelValue.title);
-          console.log("Try again to delete: " + nodeToDelete.$modelValue.title);
-        });
-      }
-      //delete the chapters
-      else{
-        Restangular.all('chapters/' + nodeToDelete.$modelValue.id).remove({node_id: $scope.nodeEnd[0]}).then(function() {
-          nodeToDelete.remove();
-          console.log("chapter deleted");
-
-          if($scope.list[0].items.length == 0){
-            $scope.documentAbsent = true;
-          }
-
-        }, function() {
-          scope.displayError("There was an error deleting: " + nodeToDelete.$modelValue.title);
-          console.log("There was an error deleting: " + nodeToDelete.$modelValue.title);
-        });
-      }
-      // If we deleted all documents / chapters display the page for no docs
-
-    };
-
-    /*===========================================
-    =            Create new item                =
-    ===========================================*/
-    
-    $scope.newSubItem = function(scope) {
-
-      if(scope == undefined){
-        var nodeData = $scope.list[0];
-      } else{
-        var nodeData = scope.$modelValue;
-      }
-
-      // console.log($scope.list[0]);
-      // console.log(nodeData);
-
-      var nodeToCreate ={
-        node_id: $scope.nodeEnd[0],
-        title: "new chapter",
-        parent_id: nodeData.id
-      }
-
-      Restangular.all('chapters').post(nodeToCreate).then(function(d) {
-        var a = {title: "new chapter", id: d.id}
-
-        if(nodeData.items == undefined){
-          nodeData.items = [a];
-        } else{
-          nodeData.items.push(a);
-        }
-        addToDocumentFoldedCookie(nodeData.id);
-        if(!$scope.documentAbsent){
-          scope.expand();
-        } else{
-          $scope.documentAbsent = false;
-        }
-
-      }, function(d) {
-        $scope.displayError("Try again to create a chapter");
-        console.log("There was an error saving");
-      });
-    };
-
-    // $scope.createFirstChapter = function(){
-    //   console.log("hello");
-    // }
-
-    /*====================================
-    =            Rename items            =
-    ====================================*/
-
-    $scope.renameItems = function(scope){
-      var itemToUpdate = scope.$modelValue;
-
-      //If it is a document
-      if(itemToUpdate.document){
-        var documentToUpdateId = itemToUpdate.doc_id;
-
-        var result = prompt('Change the name of the document',scope.title);
-        if(result) {
-          var nodeUpdate = {title: result}
-
-          Restangular.one('awsdocuments/' + documentToUpdateId).put(nodeUpdate).then(function(d) {
-            itemToUpdate.title = result;
-
-            console.log("Object updated");
-          }, function(d) {
-            console.log("There was an error updating the document");
-            scope.displayError("Try again to change this document's name");
-          });
-        }
-      }
-
-      //If it is a chapter 
-      else{
-        var chapterToUpdateId = itemToUpdate.id;
-
-        var result = prompt('Change the name of the chapter',scope.title);
-        if(result) {
-          var nodeUpdate = {title: result, node_id: $scope.nodeEnd[0]}
-
-          Restangular.one('chapters/' + chapterToUpdateId).put(nodeUpdate).then(function(d) {
-            itemToUpdate.title = result;
-
-            console.log("Object updated");
-          }, function(d) {
-            console.log("There was an error updating");
-            scope.displayError("Try again to change this chapter's name");
-          });
-        }
-      }
-
-
-    }
 
 
 
-    /*======================================
-    =            Upload funcion            =
-    ========================================*/
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    $scope.fileStore =  [];
+
+
+    // We watch when someone uploads files from the tree
     $scope.$watch('fileStore.files', function () {
       upload($scope.fileStore.files,false);
     });
 
+    // We store where the upload comes from
+    $scope.storeClick = function(scope){
+      $scope.lastClick = scope;
+    }
+
+    // We watch when someone drag and drops a file / folder
     $scope.$watch('files', function () {
       upload($scope.files, true);
     });
 
+    // We watch when someone uploads a file at the root
     $scope.$watch('firstFiles', function () {
       upload($scope.firstFiles, false);
     });
+
+    // $scope.$watch('nodeEnd', function(newVals, oldVals) {
+    //   if(newVals){
+    //     console.log("gg");
+    //   }
+    // });
+
+
 
     upload = function (files, dragAndDrop) {
 
@@ -505,7 +331,7 @@ angular
       }
 
       /*==========  Upload the dir first  ==========*/
-      
+
       uploadDir = function(files){
         folder = files.shift();
 
@@ -564,10 +390,8 @@ angular
           var file = files[i];
           var numberItems = 0;
 
-          // console.log($scope.nodeEnd[0]);
-
           $upload.upload({
-            url: $scope.urlPath + '/awsdocuments',
+            url: getApiUrl() + '/awsdocuments',
             fields: {'username': $scope.username},
             file: file,
             fields: {
@@ -577,7 +401,7 @@ angular
               content: file
             }
           }).then(function(d) {
-            var a = {title: d.data.title, doc_id: d.data.id, document: true, type: d.data.file_type, preview_link: d.data.content.url}
+            var a = {title: d.data.title, doc_id: d.data.id, document: true, type: d.data.file_type, preview_link: d.data.url}
 
             numberItems ++;
             console.log("OK document uploaded:" + d.data.title);
@@ -593,18 +417,11 @@ angular
               nodeDocData.items.unshift(a);
             }
 
-            if(!dragAndDrop && !$scope.documentAbsent){
+            if(!dragAndDrop && !$scope.documentAbsent && $scope.lastClick != undefined){
               $scope.lastClick.expand(); 
             } else if($scope.documentAbsent){
               $scope.documentAbsent = false;
             } 
-
-            //else{
-            //   console.log($scope.lastClick);
-            //   console.log($scope.lastDeployedPosition);
-            //   console.log($scope.lastDeployedPosition.$$nextSibling);
-            //   $scope.lastDeployedPosition.$$nextSibling.expand();
-            // }
 
           }, function(d) {
             $scope.displayError("Failed to upload document:" +  file.name);
@@ -657,7 +474,7 @@ angular
         if(!dragAndDrop){
           // If we upload the first file
           if($scope.lastClick == undefined){
-            var masternodeData = $scope.list[0];
+            var masternodeData = {id: 0};
           }
           // If we upload a normal file
           else{
@@ -665,7 +482,7 @@ angular
           }
         } else{
           if($scope.lastDeployedPosition == undefined){
-            var masternodeData = $scope.list[0];
+            var masternodeData ={id: 0};
             var nextNodeData = $scope.list[0].items.length;
           } else{
             var masternodeData = $scope.lastDeployedPosition.$modelValue;
@@ -674,11 +491,18 @@ angular
         }
 
         nodeDocData = masternodeData;
+        console.log($scope.list[0]);
+        console.log(nodeDocData);
         orderFiles(files);
         uploadItems();
       }
 
     };
+
+
+
+
+
 
   }]);
 })();

@@ -14,6 +14,10 @@ describe OrganizationsController do
     it 'has a name' do
       expect( @organization.name ).to match 'organization_name'
     end
+    
+    it 'has a subdomain' do
+      expect( @organization.subdomain ).to match 'organizationname'
+    end
  
     it 'has an user' do
       expect( User.where(organization_id: @organization.id) ).to exist

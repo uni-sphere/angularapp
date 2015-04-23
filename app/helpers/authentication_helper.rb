@@ -8,6 +8,10 @@ module AuthenticationHelper
     authenticate_client unless request.path == '/'
   end
   
+  def sandbox?(subdomain)
+    return true if subdomain == 'sandbox' and !Rails.env.production?
+  end
+  
   def authenticate_client
     authenticate_with_http_token do |token, options|
       send_error('Bad token', 401) unless token == $TOKEN
@@ -18,17 +22,24 @@ module AuthenticationHelper
     if Rails.env.production?
       if request.path == '/'
         subdomain = request.env['HTTP_HOST'].split('.').first
+        @root = true
       else
         uri = URI.parse(request.env['HTTP_ORIGIN']).host
         subdomain = uri.split('.').first
       end
       if Organization.exists?(subdomain: subdomain)
-        return Organization.find_by(subdomain: subdomain)
+        if sandbox? subdomain
+          send_error('sandbox', 403)
+        else
+          organization = Organization.find_by(subdomain: subdomain)
+          organization.reports.last.increase_views if @root
+          return organization
+        end
       else
         send_error('organization not found', 404)
       end
     else
-      return Organization.last
+      return Organization.first
     end
   end
   
@@ -40,11 +51,14 @@ module AuthenticationHelper
     end
   end
   
-  def authenticate_admin
+  def current_admin
     if cookies.signed[:unisphere_api_admin]
-      if current_organization.users.exists?(["access = :access or access_alias = :access_alias", { access: cookies.signed[:unisphere_api_admin], access_alias: cookies.signed[:unisphere_api_admin] }]).first
-        @user = current_organization.users.where(["access = :access or access_alias = :access_alias", { access: cookies.signed[:unisphere_api_admin], access_alias: cookies.signed[:unisphere_api_admin] }]).first
+      id = cookies.signed[:unisphere_api_admin]
+      if current_organization.users.exists?(id: id)
+        return current_organization.users.find id
       end
+    else
+      return send_error('not admin', 403)
     end
   end
   

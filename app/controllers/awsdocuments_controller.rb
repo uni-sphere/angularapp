@@ -39,15 +39,4 @@ class AwsdocumentsController < ApplicationController
     head 204
   end
   
-  def index
-    # awsdocuments = @oganization.nodes.awsdocuments.where(archived: false)
-#     render json: awsdocuments, status: 200
-  end
-  
-  private
-  
-  def awsdocument_params
-    params.require(:awsdocument).permit(:content, :chapter_id, :archived, :title)
-  end
-  
 end

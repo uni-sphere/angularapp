@@ -16,10 +16,6 @@ class NodesController < ApplicationController
     end
   end
   
-  def show
-    render json: current_node, status: 200
-  end
-  
   def update
     if current_node.update(name: params[:name])
       render json: current_node, status: 200
@@ -43,12 +39,6 @@ class NodesController < ApplicationController
       nodes << {name: node.name, num: node.id, parent: node.parent_id}
     end
     render json: nodes, status: 200
-  end
-  
-  private
-  
-  def node_params
-    params.require(:node).permit(:name, :parent_id)
   end
   
 end

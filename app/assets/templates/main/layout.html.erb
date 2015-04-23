@@ -1,17 +1,18 @@
+<div id="slide2" class="slide" ng-if="home">
+  <div id="demo-app-home" >
+    <div ng-include="'home/demo-app-navbar.html'"></div>
+    <dragndrop-view></dragndrop-view>
 
-<div id="demo-app-home" ng-show="home">
-  <div ng-include="'home/demo-app-navbar.html'"></div>
-  <dragndrop-view></dragndrop-view>
+    <div id="main-view-container">
 
-  <div id="main-view-container">
+      <errorDisplay></errorDisplay>
 
-    <errorDisplay></errorDisplay>
+      <div id="view-tree">
+        <collapsible-tree node-end = 'nodeEnd' flat-data = 'nodes' display-error ='displayError'></collapsible-tree>
+      </div>
 
-    <div id="view-tree">
-      <collapsible-tree node-end = 'nodeEnd' flat-data = 'nodes' display-error ='displayError' current-node = 'currentNode'></collapsible-tree>
+      <ui-tree-perso></ui-tree-perso>
     </div>
-
-    <ui-tree-perso></ui-tree-perso>
   </div>
 </div>
 
@@ -22,21 +23,24 @@
 
   <div id="main-view-container">
 
-    <errorDisplay></errorDisplay>
+    <error-display display-error = 'displayError'></error-display>
 
     <div id="view-tree">
-      <collapsible-tree node-end = 'nodeEnd' flat-data = 'nodes' display-error ='displayError' current-node = 'currentNode'></collapsible-tree>
-      <div id="admin-button" ng-click="openPlain()">Administrator</div>
+      <collapsible-tree  node-end = 'nodeEnd' flat-data = 'nodes' display-error ='displayError' active-nodes = 'activeNodes'></collapsible-tree>
+      <div id="admin-button" ng-click="openPlain()">{{ 'ADMINISTRATOR' | translate }}</div>
     </div>
 
-    <ui-tree-perso></ui-tree-perso>
+    <ui-tree-perso ></ui-tree-perso>
   </div>
 </div>
 
 <script type="text/ng-template" id="firstDialogId">
-  <div id="admin-popup-title">Connect as administrator</div>
+  <div id="admin-popup-title">{{ 'ADMIN_LOGIN' | translate }}</div>
   <div id="admin-popup-content">
     <input type="password" placeholder="type your password" id="admin-popup-input" autofocus> 
-    <div id="admin-popup-button" >Validate</div>
+    <div id="admin-popup-button" >{{ 'VALIDATE' | translate }}</div>
   </div>
 </script>
+
+
+<div ng-include="'home/slide3.html'"></div>

@@ -8,7 +8,8 @@
         scope: {
           flatData: '=',
           nodeEnd: '=',
-          displayError: '='
+          displayError: '=',
+          activeNodes: '='
         },
         link: function(scope, iElement, iAttrs) {
 
@@ -27,18 +28,24 @@
 
           /*==========  Cookie gestion  ==========*/
 
-          var getCookies = $cookies.get('nodeCookies');
-          var getCookieArray;
-          
-          if( typeof getCookies !== "undefined" ){
-            getCookieArray = getCookies.split(',');
+          var foldedNode = $cookies.get('foldedNode');
+
+          if( foldedNode !== undefined ){
+            foldedNode = foldedNode.split(',');
           }
 
-          var getActiveNodes = $cookies.get('activeNodes');
-          var getActiveNodesArray; 
+          scope.activeNodes = $cookies.get('activeNodes');
 
-          if( typeof getActiveNodes !== "undefined" ){
-            getActiveNodesArray = getActiveNodes.split(',');
+          if( scope.activeNodes !== undefined ){
+            scope.activeNodes = scope.activeNodes.split(',');
+            scope.activeNodes = transformArrayInDouble(scope.activeNodes);
+          }
+
+          scope.nodeEnd = $cookies.get('nodeEnd');
+          if(scope.nodeEnd == "false"){
+            scope.nodeEnd = false;
+          } else if(scope.nodeEnd != undefined){
+            scope.nodeEnd = scope.nodeEnd.split(',');
           }
 
           /*==========  Periodical get  ==========*/
@@ -71,7 +78,7 @@
           scope.$watch(function(){
               return angular.element(window)[0].innerWidth;
             }, function(d){
-              return render(createTreeData(scope.flatData), iElement, getCookieArray);
+              return render(createTreeData(scope.flatData), iElement, foldedNode);
             }
           );
 
@@ -105,6 +112,7 @@
           scope.update = function(source) {
             var duration = 750;
 
+            // console.log("hello");
             // Compute the new tree layout.
             var nodes = scope.tree.nodes(scope.root).reverse();
             var links = scope.tree.links(nodes);
@@ -237,36 +245,37 @@
                 d._children = null;
               }
 
-              var postCookies = [];
+              var foldedNode = [];
               var activeNodes = [];
 
               /*==========  Find the node that are collapsed and add them to cookies  ==========*/
               
-              function findNodesOpen(d){
+              function findClosedNodes(d){
                 if(d.children){
-                  d.children.forEach(findNodesOpen);
+                  d.children.forEach(findClosedNodes);
                 }
                 if(d._children){
-                  d._children.forEach(findNodesOpen);
-                  postCookies.push(d.num);
+                  d._children.forEach(findClosedNodes);
+                  foldedNode.push(d.num);
                 }
               }
 
               /*==========  Find the node path and add it to active nodes ( in ordrer to color nodes)  ==========*/
               
               function findLastNodePath(d){
-                activeNodes.push(d.num);
-
+                activeNodes.push([d.num, d.name]);
                 if(d.parent){
                   findLastNodePath(d.parent)
                 }
               }
 
+              // console.log(activeNodes);
+
               /*==========  Use activeNodes to color the nodes  ==========*/
               
               function colornodePath(d) {
                 d.active = false;
-                if(intInArray(d.num,activeNodes)){
+                if(intInDoubleArray(d.num,activeNodes)){
                   d.active = true;
                 }
                 if (d.children){
@@ -275,6 +284,10 @@
               }
 
               /*==========  Save in cookies if the current node is an end node  ==========*/
+
+
+
+
               
               function findNodeEnd(d){
                 if(!d.children && !d._children){
@@ -284,13 +297,16 @@
                   scope.nodeEnd = false;
                   $cookies.put('nodeEnd', false);
                 }
-              }
+              };
 
               findLastNodePath(d);
-              findNodeEnd(d);
-              findNodesOpen(scope.root);
+              findNodeEnd(d)
+              // console.log(scope.nodeEnd[0]);
+              // console.log(activeNodes);
+              findClosedNodes(scope.root);
               colornodePath(scope.root);
-              $cookies.put('nodeCookies', postCookies);
+              $cookies.put('foldedNode', foldedNode);
+              scope.activeNodes = activeNodes;
               $cookies.put('activeNodes', activeNodes);
 
               scope.$apply();
@@ -377,7 +393,7 @@
           =            Render function            =
           =======================================*/
           
-          function render(branch, iElement, getCookieArray){
+          function render(branch, iElement, foldedNode){
             svg.selectAll("*").remove();
 
             scope.i = 0;
@@ -395,13 +411,13 @@
             scope.diagonal = d3.svg.diagonal()
               .projection(function(d) { return [d.y, d.x]; });
 
-            if(getCookieArray == undefined){
+            if(foldedNode == undefined){
               branch.children.forEach(collapseAll);
             } else{
               branch.children.forEach(collapseSelectively);
             }
 
-            if(getActiveNodesArray != undefined){
+            if(scope.activeNodes != undefined){
               branch.children.forEach(colorActiveNodes)
             }
 
@@ -415,7 +431,7 @@
               if (d.children){
                 d.children.forEach(collapseSelectively);
 
-                if(isInArray(d.num,getCookieArray)){
+                if(isInArray(d.num,foldedNode)){
                   d._children = d.children;
                   d.children = null;
                 }
@@ -444,7 +460,7 @@
             =            Color nodes            =
             ===================================*/
             function colorActiveNodes(d) {
-              if(isInArray(d.num,getActiveNodesArray)){
+              if(isInDoubleArray(d.num,scope.activeNodes)){
                   d.active = true;
                 }
               if (d.children){
@@ -505,6 +521,38 @@
             return array.indexOf(value) > -1;
           }
 
+          function intInDoubleArray(value, doubleArray){
+            var array = [];
+            for( var i = 0; i < doubleArray.length; i++){
+              array.push(doubleArray[i][0]);
+            }
+            return intInArray(value, array);
+          }
+
+          function isInDoubleArray(value, doubleArray){
+            var array = [];
+            for( var i = 0; i < doubleArray.length; i++){
+              array.push(doubleArray[i][0]);
+            }
+            return isInArray(value, array);
+          }
+
+
+          function transformArrayInDouble(array){
+            var doubleArray = [];
+
+            function action(myArray){
+              doubleArray.push([myArray[0],myArray[1]]);
+              myArray.shift();
+              myArray.shift();
+              if(array.length != 0){
+                action(myArray);
+              }
+            }
+            action(array);
+
+            return doubleArray;
+          }
 
           /*==========  Compares two arrays of objects  ==========*/
 

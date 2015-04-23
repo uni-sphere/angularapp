@@ -1,9 +1,5 @@
 module ApplicationHelper
   
-  def format_subdomain(subdomain)
-    (ActiveSupport::Inflector.transliterate subdomain.delete('_').downcase).gsub(/[^a-z0-9]/i, "")
-  end
-  
   def show_params
     logger.info params.inspect
   end
@@ -13,7 +9,7 @@ module ApplicationHelper
   end
   
   def select_layout
-    if Rails.env.production? and request.url == 'www.unisphere.eu' || 'unisphere.eu'
+    if Rails.env.production? and (request.url == 'www.unisphere.eu' || 'unisphere.eu')
       layout "home"
     else
       layout "main"
@@ -28,12 +24,25 @@ module ApplicationHelper
      @layout = "main"
   end
 
+  def random_password
+    chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ0123456789'
+    password = ''
+    10.times { password << chars[rand(chars.size)] }
+    return password
+  end
+  
+  def forgot_password(email)
+    user = User.find_by_email(email)
+    psw = random_password
+    user.password = psw
+    user.save
+    return psw
+  end
+  
   private
   
   def send_error(error, code)
     render json: {error: error}.to_json, status: code
   end
-
-
   
 end

@@ -28,3 +28,18 @@
 
   box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.4);
 }
+
+.slide{
+  position: absolute;
+  height: calc(100% - 50px);
+  width: 100%;
+}
+
+#slide2{
+  top: 0;
+}
+
+#slide3{
+  top:100%;
+  background: grey;
+}

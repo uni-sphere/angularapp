@@ -7,6 +7,5 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   
   before_action :authentication
-  # before_action :is_admin?, only: [:create, :upldate, :destroy, :index, :archives, :unarchive]
   
 end

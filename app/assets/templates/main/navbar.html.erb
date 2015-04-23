@@ -7,11 +7,22 @@
   </div>
 
   <div id="school">
-    <span id="school-name">Lycée Freppel</span>
+    <span id="school-name">{{ university }}</span>
   </div>
 
-  <div id="help-center">
-    <i class="fa fa-lightbulb-o"></i>
-    <span id="help-center-text">Help</span>
+
+  <div id="language-selection">
+    <div dropdown-menu="ddSelectOptions" dropdown-model="ddSelectSelected" dropdown-onchange="changeLanguage('fr')">
+      <span id="flag-img-container">
+        <object id="flag-img" type="image/svg+xml" data="/assets/{{ddSelectSelected.value}}.svg" >{{ddSelectSelected.value}} </object>
+      </span>
+      <span class="fa fa-caret-down"></span>
+    </div>
   </div>
+
+
+<!--   <div id="help-center">
+    <i class="fa fa-lightbulb-o"></i>
+    <span id="help-center-text" onclick="FHChat.transitionTo('maximized')">{{ 'HELP' | translate }}</span>
+  </div> -->
 </nav>

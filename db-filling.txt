@@ -1,5 +1,5 @@
-organization = Organization.create(name: 'Lycee Freppel')
-organization.nodes.create(name: "Lycee Freppel", parent_id: 0)
+organization = Organization.create(name: 'Sandbox')
+organization.nodes.create(name: "Sandbox", parent_id: 0)
 organization.nodes.create(name: "premiere", parent_id: 1)
 organization.nodes.create(name: "S", parent_id: 2)
 Node.last.chapters.create(title: "main", parent_id: 0)
@@ -38,4 +38,23 @@ app.post('http://api.unisphere-dev.eu/organizations', {"name" => "organization_n
 UserMailer.welcome_email('access', 'Lycée Machin', 'clement@muller.uk.net', "http://lyceemachin.unisphere.eu").deliver
 
 UserMailer.password_forgoten('gabriel@muller.uk.net', Organization.last).deliver
+
+UserMailer.activity_email(Organization.first.id, 'clement@muller.uk.net').deliver
+
+UserMailer.password_forgoten_email(User.last.email, Organization.last).deliver
+
+ActionController::Base::ReportssController.new.update
+
+user = User.new(email: 'clement@muller.uk.net', organization_id: Organization.first.id)
+user.password = 'password'
+
+whenever --update-crontab
+
+
+
+
+
+
+
+
 

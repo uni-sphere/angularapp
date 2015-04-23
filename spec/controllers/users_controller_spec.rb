@@ -6,7 +6,7 @@ describe OrganizationsController do
   describe 'User' do
     
     before do
-      params = {name: 'organization_name', email: 'clement@muller.uk.net', password: 'organization_psw'}
+      params = {name: 'organization_name', email: 'clement@muller.uk.net', password: 'password'}
       post "create", params
       @user = User.last
     end
@@ -14,13 +14,9 @@ describe OrganizationsController do
     it 'has an email corresponding to input' do
       expect( @user.email ).to match 'clement@muller.uk.net'
     end
- 
-    it 'has an access' do
-      expect( @user.access ).not_to be_empty
-    end
-
-    it 'has an access alias corresponding to input' do
-      expect( @user.access_alias ).to match 'organization_psw'
+    
+    it 'has a password corresponding to input' do
+      expect( @user.password ).to match 'password'
     end
     
   end

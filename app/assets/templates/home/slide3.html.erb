@@ -1,0 +1,25 @@
+<div ng-show="home" id="slide3" class="slide" ng-controller="HomeCtrl">
+  <div ng-repeat="uni in universities">
+    {{uni.name}}
+  </div>
+  {{newUniName}}
+
+
+  <div id="new-uni-form-wrapper">
+    <div id="new-uni-form">
+      <input class="sign-up-input"type="text" ng-model="newUniName" placeholder="university name">
+      <input class="sign-up-input" type="email" ng-model="newUniEmail" placeholder="Email adress">
+      <input  class="sign-up-input" type="password" ng-model="newUniPassword" placeholder="Password">
+      <button class="sign-up-button" ng-click="saveNewUni()">Save</button>
+    </div>
+  </div>
+
+ <!--  <blockquote>
+    {{uniName}}
+  </blockquote>
+
+  <form name="uniForm" ng-submit="">
+    <input type="text" ng-model="uniName">
+    <input type="Submit" value="submit">
+  </form> -->
+</div>

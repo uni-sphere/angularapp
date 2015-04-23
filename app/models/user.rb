@@ -1,24 +1,33 @@
 class User < ActiveRecord::Base
   
-  belongs_to :organization
+  require 'bcrypt'
   
-  before_save :set_admin_access
+  has_many :reports
+  has_many :chapters
   
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   
   validates :email, format: { with: email_regex }
-  validates :access_alias, :email , presence: true
+  validates :email , presence: true
   
-  private
-  
-  def set_admin_access
-    self.access = generate_admin_access
+  def password
+    @password ||= BCrypt::Password.new(password_hash)
+  end
+    
+  def password=(new_password)
+    @password = BCrypt::Password.create(new_password)
+    self.password_hash = @password
   end
   
-  def generate_admin_access
-    loop do
-      access = SecureRandom.hex
-      break access unless User.exists?(access: access)
+  def self.send_activity_reports
+    self.where(activity_reports: true).each do |user|
+      UserMailer.activity_email(user).deliver
+    end
+  end
+  
+  def self.create_reports
+    self.all.each do |user|
+      user.reports.create
     end
   end
   
