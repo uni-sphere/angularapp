@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20150430082038) do
   create_table "chapters", force: :cascade do |t|
     t.string   "title"
     t.integer  "node_id"
+    t.integer  "user_id"
     t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -47,16 +48,15 @@ ActiveRecord::Schema.define(version: 20150430082038) do
   end
 
   create_table "reports", force: :cascade do |t|
-    t.integer  "views",           default: 0
-    t.integer  "downloads",       default: 0
-    t.integer  "organization_id"
+    t.integer  "views",      default: 0
+    t.integer  "downloads",  default: 0
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "access"
-    t.string   "access_alias"
+    t.string   "password_hash"
     t.string   "email"
     t.integer  "organization_id"
     t.boolean  "activity_reports", default: true

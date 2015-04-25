@@ -6,8 +6,8 @@ describe ReportsController do
   describe 'Report' do
     
     before do
-      Organization.create!(name: 'organization_name')
-      Organization.last.reports.create
+      User.create!(email: 'name@domain.com', password: 'psw')
+      User.last.reports.create
       @report = Report.last
     end
 

@@ -39,8 +39,15 @@ $dark: #4E4646;
 
 //$navbar-bg: #DC143C;
 //$navbar-bg: #6495ED;
-$navbar-bg: #4169E1;
+
+
+// $navbar-bg: #4169E1;
+$navbar-bg: #222222;
+
+
+
 $navbar: #F5F5F5;
+
 
 
 $group-bg: $ultra-light-grey;
@@ -83,19 +90,34 @@ $breadcrumb-bg: $grey;
 
 
 
-$document-color: #276589;
+$document-color: $very-dark-grey;
 $document-fa-color: #3679A1;
 
 
-$document-bg: white;
-$document-hover: #F5F8FF;
+$document-bg: #F9F9F9;
+$document-hover: #E7EDFA;
+$document-border: #EBEBEB;
 
 
-$chapter-folded-bg: #DCE0E9;
-$chapter-folded-hover: #D5D8DF;
+// $chapter-folded-bg: #C9CCD4;
+// $chapter-folded-hover: #CAD2E4;
 
-$chapter-bg: #F6F6F6;
-$chapter-hover: #E8E8E8;
+$chapter-collapsed-bg: #D8DAE1;
+$chapter-collapsed-hover: #CAD2E4;
+
+$chapter-depth1-bg: #E5E7E9;
+$chapter-depth1-hover: #D1D7E6;
+
+$collapse-button-hover: tomato;
+$collapse-button-color: tomato;
+$fa-hover: black;
+$fa-color: $very-dark-grey;
+
+// $chapter-depth2-bg: #E8E8E8;
+// $chapter-depth2-hover: #DCE0E9;
+
+
+
 
 // $chapter-selected-bg: #DCE0E9;
 // $chapter-selected-hover: #D5D8DF;
@@ -103,8 +125,7 @@ $chapter-hover: #E8E8E8;
 // $container-items-selected-bg: #ECF1FF;
 // $container-items-selected-hover: #D4DBEF;
 
-$depth2-bg: #DCE0E9;
-$depth2-hover: #D5D8DF;
+
 
 
 
@@ -236,6 +257,47 @@ input:-webkit-autofill:focus {
 }
 
 
+
+
+html, body, #main-container{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  
+  height: 100%;
+  width: 100%;
+
+  margin: 0px;
+  padding: 0px;
+}
+
+.hidden{
+  display: none;
+}
+
+body{
+  cursor: default;
+  font-size: 1em;
+  font-family: "ubuntu", "Lato";
+  user-select: none;
+}
+
+*:focus{
+  outline: none;
+}
+
+@media (max-width: 700px) {
+    html { font-size: 80%; }
+}
+
+
+@media (min-width: 700px) {
+    html { font-size: 100%; }
+}
+
+@media (min-width: 1200px) {
+    html { font-size: 120%; }
+}
 
 
 

@@ -5,6 +5,12 @@ class UsersController < ApplicationController
       user = current_organization.users.find_by_email params[:email]
       if user.password == params[:password]
         cookies.signed[:unisphere_api_admin] = user.id
+        if cookies.signed[:unisphere_api_admin] == user.id
+          render json: {cookie: cookies.signed[:unisphere_api_admin]}.to_json, status: 200
+        else
+          cookies.delete :unisphere_api_admin
+          send_error('problem to write cookies', 500)
+        end
       else
         send_error('forbiden', 403)
       end
@@ -23,20 +29,20 @@ class UsersController < ApplicationController
     end
   end
   
-  # def invite
-#     if params[:email]
-#       user = current_organization.users.new(email: params[:email])
-#       psw = random_password
-#       user.password = psw
-#       if user.save
-#         UserMailer.invite_user_email(params[:email], current_organization, psw).deliver
-#       else
-#         send_error('user not created', 500)
-#       end
-#     else
-#       send_error('email not received', 400)
-#     end
-#   end
+  def invite
+    if params[:email]
+      user = current_organization.users.new(email: params[:email])
+      psw = random_password
+      user.password = psw
+      if user.save
+        UserMailer.invite_user_email(params[:email], current_organization, psw).deliver
+      else
+        send_error('user not created', 500)
+      end
+    else
+      send_error('email not received', 400)
+    end
+  end
   
   def password_forgoten
     if params[:email]

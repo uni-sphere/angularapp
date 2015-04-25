@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Weekly <%= @organization %> activity</title>
+<title>Weekly <%= @organization_name %> activity</title>
 <link href="styles.css" media="all" rel="stylesheet" type="text/css" />
 
 <style>
@@ -280,46 +280,38 @@ a:hover {
 					</tr>
 					<tr>
 						<td class="content-wrap">
-							<div class="content-block aligncenter bold"><%= @organization %> activity report <%= (Date.today-1.week).to_formatted_s(:short) %> - <%= Date.today.to_formatted_s(:short) %></div>
+							<div class="content-block aligncenter bold"><%= @organization_name %> activity report <%= (Date.today-1.week).to_formatted_s(:short) %> - <%= Date.today.to_formatted_s(:short) %></div>
 							<table width="100%" cellpadding="0" cellspacing="0">
 								<tr>
 									<td class="content-block">
-										<%= @organization %> visits
+										<%= @organization_name %> visits
 									</td>
 									<td class="content-block bold">
-										<%= @views %>
+										<%= @views_count %>
 									</td>
 								</tr>
 								<tr>
 									<td class="content-block">
-										Documents uploaded
+										Chapters you created
 									</td>
 									<td class="content-block bold">
-										<%= @uploads %>
+										<%= @chapters_count %>
 									</td>
 								</tr>
 								<tr>
 									<td class="content-block">
-										Documents downloaded
+										Documents you uploaded
 									</td>
 									<td class="content-block bold">
-										<%= @downloads %>
+										<%= @uploads_count %>
 									</td>
 								</tr>
 								<tr>
 									<td class="content-block">
-										Nodes created
+										Your documents students have downloaded
 									</td>
 									<td class="content-block bold">
-										<%= @nodes %>
-									</td>
-								</tr>
-								<tr>
-									<td class="content-block">
-										Chapters created
-									</td>
-									<td class="content-block bold">
-										<%= @chapters %>
+										<%= @downloads_count %>
 									</td>
 								</tr>
 							</table>

@@ -26,18 +26,17 @@
   ) {
       
       $translateProvider
-      
-        .translations('en_us', {
+        .translations('en', {
           HELP: 'Help',
           DROP: 'Drop a file',
           ERROR: 'Error',
           ADMINISTRATOR: 'Administrator',
           VALIDATE: 'Validate',
-          ADMIN_LOGIN: 'Connect as administrator',
-          NEW_SUBJECT: 'This is a new subject',
-          LEFT_TREE_EXPLANATION: 'Here you can directy upload your files and organise them into chapters',
-          UPLOAD: 'Upload a document',
-          CHAPTER: 'Create a chapter',
+          ADMIN_LOGIN: 'Log in as administrator',
+          NEW_SUBJECT: 'New subject',
+          LEFT_TREE_EXPLANATION: 'You can directy upload your files and organise them into chapters',
+          UPLOAD: 'New file',
+          CHAPTER: 'New chapter',
           DROP_ZONE: 'DROP ZONE',
           DROP_EXPLANATION: 'You can even drop folders containing folders containing folders'
         })
@@ -48,10 +47,10 @@
           ADMINISTRATOR: 'Administrateur',
           VALIDATE: 'Valider',
           ADMIN_LOGIN: 'Connection administrateur',
-          NEW_SUBJECT: "C'est une nouvelle matière",
-          LEFT_TREE_EXPLANATION: 'Ici vous pouvez importer directement vos fichiers et les organiser dans des chapitres',
-          UPLOAD: 'Importer un document',
-          CHAPTER: 'Créer un chapitre',
+          NEW_SUBJECT: "Nouvelle matière",
+          LEFT_TREE_EXPLANATION: 'Vous pouvez importer directement vos fichiers et les organiser dans des chapitres',
+          UPLOAD: 'Nouveau fichier',
+          CHAPTER: 'Nouveau chapitre',
           DROP_ZONE: 'DROP ZONE',
           DROP_EXPLANATION: "Vous pouvez importer des dossiers contenants d'autres dossiers"
         })

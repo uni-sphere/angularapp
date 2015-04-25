@@ -1,37 +1,30 @@
+#document-tree{
+  position: relative;
+  width: 90%;
+  padding-left: 5%;
+  padding-right: 5%;
+  height: calc(100% - 40px);
+  background: white;
+}
+
 /*==================================
 =            Breadcrumb            =
 ==================================*/
 
 #breadcrumb{
   position: relative;
-  // float: left;
   height: 40px;
   width: 100%;
   line-height: 40px;
   background: $breadcrumb-bg;
-  // display: inline-block;
   text-align: center;
 }
-
-// #breadcrumb{
-//   position: relative;
-//   float: left;
-//   width: 100%;
-//   height: 40px;
-//   line-height: 40px;
-//   background: $breadcrumb-bg;
-
-  
-//   display: inline-block;
-//   text-align: center;
-// }
 
 #breadcrumb-container{
   position: relative;
   float: center;
   display: inline-block;
 }
-
 
 #breadcrumb-title{
   position: relative;
@@ -46,74 +39,236 @@
   padding: 0px 5px; 
 }
 
+/*===============================
+=            Buttons            =
+===============================*/
 
 
-#test-button{
-  position: absolute;
-  bottom: 20px;
-}
 
-
-#document-tree{
+#button-row{
   position: relative;
-  width: 90%;
-  padding-left: 5%;
-  padding-right: 5%;
-  // margin-top: 40px;
-  height: calc(100% - 40px);
-  background: $document-bg;
-  // background: blue;
+  height: 100px;
+  width: 100%;
+  line-height: 100px;
 }
 
-.no-docs{
-  background: $document-absent-bg !important;
-}
+// .submit-button {
+//   width: 39%;
+//   margin-left: 5%;
+//   margin-right: 5%;
+//   padding: 10px 0px;
 
-.caret{
-  width: 10px !important;
-  display: inline-block;
-  text-align: center;
-  line-height: 27px;
-  font-size: .5em;
+//   background: linear-gradient(to bottom, $light-blue, $blue);
+
+//   border-radius: 5px;
+//   border: none;
+//   box-shadow: 1px 1px 1px #666666;
+
+//   font-family: Arial;
+//   color: #ffffff;
+//   font-size: 20px;
+//   text-decoration: none;
+
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+
+//   &:hover {
+//     background: linear-gradient(to bottom, $hyper-light-blue, $super-light-blue);
+//     text-decoration: none;
+//     cursor: pointer;
+//   }
+// }
+.submit-button {
+
+  border: 1px solid #d4d4d4;
+  // text-shadow: 1px 1px 0 #fff;
+  // color: #333;
+  color: #EEEEEE;
   cursor: pointer;
-  margin-left: 22px;
+  background: linear-gradient(#f4f4f4, #ececec);
+	background: #0087E0;
+  border-radius: 0.2em;
+
+  width: 39%;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 10px 0px;
+
+  font-family: Arial;
+
+  font-size: 20px;
+  text-decoration: none;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  cursor: pointer;
+
+  &:hover{
+    border-color: #008EEC;
+    border-bottom-color: #0084DC;
+    background: #008DEB;
+  }
+
+  &:active {
+    border-color: #2a65a0;
+    border-bottom-color: #3884cd;
+    background-color: #3072b3;
+    background-image: linear-gradient(#3072b3, #599bdc);
+  }
+
+
 }
 
-.chapter-number{
-  display: inline-block;
+
+
+// .submit-button:hover,
+// .submit-button:focus,
+// .submit-button:active,
+// .submit-button.active {
+//     border-color: #3072b3;
+//     border-bottom-color: #2a65a0;
+//     text-decoration: none;
+//     text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+//     color: #fff;
+//     background-color: #3c8dde;
+//     background-image: linear-gradient(#599bdc, #3072b3);
+// }
+
+// .submit-button.active {
+//     border-color: #2a65a0;
+//     border-bottom-color: #3884cd;
+//     background-color: #3072b3;
+//     background-image: linear-gradient(#3072b3, #599bdc);
+// }
+
+/* overrides extra padding on button elements in Firefox */
+.submit-button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
 }
+
+
+// .submit-button {
+//   width: 39%;
+//   margin-left: 5%;
+//   margin-right: 5%;
+//   padding: 10px 0px;
+
+//   background: linear-gradient(to bottom, #3498db, #2980b9);
+//   border-radius: 14px;
+//   font-family: Arial;
+//   color: whitesmoke;
+//   background: #4169E1;
+//   border: solid #4169E1 2px;
+
+
+//   font-size: 20px;
+//   text-decoration: none;
+
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+
+//   cursor: pointer;
+
+
+//   &:hover {
+//     background: whitesmoke;
+//     color: #2980b9 !important;
+//     text-decoration: none;
+//   }
+// }
+
+/*===============================
+=            UI Tree            =
+===============================*/
+
+#ui-tree-container{
+	font-size: 16px;
+  position: absolute;
+  top: 100px;
+  height: calc(100% - 100px);
+  width: 90%;
+
+  overflow-y: auto;
+}
+
+.item-name, .chapter-number{
+  display: inline-block;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-name{
+  width: calc(100% - 240px);
+  margin-left: 4px;
+}
+
+.angular-ui-tree-node{
+  margin-left: 10px;
+}
+.angular-ui-tree-nodes{
+  color: $document-color;
+}
+
+.angular-ui-tree-handle {
+  opacity: 1;
+  font-weight: 500;
+  border: 1px solid white;
+  // background: $chapter-depth1-bg;
+  padding: 9px 9px;
+
+  &:hover{
+    background: $document-hover;
+  }
+}
+
+.isdocument{
+  padding-left: 35px;
+
+  &:hover{
+    background: $document-hover;
+  }
+
+  .item-name{
+    width: calc(100% - 120px);
+    margin-left: 4px;
+  }
+}
+
+
+.isNew{
+  .item-name, .chapter-number{
+    color: red;
+  }
+}
+
+.collapsed{
+  &:hover{
+    background: $document-hover;
+  }
+}
+
+/*==========  Buttons  ==========*/
 
 .btn {
   width: 24px !important;
   height: 24px !important;
   margin-right: 8px;
   display: inline-block;
-  // margin-bottom: 0; // For input.btn
   text-align: center;
-  vertical-align: middle;
+  line-height: 24px;
   cursor: pointer;
-  // background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
-  // border: 1px solid transparent;
-  // white-space: nowrap;
 
-  &:hover,
-  &:focus,
-  &.focus {
+  &:hover, &:focus,{
     color: $button-active-color !important;
     text-decoration: none;
   }
-
-  &:active,
-  &.active {
-    outline: 0;
-    background-image: none;
-    // box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
-  }
-}
-
-.btn-collapse{
-  // background: green;
-  // color: white;
 }
 
 .btn-download{
@@ -131,7 +286,6 @@
   margin-right: 10px;
 }
 
-
 .btn-delete{
   float: right;
   margin-right: 20px;
@@ -147,6 +301,22 @@
   margin-right: 10px;
 }
 
+.btn-collapse{
+  font-size: 1.5em;
+  
+  width: 24px !important;
+  height: 24px !important;
+  margin-right: 8px;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  color: $collapse-button-color;
+
+  &:hover,&:focus {
+    color: $collapse-button-hover;
+  }
+}
+
 .btn-add, .btn-delete, .btn-rename, .btn-add-document, .btn-preview, .btn-download{
   display: none;
 }
@@ -155,143 +325,28 @@
   font-size: .8em;
 }
 
-#ui-tree-container{
-  position: absolute;
-  top: 100px;
-  height: calc(100% - 100px);
-  width: 90%;
-
-  overflow-y: auto;
-}
-
-.angular-ui-tree-handle {
-  // background: white;
-  // color: $document-color;
-  font-weight: 500;
-  // background: white;
-  border: 1px solid white;
-  background: $chapter-bg;
-
-  &:hover{
-    background: $chapter-hover;
-  }
-  // background: red;
-  // border: 1px solid white;
-  // color: grey;
-
-  // border-bottom: 1px solid $document-border-color;
-  
-  padding: 9px 9px;
-
-}
-
-.angular-ui-tree-nodes{
-  color: $document-color;
-  // background: $document-bg-hover;
-
-  // .fa{
-  //   color: $document-fa-color;
-  // }
-}
-
-
 .angular-ui-tree-handle:hover {
-  // background: $document-bg-hover;
   .btn-add, .btn-delete, .btn-rename, .btn-add-document, .btn-preview, .btn-download{
     display: inline-block;
-    color: $document-fa-color;
+    color: $fa-color;
     &:hover{
-      color: black;
+      color: $fa-hover;
     }
   }
-
-  // color: #438eb9;
-  // background: #f4f6f7;
 }
+
 .angular-ui-tree-placeholder {
   background: #f0f9ff;
   border: 2px dashed #bed2db;
   box-sizing: border-box;
 }
 
-.isdocument{
-  // border: none;
-  background: $document-bg;
-
-  &:hover{
-    background: $document-hover;
-  }
-  // line-height: 27px;
-  // background: red !important;
-}
-
-.collapsed{
-  background: $chapter-folded-bg !important;
-  &:hover{
-    background: $chapter-folded-hover !important;
-  }
-}
-
-.item-name{
-  display: inline-block;
-}
-.isNew{
-  .item-name, .chapter-number{
-    color: red;
-  }
-}
-
-// .containerSelected{
-//   // background: red;
-//   // border: 1px solid red;
-//   // border: 1px dashed $border-chapter-selected;
-//   // border-top: none;
-//   // color: black;
-//   // background: $container-items-selected-bg;
-//   // background: inherit;
-// }
-
-// .parentChapterSelected{
-//   background: $container-items-selected-bg;
-//   border: 1px solid $container-items-selected-bg;
-//   &:hover{
-//     background: $container-items-selected-hover;
-//   }
-// }
-
-// .chapterSelected{
-//   background: $chapter-selected-bg;
-//   border: 1px solid $chapter-selected-bg;
-//   color: black;
-
-//   .fa{
-//     color: black;
-//   }
-
-//   &:hover{
-//     background: $chapter-selected-hover;
-//   }
-
-.depth2{
-  background: $depth2-bg;
-  &:hover{
-    background: $depth2-hover;
-  }
-}
-
-.depth3{
-
-}
-  
-//   // border-right: 1px solid blue;
-//   // border-left: 1px solid blue;
-// }
-
-
-
 /*===================================
 =            No document            =
 ===================================*/
+.no-docs{
+  background: $document-absent-bg !important;
+}
 
 #document-absent-title, #document-absent-subtitle{
   position: relative;
@@ -368,7 +423,6 @@
   font-size: .8em;
 }
 
-
 #document-absent-buttons-container{
   position: relative;
   float: left;
@@ -394,42 +448,37 @@
 }
 
 
-.submit-button {
-  // position: relative;
-  // margin-top: 20px;
-  // margin-bottom: 20px;
-  // margin-right: 30px;
-
-  // margin-left: 40px;
-  width: 39%;
-  margin-left: 5%;
-  margin-right: 5%;
-  padding: 10px 0px;
-
-  background: linear-gradient(to bottom, $light-blue, $blue);
-
-  border-radius: 5px;
-  border: none;
-  box-shadow: 1px 1px 1px #666666;
-
-  font-family: Arial;
-  color: #ffffff;
-  font-size: 20px;
-  text-decoration: none;
-
-  &:hover {
-    background: linear-gradient(to bottom, $hyper-light-blue, $super-light-blue);
-    text-decoration: none;
-    cursor: pointer;
-  }
-}
 
 
-#button-row{
-  position: relative;
-  // top: 40px;
-  height: 100px;
-  // background: red;
-  width: 90%;
-  line-height: 100px;
-}
+
+
+// .containerSelected{
+//   // background: red;
+//   // border: 1px solid red;
+//   // border: 1px dashed $border-chapter-selected;
+//   // border-top: none;
+//   // color: black;
+//   // background: $container-items-selected-bg;
+//   // background: inherit;
+// }
+
+// .parentChapterSelected{
+//   background: $container-items-selected-bg;
+//   border: 1px solid $container-items-selected-bg;
+//   &:hover{
+//     background: $container-items-selected-hover;
+//   }
+// }
+
+// .chapterSelected{
+//   background: $chapter-selected-bg;
+//   border: 1px solid $chapter-selected-bg;
+//   color: black;
+
+//   .fa{
+//     color: black;
+//   }
+
+//   &:hover{
+//     background: $chapter-selected-hover;
+//   }

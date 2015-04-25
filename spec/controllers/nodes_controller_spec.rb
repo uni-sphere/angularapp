@@ -7,6 +7,7 @@ describe NodesController do
 
     before do
       Organization.create!(name: 'organization_name')
+      current_admin = Organization.last.users.create(email: 'name@domain.com', password: 'psw')
       @parent = Organization.last.nodes.create!(name: 'parent_name', parent_id: 0)
       params = {name: 'node_name', parent_id: @parent.id, organization_id: Organization.last.id } 
       post "create", params
@@ -32,7 +33,7 @@ describe NodesController do
     
     it 'is deleted and also its chapters' do
       id = @node.id
-      @node.chapters.create!(title: 'chapter_title', parent_id: 0)
+      @node.chapters.create!(title: 'chapter_title', parent_id: 0, user_id: current_admin.id)
       @node.destroy
       expect( Chapter.where(node_id: id).count ).to match 0
     end

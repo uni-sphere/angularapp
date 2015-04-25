@@ -27,8 +27,6 @@ angular
           scope.toggle();
         };
       }
-
-
     }
 
     $scope.toggleItems = function(scope) {

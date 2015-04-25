@@ -1,6 +1,6 @@
 class Report < ActiveRecord::Base
   
-  belongs_to :organization
+  belongs_to :user
   
   def increase_views
     update_attributes(views: views + 1)

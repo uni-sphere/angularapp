@@ -8,33 +8,33 @@ module AuthenticationHelper
     authenticate_client unless request.path == '/'
   end
   
-  def sandbox?(subdomain)
-    return true if subdomain == 'sandbox' and !Rails.env.production?
-  end
-  
   def authenticate_client
     authenticate_with_http_token do |token, options|
       send_error('Bad token', 401) unless token == $TOKEN
     end
   end
   
-  def current_organization
+  def current_subdomain
     if Rails.env.production?
-      if request.path == '/'
-        subdomain = request.env['HTTP_HOST'].split('.').first
-        @root = true
+      if request == 'unisphere.eu' || 'www.unisphere.eu' || 'sandbox.unisphere.eu'
+        return 'sandbox'
+      elsif request.path == '/'
+        return request.env['HTTP_HOST'].split('.').first
       else
         uri = URI.parse(request.env['HTTP_ORIGIN']).host
-        subdomain = uri.split('.').first
+        return uri.split('.').first
       end
+    else
+      return 'sandbox'
+    end
+  end
+  
+  def current_organization
+    if Rails.env.production?
+      subdomain = current_subdomain
       if Organization.exists?(subdomain: subdomain)
-        if sandbox? subdomain
-          send_error('sandbox', 403)
-        else
-          organization = Organization.find_by(subdomain: subdomain)
-          organization.reports.last.increase_views if @root
-          return organization
-        end
+        organization = Organization.find_by(subdomain: subdomain)
+        return organization
       else
         send_error('organization not found', 404)
       end
@@ -80,7 +80,8 @@ module AuthenticationHelper
     if params[:chapter_id]
       if current_node.chapters.exists? params[:chapter_id]
         return current_node.chapters.find params[:chapter_id]
-      elsif params[:chapter_id] == 0
+      elsif params[:chapter_id] == '0'
+        clear_logs current_node.chapters.first
         return current_node.chapters.first
       else
         send_error('chapter not found', 404)
@@ -92,10 +93,10 @@ module AuthenticationHelper
   
   def is_admin?
     if cookies.signed[:unisphere_api_admin]
-      send_error('unauthorized', 401) if current_organization.users.exists?(["access = :access or access_alias = :access_alias", { access: cookies.signed[:unisphere_api_admin], access_alias: cookies.signed[:unisphere_api_admin] }]).first
+      send_error('unauthorized', 401) unless current_organization.users.exists?(id: cookies.signed[:unisphere_api_admin])
     end
   end
-  
+
 end  
 
 

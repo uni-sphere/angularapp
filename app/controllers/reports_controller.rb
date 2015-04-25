@@ -1,7 +1,8 @@
 class ReportsController < ApplicationController
   
   def update
-    report = current_admin.reports.last
+    admin = User.find current_chapter.user_id
+    report = admin.reports.last
     report.increase_downloads
   end
   

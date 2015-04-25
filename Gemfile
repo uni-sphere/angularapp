@@ -37,7 +37,6 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'spring-commands-rspec'
   gem 'rb-fsevent'
-  # gem 'terminal-notifier-guard'
 end
 
 # db

@@ -1,0 +1,14 @@
+<div id="admin-popup" ng-show="showAdmin" ng-class="{'ready-to-disappear': !showAdmin, 'ready-to-appear': showAdmin}">
+
+  <div id="admin-popup-header">
+    <div id="admin-popup-title">{{ 'ADMIN_LOGIN' | translate }}</div>
+    <div id="admin-popup-close" ng-click="hideAdminPopup()" class="fa fa-close"></div>
+  </div>
+
+
+  <div id="admin-popup-content">
+    <input type="email" placeholder="type your email" class="admin-popup-input" ng-model="emailInput" autofocus> 
+    <input type="password" placeholder="type your password" class="admin-popup-input" ng-model="passwordInput"> 
+    <button id="admin-popup-button" ng-click="validateAdmin()">{{ 'VALIDATE' | translate }}</button>
+  </div>
+</div>

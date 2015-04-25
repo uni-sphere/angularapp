@@ -4,34 +4,6 @@
 @import "view-document";
 @import "dragndrop";
 
-html, body, #main-container{
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  
-  height: 100%;
-  width: 100%;
-
-  margin: 0px;
-  padding: 0px;
-}
-
-
-
-.hidden{
-  display: none;
-}
-
-body{
-  cursor: default;
-  font-size: 1em;
-  font-family: "ubuntu", "Lato";
-  user-select: none;
-}
-
-*:focus{
-  outline: none;
-}
 
 #navbar{
   position: fixed;
@@ -47,7 +19,7 @@ body{
   font-size: 1.2em;
   background: $navbar-bg;
 
-  box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.8);
 }
 
 #main-view-container{
@@ -65,11 +37,12 @@ body{
   z-index: 5;
 
   height: 100%;
-  width: 65%;
+  width: calc(65% - 2px);
 
   background: $tree-bg;
+  border-right: 2px solid grey;
 
-  box-shadow: 2px 0px 2px 1px rgba(0, 0, 0, 0.4);
+  // box-shadow: 2px 0px 2px 1px rgba(0, 0, 0, 0.4);
 
 }
 
@@ -83,114 +56,38 @@ body{
 }
 
 
-@media (max-width: 700px) {
-    html { font-size: 80%; }
-}
-
-
-@media (min-width: 700px) {
-    html { font-size: 100%; }
-}
-
-@media (min-width: 1200px) {
-    html { font-size: 120%; }
-}
 
 
 
-@keyframes flyout {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
 
-  100% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes flyin {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.ready-to-disappear{
-  animation: flyout .5s;
-}
-.ready-to-appear{
-  animation: flyin .5s;
-}
-
-#error-prompt{
+#admin-button{
   position: absolute;
-  top: 10px;
-  z-index: 10;
-  width: 20%;
-  height: 50px;
-  left: 40%;
- 
-  // border-radius: 5px;
+
+  bottom: 0px;
+  left: 20px;
+
+  padding: 10px;
+
+  z-index: 5;
+
+  // height: 40px;
+  // width: 200px;
+  background: black;
+  color: white;
+  cursor: pointer;
+
+  border-top-left-radius: .2em;
+  border-top-right-radius: .2em;
 }
 
-.singleError{
-  text-align: center;
+#admin-button-text{
+  margin-right: 50px;
 }
 
-#error-prompt-title{
-    color: $error-promt-color-dark;
-    padding-left: calc(50% - 25px);
-    padding-top: 8px;
-    padding-bottom: 8px;
-    background: $error-promt-bg;
-    border: 1px solid $border-error-prompt;
-    // border-bottom: none;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
-}
-
-#close-error-prompt{
-  font-size: .8em;
-  font-weight: bold;
+#admin-button-image{
   position: absolute;
   right: 10px;
-  padding: 0px 10px;
-  cursor: pointer;
-  color: $error-promt-color-very-light;
-  line-height: 42px;
-
-  &:hover{
-    color: $error-promt-color-dark;
-  }
+  top: 0px;
+  height: 100%;
+  font-size: 2em;
 }
-
-#error-prompt-text{
-  color: $error-promt-color-light;
-  padding: 10px 10px 0px 10px;
-  background: $error-promt-bg;
-  background: white;
-  border: 1px solid $border-error-prompt;
-  border-top: none;
-  border-bottom-right-radius: 5px;
-  border-bottom-left-radius: 5px;
-
-  .fa{
-    position: absolute;
-    margin-top: 5px;
-  }
-  .error{
-    display: inline-block;
-    position: relative;
-    margin-left: 10px;
-    margin-bottom: 10px;
-  }
-}
-
-

@@ -30,9 +30,10 @@ describe AuthenticationHelper, type: :helper do
   describe "#get_chapter" do
     
     before do
-      Organization.last.nodes.create!(name: 'node_name', parent_id: 0)
+      organization = Organization.last.nodes.create!(name: 'node_name', parent_id: 0)
+      Organization.last.users.create(email: 'name@domain.com', password: 'psw')
       params[:node_id] = 1
-      Node.last.chapters.create!(title: 'chapter_title', parent_id: 0)
+      Node.last.chapters.create!(title: 'chapter_title', parent_id: 0, user_id: User.last.id)
       params[:chapter_id] = 1
     end
     

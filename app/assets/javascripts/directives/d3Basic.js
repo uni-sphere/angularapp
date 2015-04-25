@@ -9,7 +9,8 @@
           flatData: '=',
           nodeEnd: '=',
           displayError: '=',
-          activeNodes: '='
+          activeNodes: '=',
+          admin: '='
         },
         link: function(scope, iElement, iAttrs) {
 
@@ -40,7 +41,6 @@
             scope.activeNodes = scope.activeNodes.split(',');
             scope.activeNodes = transformArrayInDouble(scope.activeNodes);
           }
-
           scope.nodeEnd = $cookies.get('nodeEnd');
           if(scope.nodeEnd == "false"){
             scope.nodeEnd = false;
@@ -82,6 +82,10 @@
             }
           );
 
+          scope.$watch('admin',function(){
+            return render(createTreeData(scope.flatData), iElement, foldedNode);
+          })
+
           // watch for data changes and re-render
           // scope.$watch('copyFlatData', function(newVals, oldVals) {
           //   render(createTreeData(Restangular.copy(newVals)), iElement, getCookieArray);
@@ -118,7 +122,7 @@
             var links = scope.tree.links(nodes);
 
             // Normalize for fixed-depth.
-            nodes.forEach(function(d) { d.y = d.depth * 180; });
+            nodes.forEach(function(d) { d.y = d.depth * 140; });
 
             // Update the nodes…
             var node = svg.selectAll("g.node")
@@ -138,30 +142,42 @@
               .on("click", openNode)
 
             nodeEnter.append("text")
-              .attr("class", "addNode")
-              .attr("x", "-16px")
-              .attr("y", "-20px")
-              // .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-              .text("+")
-              .style("fill-opacity", 1e-6)
-              .on("click", addNode)
-
-            nodeEnter.append("text")
-              .attr("class", "deleteNode")
-              .attr("x", "10px")
-              .attr("y", "-20px")
-              // .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-              .text("x")
-              .style("fill-opacity", 1e-6)
-              .on("click", deleteNode)
-
-            nodeEnter.append("text")
               .attr("class", "nameNode")
               .attr("x", function(d) { return d.children || d._children ? -15 : 10; })
               .attr("dy", ".275em")
               .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
               .style("fill-opacity", 1e-6)
-              .on("click", renameNode)
+              .on("click", openNode)
+
+            if(scope.admin){
+              nodeEnter.append("text")
+                .attr("class", "addNode")
+                .attr("x", "-16px")
+                .attr("y", "-20px")
+                // .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+                .text("+")
+                .style("fill-opacity", 1e-6)
+                .on("click", addNode)
+
+              nodeEnter.append("text")
+                .attr("class", "deleteNode")
+                .attr("x", "10px")
+                .attr("y", "-20px")
+                // .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+                .text("x")
+                .style("fill-opacity", 1e-6)
+                .on("click", deleteNode)
+
+              nodeEnter.append("text")
+                .attr("class", "nameNode")
+                .attr("x", function(d) { return d.children || d._children ? -15 : 10; })
+                .attr("dy", ".275em")
+                .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+                .style("fill-opacity", 1e-6)
+                .on("click", renameNode)
+            }
+            
+
 
             // Transition nodes to their new position.
             var nodeUpdate = node.transition()
@@ -300,7 +316,8 @@
               };
 
               findLastNodePath(d);
-              findNodeEnd(d)
+              findNodeEnd(d);
+              // console.log(scope.nodeEnd);
               // console.log(scope.nodeEnd[0]);
               // console.log(activeNodes);
               findClosedNodes(scope.root);

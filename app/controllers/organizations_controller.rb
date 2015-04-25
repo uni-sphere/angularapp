@@ -5,7 +5,8 @@ class OrganizationsController < ApplicationController
     node = organization.nodes.new(name: params[:name], parent_id: 0)
     user = organization.users.new(email: params[:email])
     user.password = params[:password]
-    if organization.save and node.save and user.save and create_pointer(organization.subdomain)
+    report = user.reports.new
+    if organization.save and node.save and user.save and report.save # and create_pointer(organization.subdomain)
       UserMailer.welcome_email(organization.name, user.email, "http://#{organization.subdomain}.unisphere.eu").deliver
       render json: { organization: organization, user: user, url: "http://#{organization.subdomain}.unisphere.eu" }.to_json, status: 201, location: organization
     else

@@ -20,9 +20,11 @@ angular
           if($scope.list.length == 0){
             $scope.documentAbsent = true;
           }
-        }, function() {
-          scope.displayError("Try again to delete: " + nodeToDelete.$modelValue.title);
-          console.log("Try again to delete: " + nodeToDelete.$modelValue.title);
+
+        }, function(d) {
+          console.log("There was an error deleting the file");
+          console.log(d);
+          scope.displayError("Try again to delete the document: " + nodeToDelete.$modelValue.title);
         });
       }
 
@@ -36,9 +38,10 @@ angular
             $scope.documentAbsent = true;
           }
 
-        }, function() {
-          scope.displayError("There was an error deleting: " + nodeToDelete.$modelValue.title);
-          console.log("There was an error deleting: " + nodeToDelete.$modelValue.title);
+        }, function(d) {
+          console.log("There was an error deleting the chapter");
+          console.log(d);
+          scope.displayError("Try again to delete the chapter: " + nodeToDelete.$modelValue.title);
         });
       }
     };
@@ -48,6 +51,8 @@ angular
     ===========================================*/
     
     $scope.newSubItem = function(scope) {
+
+      console.log(scope);
 
       if(scope == undefined){
         var nodeData = {id: 0};
@@ -62,21 +67,19 @@ angular
       }
 
       Restangular.all('chapters').post(nodeToCreate).then(function(d) {
-        var a = {title: "new chapter", id: d.id, items: [], depth: nodeData.depth + 1}
 
         if(nodeData.items == undefined){
-          nodeData.items = [a];
+          depth = 0
+        } else{
+          depth = nodeData.depth + 1;
+        }
+        var a = {title: "new chapter", id: d.id, items: [], depth: depth }
+
+        if(nodeData.items == undefined){
+          $scope.list.push(a);
         } else{
           nodeData.items.push(a);
         }
-        // addToDocumentFoldedCookie(nodeData.id);
-
-        // console.log(scope);
-        // console.log(scope.$childNodesScope)
-        // console.log(scope.$childNodesScope.$nodesMap)
-        // console.log(scope.$childNodesScope.$nodesMap);
-
-        // console.log(scope.$childNodesScope)
 
         // Expands the containing folder
         if(!$scope.documentAbsent && scope!= undefined){
@@ -88,8 +91,10 @@ angular
         }
 
       }, function(d) {
-        $scope.displayError("Try again to create a chapter");
-        console.log("There was an error saving");
+        console.log("Impossible to create the chapter");
+        console.log(d);
+        $scope.displayError("Try again to create the chapter");
+
       });
     };
 
@@ -108,6 +113,16 @@ angular
 
         var result = prompt('Change the name of the document',scope.title);
         if(result) {
+
+          console.log(result);
+
+          // We check the user didn't change the extension
+          if(result.indexOf('.') > -1){
+            result = result.split('.')[0];
+          }
+
+          console.log(result);
+
           var nodeUpdate = {title: result + "." + extension}
 
           Restangular.one('awsdocuments/' + documentToUpdateId).put(nodeUpdate).then(function(d) {
@@ -116,6 +131,7 @@ angular
             console.log("Object updated");
           }, function(d) {
             console.log("There was an error updating the document");
+            console.log(d);
             scope.displayError("Try again to change this document's name");
           });
         }
@@ -128,6 +144,10 @@ angular
 
         var result = prompt('Change the name of the chapter',scope.title);
         if(result) {
+
+          // Uppercase the first letter
+          result = result[0].toUpperCase() + result.slice(1);
+
           var nodeUpdate = {title: result, node_id: $scope.nodeEnd[0]}
 
           Restangular.one('chapters/' + chapterToUpdateId).put(nodeUpdate).then(function(d) {
@@ -136,6 +156,7 @@ angular
             console.log("Object updated");
           }, function(d) {
             console.log("There was an error updating");
+            console.log(d);
             scope.displayError("Try again to change this chapter's name");
           });
         }
