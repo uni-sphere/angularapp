@@ -38,7 +38,12 @@
           UPLOAD: 'New file',
           CHAPTER: 'New chapter',
           DROP_ZONE: 'DROP ZONE',
-          DROP_EXPLANATION: 'You can even drop folders containing folders containing folders'
+          DROP_EXPLANATION: 'You can even drop folders containing folders containing folders',
+					COLLAPSE: 'Collapse',
+					DASHBOARD: 'Dashboard',
+					HOME: 'Home',
+					ACCOUNT: 'Account',
+					SIGNOUT: 'Sign out'
         })
         .translations('fr', {
           HELP: 'Aide',
@@ -52,7 +57,12 @@
           UPLOAD: 'Nouveau fichier',
           CHAPTER: 'Nouveau chapitre',
           DROP_ZONE: 'DROP ZONE',
-          DROP_EXPLANATION: "Vous pouvez importer des dossiers contenants d'autres dossiers"
+          DROP_EXPLANATION: "Vous pouvez importer des dossiers contenants d'autres dossiers",
+					COLLAPSE: 'Réduire',
+					DASHBOARD: 'Données',
+					HOME: 'Home',
+					ACCOUNT: 'Compte',
+					SIGNOUT: 'Déconnexion'
         })
         .preferredLanguage('en')
 				.registerAvailableLanguageKeys(['fr'])
@@ -63,7 +73,8 @@
 
         .state('main', {
           url: '/',
-          templateUrl: 'main/layout.html',
+          abstract: true,
+          templateUrl: 'main/main.html',
           controller: 'MainCtrl',
           resolve: {
             nodesflat: function(Restangular){
@@ -71,6 +82,18 @@
             }
           }
         })
+
+          // the default route when someone hits dashboard
+          .state('main.application', {
+              url: '',
+              templateUrl: 'application/application.html'
+          })
+          // this is /dashboard/two
+          .state('main.dashboard', {
+              url: 'dashboard',
+              templateUrl: 'dashboard/one.html'
+          })
+          // this is /dashboard/three
 
         .state('home', {
           url: '/home',
@@ -83,27 +106,27 @@
           }
         })
 
-       .state('dashboard', {
-          abstract: true,
-          url: '/dashboard',
-          templateUrl: 'dashboard/layout.html'
-        })
+       // .state('dashboard', {
+       //    // abstract: true,
+       //    url: '/dashboard',
+       //    templateUrl: 'dashboard/layout.html'
+       //  })
           
-          // the default route when someone hits dashboard
-          .state('dashboard.one', {
-              url: '',
-              templateUrl: 'dashboard/one.html'
-          })
-          // this is /dashboard/two
-          .state('dashboard.two', {
-              url: '/two',
-              templateUrl: 'dashboard/two.html'
-          })
-          // this is /dashboard/three
-          .state('dashboard.three', {
-              url: '/three',
-              templateUrl: 'dashboard/three.html'
-          });
+       //    // the default route when someone hits dashboard
+       //    .state('dashboard.one', {
+       //        url: '',
+       //        templateUrl: 'dashboard/one.html'
+       //    })
+       //    // this is /dashboard/two
+       //    .state('dashboard.two', {
+       //        url: '/two',
+       //        templateUrl: 'dashboard/two.html'
+       //    })
+       //    // this is /dashboard/three
+       //    .state('dashboard.three', {
+       //        url: '/three',
+       //        templateUrl: 'dashboard/three.html'
+       //    });
 
     $urlRouterProvider.otherwise('/');
 

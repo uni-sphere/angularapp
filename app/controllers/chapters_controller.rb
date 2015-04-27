@@ -27,8 +27,6 @@ class ChaptersController < ApplicationController
   end
   
   def index
-    report_view if current_node.chapters.any?
-    
     tree = []
     current_node.chapters.each do |chapter|
       tree << chapter
@@ -48,12 +46,6 @@ class ChaptersController < ApplicationController
       end
     end
     Chapter.find(id).destroy
-  end
-  
-  def report_view
-    user = User.find current_node.chapters.first.user_id
-    report = user.reports.last
-    report.increase_views
   end
   
 end

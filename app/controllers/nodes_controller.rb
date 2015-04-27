@@ -4,7 +4,8 @@ class NodesController < ApplicationController
     node = current_organization.nodes.new(name: params[:name], parent_id: params[:parent_id])
     chapter = node.chapters.new(title: 'main', parent_id: 0, user_id: current_admin.id)
     parent = current_organization.nodes.find params[:parent_id]
-    if node.save and chapter.save
+    report = node.reports.new
+    if node.save and chapter.save and report.save
       if parent.chapters.count >= 2
         Chapter.where(node_id: parent.id).each do |chapter|
           chapter.update(node_id: node.id)

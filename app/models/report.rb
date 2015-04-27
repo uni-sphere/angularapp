@@ -1,13 +1,9 @@
 class Report < ActiveRecord::Base
   
-  belongs_to :user
-  
-  def increase_views
-    update_attributes(views: views + 1)
-  end
+  belongs_to :node
   
   def increase_downloads
-    update_attributes(views: views + 1)
+    update_attributes(downloads: downloads + 1)
   end
   
 end

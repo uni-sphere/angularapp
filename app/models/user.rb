@@ -2,7 +2,6 @@ class User < ActiveRecord::Base
   
   require 'bcrypt'
   
-  has_many :reports
   has_many :chapters
   
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

@@ -1,12 +1,12 @@
 <div id="view-document">
 
-<!--   <div id="breadcrumb">
+  <div id="breadcrumb">
     <div id="breadcrumb-container">
       <div id="breadcrumb-title">
-        <span ng-repeat="node in breadcrumb" ng-class="'breadcrumb-node'">{{node}} <span ng-class="'breadcrumb-separator'" ng-hide="$index == breadcrumb.length - 1">/</span></span>
+        <span ng-repeat="node in breadcrumb" ng-class="'breadcrumb-node'">{{node}} <span ng-class="'breadcrumb-separator'" ng-hide="$index == breadcrumb.length - 1"><i class="fa fa-angle-right"></i></span></span>
       </div>
     </div>
-  </div> -->
+  </div>
 
 
   <script type="text/ng-template" id="items_renderer.html">
@@ -33,7 +33,7 @@
 
       <a ng-href={{item.preview_link}} download class="btn btn-download" ng-show="item.document" nodrag analytics-on="click" analytics-event="download" ng-click="downloadItem(this)" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-arrow-circle-o-down"></span></a>
 
-      <a ng-href={{item.preview_link}} class="btn btn-preview" target="_blank" ng-show="item.document && item.type == 'application/pdf'" nodrag analytics-on="click" analytics-event="preview" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>" ><span class="fa fa-eye"></span></a>
+      <a ng-href={{item.preview_link}} class="btn btn-preview" target="_blank" ng-show="item.document && item.type == 'application/pdf'" nodrag analytics-on="click" ng-click="downloadItem(this)" analytics-event="preview" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>" ><span class="fa fa-eye"></span></a>
 
     </div>
     

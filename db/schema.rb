@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20150430082038) do
   create_table "awsdocuments", force: :cascade do |t|
     t.string   "content"
     t.string   "title"
-    t.string   "url"
+    t.text     "url"
     t.integer  "chapter_id"
     t.boolean  "archived",   default: false
     t.datetime "created_at"
@@ -48,9 +48,8 @@ ActiveRecord::Schema.define(version: 20150430082038) do
   end
 
   create_table "reports", force: :cascade do |t|
-    t.integer  "views",      default: 0
     t.integer  "downloads",  default: 0
-    t.integer  "user_id"
+    t.integer  "node_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

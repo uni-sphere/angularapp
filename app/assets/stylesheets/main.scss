@@ -1,12 +1,7 @@
 @import "angular-ui-tree/dist/angular-ui-tree.min";
 @import "ngDialog/css/ngDialog.min";
-// @import "angular-dropdowns/dist/angular-dropdowns";
-
 @import "font-awesome";
-
-
-// @import "fontawesome/css/font-awesome";
-// @import "ngDialog/css/ngDialog-theme-default.min";
+@import url(http://fonts.googleapis.com/css?family=Ubuntu);
 
 @font-face {
   font-family: "Lato";
@@ -113,6 +108,14 @@ $collapse-button-color: tomato;
 $fa-hover: black;
 $fa-color: $very-dark-grey;
 
+
+// Dashboard
+
+$group-button-border: #939E96;
+$group-button-hover: #e6e6e6;
+$button-group-bg: #F5F5F5;
+
+$graph-fill: white;
 // $chapter-depth2-bg: #E8E8E8;
 // $chapter-depth2-hover: #DCE0E9;
 
@@ -269,6 +272,8 @@ html, body, #main-container{
 
   margin: 0px;
   padding: 0px;
+
+  overflow-y: hidden;
 }
 
 .hidden{
@@ -278,7 +283,7 @@ html, body, #main-container{
 body{
   cursor: default;
   font-size: 1em;
-  font-family: "ubuntu", "Lato";
+  font-family: 'Ubuntu', sans-serif, "Lato";
   user-select: none;
 }
 
@@ -301,9 +306,9 @@ body{
 
 
 
-
-
-
 @import "main/**/*";
 @import "home/**/*";
+@import "application/**/*";
+@import "dashboard/**/*";
+
 

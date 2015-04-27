@@ -45,8 +45,6 @@
 
               scope.newUniPassword = "";
             });
-
-            // scope.passwordInput
           }
         }
       }

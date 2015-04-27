@@ -1,0 +1,34 @@
+<!-- <div id="admin-button" ng-click="displayAdminPopup()" ng-hide="admin">
+  <span id="admin-button-text">{{ 'ADMIN_LOGIN' | translate }}</span>
+  <i id="admin-button-image" class="fa fa-caret-up"></i>
+</div>
+
+<div id="admin-popup" ng-show="showAdmin" ng-class="{'ready-to-disappear': !showAdmin, 'ready-to-appear': showAdmin}">
+
+  <div id="admin-popup-header">
+    <div id="admin-popup-title">{{ 'ADMIN_LOGIN' | translate }}</div>
+    <div id="admin-popup-close" ng-click="hideAdminPopup()" class="fa fa-close"></div>
+  </div>
+
+
+  <div id="admin-popup-content">
+    <input type="email" placeholder="type your email" class="admin-popup-input" ng-model="emailInput" autofocus> 
+    <input type="password" placeholder="type your password" class="admin-popup-input" ng-model="passwordInput"> 
+    <button id="admin-popup-button" ng-click="validateAdmin()">{{ 'VALIDATE' | translate }}</button>
+  </div>
+</div> -->
+
+
+<div id="admin-co" ng-class="{'admin-co-open' : open}">
+  <div id="admin-co-header" ng-click="toggleAdmin()">
+    <span id="admin-co-title">{{ 'ADMIN_LOGIN' | translate }}</span>
+    <i id="admin-co-image" class="fa fa-caret-up"></i>
+  </div>
+  <div id="admin-co-body" ng-class="{ hidden : !open}">
+   <input type="email" id="admin-co-email" placeholder="type your email" class="admin-co-input" ng-model="emailInput" autofocus>
+
+    <input type="password" placeholder="type your password" class="admin-co-input" ng-model="passwordInput"> 
+
+    <button id="admin-co-button" ng-click="validateAdmin()">Validate</button>
+  </div>
+</div>

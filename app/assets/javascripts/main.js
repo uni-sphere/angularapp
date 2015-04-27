@@ -1,3 +1,4 @@
+//= require jquery
 //= require angular
 //= require angular-animate
 //= require angular-ui-router
@@ -15,10 +16,10 @@
 //= require	angulartics/dist/angulartics-gtm.min
 //= require	angular-translate/angular-translate.min
 //= require	angular-dropdowns/dist/angular-dropdowns
-
+//= require	metrics-graphics/dist/metricsgraphics.min
 
 //= require angular-rails-templates
-//= require app-main
+//= require app
 //= require_tree ./controllers
 //= require_tree ./directives
 //= require_tree ./filters

@@ -1,4 +1,10 @@
 class UsersController < ApplicationController
+
+  def nodes
+    # nodes = Node.where(user_id: current_admin.id)
+   # SANS IDENTIFICATION ADMIN
+    render json: user_nodes, status: 200
+  end
   
   def login
     if current_organization.users.exists? email: params[:email]
@@ -6,7 +12,7 @@ class UsersController < ApplicationController
       if user.password == params[:password]
         cookies.signed[:unisphere_api_admin] = user.id
         if cookies.signed[:unisphere_api_admin] == user.id
-          render json: {cookie: cookies.signed[:unisphere_api_admin]}.to_json, status: 200
+          render json: {cookie: cookies[:unisphere_api_admin]}.to_json, status: 200
         else
           cookies.delete :unisphere_api_admin
           send_error('problem to write cookies', 500)

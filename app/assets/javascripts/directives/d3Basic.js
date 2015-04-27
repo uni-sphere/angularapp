@@ -16,7 +16,7 @@
 
           scope.copyFlatData = Restangular.copy(scope.flatData);
           scope.dataChanged = false;
-          var margin = {top: 0, right: 20, bottom: 0, left: 150};
+          var margin = {top: 0, right: 20, bottom: 0, left: 30};
 
           /*==========  Svg creation  ==========*/
           
@@ -122,7 +122,7 @@
             var links = scope.tree.links(nodes);
 
             // Normalize for fixed-depth.
-            nodes.forEach(function(d) { d.y = d.depth * 140; });
+            nodes.forEach(function(d) { d.y = d.depth * 140});
 
             // Update the nodes…
             var node = svg.selectAll("g.node")
@@ -141,13 +141,15 @@
               // .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
               .on("click", openNode)
 
-            nodeEnter.append("text")
-              .attr("class", "nameNode")
+            if(!scope.admin){
+              nodeEnter.append("text")
+              .attr("class", function(d){return typeof d.parent === 'object' ? "nameNode" : ""})
               .attr("x", function(d) { return d.children || d._children ? -15 : 10; })
               .attr("dy", ".275em")
               .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
               .style("fill-opacity", 1e-6)
               .on("click", openNode)
+            }
 
             if(scope.admin){
               nodeEnter.append("text")
@@ -169,7 +171,7 @@
                 .on("click", deleteNode)
 
               nodeEnter.append("text")
-                .attr("class", "nameNode")
+                .attr("class", function(d){return typeof d.parent === 'object' ? "nameNode" : ""})
                 .attr("x", function(d) { return d.children || d._children ? -15 : 10; })
                 .attr("dy", ".275em")
                 .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })

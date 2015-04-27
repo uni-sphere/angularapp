@@ -1,0 +1,33 @@
+#application-view{
+  position: absolute;
+  top: 0;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  overflow-y: hidden;
+}
+
+
+#view-tree{
+  position: relative;
+  float: left;
+  z-index: 5;
+
+  height: 100%;
+  width: calc(65% - 2px);
+
+  background: $tree-bg;
+  border-right: 2px solid grey;
+
+  // box-shadow: 2px 0px 2px 1px rgba(0, 0, 0, 0.4);
+}
+
+
+#view-document{
+  position: relative;
+  float: left;
+  background: $document-bg;
+
+  height: calc(100%);
+  width: calc(35%);
+}

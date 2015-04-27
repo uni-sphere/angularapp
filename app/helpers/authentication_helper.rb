@@ -5,6 +5,7 @@ module AuthenticationHelper
   $TOKEN = '6632398822f1d84468ebde3c837338fb'
   
   def authentication
+    cookies.signed['unisphere_api_admin'] = 1
     authenticate_client unless request.path == '/'
   end
   
@@ -12,6 +13,15 @@ module AuthenticationHelper
     authenticate_with_http_token do |token, options|
       send_error('Bad token', 401) unless token == $TOKEN
     end
+  end
+  
+  def user_nodes
+    chapters = Chapter.where(user_id: User.last.id)
+    ids = []
+    chapters.each do |chapter|
+      ids << chapter.node_id
+    end
+    return Node.where(id: ids)
   end
   
   def current_subdomain
@@ -52,8 +62,8 @@ module AuthenticationHelper
   end
   
   def current_admin
-    if cookies.signed[:unisphere_api_admin]
-      id = cookies.signed[:unisphere_api_admin]
+    if cookies.signed['unisphere_api_admin']
+      id = cookies.signed['unisphere_api_admin']
       if current_organization.users.exists?(id: id)
         return current_organization.users.find id
       end
@@ -92,8 +102,8 @@ module AuthenticationHelper
   end
   
   def is_admin?
-    if cookies.signed[:unisphere_api_admin]
-      send_error('unauthorized', 401) unless current_organization.users.exists?(id: cookies.signed[:unisphere_api_admin])
+    if cookies.signed['unisphere_api_admin']
+      send_error('unauthorized', 401) unless current_organization.users.exists?(id: cookies.signed['unisphere_api_admin'])
     end
   end
 

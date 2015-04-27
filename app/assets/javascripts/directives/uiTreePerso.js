@@ -4,7 +4,7 @@
     .directive('uiTreePerso', ['$translate' , 'Restangular', 'browser', '$upload', function($translate, Restangular, browser, $upload) {
       return {
         restrict: 'E',
-        templateUrl: 'main/view-document.html',
+        templateUrl: 'application/view-document.html',
         scope:{
           activeNodes: '=',
           nodeEnd: '=',
@@ -147,6 +147,16 @@
             // console.log(treeData);
 
             return treeData;
+          }
+
+
+          // We save the number of download
+          scope.downloadItem = function(scope){
+            Restangular.one('activity').put().then(function(d) {
+              console.log("Download registered");
+            },function(d){
+              console.log("There was an error registering the download");
+            });
           }
 
 

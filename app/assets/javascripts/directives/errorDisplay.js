@@ -23,9 +23,7 @@
             scope.listError = [];
             scope.showError = false;
           }
-
         }
       }
-
   }]);
 }());
