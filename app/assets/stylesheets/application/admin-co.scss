@@ -15,12 +15,9 @@
   #admin-co-image{
     transform:rotate(180deg);
   }
-
-  // #admin-co-body{
-  //   display: inline-block;
-  // }
 }
 
+//Header
 #admin-co-header{
   height: 30px;
   padding-left: 10px;
@@ -31,7 +28,6 @@
   background: black;
   color: white;
   cursor: pointer;
-  font-size: 1.1em;
 }
 
 #admin-co-image{
@@ -40,12 +36,17 @@
   line-height: 30px;
 }
 
+
+//Body
 #admin-co-body{
   height: 100%;
   padding: 20px;
+  padding-bottom: 10px;
   font-size: 1em;
   background: #383838;
+  position: relative;
 }
+
 .admin-co-input{
   padding: 10px 10px;
   width: calc(100% - 40px);
@@ -54,11 +55,12 @@
   display: block;
   border-radius: 5px;
   font-size: .9em;
-  border: 1px solid #383838;
+  border: 2px solid #383838;
   box-shadow: none;
-  // &:focus{
-  //   border: 1px solid #20B334;
-  // }
+
+  &:focus{
+    border: 2px solid #44AB52;
+  }
 }
 
 #admin-co-button{
@@ -94,3 +96,33 @@
 }
 
 
+#admin-co-secondary-options{
+  margin-top: 30px;
+  position: relative;
+  width: 100%;
+  height: 20px;
+
+}
+
+#admin-co-password-forgotten, #admin-co-sign-up{
+  position: relative;
+  display: inline-block;
+  float: left;
+  font-size: .8em;
+  color: $ligthy-gris;
+  cursor: pointer;
+  &:hover{
+    color: white;
+    text-decoration: underline;
+  }
+}
+
+#admin-co-sign-up{
+  float: right;
+  padding-right: 10px;
+}
+
+#admin-co-password-forgotten{
+  float: left;
+  padding-left: 10px;
+}

@@ -43,57 +43,58 @@
 }
 
 .toggle_menu{
-  display:block;
-  float:left;
-  width:50px;
-  height:50px;
-  line-height:50px;
-  padding:0;
-  background:0 0;
-  border:0;
-  text-align:center;
-  cursor:pointer;
+  display: block;
+  float: left;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  padding: 0;
+  background: 0 0;
+  border: 0;
+  text-align: center;
+  cursor: pointer;
 }
 
 
 .toggle_menu i{
-  display:block;
-  font-size:28px;
+  display: block;
+  font-size: 28px;
 }
 
 .vertical_nav{
-  position:absolute;
-  left:-200px;
-  top:54px;
-  bottom:0;
-  width:200px;
-  background:#f6f6f6;
+  position: fixed;
+  left: -200px;
+  top: 54px;
+  bottom: 0;
+  width: 199px;
+  background: $sidebar-bg;
+  border-right: 1px solid $sidebar-border;
   z-index: 100;
 }
 
 .vertical_nav__closed{
-  left:-200px!important;
+  left: -200px!important;
 }
 
 .vertical_nav__opened{
-  left:0!important;
-  box-shadow:rgba(0,0,0,.4);
+  left: 0!important;
+  box-shadow: rgba(0,0,0,.4);
 }
 
 .menu{
-  position:relative;
-  overflow-y:auto;
-  width:100%;
+  position: relative;
+  overflow-y: auto;
+  width: 100%;
   height: calc(100% - 80px);
-  margin:0;
-  padding:0;
-  list-style-type:none;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
 }
 
 .menu--item{
-  position:relative;
-  min-height:40px;
-  line-height:40px;
+  position: relative;
+  min-height: 40px;
+  line-height: 40px;
 }
 
 .deco-button{
@@ -108,13 +109,13 @@
 }
 
 .menu--item__has_sub_menu .menu--link:after{
-  position:absolute;
-  top:0;
-  right:15px;
-  height:40px;
-  line-height:40px;
-  font-family:FontAwesome;
-  content:"\f0d7";
+  position: absolute;
+  top: 0;
+  right: 15px;
+  height: 40px;
+  line-height: 40px;
+  font-family: FontAwesome;
+  content: "\f0d7";
 }
 
 .menu--subitens__opened{
@@ -122,28 +123,28 @@
 }
 
 .menu--subitens__opened .menu--link{
-  color:#000;
+  color: #000;
 }
 
 .menu--subitens__opened .sub_menu{
-  display:block;
+  display: block;
 }
 
 .menu--link{
-  display:block;
-  overflow:hidden;
-  font-size:.875rem;
-  text-decoration:none;
-  color:#666;
-  font-weight:400;
-  white-space:nowrap;
-  cursor:pointer;
+  display: block;
+  overflow: hidden;
+  font-size: .875rem;
+  text-decoration: none;
+  color: $sidebar-item-color;
+  font-weight: 400;
+  white-space: nowrap;
+  cursor: pointer;
   margin-bottom: 2px;
 }
 
 .menu--link:hover,.menu--link:hover .menu--label, .menu--link-active{
-  color:#000;
-  background:#ddd;
+  color: $sidebar-item-hover-color;
+  background: $sidebar-item-hover-bg;
 }
 
 .menu--link-active{
@@ -151,48 +152,48 @@
 }
 
 .menu--icon{
-  display:block;
-  float:left;
-  width:50px;
-  height:40px;
-  line-height:40px;
-  font-size:20px;
+  display: block;
+  float: left;
+  width: 50px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 20px;
 }
 
 .menu--label{
-  display:block;
-  height:40px;
-  line-height:40px;
+  display: block;
+  height: 40px;
+  line-height: 40px;
 }
 
 .sub_menu{
-  display:none;
-  overflow:hidden;
-  padding-left:0;
-  list-style:none;
+  display: none;
+  overflow: hidden;
+  padding-left: 0;
+  list-style: none;
 }
 
 .sub_menu--link{
-  display:block;
-  padding-left:50px;
-  padding-right:16px;
-  font-size:.875rem;
-  color:#666;
-  text-decoration:none;
+  display: block;
+  padding-left: 50px;
+  padding-right: 16px;
+  font-size: .875rem;
+  color: #666;
+  text-decoration: none;
 }
 
 .sub_menu--link:hover{
-  color:#000;
-  background:#ddd;
+  color: #000;
+  background: #ddd;
 }
 
 .sub_menu--link__active{
-  color:#000;
-  font-weight:500;
+  color: #000;
+  font-weight: 500;
 }
 
 .collapse_menu{
-  display:none;
+  display: none;
 }
 
 

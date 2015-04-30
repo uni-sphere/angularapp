@@ -11,11 +11,13 @@ Rails.application.routes.draw do
         put 'unarchive'
       end
     end
-    resources :reports, only: [:update, :index]
+    resources :reports, only: [:update]
     
+    get 'reports/firstchart', to: 'reports#first_chart'
+    get 'reports/secondchart', to: 'reports#second_chart'
     get 'organization', to: 'organizations#show'
     get 'awsdocuments/archives', to: 'awsdocuments#archives'
-    get 'user/nodes', to: 'users#nodes'
+    get 'report/nodes', to: 'reports#nodes'
     put 'activity', to: 'reports#update'
     post 'users/invite', to: 'users#invite'
     post 'users/login', to: 'users#login'
@@ -27,5 +29,6 @@ Rails.application.routes.draw do
 
   get '/home', to: 'angular#index'
   get '/dashboard', to: 'angular#index'
+  get '/account', to: 'angular#index'
   
 end

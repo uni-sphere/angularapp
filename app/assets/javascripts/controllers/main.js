@@ -17,6 +17,8 @@ angular
       $scope.admin = false;
     }
 
+    $scope.inviteUser = ["clement@muller.uk.net","gabriel.muller.12@gmail.com"]
+
     // console.log($scope.admin);
 
     // $scope.openAdmin = function(){
@@ -49,7 +51,7 @@ angular
 		
     $scope.ddSelectOptions = [
       {
-        text: 'French',
+        text: 'Français',
         value: 'fr'
       },
       {

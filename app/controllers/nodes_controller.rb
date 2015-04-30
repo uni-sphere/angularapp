@@ -27,7 +27,7 @@ class NodesController < ApplicationController
   
   def destroy
     if current_node.parent_id != 0
-      current_node.destroy
+      destroy_with_children(current_node.id)
       head 204
     else
       send_error('You can not destroy the root of your tree', 400)
@@ -40,6 +40,15 @@ class NodesController < ApplicationController
       nodes << {name: node.name, num: node.id, parent: node.parent_id}
     end
     render json: nodes, status: 200
+  end
+  
+  def destroy_with_children(id)
+    if Node.exists?(parent_id: id)
+      Node.where(parent_id: id).each do |node|
+        destroy_with_children(node.id)
+      end
+    end
+    Node.find(id).destroy
   end
   
 end

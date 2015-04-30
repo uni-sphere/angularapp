@@ -1,58 +1,79 @@
-#chart-1, #chart-2{
-  position: relative;
-  float: left;
-  width: calc(50% - 120px);
-  padding: 60px;
-  // height: 50%;
-}
-
-
+// Chart control
 .chart-control{
-  width: calc(50% - 50px);
-  padding: 20px;
   position: relative;
   display: inline-block;
+
+  width: calc(50% - 50px);
+
+  margin-top: 40px;
+  padding: 20px;
+
   text-align: center;
 }
+
+// Chart title
+.chart-title{
+  margin-bottom: 20px;
+
+  font-size: 1.8em;
+  color: $chart-title-color;
+  font-family: "helvetica";
+  font-weight: 100;
+}
+
+// Chart positionning
+#chart-1, #chart-1-empty{
+  position: relative;
+  float: left;
+
+  width: calc(50% - 120px);
+  padding: 20px 60px;
+}
+
+#chart-2{
+  position: relative;
+  float: right;
+
+  width: calc(50% - 120px);
+  padding: 20px 60px;
+}
+
+/*==========  Buttons  ==========*/
 
 .chart-button-wrapper{
   position: relative;
   display: inline-block;
-  // float: left;
-  // border: 1px solid $group-button-border;
-
-  
-  // width: calc(50% - 40px);
-  // padding: 10px 20px;
-  // background: red;
 }
 
-
 .button-group{
-  display: inline-block !important;
   position: relative;
+  display: inline-block !important;
   float: left;
 
   padding: 5px 8px;
   margin: 0;
 
-  background: $button-group-bg;
+  color: $chart-button-color;
 
+  background: $button-group-bg;
+  font-family: "helvetica";
+  font-weight: 100;
   cursor: pointer;
   &:hover{
     background: $group-button-hover;
+    box-shadow: inset 1px 1px 2px 0px #949494;
   }
 }
 
 .button-group-middle{
   border: 1px solid $group-button-border;
+  border-left: none;
 }
 
 .button-group-first{
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   border: 1px solid $group-button-border;
-  border-right: none;
 }
 
 .button-group-last{
@@ -60,4 +81,28 @@
   border-bottom-right-radius: 10px;
   border: 1px solid $group-button-border;
   border-left: none;
+}
+
+.active{
+  background: $group-button-hover;
+  box-shadow: inset 1px 1px 2px 0px #949494;
+}
+
+/*==========  Graph empty  ==========*/
+
+.chart-empty{
+  margin-top: 80px;
+  display: inline-block;
+  width: 50%;
+  text-align: center;
+  color: $no-chart-color
+}
+
+.chart-empty-title{
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.chart-empty-subtitle{
+  font-size: 1.3em;
 }

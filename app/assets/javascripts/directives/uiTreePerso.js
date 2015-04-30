@@ -19,7 +19,7 @@
 
               //breadcrumb
               scope.breadcrumb = []
-              for(var i = scope.activeNodes.length - 1; i >= 0; i--){
+              for(var i = scope.activeNodes.length - 2; i >= 0; i--){
                 scope.breadcrumb.push(scope.activeNodes[i][1]);
               }
 

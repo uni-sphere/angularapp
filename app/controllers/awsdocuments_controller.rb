@@ -1,7 +1,7 @@
 class AwsdocumentsController < ApplicationController
 
   def create
-    awsdocument = current_chapter.awsdocuments.new(title: params[:title], content: params[:file])
+    awsdocument = current_chapter.awsdocuments.new(title: params[:title], content: params[:file], organization_id: current_organization.id)
     if awsdocument.save
       render json: awsdocument, status: 201, location: awsdocument
     else

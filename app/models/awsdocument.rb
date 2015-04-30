@@ -1,12 +1,12 @@
 class Awsdocument < ActiveRecord::Base
   
 	belongs_to :chapter
+  belongs_to :organization
   
   mount_uploader :content, DocumentUploader
   after_save :fill_url
   
-  validates :title, presence: true
-  validates :content, presence: true
+  validates :title, :content, :organization_id, presence: true
   
   def fill_url
     update_column(:url, self.content.file.url)

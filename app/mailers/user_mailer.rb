@@ -17,19 +17,12 @@ class UserMailer < ActionMailer::Base
   end
   
   def activity_email(user)
-    report = user.reports.last
-    @downloads_count = report.downloads
-    chapters = user.chapters
-    @chapters_count = user.chapters.count
-    @organization_name = Organization.find(user.organization_id).name
-    @views_count = report.views
-    
-    @uploads_count = 0
-    chapters.each do |chapter|
-      @uploads_count += chapter.awsdocuments.where(['created_at > ?', 7.days.ago]).count
+    @organization = current_organization
+    @nodes_activity = []
+    user_nodes.each do |node|
+      @nodes_activity << {name: node.name, parent: Node.find(node.parent_id), downloads: node.reports.last.downloads}
     end
-    
-    mail(to: user.email, subject: "Weekly #{@organization_name} activity")
+    mail(to: user.email, subject: "Weekly #{@organization.name} activity")
   end
   
   def invite_user_email(email, organization, password)

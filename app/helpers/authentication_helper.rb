@@ -7,21 +7,13 @@ module AuthenticationHelper
   def authentication
     cookies.signed['unisphere_api_admin'] = 1
     authenticate_client unless request.path == '/'
+    # clear_logs request.remote_ip
   end
   
   def authenticate_client
     authenticate_with_http_token do |token, options|
       send_error('Bad token', 401) unless token == $TOKEN
     end
-  end
-  
-  def user_nodes
-    chapters = Chapter.where(user_id: User.last.id)
-    ids = []
-    chapters.each do |chapter|
-      ids << chapter.node_id
-    end
-    return Node.where(id: ids)
   end
   
   def current_subdomain
@@ -85,6 +77,23 @@ module AuthenticationHelper
     end
   end
   
+  def user_nodes
+    if Chapter.exists?(user_id: User.first.id)
+      chapters = Chapter.where(user_id: User.first.id)
+      ids = []
+      chapters.each do |chapter|
+        ids << chapter.node_id #if Chapter.where(node_id: chapter.node_id).count > 1 || chapter.awsdocuments.count > 0
+      end
+      if Node.exists?(id: ids)
+        return Node.where(id: ids)
+      else
+        return {}
+      end
+    else
+      return {}
+    end
+  end
+
   def current_chapter
     params[:chapter_id] = params[:id] if request.url.split('?').first.include? 'chapter'
     if params[:chapter_id]

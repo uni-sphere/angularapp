@@ -280,40 +280,19 @@ a:hover {
 					</tr>
 					<tr>
 						<td class="content-wrap">
-							<div class="content-block aligncenter bold"><%= @organization_name %> activity report <%= (Date.today-1.week).to_formatted_s(:short) %> - <%= Date.today.to_formatted_s(:short) %></div>
+							<div class="content-block aligncenter bold"><%= @organization.name %> activity report <%= (Date.today-1.week).to_formatted_s(:short) %> - <%= Date.today.to_formatted_s(:short) %></div>
+							<div class="content-block aligncenter">Downloads by nodes</div>
 							<table width="100%" cellpadding="0" cellspacing="0">
-								<tr>
-									<td class="content-block">
-										<%= @organization_name %> visits
-									</td>
-									<td class="content-block bold">
-										<%= @views_count %>
-									</td>
-								</tr>
-								<tr>
-									<td class="content-block">
-										Chapters you created
-									</td>
-									<td class="content-block bold">
-										<%= @chapters_count %>
-									</td>
-								</tr>
-								<tr>
-									<td class="content-block">
-										Documents you uploaded
-									</td>
-									<td class="content-block bold">
-										<%= @uploads_count %>
-									</td>
-								</tr>
-								<tr>
-									<td class="content-block">
-										Your documents students have downloaded
-									</td>
-									<td class="content-block bold">
-										<%= @downloads_count %>
-									</td>
-								</tr>
+								<%= @nodes_activity.each do |node| %>
+									<tr>
+										<td class="content-block">
+											<%= node.parent > node.name %>
+										</td>
+										<td class="content-block bold">
+											<%= node.downloads %>
+										</td>
+									</tr>
+								<%= end %>
 							</table>
 						</td>
 					</tr>

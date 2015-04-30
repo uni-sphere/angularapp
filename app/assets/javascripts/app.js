@@ -43,7 +43,13 @@
 					DASHBOARD: 'Dashboard',
 					HOME: 'Home',
 					ACCOUNT: 'Account',
-					SIGNOUT: 'Sign out'
+					SIGNOUT: 'Sign out',
+					LEFT_STATISTICS: 'Your statistics: downloads in',
+					RIGHT_STATISTICS: 'statistics:',
+					NEW_NODE: 'This is a new node',
+					NO_DOWNLOADS: 'There is no download yet',
+					NEW_ORGA: 'is a new organization',
+					WAIT: 'Wait one week for statistics'
         })
         .translations('fr', {
           HELP: 'Aide',
@@ -62,7 +68,13 @@
 					DASHBOARD: 'Données',
 					HOME: 'Home',
 					ACCOUNT: 'Compte',
-					SIGNOUT: 'Déconnexion'
+					SIGNOUT: 'Déconnexion',
+					LEFT_STATISTICS: 'Vos statistiques: consultations dans',
+					RIGHT_STATISTICS: 'statistiques:',
+					NEW_NODE: "C'est un nouveau new",
+					NO_DOWNLOADS: "Il n'y a pas encore de document",
+					NEW_ORGA: 'est une nouvelle organisation',
+					WAIT: 'Attendez une semaine pour visualiser des données'
         })
         .preferredLanguage('en')
 				.registerAvailableLanguageKeys(['fr'])
@@ -83,21 +95,22 @@
           }
         })
 
-          // the default route when someone hits dashboard
           .state('main.application', {
               url: '',
               templateUrl: 'application/application.html'
           })
-          // this is /dashboard/two
           .state('main.dashboard', {
               url: 'dashboard',
               templateUrl: 'dashboard/one.html'
           })
-          // this is /dashboard/three
+          .state('main.account', {
+              url: 'account',
+              templateUrl: 'account/account.html'
+          })
 
         .state('home', {
           url: '/home',
-          templateUrl: 'main/layout.html',
+          templateUrl: 'main/main.html',
           controller: 'MainCtrl',
           resolve: {
             nodesflat: function(Restangular){

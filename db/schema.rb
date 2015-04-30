@@ -18,7 +18,8 @@ ActiveRecord::Schema.define(version: 20150430082038) do
     t.string   "title"
     t.text     "url"
     t.integer  "chapter_id"
-    t.boolean  "archived",   default: false
+    t.integer  "organization_id"
+    t.boolean  "archived",        default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

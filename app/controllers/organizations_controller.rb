@@ -15,6 +15,7 @@ class OrganizationsController < ApplicationController
   
   def show
     render json: {name: current_organization.name}.to_json, status: 200
+    # render json: {name: request.remote_ip}.to_json, status: 200
   end
   
   def update

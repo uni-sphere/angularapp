@@ -5,16 +5,16 @@ require 'helpers'
 describe ReportsController do
   describe 'Report' do
     
-    before do
-      User.create!(email: 'name@domain.com', password: 'psw')
-      User.last.reports.create
-      @report = Report.last
-    end
-
-    it 'has its views attribute incremented' do
-      @report.increase_views
-      expect( @report.views ).to match 1
-    end
+    # before do
+    #   User.create!(email: 'name@domain.com', password: 'psw')
+    #   User.last.reports.create
+    #   @report = Report.last
+    # end
+    #
+    # it 'has its views attribute incremented' do
+    #   @report.increase_views
+    #   expect( @report.views ).to match 1
+    # end
     
   end
 end

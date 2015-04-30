@@ -9,5 +9,5 @@ end
 # send weekly activity reports
 every 7.days do
   runner "User.send_activity_reports"
-  runner "User.create_reports"
+  runner "Node.create_reports"
 end

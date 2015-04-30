@@ -7,4 +7,10 @@ class Node < ActiveRecord::Base
   
   validates :name, presence: true
   
+  def self.create_reports
+    self.each do |node|
+      node.reports.create if node.chapters.count > 2
+    end
+  end
+  
 end

@@ -3,6 +3,15 @@ angular
   .module('mainApp.controllers')
   .controller('MainCtrl', ['$scope', 'browser', 'nodesflat', '$cookies','$timeout', 'Restangular', '$upload', 'ngDialog', function ($scope, browser, nodesflat, $cookies, $timeout, Restangular, $upload, ngDialog) {
 
+     // var setCallBacks = function () {
+     //        var treeScope = getRootNodesScope();
+     //        var callBacks = treeScope.$callbacks;
+     //        callBacks.dropped = function (event) {
+     //            setOrdinals(treeScope.$nodesScope.$nodesMap);
+     //        };
+     //    };
+
+
     $scope.nodes = nodesflat;
     $scope.selectedItem = {};
     $scope.options = {};

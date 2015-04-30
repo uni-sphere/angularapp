@@ -24,10 +24,4 @@ class User < ActiveRecord::Base
     end
   end
   
-  def self.create_reports
-    self.all.each do |user|
-      user.reports.create
-    end
-  end
-  
 end

@@ -1,10 +1,4 @@
 class UsersController < ApplicationController
-
-  def nodes
-    # nodes = Node.where(user_id: current_admin.id)
-   # SANS IDENTIFICATION ADMIN
-    render json: user_nodes, status: 200
-  end
   
   def login
     if current_organization.users.exists? email: params[:email]

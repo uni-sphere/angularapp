@@ -1,0 +1,44 @@
+<div id="account">
+  <div class="panel">
+    <div class="panel-header">Profile</div>
+    <div class="panel-body">
+      <div class="panel-row-title">Name</div>
+      <input type="text" placeholder="" class="panel-input">
+
+      <div class="panel-row-title">Email</div>
+      <input type="email" placeholder="" class="panel-input">
+
+      <button class="panel-submit" ng-click="changeProfile()">Update profil</button>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="panel-header">Organization</div>
+    <div class="panel-body">
+      <div class="panel-row-title">New lecturer</div>
+      <input type="email" placeholder="" class="panel-input">
+
+     <!--  <div id="list-user-to-invite" ng-show="inviteUser">
+        <span id="list-user-title">User to invite</span>
+        <span class="item-user" ng-repeat="user in inviteUser">{{user}}</span>
+      </div> -->
+
+      <button class="panel-submit" ng-click="changeProfile()">Invite lecturers</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">Password</div>
+    <div class="panel-body">
+      <div class="panel-row-title">Old Password</div>
+      <input type="password" class="panel-input">
+
+      <div class="panel-row-title">New Password</div>
+      <input type="password" class="panel-input">
+
+      <div class="panel-row-title">Confirm new Password</div>
+      <input type="password" class="panel-input">
+
+      <button class="panel-submit" ng-click="changeProfile()">Update password</button>
+    </div>
+  </div>
+</div>

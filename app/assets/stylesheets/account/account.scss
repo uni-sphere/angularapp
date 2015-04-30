@@ -1,0 +1,110 @@
+#account{
+  padding: 40px;
+}
+
+.panel{
+  position: relative;
+  float: left;
+  width: 36%;
+
+  margin-left: 31%;
+  margin-bottom: 40px;
+}
+
+.panel-header{
+  padding: 10px;
+
+  background: $light-gris;
+  color: $account-title-color;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: 1px solid $account-border;
+}
+
+.panel-body{
+  position: relative;
+  padding: 10px;
+  padding-bottom: 20px;
+
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: 1px solid $account-border;
+  border-top: none;
+}
+
+.panel-row-title{
+  margin-top: 10px;
+  margin-bottom: 3px;
+
+  color: $account-subtitle-color;
+}
+
+.panel-input{
+  display: block;
+  width: 50%;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-size: .9em;
+  border: 1px solid #ccc;
+  outline: none;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+  background: $account-input-bg;
+  &:focus{
+    box-shadow: 0px 0px 0px 2px #A0D1FA,inset 0 0 0 0 #000;
+    background: white;
+  }
+}
+
+.panel-submit{
+  margin-top: 20px;
+  padding: 5px 15px;
+
+  font-size: 1em;
+
+  border: 1px solid #d4d4d4;
+  color: #EEEEEE;
+  cursor: pointer;
+  background: #0087E0;
+  border-radius: 0.2em;
+ 
+  font-family: Arial;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  &:hover{
+    border-color: #008EEC;
+    border-bottom-color: #0084DC;
+    background: #008DEB;
+  }
+
+  &:active {
+    border-color: #2a65a0;
+    border-bottom-color: #3884cd;
+    background-color: #3072b3;
+    background-image: linear-gradient(#3072b3, #599bdc);
+  }
+}
+
+
+// #list-user-to-invite{
+//   position: absolute;
+//   top: 20px;
+//   right: 10px;
+//   width: calc(50% - 80px);
+//   float: left;
+//   color: $subtitle-color;
+//   margin-bottom: 3px;
+// }
+
+// #list-user-title{
+//   position: relative;
+//   padding-bottom: 8px;
+// }
+
+// .item-user{
+//   position: relative;
+//   float: left;
+//   font-size: .9em;
+// }
