@@ -1,6 +1,6 @@
 <div id="account" ng-controller="AccountCtrl">
   <div class="panel">
-    <div class="panel-header">{{ 'PROFIL' | translate }}</div>
+    <div class="panel-header">Profile</div>
     <div class="panel-body">
       <div class="panel-row-title">Name</div>
       <input type="text" placeholder="" class="panel-input" ng-model="accountName">
@@ -26,15 +26,15 @@
   </form>
 
   <div class="panel">
-    <div class="panel-header">{{ 'PASSWORD' | translate }}</div>
+    <div class="panel-header">Password</div>
     <div class="panel-body">
-      <div class="panel-row-title">{{ 'OLD_PSW' | translate }}</div>
+      <div class="panel-row-title">Old Password</div>
       <input type="password" class="panel-input">
 
-      <div class="panel-row-title">{{ 'NEW_PSW' | translate }}</div>
+      <div class="panel-row-title">New Password</div>
       <input type="password" class="panel-input">
 
-      <div class="panel-row-title">{{ 'CONFIRME_PSW' | translate }}</div>
+      <div class="panel-row-title">Confirm new Password</div>
       <input type="password" class="panel-input">
 
       <button class="panel-submit" ng-click="updatePassword()">Update password</button>
@@ -50,5 +50,4 @@
       </div>
     </div>
   </div>
-
 </div>
