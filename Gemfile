@@ -30,6 +30,7 @@ gem 'rest-client'
 gem 'rails-i18n'
 gem 'whenever', require: false
 gem 'bcrypt'
+gem 'devise'
 
 group :development, :test do
   gem 'rspec-rails'

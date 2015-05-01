@@ -5,7 +5,6 @@ module AuthenticationHelper
   $TOKEN = '6632398822f1d84468ebde3c837338fb'
   
   def authentication
-    cookies.signed['unisphere_api_admin'] = 1
     authenticate_client unless request.path == '/'
     # clear_logs request.remote_ip
   end
@@ -53,17 +52,6 @@ module AuthenticationHelper
     end
   end
   
-  def current_admin
-    if cookies.signed['unisphere_api_admin']
-      id = cookies.signed['unisphere_api_admin']
-      if current_organization.users.exists?(id: id)
-        return current_organization.users.find id
-      end
-    else
-      return send_error('not admin', 403)
-    end
-  end
-  
   def current_node
     params[:node_id] = params[:id] if request.url.split('?').first.include? 'node'
     if params[:node_id]
@@ -107,12 +95,6 @@ module AuthenticationHelper
       end
     else
       send_error('chapter id not received', 400)
-    end
-  end
-  
-  def is_admin?
-    if cookies.signed['unisphere_api_admin']
-      send_error('unauthorized', 401) unless current_organization.users.exists?(id: cookies.signed['unisphere_api_admin'])
     end
   end
 

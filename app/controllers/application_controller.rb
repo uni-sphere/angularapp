@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-
+  
   include AuthenticationHelper
   include ApplicationHelper
   include SubdomainHelper

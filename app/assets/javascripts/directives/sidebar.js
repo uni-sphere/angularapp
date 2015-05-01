@@ -1,11 +1,12 @@
 (function () {
   'use strict';
-  angular.module('mainApp.directives').directive('sidebar', [function() {
+  angular.module('mainApp.directives').directive('sidebar', ['Auth', function(Auth) {
     return {
       restrict: 'E',
       templateUrl: 'main/sidebar.html',
       scope: {
-        adminDeco: '='
+        adminDeco: '=',
+				admin: '='
       },
       link: function(scope) {
 
@@ -17,8 +18,13 @@
             var c = document.querySelector(".wrapper")
 
             scope.deconnection = function(){
-              c.classList.add("wrapper__minify");
-              scope.adminDeco();
+							Auth.logout().then(function(oldUser) {
+								console.log(oldUser);
+	              c.classList.add("wrapper__minify");
+								scope.admin = false;
+							}, function(error) {
+								console.log(error);
+							});
             }
 
             var d = document.getElementById("js-menu")

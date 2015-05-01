@@ -17,6 +17,7 @@
 //= require	angular-translate/angular-translate.min
 //= require	angular-dropdowns/dist/angular-dropdowns
 //= require	metrics-graphics/dist/metricsgraphics.min
+//= require	angular-devise/lib/devise-min
 
 //= require angular-rails-templates
 //= require app

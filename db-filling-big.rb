@@ -1,13 +1,13 @@
 organization = Organization.create(name: 'Sandbox')
 date = organization.created_at-12*7.days
 organization.update(created_at: date)
-for i in 0..15
-  user = organization.users.new(email: (0...3).map { (65 + rand(26)).chr }.join+'@'+(0...3).map { (65 + rand(26)).chr }.join+'.fr')
-  user.password = 'sandbox'
-  user.save
-  date = user.created_at - Random.rand(70).days
-  user.update(created_at: date)
-end
+# for i in 0..15
+#   user = organization.users.new(email: (0...3).map { (65 + rand(26)).chr }.join+'@'+(0...3).map { (65 + rand(26)).chr }.join+'.fr')
+#   user.password = 'sandbox'
+#   user.save
+#   date = user.created_at - Random.rand(70).days
+#   user.update(created_at: date)
+# end
 organization.nodes.create(name: "Sandbox", parent_id: 0)
 Node.last.reports.create
 organization.nodes.create(name: "premiere", parent_id: 1)

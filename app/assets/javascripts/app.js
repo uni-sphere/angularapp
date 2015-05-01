@@ -15,16 +15,18 @@
     'angulartics', 
     'angulartics.google.analytics',
     'pascalprecht.translate',
-		'ngDropdowns'
+		'ngDropdowns',
+		'Devise'
   ])
   .config(function (
     $stateProvider,
     $urlRouterProvider,
     $locationProvider,
     RestangularProvider,
-    $translateProvider
+    $translateProvider,
+		AuthProvider
   ) {
-      
+				
       $translateProvider
         .translations('en', {
           HELP: 'Help',
@@ -174,6 +176,19 @@
         return "http://api.unisphere.eu"
       }
     }
+		
+		//// AUTHENTICATION DEVISE
+		
+		// Customize login
+		AuthProvider.loginPath(getEnvironment() + '/users/sign_in.json');
+
+		// Customize logout
+		AuthProvider.logoutPath(getEnvironment() + '/users/sign_out.json');
+
+		// Customize register
+		AuthProvider.registerPath(getEnvironment() + '/users.json');
+		
+	  ////
 
     RestangularProvider.setBaseUrl(getEnvironment());
 
