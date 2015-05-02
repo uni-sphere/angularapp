@@ -2,7 +2,7 @@ class NodesController < ApplicationController
 	
   def create
     node = current_organization.nodes.new(name: params[:name], parent_id: params[:parent_id])
-    chapter = node.chapters.new(title: 'main', parent_id: 0, user_id: current_admin.id)
+    chapter = node.chapters.new(title: 'main', parent_id: 0, user_id: User.first.id)
     parent = current_organization.nodes.find params[:parent_id]
     report = node.reports.new
     if node.save and chapter.save and report.save

@@ -49,7 +49,20 @@
 					NEW_NODE: 'This is a new node',
 					NO_DOWNLOADS: 'There is no download yet',
 					NEW_ORGA: 'is a new organization',
-					WAIT: 'Wait one week for statistics'
+					WAIT: 'Wait one week for statistics',
+					PROFIL: 'Profil',
+					NAME: 'Name Firstname',
+					EMAIL: 'Email',
+					UPDATE_PROFIL: 'Update profil',
+					ORGANIZATION: 'Organization',
+					NEW_LECTURER: 'New lecturer (email)',
+					INVITE: 'Invite lecturers',
+					PASSWORD: 'Password',
+					OLD_PSW: 'Old Password',
+					NEW_PSW: 'New Password',
+					CONFIRME_PSW: 'Confirm',
+					UPDATE_PSW: 'Update password',
+					USERS_INVITED: 'Users added'
         })
         .translations('fr', {
           HELP: 'Aide',
@@ -65,7 +78,7 @@
           DROP_ZONE: 'DROP ZONE',
           DROP_EXPLANATION: "Vous pouvez importer des dossiers contenants d'autres dossiers",
 					COLLAPSE: 'Réduire',
-					DASHBOARD: 'Données',
+					DASHBOARD: 'Statistiques',
 					HOME: 'Home',
 					ACCOUNT: 'Compte',
 					SIGNOUT: 'Déconnexion',
@@ -74,7 +87,20 @@
 					NEW_NODE: "C'est un nouveau new",
 					NO_DOWNLOADS: "Il n'y a pas encore de document",
 					NEW_ORGA: 'est une nouvelle organisation',
-					WAIT: 'Attendez une semaine pour visualiser des données'
+					WAIT: 'Attendez une semaine pour visualiser des données',
+					PROFIL: 'Profile',
+					NAME: 'Nom Prénom',
+					EMAIL: 'Email',
+					UPDATE_PROFIL: 'Modifier profile',
+					ORGANIZATION: 'Organisation',
+					NEW_LECTURER: 'Nouvel enseignant (email)',
+					INVITE: 'Inviter un enseignant',
+					PASSWORD: 'Mot de passe',
+					OLD_PSW: 'Ancien mot de passe',
+					NEW_PSW: 'Nouveau mot de passe',
+					CONFIRME_PSW: 'Confirmation',
+					UPDATE_PSW: 'Modifier mot de passe',
+					USERS_INVITED: 'Utilisateurs ajoutés'
         })
         .preferredLanguage('en')
 				.registerAvailableLanguageKeys(['fr'])
@@ -88,11 +114,6 @@
           abstract: true,
           templateUrl: 'main/main.html',
           controller: 'MainCtrl',
-          resolve: {
-            nodesflat: function(Restangular){
-              return Restangular.one('nodes').get();
-            }
-          }
         })
 
           .state('main.application', {

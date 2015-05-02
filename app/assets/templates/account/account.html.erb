@@ -1,30 +1,29 @@
-<div id="account">
+<div id="account" ng-controller="AccountCtrl">
   <div class="panel">
     <div class="panel-header">Profile</div>
     <div class="panel-body">
       <div class="panel-row-title">Name</div>
-      <input type="text" placeholder="" class="panel-input">
+      <input type="text" placeholder="" class="panel-input" ng-model="accountName">
 
       <div class="panel-row-title">Email</div>
-      <input type="email" placeholder="" class="panel-input">
+      <input type="email" placeholder="" class="panel-input" ng-model="accountEmail">
 
-      <button class="panel-submit" ng-click="changeProfile()">Update profil</button>
+      <button class="panel-submit" ng-click="updateProfile()">Update profil</button>
     </div>
   </div>
-  <div class="panel">
+
+  <form name="organizationForm" class="panel" id="panel-orgnanization">
     <div class="panel-header">Organization</div>
     <div class="panel-body">
+
       <div class="panel-row-title">New lecturer</div>
-      <input type="email" placeholder="" class="panel-input">
+      <input type="text" placeholder="" class="panel-input input-float" ng-model="newUser" >
 
-     <!--  <div id="list-user-to-invite" ng-show="inviteUser">
-        <span id="list-user-title">User to invite</span>
-        <span class="item-user" ng-repeat="user in inviteUser">{{user}}</span>
-      </div> -->
+      <div id="add-user" class="fa fa-plus" ng-click="addUser()"></div>
 
-      <button class="panel-submit" ng-click="changeProfile()">Invite lecturers</button>
+      <button class="panel-submit" ng-click="inviteUsers()">Invite lecturers</button>
     </div>
-  </div>
+  </form>
 
   <div class="panel">
     <div class="panel-header">Password</div>
@@ -38,7 +37,18 @@
       <div class="panel-row-title">Confirm new Password</div>
       <input type="password" class="panel-input">
 
-      <button class="panel-submit" ng-click="changeProfile()">Update password</button>
+      <button class="panel-submit" ng-click="updatePassword()">Update password</button>
     </div>
   </div>
+
+  <div id="panel-user-to-invite"  ng-show="listUser">
+    <div class="panel-header header-special">User to invite</div>
+    <div class="panel-body body-special">
+      <div class="item-user">{{}}</div>
+      <div class="item-user" ng-repeat="user in listUser">
+        <i class="fa fa-envelope"></i>{{user}}
+      </div>
+    </div>
+  </div>
+
 </div>

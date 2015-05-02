@@ -18,8 +18,6 @@ class ReportsController < ApplicationController
         clear_logs @date.strftime('%Y-%m-%d')
         clear_logs report.created_at.strftime('%Y-%m-%d')
         @i += 1
-        clear_logs i
-        clear_logs report.id
       else
         @firstchart << {date: (@date).strftime('%Y-%m-%d'), downloads: 0}
       end

@@ -11,7 +11,6 @@
         university: '='
       },
       link: function(scope, element) {
-
         var globals = {};
 
         // On resize we change the charts

@@ -3,6 +3,7 @@ class CreateUsers < ActiveRecord::Migration
     create_table :users do |t|
       t.string :password_hash
       t.string :email
+      t.string :name
       t.integer :organization_id
       t.boolean :activity_reports, default: true
 

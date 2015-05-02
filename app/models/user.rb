@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   
   validates :email, format: { with: email_regex }
-  validates :email , presence: true
+  validates :email , presence: true, uniqueness: true
   
   def password
     @password ||= BCrypt::Password.new(password_hash)

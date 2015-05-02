@@ -19,6 +19,7 @@ class UserMailer < ActionMailer::Base
   def activity_email(user)
     @organization = current_organization
     @nodes_activity = []
+    @url = "http://#{organization.subdomain}.unisphere.eu"
     user_nodes.each do |node|
       @nodes_activity << {name: node.name, parent: Node.find(node.parent_id), downloads: node.reports.last.downloads}
     end

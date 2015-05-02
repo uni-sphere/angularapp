@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   
   constraints subdomain: 'api' do
     
-    resources :users, only: [:show, :password_forgoten, :update]
+    resources :users, only: [:show, :password_forgoten]
     resources :nodes, only: [:create, :index, :update, :destroy]
     resources :organizations, only: [:create, :index, :update, :destroy]
     resources :chapters, only: [:create, :show, :index, :update, :destroy]
@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     get 'awsdocuments/archives', to: 'awsdocuments#archives'
     get 'report/nodes', to: 'reports#nodes'
     put 'activity', to: 'reports#update'
+    put 'user', to: 'users#update'
     post 'users/invite', to: 'users#invite'
     post 'users/login', to: 'users#login'
     post 'users/password_forgoten', to: 'users#password_forgoten'

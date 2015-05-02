@@ -1,4 +1,4 @@
-<div id="slide2" class="slide" ng-show="home">
+<div id="slide2" class="slide" ng-if="home">
   <div id="demo-app-home" >
     <div ng-include="'home/demo-app-navbar.html'"></div>
     <dragndrop-view></dragndrop-view>
@@ -6,7 +6,7 @@
     <div id="main-view-container">
 
       <div id="view-tree">
-        <collapsible-tree  node-end = 'nodeEnd' flat-data = 'nodes' active-nodes = 'activeNodes'></collapsible-tree>
+        <collapsible-tree  node-end = 'nodeEnd' active-nodes = 'activeNodes'></collapsible-tree>
       </div>
 
 
@@ -18,10 +18,6 @@
 
 
 <div ng-hide="home"  id="main-container">
-
-<!--   <div id="grey-panel" ng-show="showGreyPanel"></div>
-
-  <admin-popup show-grey-panel = 'showGreyPanel' display-admin-popup = 'displayAdminPopup' admin = 'admin' display-error = 'displayError' hide-error = 'hideError'></admin-popup> -->
 
   <error-display display-error = 'displayError' hide-error = 'hideError' admin = 'admin'></error-display>
 

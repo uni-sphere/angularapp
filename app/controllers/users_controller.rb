@@ -22,6 +22,8 @@ class UsersController < ApplicationController
   def update
     user = current_admin
     user.password = params[:password] if params[:password]
+    user.name = params[:name] if params[:name]
+    user.email = params[:email] if params[:email]
     if user.save
       render json: user, status: 200
     else
@@ -30,14 +32,17 @@ class UsersController < ApplicationController
   end
   
   def invite
-    if params[:email]
-      user = current_organization.users.new(email: params[:email])
-      psw = random_password
-      user.password = psw
-      if user.save
-        UserMailer.invite_user_email(params[:email], current_organization, psw).deliver
-      else
-        send_error('user not created', 500)
+    if params[:emails]
+      emails = params[:emails]
+      emails.each do |email|
+        user = current_organization.users.new(email: email)
+        psw = random_password
+        user.password = psw
+        if user.save
+          UserMailer.invite_user_email(email, current_organization, psw).deliver
+        else
+          send_error('user not created', 500)
+        end
       end
     else
       send_error('email not received', 400)

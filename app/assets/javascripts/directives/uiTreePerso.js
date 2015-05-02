@@ -16,6 +16,7 @@
 
           scope.$watch('activeNodes', function(newVals, oldVals){
             if(newVals){
+              // console.log(newVals);
 
               //breadcrumb
               scope.breadcrumb = []

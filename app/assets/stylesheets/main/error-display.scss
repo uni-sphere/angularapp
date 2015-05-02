@@ -35,16 +35,13 @@
 =            Error Popup            =
 ===================================*/
 
-
 #error-prompt{
-  position: absolute;
-  top: 10px;
+  position: fixed;
+  top: 60px;
   z-index: 90;
   width: 20%;
   height: 50px;
   left: 40%;
- 
-  // border-radius: 5px;
 }
 
 .singleError{

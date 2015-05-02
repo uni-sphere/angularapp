@@ -1,10 +1,8 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('MainCtrl', ['$scope', 'browser', 'nodesflat', '$cookies','$timeout', 'Restangular', '$upload', 'ngDialog', '$translate', function ($scope, browser, nodesflat, $cookies, $timeout, Restangular, $upload, ngDialog, $translate) {
-    
-    // var FHChat = {product_id: "6227bca7722d"};
-    // FHChat.transitionTo('closed');
+  .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', 'ngDialog', '$translate', function ($scope, browser, $cookies, $timeout, Restangular, $upload, ngDialog, $translate) {
+
 
     //Check if the user is admin
     var admin = $cookies.get('unisphere_api_admin');
@@ -19,21 +17,6 @@ angular
 
     $scope.inviteUser = ["clement@muller.uk.net","gabriel.muller.12@gmail.com"]
 
-    // console.log($scope.admin);
-
-    // $scope.openAdmin = function(){
-    //   $scope.showAdmin = true;
-    //   // $scope.showGreyPanel = true;
-    // }
-
-    // We sent nodes to d3
-    $scope.nodes = nodesflat;
-
-
-    // $scope.helpChat = function(){
-    //   var FHChat = {product_id: "6227bca7722d"};
-    //   FHChat.properties={};FHChat.set=function(key,data){this.properties[key]=data};!function(){var a,b;return b=document.createElement("script"),a=document.getElementsByTagName("script")[0],b.src="https://chat-client-js.firehoseapp.com/chat-min.js",b.async=!0,a.parentNode.insertBefore(b,a)}();
-    // }
 
     checkLocation = function(){
       var host = window.location.host;
@@ -46,9 +29,6 @@ angular
     }();
 
     // Languages options
-		
-		// console.log($translate.use());
-		
     $scope.ddSelectOptions = [
       {
         text: 'Français',
@@ -82,7 +62,7 @@ angular
     }, function(){
       console.log("There getting the university name");
       $scope.displayError("Sorry there was a mistake, refresh please");
-    });;
+    });
 
     $scope.IsChrome = checkIfChrome();
 
