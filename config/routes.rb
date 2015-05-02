@@ -1,11 +1,8 @@
 Rails.application.routes.draw do
-  
-  devise_for :users
-  
-  
+
   constraints subdomain: 'api' do
+    mount_devise_token_auth_for 'User', at: 'auth'
     # devise_for :users
-    # resources :users, only: [:show, :password_forgoten]
     resources :nodes, only: [:create, :index, :update, :destroy]
     resources :organizations, only: [:create, :index, :update, :destroy]
     resources :chapters, only: [:create, :show, :index, :update, :destroy]

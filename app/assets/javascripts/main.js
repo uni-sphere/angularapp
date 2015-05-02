@@ -17,7 +17,7 @@
 //= require	angular-translate/angular-translate.min
 //= require	angular-dropdowns/dist/angular-dropdowns
 //= require	metrics-graphics/dist/metricsgraphics.min
-//= require	angular-devise/lib/devise-min
+//= require	ng-token-auth/dist/ng-token-auth.min
 //= require ng-rails-csrf
 
 //= require angular-rails-templates

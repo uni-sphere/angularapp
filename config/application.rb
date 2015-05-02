@@ -35,12 +35,22 @@ module Uni2
       DeviseController.respond_to :html, :json
     end
 
+    # config.middleware.insert_before 0, "Rack::Cors" do
+    #       allow do
+    #         origins '*'
+    #         resource '*', :headers => :any, :methods => [:get, :post, :delete, :put, :options]
+    #       end
+    #     end
+    
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do
         origins '*'
-        resource '*', :headers => :any, :methods => [:get, :post, :delete, :put, :options]
+        resource '*',
+        :headers => :any,
+        :expose  => ['access-token', 'expiry', 'token-type', 'uid', 'client'],
+        :methods => [:get, :post, :options, :delete, :put]
       end
     end
-      
+    
   end
 end

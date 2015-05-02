@@ -16,7 +16,7 @@
     'angulartics.google.analytics',
     'pascalprecht.translate',
 		'ngDropdowns',
-		'Devise',
+		'ng-token-auth',
 		'ng-rails-csrf'
   ])
   .config(function (
@@ -25,8 +25,9 @@
     $locationProvider,
     RestangularProvider,
     $translateProvider,
-		AuthProvider
+		$authProvider
   ) {
+			
 				
       $translateProvider
         .translations('en', {
@@ -180,14 +181,9 @@
 		
 		//// AUTHENTICATION DEVISE
 		
-		// Customize login
-		AuthProvider.loginPath(getEnvironment() + '/users/sign_in.json');
-
-		// Customize logout
-		AuthProvider.logoutPath(getEnvironment() + '/users/sign_out.json');
-
-		// Customize register
-		AuthProvider.registerPath(getEnvironment() + '/users.json');
+		$authProvider.configure({
+	  	apiUrl: getEnvironment()
+	  });
 		
 	  ////
 

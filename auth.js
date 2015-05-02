@@ -1,37 +1,32 @@
-
-// SIGN UP
-
+////// SIGNUP
 var credentials = {
 	email: scope.emailInput,
 	password: scope.passwordInput,
 	password_confirmation: scope.passwordInput
 };
-			
-Auth.register(credentials).then(function(registeredUser) {
-	console.log('success');
-	console.log(registeredUser); // => {id: 1, ect: '...'}
-}, function(error) {
-	console.log('error');
-	console.log(error);
+
+$auth.submitRegistration(credentials)
+.then(function(resp) { 
+	console.log(resp);
+})
+.catch(function(resp) { 
+	console.log(resp);
 });
+//////
 
-// IS AUTH ?
-
-Auth.isAuthenticated()
-
-// GET CURRENT USER
-
-Auth.currentUser().then(function(user) {
-	console.log(user);
-}, function(error) {
-	console.log(error);
+////// LOGIN
+var credentials = {
+	email: scope.emailInput,
+	password: scope.passwordInput
+};
+$auth.submitLogin(credentials)
+.then(function(resp) { 
+	scope.admin = true;
+	console.log(resp);
+})
+.catch(function(resp) { 
+	console.log(resp);
 });
+//////
 
-// LOGOUT
 
-Auth.logout().then(function(oldUser) {
-	console.log(oldUser);
-}, function(error) {
-	console.log(error);
-});
-		

@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include DeviseTokenAuth::Concerns::User
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -10,8 +11,8 @@ class User < ActiveRecord::Base
   
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   
-  validates :email, format: { with: email_regex }
-  validates :email , presence: true, uniqueness: true
+  # validates :email, format: { with: email_regex }
+  # validates :email , presence: true, uniqueness: true
   
   def self.send_activity_reports
     self.where(activity_reports: true).each do |user|

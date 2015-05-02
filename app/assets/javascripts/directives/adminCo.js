@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 	angular.module('mainApp.directives')
-	.directive('adminCo', [ 'Restangular', '$cookies', 'Auth', function(Restangular, $cookies, Auth) {
+	.directive('adminCo', [ 'Restangular', '$cookies', '$auth', function(Restangular, $cookies, $auth) {
 		return {
 			restrict: 'E',
 			templateUrl: 'application/admin-co.html',
@@ -12,11 +12,10 @@
 			},
 			link: function(scope) {
 				
-		    //Check if the user is admin
-		    scope.admin = Auth.isAuthenticated();
+				//Check if the user is admin
+				scope.admin = true;
 				
 				console.log(scope.admin);
-				console.log(Auth._currentUser);
 				
 				scope.toggleAdmin = function(){
 					if(scope.open == true){
@@ -26,6 +25,50 @@
 					}
 				}
 				
+				scope.passwordForgotten = function() {
+					var credentials = {
+						email: scope.passwordForgottenInput,
+					};
+					
+					$auth.requestPasswordReset(credentials)
+					.then(function(resp) { 
+						console.log(resp);
+					})
+					.catch(function(resp) { 
+						console.log(resp);
+					});
+				}
+				
+				scope.updatePassword = function() {
+					var credentials = {
+						name: scope.updatedName
+						email: scope.updatedEmail
+					};
+					
+					$auth.updatePassword(credentials)
+					.then(function(resp) { 
+						console.log(resp);
+					})
+					.catch(function(resp) { 
+						console.log(resp);
+					});
+				}
+				
+				scope.updateUser = function() {
+					var credentials = {
+						password: scope.oldPsw
+						password_confirmation: scope.newPsw
+					};
+					
+					$auth.updateAccount(credentials)
+					.then(function(resp) { 
+						console.log(resp);
+					})
+					.catch(function(resp) { 
+						console.log(resp);
+					});
+				}
+				
 				scope.validateAdmin = function(){
 					
 					////// LOGIN
@@ -33,22 +76,14 @@
 						email: scope.emailInput,
 						password: scope.passwordInput
 					};
-
-					Auth.login(credentials).then(function(user) {
-						console.log(user);
-						scope.admin = Auth.isAuthenticated();
-						console.log(Auth.isAuthenticated());
-					}, function(error) {
-						console.log(error);
+					$auth.submitLogin(credentials)
+					.then(function(resp) {
+						scope.admin = true;
+						console.log(resp);
+					})
+					.catch(function(resp) {
+						console.log(resp);
 					});
-
-					// $scope.$on('devise:login', function(event, currentUser) {
-// 						// after a login, a hard refresh, a new tab
-// 					});
-//
-// 					$scope.$on('devise:new-session', function(event, currentUser) {
-// 						// user logged in by Auth.login({...})
-// 					});
 					//////
 					
 				}
