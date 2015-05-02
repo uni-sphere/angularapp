@@ -5,7 +5,8 @@
       restrict: 'E',
       templateUrl: 'main/sidebar.html',
       scope: {
-        adminDeco: '='
+        adminDeco: '=',
+        sidebarMinified: '='
       },
       link: function(scope) {
 
@@ -25,6 +26,7 @@
             var e = d.querySelectorAll(".menu--item__has_sub_menu");
 
             a(".toggle_menu").onclick=function(){
+
               var b = document.querySelector(".vertical_nav")
               var c = document.querySelector(".wrapper")
               
@@ -34,10 +36,14 @@
             }
 
             a(".collapse_menu").onclick=function(){
-
+              if(scope.sidebarMinified == true){
+                scope.sidebarMinified = false;
+              }else{
+                scope.sidebarMinified = true;
+              }
+              scope.$apply();
               var b = document.querySelector(".vertical_nav")
               var c = document.querySelector(".wrapper")
-
 
               b.classList.toggle("vertical_nav__minify");
               c.classList.toggle("wrapper__minify");

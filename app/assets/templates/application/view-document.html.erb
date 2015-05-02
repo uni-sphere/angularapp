@@ -1,6 +1,6 @@
 <div id="view-document">
 
-  <div id="breadcrumb">
+  <div id="breadcrumb" ng-class="{'breadcrumb-no-doc' : documentAbsent}">
     <div id="breadcrumb-container">
       <div id="breadcrumb-title">
         <span ng-repeat="node in breadcrumb" ng-class="'breadcrumb-node'">{{node}} <span ng-class="'breadcrumb-separator'" ng-hide="$index == breadcrumb.length - 1"><i class="fa fa-angle-right"></i></span></span>
@@ -64,6 +64,12 @@
       </div>
     </div>
 
+    <div id="tip" ng-hide="documentAbsent">
+      <i class="fa fa-lightbulb-o"></i>
+      <span id="tip-chrome" ng-show="isChrome">Tip: You can drag and drop folders!</span>
+      <span id="tip-chrome" ng-hide="isChrome">Tip: On chrome you could drag and drop whole folders!</span>
+    </div>
+
     <div id="document-absent-dropzone-container" ng-show="documentAbsent && admin">
       <div id="document-absent-dropzone" ng-show="documentAbsent">
         <!-- <div id="document-absent-text">No files and no chapters here!</div> -->
@@ -72,7 +78,7 @@
 
         <div id="document-absent-text-under-pic">
           <div id="document-absent-text-drop">{{ 'DROP_ZONE' | translate }}</div>
-          <div id="document-absent-type-item-droppable" ng-show="IsChrome">{{ 'DROP_EXPLANATION' | translate }}<i class="fa fa-smile-o"></i></div>
+          <div id="document-absent-type-item-droppable" ng-show="isChrome">{{ 'DROP_EXPLANATION' | translate }}<i class="fa fa-smile-o"></i></div>
         </div>
       </div>
     </div>

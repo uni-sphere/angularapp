@@ -8,12 +8,34 @@
       restrict: 'E',
       templateUrl: 'dashboard/metric.html',
       scope: {
-        university: '='
+        university: '=',
+        sidebarMinified: '='
       },
       link: function(scope, element) {
         var globals = {};
 
-        // On resize we change the charts
+        scope.containerWidth = $('#main-view-container').width();
+
+        // We change the size of the graphs when the sidebar is oppened
+        scope.$watch('sidebarMinified', function(newVals, oldVals){
+          if(scope.chart2rdy && scope.chart1rdy){
+            if (scope.sidebarMinified) {
+              options1.width = $('#chart-1').width();
+              options2.width = $('#chart-2').width();
+            } else{
+              options1.width = $('#chart-1').width() - 150;
+              options2.width = $('#chart-2').width() - 150;
+            }
+
+            options1.height =  $('#ui-view-main-wrapper').height() * 50 / 100;
+            MG.data_graphic(options1);
+
+            options2.height =  $('#ui-view-main-wrapper').height() * 50 / 100;
+            MG.data_graphic(options2);
+          }
+        });
+
+        // when the window is resized the graphs are changing
         window.onresize = function() {
           options1.width = $('#chart-1').width(),
           options1.height =  $('#ui-view-main-wrapper').height() * 50 / 100,
@@ -63,6 +85,7 @@
         scope.$watch('userActiveNode', function(newVals, oldVals){
           if(newVals){
             Restangular.one('reports/firstchart').get({node_id: newVals.id}).then(function(rawData) {
+              scope.chart1rdy = true;
               if(rawData.plain().length != 1 && rawData.plain()[0] != 0){
                 var data = MG.convert.date(rawData.plain(), 'date');
                 options1.data = data;
@@ -97,6 +120,7 @@
 
         // We save the data of the second chart
         Restangular.one('reports/secondchart').get().then(function(rawData) {
+          scope.chart2rdy = true;
           var data = MG.convert.date(rawData.plain(), 'date');
           options2.data = data;
           scope.activeStat =  scope.generalStats[0];

@@ -3,6 +3,7 @@ angular
   .module('mainApp.controllers')
   .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', 'ngDialog', '$translate', function ($scope, browser, $cookies, $timeout, Restangular, $upload, ngDialog, $translate) {
 
+    $scope.sidebarMinified = true;
 
     //Check if the user is admin
     var admin = $cookies.get('unisphere_api_admin');
@@ -63,26 +64,6 @@ angular
       console.log("There getting the university name");
       $scope.displayError("Sorry there was a mistake, refresh please");
     });
-
-    $scope.IsChrome = checkIfChrome();
-
-
-    /*=================================
-    =            Fonctions            =
-    =================================*/
-
-
-    function checkIfChrome(){
-      if(browser().browserName == "chrome"){
-        return true;
-      } else{
-        return false;
-      }
-    }
-
-
-
-
 
 
   }]);

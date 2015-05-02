@@ -9,9 +9,11 @@
           nodeEnd: '=',
           displayError: '=',
           activeNodes: '=',
-          admin: '='
+          admin: '=',
+          sidebarMinified: '='
         },
         link: function(scope, iElement, iAttrs) {
+
 
 
           // First we get the nodes
@@ -82,7 +84,13 @@
 
 
           /*==========  Renders Tree  ==========*/
-          
+
+          // // We change the size of the graphs when the sidebar is oppened
+          // scope.$watch('sidebarMinified', function(newVals, oldVals){
+          //   if(scope.nodes){
+          //     render(makeNested(scope.nodes), iElement)
+          //   }
+          // });
 
           // We re-render when the size of the window changes
           window.onresize = function() {

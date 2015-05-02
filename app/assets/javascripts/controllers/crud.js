@@ -62,7 +62,7 @@ angular
 
       var nodeToCreate ={
         node_id: $scope.nodeEnd[0],
-        title: "new chapter",
+        title: "New chapter",
         parent_id: nodeData.id,
       }
 
@@ -73,7 +73,7 @@ angular
         } else{
           depth = nodeData.depth + 1;
         }
-        var a = {title: "new chapter", id: d.id, items: [], depth: depth }
+        var a = {title: "New chapter", id: d.id, items: [], depth: depth }
 
         if(nodeData.items == undefined){
           $scope.list.push(a);

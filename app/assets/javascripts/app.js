@@ -38,7 +38,7 @@
           UPLOAD: 'New file',
           CHAPTER: 'New chapter',
           DROP_ZONE: 'DROP ZONE',
-          DROP_EXPLANATION: 'You can even drop folders containing folders containing folders',
+          DROP_EXPLANATION: 'You can even drop folders containing folders containing folders.. ',
 					COLLAPSE: 'Collapse',
 					DASHBOARD: 'Dashboard',
 					HOME: 'Home',

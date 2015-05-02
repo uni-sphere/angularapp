@@ -11,9 +11,7 @@
           return key;
         }
       };
-
       return "unknown";
-
     }
   }]);
 }());

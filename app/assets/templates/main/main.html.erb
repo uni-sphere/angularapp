@@ -1,29 +1,32 @@
-<div id="slide2" class="slide" ng-if="home">
-  <div id="demo-app-home" >
-    <div ng-include="'home/demo-app-navbar.html'"></div>
-    <dragndrop-view></dragndrop-view>
+<div ng-if="home" id="home-container">
+  <slide1></slide1>
+  <div id="slide2" class="slide">
+    <div id="demo-app-home" >
+      <div ng-include="'home/demo-app-navbar.html'"></div>
+      <dragndrop-view></dragndrop-view>
 
-    <div id="main-view-container">
+      <div id="main-view-container">
 
-      <div id="view-tree">
-        <collapsible-tree  node-end = 'nodeEnd' active-nodes = 'activeNodes'></collapsible-tree>
+        <div id="view-tree">
+          <collapsible-tree  node-end = 'nodeEnd' active-nodes = 'activeNodes'></collapsible-tree>
+        </div>
+
+
+        <view-document active-nodes='activeNodes' node-end='nodeEnd' files = 'files' display-error = 'displayError'></view-document >
       </div>
-
-
-      <ui-tree-perso active-nodes='activeNodes' node-end='nodeEnd' files = 'files' display-error = 'displayError'></ui-tree-perso>
     </div>
   </div>
   <slide3></slide3>
 </div>
 
 
-<div ng-hide="home"  id="main-container">
+<div ng-hide="home"  id="application-container">
 
   <error-display display-error = 'displayError' hide-error = 'hideError' admin = 'admin'></error-display>
 
   <div ng-include="'main/navbar.html'"></div>
 
-  <sidebar ng-show="admin" admin-deco = 'adminDeco'></sidebar>
+  <sidebar ng-show="admin" admin-deco = 'adminDeco' sidebar-minified = 'sidebarMinified'></sidebar>
 
 
   <div id="main-view-container" class="wrapper wrapper__minify">

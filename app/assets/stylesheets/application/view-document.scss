@@ -34,7 +34,6 @@
 }
 .breadcrumb-node{
   float: left;
-  // padding: 0px 5px; 
 }
 
 .breadcrumb-separator{
@@ -45,8 +44,6 @@
 =            Buttons            =
 ===============================*/
 
-
-
 #button-row{
   position: relative;
   height: 100px;
@@ -54,33 +51,6 @@
   line-height: 100px;
 }
 
-// .submit-button {
-//   width: 39%;
-//   margin-left: 5%;
-//   margin-right: 5%;
-//   padding: 10px 0px;
-
-//   background: linear-gradient(to bottom, $light-blue, $blue);
-
-//   border-radius: 5px;
-//   border: none;
-//   box-shadow: 1px 1px 1px #666666;
-
-//   font-family: Arial;
-//   color: #ffffff;
-//   font-size: 20px;
-//   text-decoration: none;
-
-//   white-space: nowrap;
-//   overflow: hidden;
-//   text-overflow: ellipsis;
-
-//   &:hover {
-//     background: linear-gradient(to bottom, $hyper-light-blue, $super-light-blue);
-//     text-decoration: none;
-//     cursor: pointer;
-//   }
-// }
 .submit-button {
 
   border: 1px solid #d4d4d4;
@@ -121,30 +91,8 @@
     background-image: linear-gradient(#3072b3, #599bdc);
   }
 
-
 }
 
-
-
-// .submit-button:hover,
-// .submit-button:focus,
-// .submit-button:active,
-// .submit-button.active {
-//     border-color: #3072b3;
-//     border-bottom-color: #2a65a0;
-//     text-decoration: none;
-//     text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
-//     color: #fff;
-//     background-color: #3c8dde;
-//     background-image: linear-gradient(#599bdc, #3072b3);
-// }
-
-// .submit-button.active {
-//     border-color: #2a65a0;
-//     border-bottom-color: #3884cd;
-//     background-color: #3072b3;
-//     background-image: linear-gradient(#3072b3, #599bdc);
-// }
 
 /* overrides extra padding on button elements in Firefox */
 .submit-button::-moz-focus-inner {
@@ -152,37 +100,6 @@
     border: 0;
 }
 
-
-// .submit-button {
-//   width: 39%;
-//   margin-left: 5%;
-//   margin-right: 5%;
-//   padding: 10px 0px;
-
-//   background: linear-gradient(to bottom, #3498db, #2980b9);
-//   border-radius: 14px;
-//   font-family: Arial;
-//   color: whitesmoke;
-//   background: #4169E1;
-//   border: solid #4169E1 2px;
-
-
-//   font-size: 20px;
-//   text-decoration: none;
-
-//   white-space: nowrap;
-//   overflow: hidden;
-//   text-overflow: ellipsis;
-
-//   cursor: pointer;
-
-
-//   &:hover {
-//     background: whitesmoke;
-//     color: #2980b9 !important;
-//     text-decoration: none;
-//   }
-// }
 
 /*===============================
 =            UI Tree            =
@@ -246,7 +163,7 @@
 
 .isNew{
   .item-name, .chapter-number{
-    color: red;
+    // color: red;
   }
 }
 
@@ -343,9 +260,29 @@
   box-sizing: border-box;
 }
 
+
+/*===========================
+=            Tip            =
+===========================*/
+
+#tip{
+  position: absolute;
+  bottom: 20px;
+  margin-left: 20px;
+  font-size: .9em;
+  color: $dark-gris;
+}
+
+
+
 /*===================================
 =            No document            =
 ===================================*/
+
+.breadcrumb-no-doc{
+  background: $document-absent-bg !important;
+}
+
 .no-docs{
   background: $document-absent-bg !important;
 }
@@ -367,14 +304,14 @@
   height: 10%;
 }
 #document-absent-subtitle{
-  padding-bottom: 10px;
-  height: 10%;
+  // padding-bottom: 10px;
+  height: 5%;
 }
 
 #document-absent-dropzone-container{
   position: absolute;
   bottom: 0px;
-  height: calc(60% - 50px);
+  height: calc(75% - 40px);
   width: 90%;
   // background: blue;
 }
@@ -386,10 +323,7 @@
   height: 80%;
   margin-left: 10%;
   margin-top: 10%;
-  // margin-bottom: 40px;
 
-  // left: calc(50% - 200px);
-  // width: 80%;
   background: $ultra-light-grey;
   border-radius: 60px;
   border: 4px dashed black;
@@ -403,8 +337,9 @@
 
   font-size: 10em;
   color: black;
+  padding-top: 10%;
 
-  line-height: 350px;
+  // line-height: 350px;
 }
 
 #document-absent-text-under-pic{
@@ -450,37 +385,3 @@
 }
 
 
-
-
-
-
-// .containerSelected{
-//   // background: red;
-//   // border: 1px solid red;
-//   // border: 1px dashed $border-chapter-selected;
-//   // border-top: none;
-//   // color: black;
-//   // background: $container-items-selected-bg;
-//   // background: inherit;
-// }
-
-// .parentChapterSelected{
-//   background: $container-items-selected-bg;
-//   border: 1px solid $container-items-selected-bg;
-//   &:hover{
-//     background: $container-items-selected-hover;
-//   }
-// }
-
-// .chapterSelected{
-//   background: $chapter-selected-bg;
-//   border: 1px solid $chapter-selected-bg;
-//   color: black;
-
-//   .fa{
-//     color: black;
-//   }
-
-//   &:hover{
-//     background: $chapter-selected-hover;
-//   }

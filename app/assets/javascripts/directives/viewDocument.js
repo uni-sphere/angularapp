@@ -1,7 +1,7 @@
 (function () {
   // 'use strict';
   angular.module('mainApp.directives')
-    .directive('uiTreePerso', ['$translate' , 'Restangular', 'browser', '$upload', function($translate, Restangular, browser, $upload) {
+    .directive('viewDocument', ['$translate' , 'Restangular', 'browser', '$upload', function($translate, Restangular, browser, $upload) {
       return {
         restrict: 'E',
         templateUrl: 'application/view-document.html',
@@ -444,6 +444,17 @@
           function isInArray(value, array) {
             return array.indexOf(value.toString()) > -1;
           }
+
+          function checkIfChrome(){
+            if(browser() == "chrome"){
+              scope.isChrome = true;
+            } else{
+              scope.isChrome = false;
+            }
+          };
+
+          checkIfChrome();
+
 
         }
       };
