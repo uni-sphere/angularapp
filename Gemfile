@@ -30,7 +30,7 @@ gem 'rest-client'
 gem 'rails-i18n'
 gem 'whenever', require: false
 gem 'bcrypt'
-gem 'devise'
+gem 'devise_token_auth'
 gem 'ng-rails-csrf'
 
 group :development, :test do
