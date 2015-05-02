@@ -13,6 +13,7 @@ module AuthenticationHelper
     authenticate_with_http_token do |token, options|
       send_error('Bad token', 401) unless token == $TOKEN
     end
+    logger.info request.headers.inspect
   end
   
   def current_subdomain

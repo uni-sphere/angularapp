@@ -41,6 +41,8 @@ GEM
       railties (>= 3.1)
       sprockets
       tilt
+    angular_rails_csrf (1.0.3)
+      rails (>= 3, < 5)
     arel (6.0.0)
     autoprefixer-rails (5.1.8)
       execjs
@@ -328,6 +330,7 @@ PLATFORMS
 
 DEPENDENCIES
   angular-rails-templates
+  angular_rails_csrf
   autoprefixer-rails
   aws-sdk
   bcrypt

@@ -15,6 +15,8 @@
 		    //Check if the user is admin
 		    scope.admin = Auth.isAuthenticated();
 				
+				console.log(scope.admin);
+				
 				scope.toggleAdmin = function(){
 					if(scope.open == true){
 						scope.open = false;
@@ -33,7 +35,8 @@
 
 					Auth.login(credentials).then(function(user) {
 						console.log(user);
-						scope.admin = true;
+						scope.admin = Auth.isAuthenticated();
+						console.log(Auth.isAuthenticated());
 					}, function(error) {
 						console.log(error);
 					});
