@@ -16,6 +16,7 @@
 		    scope.admin = Auth.isAuthenticated();
 				
 				console.log(scope.admin);
+				console.log(Auth._currentUser);
 				
 				scope.toggleAdmin = function(){
 					if(scope.open == true){

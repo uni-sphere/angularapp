@@ -16,7 +16,8 @@
     'angulartics.google.analytics',
     'pascalprecht.translate',
 		'ngDropdowns',
-		'Devise'
+		'Devise',
+		'ng-rails-csrf'
   ])
   .config(function (
     $stateProvider,

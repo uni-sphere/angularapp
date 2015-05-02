@@ -13,7 +13,13 @@ module AuthenticationHelper
     authenticate_with_http_token do |token, options|
       send_error('Bad token', 401) unless token == $TOKEN
     end
-    logger.info request.headers.inspect
+    clear_logs request.headers['HTTP_X_CSRF_TOKEN'].inspect
+    
+    request.headers["X-CSRF-TOKEN"]
+    
+    clear_logs user_signed_in?
+    clear_logs user_session
+    clear_logs current_user
   end
   
   def current_subdomain

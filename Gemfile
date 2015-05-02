@@ -31,7 +31,7 @@ gem 'rails-i18n'
 gem 'whenever', require: false
 gem 'bcrypt'
 gem 'devise'
-gem 'angular_rails_csrf'
+gem 'ng-rails-csrf'
 
 group :development, :test do
   gem 'rspec-rails'

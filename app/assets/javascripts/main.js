@@ -18,6 +18,7 @@
 //= require	angular-dropdowns/dist/angular-dropdowns
 //= require	metrics-graphics/dist/metricsgraphics.min
 //= require	angular-devise/lib/devise-min
+//= require ng-rails-csrf
 
 //= require angular-rails-templates
 //= require app
