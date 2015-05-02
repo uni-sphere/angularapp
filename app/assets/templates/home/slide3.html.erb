@@ -1,5 +1,31 @@
-<div id="slide3" class="slide">
-  <div ng-repeat="uni in universities">
+<div id="slide3" class="slide" ng-controller="HomeCtrl">
+  <map 
+    center="[48.46, 7.48]" 
+    disable-default-u-i="true"
+    disable-double-click-zoom="true"
+    draggable="true"
+    draggable-cursor="auto"
+    dragging-cursor="move"
+    keyboard-shortcuts="false"
+    zoom="6" 
+    max-zoom="12"
+    min-zoom="4"
+    tilt="45"
+    map-type-id="ROADMAP">
+
+
+    <marker ng-repeat = "university in universities"
+      position="{{university.position}}" 
+      title="{{university.title}}"
+      icon='<%= asset_path "pin-colleg.png" %>'>
+    </marker>
+
+
+
+  </map>
+
+
+<!--   <div ng-repeat="uni in universities">
     {{uni.name}}
   </div>
   {{newUniName}}
@@ -12,7 +38,7 @@
       <input  class="sign-up-input" type="password" ng-model="newUniPassword" placeholder="Password">
       <button class="sign-up-button" ng-click="saveNewUni()">Save</button>
     </div>
-  </div>
+  </div> -->
 
  <!--  <blockquote>
     {{uniName}}

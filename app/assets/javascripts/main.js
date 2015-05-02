@@ -10,7 +10,6 @@
 //= require ng-file-upload/angular-file-upload-shim
 //= require ng-file-upload/angular-file-upload
 //= require restangular
-//= require ngDialog
 //= require	angulartics/dist/angulartics.min
 //= require	angulartics/dist/angulartics-ga.min
 //= require	angulartics/dist/angulartics-gtm.min
@@ -19,6 +18,7 @@
 //= require	metrics-graphics/dist/metricsgraphics.min
 //= require	ng-token-auth/dist/ng-token-auth.min
 //= require ng-rails-csrf
+//= require ngmap/build/scripts/ng-map.min
 
 //= require angular-rails-templates
 //= require app

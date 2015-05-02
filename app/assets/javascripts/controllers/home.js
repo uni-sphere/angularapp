@@ -5,11 +5,22 @@ angular
 
     $scope.newUni = "";
 
-    Restangular.one('organizations').get().then(function(response) {
-      $scope.universities = response;
-    }, function() {
-      console.log("error");
-    });
+    $scope.universities = [
+      {
+        title: "Lycée Freppel",
+        position: "[48.46, 7.48]"
+      },
+      {
+        title: "Lycée Couffignal",
+        position: "[48.48, 7.53]"
+      }
+    ]
+
+    // Restangular.one('organizations').get().then(function(response) {
+    //   $scope.universities = response;
+    // }, function() {
+    //   console.log("error");
+    // });
 
     $scope.saveNewUni = function(){
       uniToPush = {name: $scope.newUniName}

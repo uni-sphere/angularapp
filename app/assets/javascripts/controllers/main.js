@@ -1,7 +1,7 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', 'ngDialog', '$translate', function ($scope, browser, $cookies, $timeout, Restangular, $upload, ngDialog, $translate) {
+  .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', '$translate', function ($scope, browser, $cookies, $timeout, Restangular, $upload, $translate) {
 
     $scope.sidebarMinified = true;
 

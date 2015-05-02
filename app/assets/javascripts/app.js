@@ -11,13 +11,13 @@
     'ngCookies',
     'restangular',
     'angularFileUpload',
-    'ngDialog',
     'angulartics', 
     'angulartics.google.analytics',
     'pascalprecht.translate',
 		'ngDropdowns',
 		'ng-token-auth',
 		'ng-rails-csrf'
+    'ngMap'
   ])
   .config(function (
     $stateProvider,
