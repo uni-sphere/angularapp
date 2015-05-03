@@ -1,51 +1,17 @@
-<div id="slide3" class="slide" ng-controller="HomeCtrl">
-  <map 
-    center="[48.46, 7.48]" 
-    disable-default-u-i="true"
-    disable-double-click-zoom="true"
-    draggable="true"
-    draggable-cursor="auto"
-    dragging-cursor="move"
-    keyboard-shortcuts="false"
-    zoom="6" 
-    max-zoom="12"
-    min-zoom="4"
-    tilt="45"
-    map-type-id="ROADMAP">
+<div class="slide" id="slide3">
+  <div></div>
+  <!-- <div ng-include="'home/demo-app-navbar.html'"></div> -->
+  <object id="screen-pic" type="image/svg+xml" data='<%= asset_path "macbook.svg" %>'></object>
 
-
-    <marker ng-repeat = "university in universities"
-      position="{{university.position}}" 
-      title="{{university.title}}"
-      icon='<%= asset_path "pin-colleg.png" %>'>
-    </marker>
-
-
-
-  </map>
-
-
-<!--   <div ng-repeat="uni in universities">
-    {{uni.name}}
-  </div>
-  {{newUniName}}
-
-
-  <div id="new-uni-form-wrapper">
-    <div id="new-uni-form">
-      <input class="sign-up-input"type="text" ng-model="newUniName" placeholder="university name">
-      <input class="sign-up-input" type="email" ng-model="newUniEmail" placeholder="Email adress">
-      <input  class="sign-up-input" type="password" ng-model="newUniPassword" placeholder="Password">
-      <button class="sign-up-button" ng-click="saveNewUni()">Save</button>
+  <%#= image_tag "screen.png", id: "screen-pic" %>
+  <div id="slide3-wrapper">
+    <div id="view-tree">
+      <collapsible-tree  node-end = 'nodeEnd' display-error ='displayError' active-nodes = 'activeNodes' admin = "true" ></collapsible-tree>
     </div>
-  </div> -->
 
- <!--  <blockquote>
-    {{uniName}}
-  </blockquote>
-
-  <form name="uniForm" ng-submit="">
-    <input type="text" ng-model="uniName">
-    <input type="Submit" value="submit">
-  </form> -->
+    <view-document active-nodes='activeNodes' node-end='nodeEnd' files = 'files' display-error = 'displayError' ng-show="nodeEnd" admin = "true"></view-document>
+  </div>
+  
 </div>
+
+

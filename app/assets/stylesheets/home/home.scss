@@ -30,16 +30,16 @@
 }
 
 .slide{
-  position: absolute;
-  height: calc(100% - 50px);
+  position: relative;
+  float: left;
   width: 100%;
 }
 
-#slide2{
-  top: 0;
-}
+// #slide2{
+//   top: 0;
+// }
 
-#slide3{
-  top:100%;
-  background: grey;
-}
+// #slide3{
+//   top:0;
+//   background: grey;
+// }

@@ -1,21 +1,6 @@
-<div ng-if="home" id="home-container">
+<div ng-if="home" id="home-container" ng-controller="HomeCtrl">
   <slide1></slide1>
-  <div id="slide2" class="slide">
-    <div id="demo-app-home" >
-      <div ng-include="'home/demo-app-navbar.html'"></div>
-      <dragndrop-view></dragndrop-view>
-
-      <div id="main-view-container">
-
-        <div id="view-tree">
-          <collapsible-tree  node-end = 'nodeEnd' active-nodes = 'activeNodes'></collapsible-tree>
-        </div>
-
-
-        <view-document active-nodes='activeNodes' node-end='nodeEnd' files = 'files' display-error = 'displayError'></view-document >
-      </div>
-    </div>
-  </div>
+  <slide2></slide2>
   <slide3></slide3>
 </div>
 

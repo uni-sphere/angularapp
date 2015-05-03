@@ -1,0 +1,43 @@
+<div id="slide2" class="slide">
+
+  <div id="uni-input">
+    <div id="uni-input-form">
+      <!-- <button id="location-button" class="">ll</button> -->
+
+      <input places-auto-complete size=80 
+        ng-model="address" 
+        component-restrictions="{country:'fr'}"
+        types="{{types}}"
+        on-place-changed="placeChanged(place)" 
+        class="search-input"
+        placeholder="university name"
+
+      /> 
+
+      <button class="search-button" ng-click="lookForUni()">Save</button>
+    </div>
+  </div>
+
+  <map 
+    center="[48.46, 7.48]" 
+    disable-default-u-i="true"
+    disable-double-click-zoom="true"
+    draggable="true"
+    draggable-cursor="auto"
+    dragging-cursor="move"
+    keyboard-shortcuts="false"
+    zoom="6" 
+    max-zoom="14"
+    min-zoom="4"
+    tilt="45"
+    map-type-id="ROADMAP"
+    scrollwheel="false"
+  >
+
+  </map>
+
+<!--   <div ng-show="place">
+    address : {{address}}
+    Address = {{place.formatted_address}} 
+  </div> -->
+</div>
