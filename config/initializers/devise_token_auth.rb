@@ -20,3 +20,7 @@ DeviseTokenAuth.setup do |config|
   # redirect successful authentications to '/omniauth/github/callback'
   #config.omniauth_prefix = "/omniauth"
 end
+
+Devise.setup do |config|
+  config.mailer_sender = "hello@unisphere.eu"
+end

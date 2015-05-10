@@ -17,18 +17,6 @@
 						var a = document.querySelector.bind(document);
 						var c = document.querySelector(".wrapper")
 
-						scope.deconnection = function(){
-							$auth.signOut()
-							.then(function(resp) { 
-								console.log(resp);
-								c.classList.add("wrapper__minify");
-								scope.admin = false;
-							})
-							.catch(function(resp) { 
-								console.log(resp);
-							});
-						}
-
 						var d = document.getElementById("js-menu")
 						var e = d.querySelectorAll(".menu--item__has_sub_menu");
 

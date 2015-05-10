@@ -5,21 +5,13 @@ module AuthenticationHelper
   $TOKEN = '6632398822f1d84468ebde3c837338fb'
   
   def authentication
-    authenticate_client unless request.path == '/'
-    # clear_logs request.remote_ip
+    # authenticate_client unless request.path == '/'
   end
   
   def authenticate_client
-    authenticate_with_http_token do |token, options|
-      send_error('Bad token', 401) unless token == $TOKEN
-    end
-    clear_logs request.headers['HTTP_X_CSRF_TOKEN'].inspect
-    
-    request.headers["X-CSRF-TOKEN"]
-    
-    clear_logs user_signed_in?
-    clear_logs user_session
-    clear_logs current_user
+    # authenticate_with_http_token do |token, options|
+    #   send_error('Bad token', 401) unless token == $TOKEN
+    # end
   end
   
   def current_subdomain

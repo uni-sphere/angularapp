@@ -1,6 +1,7 @@
 class Organization < ActiveRecord::Base
   
   before_save :format_subdomain if Rails.env.production?
+  before_save :format_string if Rails.env.production?
   
   has_many :nodes, dependent: :delete_all
   has_many :users

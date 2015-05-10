@@ -3,13 +3,6 @@ angular
   .module('mainApp.controllers')
   .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', 'ngDialog', '$translate', function ($scope, browser, $cookies, $timeout, Restangular, $upload, ngDialog, $translate) {
 
-
-
-   
-    // if(admin != undefined){
-    //   $scope.admin = true;
-    // }
-
     $scope.adminDeco = function(){
       $scope.admin = false;
     }

@@ -1,57 +1,93 @@
 (function(){
-angular
-  .module('mainApp.controllers')
-  .controller('AccountCtrl', ['$scope', 'Restangular', function ($scope, Restangular) {
+	angular
+	.module('mainApp.controllers')
+	.controller('AccountCtrl', ['$scope', 'Restangular', '$auth',  function ($scope, Restangular, $auth) {
 
-    // // Get the profile
-    // Restangular.one('user').get().then(function (user) {
-    //   $scope.accountEmail = user.name;
-    // }, function(d){
-    //   console.log(d);
-    //   console.log("Cannot get user profile");
-    // });
+		// // Get the profile
+		// Restangular.one('user').get().then(function (user) {
+			//   $scope.accountEmail = user.name;
+			// }, function(d){
+				//   console.log(d);
+				//   console.log("Cannot get user profile");
+				// });
 
-    var top = $('#panel-orgnanization').offset().top - 50
-    console.log(top);
-    $('#panel-user-to-invite').css("top", top);
+				var top = $('#panel-orgnanization').offset().top - 50
+				console.log(top);
+				$('#panel-user-to-invite').css("top", top);
 
-    // Change the profile 
-    $scope.updateProfile = function(){
-      Restangular.one('user').put({name:$scope.accountName, email: $scope.accountEmail}).then(function () {
-        $scope.accountName = "";
-        $scope.accountEmail = "";
-        console.log("Account updated succesfully");
-      }, function(d){
-        console.log(d);
-        console.log("There was an error updating your profile");
-        $scope.displayError("Try again to change your profile");
-      });;
-    }
+				////// SIGNOUT
+				$scope.deconnection = function(){
+					$auth.signOut()
+					.then(function(resp) { 
+						c.classList.add("wrapper__minify");
+						scope.admin = false;
+					})
+					.catch(function(resp) { 
+						// handle error response
+					});
+				}
+				////// UPDATE USER
+				
+				////// UPDATE USER
+				$scope.updateAccount = function() {
+					var credentials = {
+						name: $scope.updatedName,
+						email: $scope.updatedEmail
+					};
+					console.log(credentials);
+					$auth.updateAccount(credentials)
+					.then(function(resp) { 
+						console.log(resp);
+					})
+					.catch(function(resp) { 
+						console.log(resp);
+					});
+				}
+				//////
+		
+				////// UPDATE PASSWORD
+				$scope.updatePsw = function() {
+					var credentials = {
+						password: $scope.newPsw,
+						password_confirmation: $scope.confirmPsw
+					};
 
-    $scope.listUser = ["gabriel.muller.12@gmail.com","clement@muller.uk.net"]
-    $scope.addUser = function(){
-      if(organizationForm.$valid){
-        $scope.listUser.push($scope.newUser);
-        console.log($scope.newUser + " sucessfully addded");
-        $scope.newUser = "";
-      } else{
-        console.log("There was an error adding this user");
-        $scope.displayError($scope.newUser + " is not a valid email");
-      }
-    }
+					$auth.updatePassword(credentials)
+					.then(function(resp) {
+						console.log(resp);
+					})
+					.catch(function(resp) {
+						console.log(resp);
+						$scope.displayError("Try again to change your password");
+					});
+				}
+				//////
+		
+		
+				$scope.listUser = ["gabriel.muller.12@gmail.com","clement@muller.uk.net"]
+				$scope.addUser = function(){
+					if(organizationForm.$valid){
+						$scope.listUser.push($scope.newUser);
+						console.log($scope.newUser + " sucessfully addded");
+						$scope.newUser = "";
+					} else{
+						console.log("There was an error adding this user");
+						$scope.displayError($scope.newUser + " is not a valid email");
+					}
+				}
 
-    // Invite users
-    $scope.inviteUsers = function(){
-      Restangular.all('users/invite').post({emails: $scope.listUser}).then(function () {
-        $scope.listUser = [];
-        console.log("New user added");
-      }, function(d){
-        console.log(d);
-        console.log("There was an error adding users");
-        $scope.displayError("Try again to invite lecturers");
-      });;
-    }
+				// Invite users
+				$scope.inviteUsers = function(){
+					Restangular.all('users/invite').post({emails: $scope.listUser}).then(function () {
+						$scope.listUser = [];
+						console.log("New user added");
+					}, function(d){
+						console.log(d);
+						console.log("There was an error adding users");
+						$scope.displayError("Try again to invite lecturers");
+					});;
+				}
 
 
-  }]);
-})();
+			}]);
+		})();

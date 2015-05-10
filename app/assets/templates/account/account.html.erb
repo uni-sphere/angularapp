@@ -28,16 +28,14 @@
   <div class="panel">
     <div class="panel-header">Password</div>
     <div class="panel-body">
-      <div class="panel-row-title" ng-model="oldPsw">Old Password</div>
-      <input type="password" class="panel-input">
 
-      <div class="panel-row-title" ng-model="newPsw">New Password</div>
-      <input type="password" class="panel-input">
+      <div class="panel-row-title">New Password</div>
+      <input type="password" class="panel-input" ng-model="newPsw" >
 
-      <div class="panel-row-title" ng-model="confirmPsw">Confirm new Password</div>
-      <input type="password" class="panel-input">
+      <div class="panel-row-title">Confirm new Password</div>
+      <input type="password" class="panel-input" ng-model="confirmPsw" >
 
-      <button class="panel-submit" ng-click="updatePassword()">Update password</button>
+      <button class="panel-submit" ng-click="updatePsw()">Update password</button>
     </div>
   </div>
 
