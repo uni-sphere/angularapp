@@ -1,17 +1,28 @@
 <div class="slide" id="slide3">
-  <div></div>
-  <!-- <div ng-include="'home/demo-app-navbar.html'"></div> -->
-  <object id="screen-pic" type="image/svg+xml" data='<%= asset_path "macbook.svg" %>'></object>
 
-  <%#= image_tag "screen.png", id: "screen-pic" %>
-  <div id="slide3-wrapper">
+  <div id="demo-wrapper">
+    <div id="fake-camera-1"></div>
+    <div id="fake-camera-2"></div>
+
     <div id="view-tree">
       <collapsible-tree  node-end = 'nodeEnd' display-error ='displayError' active-nodes = 'activeNodes' admin = "true" ></collapsible-tree>
     </div>
 
     <view-document active-nodes='activeNodes' node-end='nodeEnd' files = 'files' display-error = 'displayError' ng-show="nodeEnd" admin = "true"></view-document>
   </div>
+
+  <div id="fake-liasion">
+    <div id="fake-liasion-right"></div>
+    <div id="fake-liasion-left"></div>
+  </div>
+
+  <div id="fake-keyboard-wrapper">
+    <div id="fake-pad"></div>
+  </div>
   
+   <!-- <div id="separation-line"></div> -->
 </div>
+
+
 
 

@@ -1,22 +1,8 @@
 <div id="slide2" class="slide">
 
-  <div id="uni-input">
-    <div id="uni-input-form">
-      <!-- <button id="location-button" class="">ll</button> -->
-
-      <input places-auto-complete size=80 
-        ng-model="address" 
-        component-restrictions="{country:'fr'}"
-        types="{{types}}"
-        on-place-changed="placeChanged(place)" 
-        class="search-input"
-        placeholder="university name"
-
-      /> 
-
-      <button class="search-button" ng-click="lookForUni()">Save</button>
-    </div>
-  </div>
+  <div class="slide-title">Find your university</div>
+  
+  <!-- <div id="arrow-down-map"></div> -->
 
   <map 
     center="[48.46, 7.48]" 
@@ -35,6 +21,25 @@
   >
 
   </map>
+
+  <div id="uni-input">
+    <div id="uni-input-black-bg"></div>
+    <div id="uni-input-form">
+      <!-- <button id="location-button" class="">ll</button> -->
+
+      <input places-auto-complete size=80 
+        ng-model="address" 
+        component-restrictions="{country:'fr'}"
+        types="{{types}}"
+        on-place-changed="placeChanged(place)" 
+        class="search-input"
+        placeholder="university name"
+
+      /> 
+
+      <button class="search-button" ng-click="lookForUni()">Search</button>
+    </div>
+  </div>
 
 <!--   <div ng-show="place">
     address : {{address}}

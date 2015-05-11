@@ -16,7 +16,7 @@
     'pascalprecht.translate',
 		'ngDropdowns',
 		'ng-token-auth',
-		'ng-rails-csrf'
+		'ng-rails-csrf',
     'ngMap'
   ])
   .config(function (

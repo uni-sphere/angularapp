@@ -1,8 +1,19 @@
+#slide2{
+  margin-top: 80px;
+  // margin-bottom: 100px;
+}
+
 #uni-input{
   position: absolute;
-  top: -63px;
+  bottom: 0px;
   width: 100%;
-  background: rgba( 0, 0, 0, .8 );
+  // width: calc(100% - 80px); 
+  // margin: 0px 40px;
+  // border-top-left-radius: 10px;
+  // border-top-right-radius: 10px;
+
+
+  // background: rgba( 0, 0, 0, .8 );
 }
 
 // #uni-input{
@@ -10,6 +21,14 @@
 //   width: 100%;
 //   background: white;
 // }
+
+#uni-input-black-bg{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: black;
+  opacity: 0.8;
+}
 
 #uni-input-form{
   display: table;
@@ -71,10 +90,41 @@
   }
 }
 
+// #arrow-down-map{
+//   position: absolute;
+//   left: calc(50% - 20px);
+//   top: 0px;
+//   width: 0; 
+//   height: 0; 
+//   border-left: 40px solid transparent;
+//   border-right: 40px solid transparent;
+  
+//   border-top: 40px solid white;
+//   z-index: 200;
+// }
+
 map{
-  background: black;
+  // background: black;
   // opacity: 0.9;
   height: 70vh;
-  padding: 0px 40px;
-  padding-bottom: 40px;
+  // padding: 0px 10px 10px 10px;
+  // margin: 0px 40px;
+  // border-bottom-right-radius: 20px;
+  // border-bottom-left-radius: 20px;
+
+  // padding-bottom: 40px;
+}
+
+.slide-title{
+  display: inline-block;
+  width: 100%;
+  font-size: 1.5em;
+  text-align: center;
+  line-height: 60px;
+  // background: $gris;
+  // border-top: 1px solid black;
+  box-shadow: 1px 2px 4px 0px black;
+  margin-bottom: 4px;
+  background: $nice-noir;
+  color: white;
 }

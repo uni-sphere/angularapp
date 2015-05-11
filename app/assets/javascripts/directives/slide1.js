@@ -7,7 +7,9 @@
       scope: {
       },
       link: function(scope) {
-
+        // $('#call-to-action-wrapper').click(function(){
+        //   $(this).toggleClass("call-to-action-hovered");
+        // })
       }
     }
 
