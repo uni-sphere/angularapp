@@ -15,16 +15,20 @@
     'angulartics', 
     'angulartics.google.analytics',
     'pascalprecht.translate',
-		'ngDropdowns'
+		'ngDropdowns',
+		'ng-token-auth',
+		'ng-rails-csrf'
   ])
   .config(function (
     $stateProvider,
     $urlRouterProvider,
     $locationProvider,
     RestangularProvider,
-    $translateProvider
+    $translateProvider,
+		$authProvider
   ) {
-      
+			
+				
       $translateProvider
         .translations('en', {
           HELP: 'Help',
@@ -174,10 +178,18 @@
         return "http://api.unisphere.eu"
       }
     }
+		
+		//// AUTHENTICATION DEVISE
+		
+		$authProvider.configure({
+	  	apiUrl: getEnvironment()
+	  });
+		
+	  ////
 
     RestangularProvider.setBaseUrl(getEnvironment());
 
-    RestangularProvider.setDefaultHeaders({ 'Authorization': 'Token token=6632398822f1d84468ebde3c837338fb' });
+    // RestangularProvider.setDefaultHeaders({ 'Authorization': 'Token token=6632398822f1d84468ebde3c837338fb' });
     
     RestangularProvider.setRequestInterceptor(function(element, operation, route, url) {
 

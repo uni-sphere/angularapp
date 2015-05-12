@@ -20,7 +20,7 @@ class UsersController < ApplicationController
   end
   
   def update
-    user = current_admin
+    user = current_user
     user.password = params[:password] if params[:password]
     user.name = params[:name] if params[:name]
     user.email = params[:email] if params[:email]

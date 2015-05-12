@@ -1,47 +1,72 @@
 (function () {
-  'use strict';
-  angular.module('mainApp.directives')
-    .directive('adminCo', [ 'Restangular', '$cookies', function(Restangular, $cookies) {
-      return {
-        restrict: 'E',
-        templateUrl: 'application/admin-co.html',
-        scope: {
-          admin: '=',
-          displayError: '=',
-          hideError: '='
-        },
-        link: function(scope) {
-          scope.toggleAdmin = function(){
-            if(scope.open == true){
-              scope.open = false;
-            } else{
-              scope.open = true;
-            }
-          }
-          scope.validateAdmin = function(){
-            var connection = {email: scope.emailInput, password:scope.passwordInput}
-            Restangular.all('users/login').post(connection).then(function(d) {
-              // console.log(d);
-              $cookies.put('unisphere_api_admin', d.cookie);
-              scope.admin = true;
-            }, function(d){
-              scope.passwordInput = "";
+	'use strict';
+	angular.module('mainApp.directives')
+	.directive('adminCo', [ 'Restangular', '$cookies', '$auth', function(Restangular, $cookies, $auth) {
+		return {
+			restrict: 'E',
+			templateUrl: 'application/admin-co.html',
+			scope: {
+				admin: '=',
+				displayError: '=',
+				hideError: '=',
+			},
+			link: function(scope) {
+				
+				////// SET INITIAL ADMIN
+				if ($cookies.get('auth_headers') != undefined) {
+					if ($cookies.get('auth_headers').indexOf("access-token") > -1) {
+						scope.admin = true;
+					}
+				} else {
+					scope.admin = false;
+				}
+				//////
+				
+				scope.toggleAdmin = function(){
+					if(scope.open == true){
+						scope.open = false;
+					} else{
+						scope.open = true;
+					}
+				}
+				
+				////// PASSWORD FORGOTTEN
+				scope.passwordForgotten = function() {
+					var credentials = {
+						email: scope.emailInput,
+					};
+					
+					$auth.requestPasswordReset(credentials)
+					.then(function(resp) { 
+						console.log(resp);
+					})
+					.catch(function(resp) { 
+						console.log(resp);
+					});
+				}
+				//////
+				
+				scope.validateAdmin = function(){
 
-              console.log("Impossible to connect");
-              console.log(d);
-              if(d.status == 404){
-                scope.displayError("You misstyped your email")
-              } else if(d.status == 403){
-                scope.displayError("You misstyped your password");
-              } else{
-                scope.displayError("Please try again!");
-              }
+					////// LOGIN
+					var credentials = {
+						email: scope.emailInput,
+						password: scope.passwordInput
+					};
+					$auth.submitLogin(credentials)
+					.then(function(resp) {
+						scope.admin = true;
+						console.log(resp);
+					})
+					.catch(function(resp) {
+						console.log(resp);
+					});
+					//////
+					
+				}
+					
+			}
 
-              scope.newUniPassword = "";
-            });
-          }
-        }
-
-      }
-  }]);
+		}
+	}]);
 }());

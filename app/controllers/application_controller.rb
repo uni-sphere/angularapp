@@ -1,11 +1,11 @@
 class ApplicationController < ActionController::Base
-
+  include DeviseTokenAuth::Concerns::SetUserByToken
+  
   include AuthenticationHelper
   include ApplicationHelper
   include SubdomainHelper
   
   protect_from_forgery with: :null_session
-  
   before_action :authentication
   
 end

@@ -3,12 +3,12 @@
     <div class="panel-header">Profile</div>
     <div class="panel-body">
       <div class="panel-row-title">Name</div>
-      <input type="text" placeholder="" class="panel-input" ng-model="accountName">
+      <input type="text" placeholder="" class="panel-input" ng-model="updatedName">
 
       <div class="panel-row-title">Email</div>
-      <input type="email" placeholder="" class="panel-input" ng-model="accountEmail">
+      <input type="email" placeholder="" class="panel-input" ng-model="updatedEmail">
 
-      <button class="panel-submit" ng-click="updateProfile()">Update profil</button>
+      <button class="panel-submit" ng-click="updateAccount()">Update profil</button>
     </div>
   </div>
 
@@ -28,27 +28,23 @@
   <div class="panel">
     <div class="panel-header">Password</div>
     <div class="panel-body">
-      <div class="panel-row-title">Old Password</div>
-      <input type="password" class="panel-input">
 
       <div class="panel-row-title">New Password</div>
-      <input type="password" class="panel-input">
+      <input type="password" class="panel-input" ng-model="newPsw" >
 
       <div class="panel-row-title">Confirm new Password</div>
-      <input type="password" class="panel-input">
+      <input type="password" class="panel-input" ng-model="confirmPsw" >
 
-      <button class="panel-submit" ng-click="updatePassword()">Update password</button>
+      <button class="panel-submit" ng-click="updatePsw()">Update password</button>
     </div>
   </div>
 
   <div id="panel-user-to-invite"  ng-show="listUser">
     <div class="panel-header header-special">User to invite</div>
     <div class="panel-body body-special">
-      <div class="item-user">{{}}</div>
       <div class="item-user" ng-repeat="user in listUser">
         <i class="fa fa-envelope"></i>{{user}}
       </div>
     </div>
   </div>
-
 </div>

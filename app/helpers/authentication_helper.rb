@@ -5,15 +5,13 @@ module AuthenticationHelper
   $TOKEN = '6632398822f1d84468ebde3c837338fb'
   
   def authentication
-    cookies.signed['unisphere_api_admin'] = 1
-    authenticate_client unless request.path == '/'
-    # clear_logs request.remote_ip
+    # authenticate_client unless request.path == '/'
   end
   
   def authenticate_client
-    authenticate_with_http_token do |token, options|
-      send_error('Bad token', 401) unless token == $TOKEN
-    end
+    # authenticate_with_http_token do |token, options|
+    #   send_error('Bad token', 401) unless token == $TOKEN
+    # end
   end
   
   def current_subdomain
@@ -50,17 +48,6 @@ module AuthenticationHelper
       @awsdocument = Awsdocument.find_unarchived params[:id]
     else
       send_error('resource not found', 404)
-    end
-  end
-  
-  def current_admin
-    if cookies.signed['unisphere_api_admin']
-      id = cookies.signed['unisphere_api_admin']
-      if current_organization.users.exists?(id: id)
-        return current_organization.users.find id
-      end
-    else
-      return send_error('not admin', 403)
     end
   end
   
@@ -107,12 +94,6 @@ module AuthenticationHelper
       end
     else
       send_error('chapter id not received', 400)
-    end
-  end
-  
-  def is_admin?
-    if cookies.signed['unisphere_api_admin']
-      send_error('unauthorized', 401) unless current_organization.users.exists?(id: cookies.signed['unisphere_api_admin'])
     end
   end
 

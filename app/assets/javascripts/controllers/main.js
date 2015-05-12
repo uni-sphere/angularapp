@@ -11,13 +11,11 @@ angular
     if(admin != undefined){
       $scope.admin = true;
     }
-
     $scope.adminDeco = function(){
       $scope.admin = false;
     }
 
     $scope.inviteUser = ["clement@muller.uk.net","gabriel.muller.12@gmail.com"]
-
 
     checkLocation = function(){
       var host = window.location.host;
