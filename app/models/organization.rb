@@ -12,7 +12,11 @@ class Organization < ActiveRecord::Base
   validates_exclusion_of :subdomain, :in => ["api", "www", "sandbox"]
   
   def format_subdomain
-    self.subdomain = (ActiveSupport::Inflector.transliterate self.name.delete('_').downcase).gsub(/[^a-z0-9]/i, "")
+    if url.include? 'www'
+      self.subdomain = url.split('/')[2].split('.').first
+    else
+      self.subdomain = url.split('.')[1]
+    end
   end
   
 end
