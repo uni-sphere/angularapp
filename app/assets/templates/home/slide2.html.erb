@@ -26,18 +26,15 @@
     <div id="uni-input-black-bg"></div>
     <div id="uni-input-form">
       <!-- <button id="location-button" class="">ll</button> -->
-
       <input places-auto-complete size=80 
         ng-model="address" 
         component-restrictions="{country:'fr'}"
         types="{{types}}"
         on-place-changed="placeChanged(place)" 
-        class="search-input"
+        class="search-input home-input"
         placeholder="university name"
 
       /> 
-
-      
     </div>
   </div>
 
@@ -55,7 +52,7 @@
 
     <div class="school-display">
       <span class="school-display-row-center">{{place.formatted_address}} </span>
-      <button id="add-school" ng-click="addSchool()">Get started</button>
+      <button id="add-school" class="home-button" ng-click="findUrl()">Get started</button>
     </div>
 
     <div class="school-display-bg"></div>
@@ -66,10 +63,23 @@
 
     <div class="school-display">
       <span class="school-display-row">We are going to create you the following url:</span>
-      <span id="choosen-url" class="school-display-row-center">freppel.unisphere.eu <button id="confirm-school" ng-click="confirmSchool()">Confirm</button></span>
+      <span id="choosen-url" class="school-display-row-center">freppel.unisphere.eu <button id="confirm-school" class="home-button" ng-click="confirmUrl()">Confirm</button></span>
       <span id="choose-other-url" class="school-display-row">Would you prefer one of those:</span>
-      <span class="school-display-row"><i class="fa fa-check check-left" ng-click="confirmSchool()"></i>freppel67.unisphere.eu</span>
-      <span class="school-display-row"><i class="fa fa-check check-left" ng-click="confirmSchool()"></i>freppel-strasbourg.unisphere.eu</span>
+      <span class="school-display-row"><i class="fa fa-check check-left" ng-click="confirmUrl()"></i>freppel67.unisphere.eu</span>
+      <span class="school-display-row"><i class="fa fa-check check-left" ng-click="confirmUrl()"></i>freppel-strasbourg.unisphere.eu</span>
+    </div>
+
+    <div class="school-display-bg"></div>
+  </div>
+
+  <div id="new-school-display-wrapper" ng-show="signupShow" ng-class="{'school-ready-to-disappear': !signupShow, 'school-ready-to-appear': signupShow}">
+    <div class="school-header">Admin account for http://freppel.unisphere.eu</div>
+
+    <div class="school-display">
+      <input class="signup-input home-input" placeholder="Surname Name"/>
+      <input class="signup-input home-input" placeholder="Email"/>
+      <input class="signup-input home-input" placeholder="Password"/>
+      <button id="signup" class="home-button" ng-click="signup()">Sign up</button>
     </div>
 
     <div class="school-display-bg"></div>
