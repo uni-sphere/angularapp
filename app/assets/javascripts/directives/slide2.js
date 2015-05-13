@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  angular.module('mainApp.directives').directive('slide2', ['Restangular', function(Restangular) {
+  angular.module('mainApp.directives').directive('slide2', ['Restangular', '$auth', function(Restangular, $auth) {
     return {
       restrict: 'E',
       templateUrl: 'home/slide2.html',
@@ -12,7 +12,7 @@
         scope.markerPerso = [];
         scope.showExistingSchool = false;
         scope.showNewSchool = false;
-        scope.showNewSchoolUrl = false;
+        scope.subdomainCreated = false;
         scope.signupShow = false;
 
         // GET /organizations
@@ -173,6 +173,8 @@
             });
 
             //We change popup
+            scope.signupShow = false;
+            scope.subdomainCreated =  true;
 
           }, function(d){
             console.log("error");
