@@ -134,12 +134,7 @@
         .state('home', {
           url: '/home',
           templateUrl: 'main/main.html',
-          controller: 'MainCtrl',
-          resolve: {
-            nodesflat: function(Restangular){
-              return Restangular.one('nodes').get();
-            }
-          }
+          controller: 'MainCtrl'
         })
 
        // .state('dashboard', {

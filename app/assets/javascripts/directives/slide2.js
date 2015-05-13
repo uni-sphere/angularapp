@@ -99,7 +99,7 @@
 
             // Gestion of popup
             scope.showNewSchool = true;
-            console.log(scope.place);
+            // console.log(scope.place);
 
             // We add a marker on the map
             scope.selectedMarker = new google.maps.Marker({
@@ -132,47 +132,52 @@
         // Step 1 - Look up for uni / extract url
         scope.findUrl = function(){
           scope.showNewSchool = false;
-          scope.showNewSchoolUrl = true;
-
-          analyseUrl();
+          scope.signupShow =  true
         };
 
-        function analyseUrl(){
-          scope.schoolUrl = "";
-          scope.schoolOptUrl = []
-          console.log(scope.place);
-          console.log(scope.place.name);
-          var name = scope.place.name.substr(scope.place.name.indexOf(" ") + 1);
-          
-          console.log(name);
-        }
-
-        //Step 2 - Confirm the url
-        scope.confirmUrl = function(){
-          scope.showNewSchoolUrl = false;
-          scope.signupShow =  true;
-        }
-
-        //Step 3 - Creation. Send info to backend
+        //Step 2 - Creation. Send info to backend
         scope.signup = function(){
-          console.log(scope.place);
+          // console.log(scope.place);
+
           var newUni = {
             name: scope.place.name,
             latitude: scope.place.geometry.location.A,
             longitude: scope.place.geometry.location.F,
             place_id: scope.place.place_id,
-            url: "freppel.unisphere.eu"
+            url: scope.place.website
           }
+
           console.log(newUni);
 
-          Restangular.all('organizations').post(uniToPost).then(function(d) {
-            scope.universities.push(uniToPush);
-            scope.newUniName = "";
-            scope.newUniEmail = "";
-            scope.newUniPassword = "";
-          }, function(){
+          Restangular.all('organizations').post(newUni).then(function(d) {
+            console.log(d);
+
+            // We push the new uni to our local storage
+            // newUni.url = d.url;
+            // scope.universities.push(newUni);
+
+            // Sign up
+            var credentials = {
+              name: scope.adminName,
+              email: scope.adminEmail,
+              password: scope.adminPassword,
+              password_confirmation: scope.adminPassword
+            };
+
+            $auth.submitRegistration(credentials)
+            .then(function(resp) { 
+              console.log(resp);
+            })
+            .catch(function(resp) { 
+              console.log(resp);
+            });
+
+            //We change popup
+
+          }, function(d){
             console.log("error");
-            scope.newUniPassword = "";
+            console.log(d);
+            scope.adminPassword = "";
           });
         }
 

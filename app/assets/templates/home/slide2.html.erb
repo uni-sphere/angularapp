@@ -58,7 +58,7 @@
     <div class="school-display-bg"></div>
   </div>
 
-  <div id="new-school-display-wrapper" ng-show="showNewSchoolUrl" ng-class="{'school-ready-to-disappear': !showNewSchoolUrl, 'school-ready-to-appear': showNewSchoolUrl}">
+<!--   <div id="new-school-display-wrapper" ng-show="showNewSchoolUrl" ng-class="{'school-ready-to-disappear': !showNewSchoolUrl, 'school-ready-to-appear': showNewSchoolUrl}">
     <div class="school-header">Suscribe {{place.name}} to unisphere</div>
 
     <div class="school-display">
@@ -70,15 +70,15 @@
     </div>
 
     <div class="school-display-bg"></div>
-  </div>
+  </div> -->
 
   <div id="new-school-display-wrapper" ng-show="signupShow" ng-class="{'school-ready-to-disappear': !signupShow, 'school-ready-to-appear': signupShow}">
-    <div class="school-header">Admin account for http://freppel.unisphere.eu</div>
+    <div class="school-header">Admin account for {{place.name}}</div>
 
     <div class="school-display">
-      <input class="signup-input home-input" placeholder="Surname Name"/>
-      <input class="signup-input home-input" placeholder="Email"/>
-      <input class="signup-input home-input" placeholder="Password"/>
+      <input type="text" class="signup-input home-input" ng-model="adminName" placeholder="Surname Name"/>
+      <input type="email" class="signup-input home-input" ng-model="adminEmail" placeholder="Email"/>
+      <input type="password" class="signup-input home-input" ng-model="adminPassword" placeholder="Password"/>
       <button id="signup" class="home-button" ng-click="signup()">Sign up</button>
     </div>
 
