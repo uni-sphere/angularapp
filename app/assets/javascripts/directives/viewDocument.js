@@ -10,7 +10,8 @@
           nodeEnd: '=',
           files: '=',
           displayError: '=',
-          admin: '='
+          admin: '=',
+          home: '='
         },
         link: function(scope){
 

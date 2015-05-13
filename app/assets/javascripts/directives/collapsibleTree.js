@@ -10,20 +10,23 @@
           displayError: '=',
           activeNodes: '=',
           admin: '=',
-          sidebarMinified: '='
+          sidebarMinified: '=',
+          home: '=',
+          sandboxNodes: '='
         },
         link: function(scope, iElement, iAttrs) {
 
-
-
           // First we get the nodes
-          Restangular.one('nodes').get().then(function (nodes) {
-            scope.nodes = nodes.plain();
-            // scope.copyFlatData = Restangular.copy(nodes);
-          }, function(){
-            console.log("There getting the university name");
-          });
-
+          if(!scope.home){
+            Restangular.one('nodes').get().then(function (nodes) {
+              scope.nodes = nodes.plain();
+              // scope.copyFlatData = Restangular.copy(nodes);
+            }, function(){
+              console.log("There getting the university name");
+            });
+          } else{
+            scope.nodes = scope.sandboxNodes;
+          }
 
           // scope.dataChanged = false;
 
@@ -300,8 +303,11 @@
             findFoldedNodes(scope.root);
             colornodePath(scope.root);
 
-            $cookies.put('activeNodes', scope.activeNodes);
-            $cookies.put('foldedNodes', scope.foldedNodes);
+            if(!scope.home){
+              $cookies.put('activeNodes', scope.activeNodes);
+              $cookies.put('foldedNodes', scope.foldedNodes);
+            }
+            
 
             scope.$apply();
             update(d);
@@ -346,7 +352,9 @@
           function findNodeEnd(d){
             if(!d.children && !d._children){
               scope.nodeEnd = [d.num, d.name];
-              $cookies.put('nodeEnd', [d.num, d.name]);
+              if(!scope.home){
+                $cookies.put('nodeEnd', [d.num, d.name]);
+              } 
             } else{
               scope.nodeEnd = false;
               $cookies.put('nodeEnd', false);
@@ -360,20 +368,29 @@
           function deleteNode(d){
             var nodeSelected = d;
 
-            Restangular.all('nodes/' + d.num).remove().then(function() {
-              if (nodeSelected.parent && nodeSelected.parent.children){
+            // Demo app
+            if(scope.home){
+              var nodeToDelete = _.where(nodeSelected.parent.children, {id: nodeSelected.id});
+              if (nodeToDelete){
+                nodeSelected.parent.children = _.without(nodeSelected.parent.children, nodeToDelete[0]);
+              }
+              update(nodeSelected);
+            }
+            // If we are the app 
+            else{
+              Restangular.all('nodes/' + d.num).remove().then(function() {
                 var nodeToDelete = _.where(nodeSelected.parent.children, {id: nodeSelected.id});
                 if (nodeToDelete){
                   nodeSelected.parent.children = _.without(nodeSelected.parent.children, nodeToDelete[0]);
                 }
                 update(nodeSelected);
-              }
-              console.log("Objects deleted");
-            }, function(d) {
-              console.log(d);
-              console.log("There was an error deleting");
-              scope.displayError(["Try again to delete this node"]);
-            });
+                console.log("Objects deleted");
+              }, function(d) {
+                console.log(d);
+                console.log("There was an error deleting");
+                scope.displayError(["Try again to delete this node"]);
+              });
+            }
 
           }
 
@@ -386,10 +403,9 @@
             var nodeSelected = d
             var newBranch = {parent_id: d.num, name: "new"}
 
-            Restangular.all('nodes').post(newBranch).then(function(d) {
-
-              console.log("Object saved OK");
-              var a = {name: "new", num: d.id}
+            // Demo app
+            if(scope.home){
+              var a = {name: "new"}
 
               if( nodeSelected.children === undefined || nodeSelected.children == null ){
                 nodeSelected.children = [];
@@ -398,13 +414,31 @@
               nodeSelected.children.push(a);
 
               update(nodeSelected);
-            }, function(d) {
-              console.log(d);
-              scope.displayError(["Try again to create a node"]);
-              console.log("There was an error saving");
-            });
+            }
+
+            // Normal app 
+            else{
+              Restangular.all('nodes').post(newBranch).then(function(d) {
+
+                console.log("Object saved OK");
+                var a = {name: "new", num: d.id}
+
+                if( nodeSelected.children === undefined || nodeSelected.children == null ){
+                  nodeSelected.children = [];
+                }
+
+                nodeSelected.children.push(a);
+
+                update(nodeSelected);
+              }, function(d) {
+                console.log(d);
+                scope.displayError(["Try again to create a node"]);
+                console.log("There was an error saving");
+              });
+            }
 
           }
+
 
           /*========================================
           =            Rename of a node            =
@@ -417,15 +451,20 @@
             if(result) {
               var nodeUpdate = {name: result}
 
-              Restangular.one('nodes/'+ d.num).put(nodeUpdate).then(function(d) {
+              if(scope.home){
                 nodeSelected.name = result;
                 update(nodeSelected);
-                console.log("Object updated");
-              }, function(d) {
-                console.log(d);
-                console.log("There was an error updating");
-                scope.displayError(["Try again to change this node's name"]);
-              });
+              } else{
+                Restangular.one('nodes/'+ d.num).put(nodeUpdate).then(function(d) {
+                  nodeSelected.name = result;
+                  update(nodeSelected);
+                  console.log("Object updated");
+                }, function(d) {
+                  console.log(d);
+                  console.log("There was an error updating");
+                  scope.displayError(["Try again to change this node's name"]);
+                });
+              }
             }
           }
 

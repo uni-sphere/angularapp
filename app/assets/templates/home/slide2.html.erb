@@ -9,32 +9,37 @@
     disable-default-u-i="true"
     disable-double-click-zoom="true"
     draggable="true"
-    draggable-cursor="auto"
+    draggable-cursor="url(http://www.google.com/intl/en_ALL/mapfiles/openhand.cur), auto"
     dragging-cursor="move"
     keyboard-shortcuts="false"
     zoom="6" 
-    max-zoom="14"
+    max-zoom="12"
     min-zoom="4"
     tilt="45"
     map-type-id="ROADMAP"
     scrollwheel="false"
-  >
+    zoom-control="true"
+    pan-control="true"
+    >
 
   </map>
 
   <div id="uni-input">
     <div id="uni-input-black-bg"></div>
-    <div id="uni-input-form">
-      <!-- <button id="location-button" class="">ll</button> -->
-      <input places-auto-complete size=80 
-        ng-model="address" 
-        component-restrictions="{country:'fr'}"
-        types="{{types}}"
-        on-place-changed="placeChanged(place)" 
-        class="search-input home-input"
-        placeholder="university name"
+    <div id="location-wrapper">
+      <div id="location" ng-show="geolocation" ng-click="centerMap()" class="fa fa-location-arrow"></div>
+      <div id="uni-input-form">
+        <!-- <button id="location-button" class="">ll</button> -->
+        <input places-auto-complete size=80 
+          ng-model="address" 
+          component-restrictions="{country:'fr'}"
+          types= ['establishment']
+          on-place-changed="placeChanged(place)" 
+          class="search-input home-input"
+          placeholder="School name"
 
-      /> 
+        /> 
+      </div>
     </div>
   </div>
 

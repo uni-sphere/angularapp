@@ -15,6 +15,7 @@
         scope.showNewSchool = false;
         scope.subdomainCreated = false;
         scope.signupShow = false;
+        scope.geolocation = navigator.geolocation;
 
         // GET /organizations
         scope.universities = [
@@ -58,17 +59,29 @@
           });
         }
 
+        scope.centerMap = function(){
+          if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              var pos = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+              map.setCenter(pos);
+              zoomMap(9);
+            });
+          } else {
+            displayError("Your browser doesn't support geolocation");
+          }
+        }
+
         scope.placeChanged = function() {
           scope.place = this.getPlace();
+          console.log(scope.place);
           scope.showExistingSchool = findPlace(this.getPlace());
           scope.showNewSchoolUrl = false;
 
           // We move the map to the place searched
           map.panTo(this.getPlace().geometry.location);
 
-          // We soom on the map
-          map.setZoom(map.getZoom() + 1)
-          zoomMap(10);
+          // We zoom on the map
+          zoomMap(9);
 
           // We remove the previous marker if there was one
           if(scope.selectedMarker){

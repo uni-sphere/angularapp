@@ -5,6 +5,7 @@
       restrict: 'E',
       templateUrl: 'home/slide3.html',
       scope: {
+        sandboxNodes: '='
       },
       link: function(scope) {
 
