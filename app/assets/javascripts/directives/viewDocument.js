@@ -468,14 +468,19 @@
             var circleMarginTop = (circleHeight - circleWidth)/ 2
 
             if(circleWidth > circleHeight){
-              $('.circle-image').css("width", circleHeight);
-              $('.circle-image').css("height", circleHeight);
-              $('.circle-image').css("border-radius", circleHeight / 2);
+              var bordel = circleHeight * 15 / 100;
+              $('.dropzone-image-container').css("width", circleHeight);
+              $('.dropzone-image-container').css("height", circleHeight);
+              $('.dropzone-triangle').css("border-left", bordel + "px solid transparent");
+              $('.dropzone-triangle').css("border-right", bordel + "px solid transparent");
+              $('.dropzone-triangle').css("border-top", bordel + "px solid #D8D8D8");
+
+              // $('.circle-image').css("border-radius", circleHeight / 2);
             } else{
-              $('.circle-image').css("margin-top", circleMarginTop);
-              $('.circle-image').css("width", circleWidth);
-              $('.circle-image').css("height", circleWidth);
-              $('.circle-image').css("border-radius", circleWidth / 2);
+              $('.dropzone-image-container').css("margin-top", circleMarginTop);
+              $('.dropzone-image-container').css("width", circleWidth);
+              $('.dropzone-image-container').css("height", circleWidth);
+              // $('.circle-image').css("border-radius", circleWidth / 2);
             }
           }
 

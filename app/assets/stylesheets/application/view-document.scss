@@ -160,7 +160,6 @@
   }
 }
 
-
 .isNew{
   .item-name, .chapter-number{
     // color: red;
@@ -279,13 +278,13 @@
 =            No document            =
 ===================================*/
 
-.breadcrumb-no-doc{
-  background: $document-absent-bg !important;
-}
+// .breadcrumb-no-doc{
+//   background: $document-absent-bg !important;
+// }
 
-.no-docs{
-  background: $document-absent-bg !important;
-}
+// .no-docs{
+//   background: $document-absent-bg !important;
+// }
 
 #document-absent-title, #document-absent-subtitle{
   position: relative;
@@ -305,6 +304,7 @@
 }
 #document-absent-subtitle{
   height: 5%;
+  padding-bottom: 20px;
 }
 
 /*================================
@@ -314,7 +314,7 @@
 #document-absent-dropzone-container{
   position: absolute;
   bottom: 0px;
-  height: calc(75% - 40px);
+  height: calc(75% - 80px);
   width: 90%;
 }
 
@@ -326,38 +326,57 @@
   margin-left: 10%;
   margin-top: 10%;
 
-  background: $ultra-light-grey;
+  // background: $ultra-light-grey;
   border-radius: 60px;
-  border: 4px dashed black;
+  border: 2px solid $dropzone-color;
 }
 
 // Pic
 #document-absent-dropzone-image{
   position: relative;
-  margin: 20px 20px;
+  margin: 40px 20px 10px 20px;
   width : calc(100% - 40px);
-  height: calc(100% - 140px);
+  height: calc(100% - 180px);
 }
 
-.circle-image{
-  // background: red;
-  border: 4px solid black;
+.dropzone-image-container{
+  // border: 4px solid black;
   display: table;
   margin: 0 auto;
 }
 
+
+.dropzone-rectangle{
+  height: 60%;
+  width: 15%;
+  // max-height: 160px !important;
+  display: table;
+  margin: 0 auto;
+  margin-top: 10%;
+  background: $gris;
+}
+
+.dropzone-triangle{
+  position: relative;
+  margin-left: calc(50% - 15%);
+  width: 0;
+  height: 0; 
+  
+}
+
+
 // Text under the pic
 #document-absent-text-under-pic{
-  position: absolute;
-  bottom: 20px;
+  position: relative;
   width: 80%;
   left: 10%;
   text-align: center;
+  color: $dark-gris;
 }
 
 #document-absent-text-drop{
   font-size: 1.5em;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 
