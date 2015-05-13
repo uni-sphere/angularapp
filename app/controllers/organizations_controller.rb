@@ -3,19 +3,16 @@ class OrganizationsController < ApplicationController
   def create
     organization = Organization.new(name: params[:name])
     node = organization.nodes.new(name: params[:name], parent_id: 0)
-    user = organization.users.new(email: params[:email])
-    user.password = params[:password]
-    if organization.save and node.save and user.save # and create_pointer(organization.subdomain)
-      UserMailer.welcome_email(organization.name, user.email, "http://#{organization.subdomain}.unisphere.eu").deliver
+    if organization.save and node.save # and create_pointer(organization.subdomain)
       render json: { organization: organization, user: user, url: "http://#{organization.subdomain}.unisphere.eu" }.to_json, status: 201, location: organization
     else
       send_error('Problem occured while organization creation', '500')
+      Rollbar.error('Error: organization creation', name: organization.name)
     end
   end
   
   def show
     render json: {name: current_organization.name}.to_json, status: 200
-    # render json: {name: request.remote_ip}.to_json, status: 200
   end
   
   def update
