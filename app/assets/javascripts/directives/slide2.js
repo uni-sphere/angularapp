@@ -144,7 +144,7 @@
             latitude: scope.place.geometry.location.A,
             longitude: scope.place.geometry.location.F,
             place_id: scope.place.place_id,
-            url: scope.place.website
+            website: scope.place.website
           }
 
           console.log(newUni);

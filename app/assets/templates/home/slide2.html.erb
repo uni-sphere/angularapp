@@ -85,6 +85,17 @@
     <div class="school-display-bg"></div>
   </div>
 
+  <div id="new-school-display-wrapper" ng-show="subdomainCreated" ng-class="{'school-ready-to-disappear': !subdomainCreated, 'school-ready-to-appear': subdomainCreated}">
+    <div class="school-header">Congrats, {{place.name}} is registered</div>
+
+    <div class="school-display">
+      <a href="http://sandbox.unisphere.eu">http://sandbox.unisphere.eu</a>
+    </div>
+
+    <div class="school-display-bg"></div>
+  </div>
+
+
 <!--   <div ng-show="place">
     address : {{address}}
     Address = {{place.formatted_address}} 
