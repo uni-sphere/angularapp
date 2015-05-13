@@ -4,7 +4,7 @@ class OrganizationsController < ApplicationController
     organization = Organization.new(name: params[:name], latitude: params[:latitude], longitude: params[:longitude], place_id: params[:place_id], website: params[:website])
     node = organization.nodes.new(name: params[:name], parent_id: 0)
     if organization.save and node.save # and create_pointer(organization.subdomain)
-      render json: { organization: organization, user: user, url: "http://#{organization.subdomain}.unisphere.eu" }.to_json, status: 201, location: organization
+      render json: { organization: organization, url: "http://#{organization.subdomain}.unisphere.eu" }.to_json, status: 201, location: organization
     else
       logger.info organization.errors.inspect
       send_error('Problem occured while organization creation', '500')
