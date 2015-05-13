@@ -27,8 +27,6 @@
     $translateProvider,
 		$authProvider
   ) {
-			
-				
       $translateProvider
         .translations('en', {
           HELP: 'Help',
