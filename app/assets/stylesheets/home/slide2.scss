@@ -64,12 +64,35 @@
   }
 }
 
+#confirm-school{
+  margin-left: 20px;
 
-.search-button {
-  position: relative;
-  float: left;
+  padding: 5px 10px 5px 10px;
 
+  background: linear-gradient(to bottom, $light-blue, $blue);
+
+  border-radius: 5px;
+  border: none;
+  box-shadow: 1px 1px 1px #666666;
+
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 1em;
+  text-decoration: none;
+  cursor: pointer;
+
+
+  &:hover {
+    background: linear-gradient(to bottom, $hyper-light-blue, $super-light-blue);
+    text-decoration: none;
+  }
+}
+
+#add-school{
   // margin-left: 40px;
+  display: table;
+  margin: 0 auto;
+
   padding: 10px 20px 10px 20px;
 
   background: linear-gradient(to bottom, $light-blue, $blue);
@@ -82,14 +105,19 @@
   color: #ffffff;
   font-size: 20px;
   text-decoration: none;
+  cursor: pointer;
+
 
   &:hover {
     background: linear-gradient(to bottom, $hyper-light-blue, $super-light-blue);
     text-decoration: none;
-    cursor: pointer;
   }
 }
 
+
+#domain-name{
+
+}
 // #arrow-down-map{
 //   position: absolute;
 //   left: calc(50% - 20px);
@@ -127,4 +155,133 @@ map{
   margin-bottom: 4px;
   background: $nice-noir;
   color: white;
+}
+
+
+/*====================================
+=            School popup            =
+====================================*/
+
+
+// Existing school
+
+#existing-school-display-wrapper{
+  position: absolute;
+  right: 40px;
+  top: calc(50% - 95px);
+}
+
+#new-school-display-wrapper{
+  position: absolute;
+  right: 40px;
+  top: calc(50% - 95px);
+}
+
+.school-header{
+  position: relative;
+  line-height: 40px;
+  padding: 0px 20px;
+  background: black;
+  color: white;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  text-align: center;
+  font-size: 1.2em
+}
+.school-display-bg{
+  position: absolute;
+  background: black;
+  top: 40px;
+  left: 0;
+
+  height: calc(100% - 40px);
+  width: 100%;
+  opacity: 0.7;
+  z-index: 1;
+
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.school-display{
+  position: relative;
+  padding: 40px 20px;
+  color: white;
+  z-index: 10;
+}
+
+.school-display-row-center{
+  padding: 0px 10px;
+  display: block;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+.school-display-row{
+  padding-left: 10px;
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+.fa-check{
+  color: $gris;
+  cursor: pointer;
+  &:hover{
+    color: green;
+  }
+}
+.check-left{
+  padding-right: 10px;
+}
+.check-right{
+  margin-left: 10px;
+}
+
+#choosen-url{
+  margin-bottom: 40px;
+}
+#choose-other-url{
+  margin-bottom: 20px;
+}
+.school-link{
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+  &:hover{
+    text-decoration: underline;
+  }
+}
+
+@keyframes school-flyout {
+  0% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-300px);
+  }
+}
+
+@keyframes school-flyin {
+  0% {
+    opacity: 0;
+    transform: translateX(300px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.school-ready-to-disappear{
+  animation: school-flyout 1s;
+}
+
+.school-ready-to-appear{
+  animation: school-flyin 1s;
 }
