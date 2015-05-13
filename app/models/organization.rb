@@ -14,7 +14,7 @@ class Organization < ActiveRecord::Base
     if self.website.include? 'www'
       self.subdomain = self.website.split('/')[2].split('.')[1]
     else
-      self.subdomain = self.website.split('.')[1]
+      self.subdomain = self.website.split('/')[2].split('.')[0]
     end
   end
   
