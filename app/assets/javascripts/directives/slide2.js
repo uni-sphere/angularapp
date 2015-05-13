@@ -5,6 +5,7 @@
       restrict: 'E',
       templateUrl: 'home/slide2.html',
       scope: {
+        displayError: '='
       },
       link: function(scope) {
 
@@ -179,6 +180,11 @@
           }, function(d){
             console.log("error");
             console.log(d);
+
+            scope.displayError("try again to create " + scope.place.name);
+
+
+
             scope.adminPassword = "";
           });
         }

@@ -1,17 +1,14 @@
 <div ng-if="home" id="home-container" ng-controller="HomeCtrl">
   <slide1></slide1>
   <slide3></slide3>
-  <slide2></slide2>
+  <slide2 display-error = 'displayError'></slide2>
   <slide4></slide4>
   <slide5></slide5>
-
-
 </div>
 
+<error-display display-error = 'displayError' hide-error = 'hideError' admin = 'admin'></error-display>
 
 <div ng-hide="home"  id="application-container">
-
-  <error-display display-error = 'displayError' hide-error = 'hideError' admin = 'admin'></error-display>
 
   <div ng-include="'main/navbar.html'"></div>
 
