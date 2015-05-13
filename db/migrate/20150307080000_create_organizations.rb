@@ -6,6 +6,7 @@ class CreateOrganizations < ActiveRecord::Migration
       t.float :latitude
 			t.float :longitude
       t.string :place_id
+      t.string :website
       
       t.timestamps
     end

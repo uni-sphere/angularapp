@@ -44,6 +44,10 @@ ActiveRecord::Schema.define(version: 20150502090801) do
   create_table "organizations", force: :cascade do |t|
     t.string   "name"
     t.string   "subdomain"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "place_id"
+    t.string   "website"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
