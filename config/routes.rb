@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     end
     resources :reports, only: [:update]
     
+    get 'organization/is_signed_up', to: 'organizations#is_signed_up?'
     get 'reports/firstchart', to: 'reports#first_chart'
     get 'reports/secondchart', to: 'reports#second_chart'
     get 'organization', to: 'organizations#show'
