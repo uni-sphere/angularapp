@@ -80,7 +80,7 @@
 
         scope.placeChanged = function() {
           scope.place = this.getPlace();
-          console.log(scope.place);
+          // console.log(scope.place);
           scope.showExistingSchool = findPlace(this.getPlace());
           scope.showNewSchoolUrl = false;
 
@@ -168,28 +168,30 @@
             website: scope.place.website
           }
 
-          console.log(newUni);
+          // console.log(newUni);
 
           Restangular.all('organizations').post(newUni).then(function(d) {
-            console.log(d);
+            // console.log(d);
+            console.log("organization created");
 
             // We push the new uni to our local storage
-            // newUni.url = d.url;
-            // scope.universities.push(newUni);
+            scope.universities.push(d.organization);
 
             // Sign up
             var credentials = {
               name: scope.adminName,
               email: scope.adminEmail,
               password: scope.adminPassword,
-              password_confirmation: scope.adminPassword
+              password_confirmation: scope.adminPassword,
+              organization_id: d.organization.id
             };
 
             $auth.submitRegistration(credentials)
             .then(function(resp) { 
-              console.log(resp);
+              console.log("User created");
             })
             .catch(function(resp) { 
+              scope.displayError("Impossible to create your account, try again.");
               console.log(resp);
             });
 
@@ -200,11 +202,7 @@
           }, function(d){
             console.log("error");
             console.log(d);
-
-            scope.displayError("try again to create " + scope.place.name);
-
-
-
+            scope.displayError("Impossible to create a subdomain for " + scope.place.name + ", try again");
             scope.adminPassword = "";
           });
         }
