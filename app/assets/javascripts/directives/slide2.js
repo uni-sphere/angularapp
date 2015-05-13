@@ -13,17 +13,19 @@
         scope.showExistingSchool = false;
         scope.showNewSchool = false;
         scope.showNewSchoolUrl = false;
+        scope.signupShow = false;
 
+        // GET /organizations
         scope.universities = [
           {
-            title: "Lycée Freppel",
+            name: "Lycée Freppel",
             latitude: "48.46",
             longitude: "7.48",
             place_id: "ChIJCfuBlFtNkUcR-ZdZvh89L6I",
             url: "sandbox.unisphere.eu"
           },
           {
-            title: "Lycée Couffignal",
+            name: "Lycée Couffignal",
             latitude: "48.560611",
             longitude: "7.748023999999987",
             place_id: "ChIJnXxeLaLJlkcRzlJLgTx2ws8",
@@ -47,7 +49,7 @@
             var marker = new google.maps.Marker({
               position: pos,
               map: map,
-              title: node.title,
+              title: node.name,
               icon: 'assets/pin-colleg.png',
               place_id: node.place_id
             });
@@ -121,22 +123,47 @@
           scope.showSchool = false;
         }
 
-        scope.addSchool = function(){
+
+        /*=============================================
+        =            Creation of a new uni            =
+        =============================================*/
+        
+        
+        // Step 1 - Look up for uni / extract url
+        scope.findUrl = function(){
           scope.showNewSchool = false;
           scope.showNewSchoolUrl = true;
+
+          analyseUrl();
         };
 
+        function analyseUrl(){
+          scope.schoolUrl = "";
+          scope.schoolOptUrl = []
+          console.log(scope.place);
+          console.log(scope.place.name);
+          var name = scope.place.name.substr(scope.place.name.indexOf(" ") + 1);
+          
+          console.log(name);
+        }
 
+        //Step 2 - Confirm the url
+        scope.confirmUrl = function(){
+          scope.showNewSchoolUrl = false;
+          scope.signupShow =  true;
+        }
 
-        // Restangular.one('organizations').get().then(function(response) {
-        //   scope.universities = response;
-        // }, function() {
-        //   console.log("error");
-        // });
-
-        scope.saveNewUni = function(){
-          uniToPush = {name: scope.newUniName}
-          uniToPost = {name: scope.newUniName, email: scope.newUniEmail, password: scope.newUniPassword}
+        //Step 3 - Creation. Send info to backend
+        scope.signup = function(){
+          console.log(scope.place);
+          var newUni = {
+            name: scope.place.name,
+            latitude: scope.place.geometry.location.A,
+            longitude: scope.place.geometry.location.F,
+            place_id: scope.place.place_id,
+            url: "freppel.unisphere.eu"
+          }
+          console.log(newUni);
 
           Restangular.all('organizations').post(uniToPost).then(function(d) {
             scope.universities.push(uniToPush);
@@ -147,20 +174,12 @@
             console.log("error");
             scope.newUniPassword = "";
           });
-        };
-
-        scope.confirmSchool = function(url){
-          console.log(scope.place);
-          var newUni = {
-            title: scope.place.name,
-            latitude: scope.place.geometry.location.A,
-            longitude: scope.place.geometry.location.F,
-            place_id: scope.place.place_id,
-            url: "freppel.unisphere.eu"
-          }
-          console.log(newUni);
         }
 
+        /*=================================
+        =            functions            =
+        =================================*/
+        
         function findPlace(place){
           var uni = false;
           scope.universities.forEach(function(node) {
