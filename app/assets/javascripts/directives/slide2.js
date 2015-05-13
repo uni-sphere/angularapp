@@ -83,6 +83,8 @@
           // console.log(scope.place);
           scope.showExistingSchool = findPlace(this.getPlace());
           scope.showNewSchoolUrl = false;
+          scope.subdomainCreated = false;
+          scope.signupShow = false;
 
           // We move the map to the place searched
           map.panTo(this.getPlace().geometry.location);
@@ -171,6 +173,8 @@
           // console.log(newUni);
 
           Restangular.all('organizations').post(newUni).then(function(d) {
+
+            var newOrga = d;
             // console.log(d);
             console.log("organization created");
 
@@ -183,7 +187,7 @@
               email: scope.adminEmail,
               password: scope.adminPassword,
               password_confirmation: scope.adminPassword,
-              organization_id: d.organization.id
+              organization_id: newOrga.organization.id
             };
 
             $auth.submitRegistration(credentials)
@@ -193,6 +197,16 @@
             .catch(function(resp) { 
               scope.displayError("Impossible to create your account, try again.");
               console.log(resp);
+
+              // We delete the organization we just created
+              Restangular.all('organizations/' + newOrga.organization.id).remove().then(function() {
+                console.log("organization deleted");
+                console.log(d);
+              }, function(d) {
+                console.log("impossible to delete the organization");
+                console.log(d);
+              });
+
             });
 
             //We change popup
@@ -207,6 +221,13 @@
           });
         }
 
+        scope.closePopupMap = function(){
+          scope.showExistingSchool = false;
+          scope.showNewSchool = false;
+          scope.subdomainCreated = false;
+          scope.signupShow = false;
+        }
+        
         /*=================================
         =            functions            =
         =================================*/

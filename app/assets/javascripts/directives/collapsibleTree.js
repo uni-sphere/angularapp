@@ -17,16 +17,14 @@
         link: function(scope, iElement, iAttrs) {
 
           // First we get the nodes
-          if(!scope.home){
-            Restangular.one('nodes').get().then(function (nodes) {
-              scope.nodes = nodes.plain();
-              // scope.copyFlatData = Restangular.copy(nodes);
-            }, function(){
-              console.log("There getting the university name");
-            });
-          } else{
-            scope.nodes = scope.sandboxNodes;
-          }
+        
+          Restangular.one('nodes').get().then(function (nodes) {
+            scope.nodes = nodes.plain();
+            // scope.copyFlatData = Restangular.copy(nodes);
+          }, function(){
+            console.log("There getting the university name");
+          });
+         
 
           // scope.dataChanged = false;
 
@@ -102,7 +100,7 @@
 
           // We re-render when we switch admin on/off
           scope.$watch('admin',function(newVals, oldVals){
-            if(newVals && scope.nodes){
+            if(scope.nodes){
               render(makeNested(scope.nodes), iElement);
             }
           });

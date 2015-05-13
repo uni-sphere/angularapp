@@ -14,6 +14,12 @@
           home: '='
         },
         link: function(scope){
+          
+          //Some css
+          circleNoDoc();
+          window.onresize = function() {
+            circleNoDoc();
+          };
 
           scope.$watch('activeNodes', function(newVals, oldVals){
             if(newVals){
@@ -455,6 +461,23 @@
           };
 
           checkIfChrome();
+
+          function circleNoDoc(){
+            var circleWidth = $('#document-absent-dropzone-image').width();
+            var circleHeight = $('#document-absent-dropzone-image').height();
+            var circleMarginTop = (circleHeight - circleWidth)/ 2
+
+            if(circleWidth > circleHeight){
+              $('.circle-image').css("width", circleHeight);
+              $('.circle-image').css("height", circleHeight);
+              $('.circle-image').css("border-radius", circleHeight / 2);
+            } else{
+              $('.circle-image').css("margin-top", circleMarginTop);
+              $('.circle-image').css("width", circleWidth);
+              $('.circle-image').css("height", circleWidth);
+              $('.circle-image').css("border-radius", circleWidth / 2);
+            }
+          }
 
 
         }

@@ -7,10 +7,14 @@ angular
 
     //Check if the user is admin
     var admin = $cookies.get('unisphere_api_admin');
+
    
-    if(admin != undefined){
-      $scope.admin = true;
-    }
+    // if(admin != undefined){
+    //   $scope.admin = true;
+    // }
+
+    $scope.admin = true;
+
     $scope.adminDeco = function(){
       $scope.admin = false;
     }
