@@ -17,23 +17,30 @@
         scope.signupShow = false;
         scope.geolocation = navigator.geolocation;
 
-        // GET /organizations
-        scope.universities = [
-          {
-            name: "Lycée Freppel",
-            latitude: "48.46",
-            longitude: "7.48",
-            place_id: "ChIJCfuBlFtNkUcR-ZdZvh89L6I",
-            url: "sandbox.unisphere.eu"
-          },
-          {
-            name: "Lycée Couffignal",
-            latitude: "48.560611",
-            longitude: "7.748023999999987",
-            place_id: "ChIJnXxeLaLJlkcRzlJLgTx2ws8",
-            url: "sandbox.unisphere.eu"
-          }
-        ]
+        Restangular.one('organizations').get().then(function (universities) {
+          scope.universities = universities.plain();
+          console.log(universities.plain());
+        }, function(){
+          console.log("There getting the universities");
+        });
+
+        // // GET /organizations
+        // scope.universities = [
+        //   {
+        //     name: "Lycée Freppel",
+        //     latitude: "48.46",
+        //     longitude: "7.48",
+        //     place_id: "ChIJCfuBlFtNkUcR-ZdZvh89L6I",
+        //     url: "sandbox.unisphere.eu"
+        //   },
+        //   {
+        //     name: "Lycée Couffignal",
+        //     latitude: "48.560611",
+        //     longitude: "7.748023999999987",
+        //     place_id: "ChIJnXxeLaLJlkcRzlJLgTx2ws8",
+        //     url: "sandbox.unisphere.eu"
+        //   }
+        // ]
 
 
         var map;
