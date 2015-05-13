@@ -34,13 +34,10 @@ module Uni2
     config.to_prepare do
       DeviseController.respond_to :html, :json
     end
-
-    # config.middleware.insert_before 0, "Rack::Cors" do
-    #       allow do
-    #         origins '*'
-    #         resource '*', :headers => :any, :methods => [:get, :post, :delete, :put, :options]
-    #       end
-    #     end
+    
+    Rollbar.configure do |config|
+      config.access_token = 'b514bd7a83964db89b30bd65a0826d9a'
+    end
     
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do
