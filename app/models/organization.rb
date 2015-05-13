@@ -1,7 +1,6 @@
 class Organization < ActiveRecord::Base
   
-  before_save :format_subdomain if Rails.env.production?
-  before_save :format_string if Rails.env.production?
+  before_save :format_subdomain
   
   has_many :nodes, dependent: :delete_all
   has_many :users
@@ -12,10 +11,10 @@ class Organization < ActiveRecord::Base
   validates_exclusion_of :subdomain, :in => ["api", "www", "sandbox"]
   
   def format_subdomain
-    if url.include? 'www'
-      self.subdomain = url.split('/')[2].split('.').first
+    if self.website.include? 'www'
+      self.subdomain = self.website.split('/')[2].split('.').first
     else
-      self.subdomain = url.split('.')[1]
+      self.subdomain = self.website.split('.')[1]
     end
   end
   

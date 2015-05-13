@@ -1,4 +1,4 @@
-organization = Organization.create(name: 'Sandbox')
+organization = Organization.create(name: 'Sandbox', website: 'http://sandbox.unisphere.eu')
 organization.nodes.create(name: "Sandbox", parent_id: 0)
 Node.last.reports.create
 organization.nodes.create(name: "premiere", parent_id: 1)
