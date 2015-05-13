@@ -273,7 +273,7 @@ a {
 							<table width="100%" cellpadding="0" cellspacing="0">
 								<tr class="aligncenter">
 									<td class="content-block">
-										You created an organization available on <a class="btn-primary" href='<%= "http://" + @resource.subdomain + ".unisphere.eu" %>'><%= "http://" + @resource.subdomain + ".unisphere.eu" %></a>
+										You created an organization available on <a class="btn-primary" href='<%= "http://" + @resource.subdomain + ".unisphere.eu" %>'><%= "http://" + Organization.find(@resource.id).subdomain + ".unisphere.eu" %></a>
 									</td>
 								</tr>
 								<tr>
