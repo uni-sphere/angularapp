@@ -19,7 +19,6 @@
 
         Restangular.one('organizations').get().then(function (universities) {
           scope.universities = universities.plain();
-          console.log(universities.plain());
         }, function(){
           console.log("There getting the universities");
         });

@@ -1,7 +1,7 @@
 class ChaptersController < ApplicationController
 
   def create
-    chapter = current_node.chapters.new(title: params[:title], parent_id: params[:parent_id], user_id: User.first.id)
+    chapter = current_node.chapters.new(title: params[:title], parent_id: params[:parent_id], user_id: current_user.id)
     if chapter.save
       render json: chapter, status: 201, location: chapter
     else

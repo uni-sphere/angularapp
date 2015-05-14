@@ -48,19 +48,33 @@
           }
 
           // Active nodes
-          scope.activeNodes = $cookies.get('activeNodes');
+          // Demo
+          if(scope.home){
+            scope.activeNodes = [["6","S"],["5","Terminal"],["1","Sandbox"]]
+          }
+          // Normal version 
+          else{
+            scope.activeNodes = $cookies.get('activeNodes');
 
-          if( scope.activeNodes !== undefined ){
-            scope.activeNodes = scope.activeNodes.split(',');
-            scope.activeNodes = transformArrayInDouble(scope.activeNodes);
+            if( scope.activeNodes !== undefined ){
+              scope.activeNodes = scope.activeNodes.split(',');
+              scope.activeNodes = transformArrayInDouble(scope.activeNodes);
+            }
           }
 
           //Node end
-          scope.nodeEnd = $cookies.get('nodeEnd');
-          if(scope.nodeEnd == "false"){
-            scope.nodeEnd = false;
-          } else if(scope.nodeEnd != undefined){
-            scope.nodeEnd = scope.nodeEnd.split(',');
+          // Demo
+          if(scope.home){
+            scope.nodeEnd = ["6","S"]
+          }
+          // Normal version 
+          else{
+            scope.nodeEnd = $cookies.get('nodeEnd');
+            if(scope.nodeEnd == "false"){
+              scope.nodeEnd = false;
+            } else if(scope.nodeEnd != undefined){
+              scope.nodeEnd = scope.nodeEnd.split(',');
+            }
           }
 
           /*==========  Periodical get  ==========*/
@@ -297,22 +311,14 @@
             scope.activeNodes = [];
 
             findActiveNodes(d);
-            if(scope.home){
-              scope.activeNodes = [[6,"S"],[5,"Terminal"],[1,"Sandbox"]]
-            }
-            // console.log(scope.activeNodes)
             findNodeEnd(d);
             findFoldedNodes(scope.root);
             colornodePath(scope.root);
 
-            
-            // $cookies.put('activeNodes', scope.activeNodes);
-            $cookies.put('activeNodes', scope.activeNodes);
-
             if(!scope.home){
+              $cookies.put('activeNodes', scope.activeNodes);
               $cookies.put('foldedNodes', scope.foldedNodes);
             }
-            
 
             scope.$apply();
             update(d);
@@ -362,10 +368,6 @@
               if(!scope.home){
                 $cookies.put('nodeEnd', [d.num, d.name]);
               } 
-              // Normal mode
-              else{
-                $cookies.put('nodeEnd', [d.num, d.name]);
-              }
             } else{
               scope.nodeEnd = false;
               $cookies.put('nodeEnd', false);
