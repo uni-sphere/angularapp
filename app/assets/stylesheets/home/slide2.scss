@@ -200,21 +200,23 @@ map{
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   text-align: center;
-  font-size: 1.2em
-}
+  font-size: 1.2em;
 
-.fa-times{
-  position: relative;
-  float: right;
-  padding-left: 80px;
-  line-height: 40px;
-  cursor: pointer;
-  font-size: .8em;
-  color: $gris;
-  &:hover{
-    color: white;
+  .fa-times{
+    position: relative;
+    float: right;
+    padding-left: 80px;
+    line-height: 40px;
+    cursor: pointer;
+    font-size: .8em;
+    color: $gris;
+    &:hover{
+      color: white;
+    }
   }
 }
+
+
 
 .school-display-bg{
   position: absolute;

@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   
-  before_action :configure_permitted_parameters
+  # before_action :configure_permitted_parameters
   
   include DeviseTokenAuth::Concerns::SetUserByToken
   
@@ -13,10 +13,10 @@ class ApplicationController < ActionController::Base
   
   protected
   
-  def configure_permitted_parameters
-    clear_logs 'YES'
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit({ roles: [] }, :name, :organization_id ) }
-    devise_parameter_sanitizer.for(:account_update) { |u| u.permit({ roles: [] }, :name ) }
-  end
+  # def configure_permitted_parameters
+  #   clear_logs 'YES'
+  #   devise_parameter_sanitizer.for(:sign_up) { |u| u.permit({ roles: [] }, :name, :organization_id ) }
+  #   devise_parameter_sanitizer.for(:account_update) { |u| u.permit({ roles: [] }, :name ) }
+  # end
   
 end
