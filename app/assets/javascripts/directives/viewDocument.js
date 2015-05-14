@@ -15,6 +15,8 @@
         },
         link: function(scope){
 
+          var dummyId = 50;
+
           //Some css
           circleNoDoc();
           window.onresize = function() {
@@ -297,28 +299,28 @@
                 parent_id: nodeData.id,
               }
 
-              // Demo version
-              // if(scope.home){
-                // if(nodeData.items == undefined){
-                //   var depth = 0
-                // } else{
-                //   depth = nodeData.depth + 1;
-                // }
-                // var a = {title: folder.name, id: d.id, items: [], depth: depth}
+              //Demo version
+              if(scope.home){
+                if(nodeData.items == undefined){
+                  var depth = 0
+                } else{
+                  depth = nodeData.depth + 1;
+                }
+                var a = {title: folder.name, id: dummyId, items: [], depth: depth}
 
-                // if(nodeData.items == undefined){
-                //   scope.list.push(a);
-                //   nodeDocData = scope.list[scope.list.length - 1];
-                // } else{
-                //   nodeData.items.push(a);
-                //   nodeDocData = nodeData.items[nodeData.items.length -1];
-                // }
+                if(nodeData.items == undefined){
+                  scope.list.push(a);
+                  nodeDocData = scope.list[scope.list.length - 1];
+                } else{
+                  nodeData.items.push(a);
+                  nodeDocData = nodeData.items[nodeData.items.length -1];
+                }
 
-                // console.log("OK chapter created:" + folder.name);
-                // uploadFiles(files)
-              // } 
-              // Real version
-              // else{
+                console.log("OK chapter created:" + folder.name);
+                uploadFiles(files)
+              } 
+              //Real version
+              else{
                 Restangular.all('chapters').post(chapterToCreate).then(function(d) {
                   if(nodeData.items == undefined){
                     var depth = 0
@@ -342,7 +344,7 @@
                   scope.displayError("Failed to create chapter:" + folder.name);
                   console.log("Failed to create chapter:" + folder.name);
                 });
-              // }
+              }
             }
 
             /*==========  Upload all files in a directory  ==========*/

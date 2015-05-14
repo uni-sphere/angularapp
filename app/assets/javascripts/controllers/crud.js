@@ -7,7 +7,7 @@ angular
     =            Delete Documents            =
     ========================================*/
 
-    $scope.dummyId = 30;
+    var dummyId = 30;
 
     $scope.removeItem = function(scope) {
       var nodeToDelete = scope;
@@ -15,36 +15,57 @@ angular
 
       // Delete the documents
       if(nodeToDelete.$modelValue.document){
-        Restangular.all('awsdocuments/' + nodeToDelete.$modelValue.doc_id).remove().then(function() {
+
+        // Demo mode
+        if($scope.home){
           nodeToDelete.remove();
-          console.log("document deleted");
 
           if($scope.list.length == 0){
             $scope.documentAbsent = true;
           }
+        }
+        // Normal mode
+        else{
+          Restangular.all('awsdocuments/' + nodeToDelete.$modelValue.doc_id).remove().then(function() {
+            nodeToDelete.remove();
+            console.log("document deleted");
 
-        }, function(d) {
-          console.log("There was an error deleting the file");
-          console.log(d);
-          scope.displayError("Try again to delete the document: " + nodeToDelete.$modelValue.title);
-        });
+            if($scope.list.length == 0){
+              $scope.documentAbsent = true;
+            }
+          }, function(d) {
+            console.log("There was an error deleting the file");
+            console.log(d);
+            scope.displayError("Try again to delete the document: " + nodeToDelete.$modelValue.title);
+          });
+        }
       }
 
       //delete the chapters
       else{
-        Restangular.all('chapters/' + nodeToDelete.$modelValue.id).remove({node_id: $scope.nodeEnd[0]}).then(function() {
+        // Demo mode
+        if($scope.home){
           nodeToDelete.remove();
-          console.log("chapter deleted");
 
           if($scope.list.length == 0){
             $scope.documentAbsent = true;
           }
+        }
+        // Normal mode
+        else{
+          Restangular.all('chapters/' + nodeToDelete.$modelValue.id).remove({node_id: $scope.nodeEnd[0]}).then(function() {
+            nodeToDelete.remove();
+            console.log("chapter deleted");
 
-        }, function(d) {
-          console.log("There was an error deleting the chapter");
-          console.log(d);
-          scope.displayError("Try again to delete the chapter: " + nodeToDelete.$modelValue.title);
-        });
+            if($scope.list.length == 0){
+              $scope.documentAbsent = true;
+            }
+          }, function(d) {
+            console.log("There was an error deleting the chapter");
+            console.log(d);
+            scope.displayError("Try again to delete the chapter: " + nodeToDelete.$modelValue.title);
+          });
+        }
       }
     };
 
@@ -67,13 +88,13 @@ angular
       }
 
       if($scope.home){
-        $scope.dummyId ++;
+        dummyId ++;
         if(nodeData.items == undefined){
           depth = 0
         } else{
           depth = nodeData.depth + 1;
         }
-        var a = {title: "New chapter", id: $scope.dummyId, items: [], depth: depth }
+        var a = {title: "New chapter", id: dummyId, items: [], depth: depth }
 
         if(nodeData.items == undefined){
           $scope.list.push(a);
