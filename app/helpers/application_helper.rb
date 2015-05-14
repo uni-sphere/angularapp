@@ -7,22 +7,34 @@ module ApplicationHelper
   def clear_logs(log)
     logger.info "************************************  #{log}  ************************************"
   end
-  
-  def select_layout
-    if Rails.env.production? and (request.url == 'www.unisphere.eu' || 'unisphere.eu')
-      layout "home"
-    else
-      layout "main"
-    end
+
+  def set_mobile_view
+    @mobile_view = true if is_mobile?
+  end
+ 
+  def force_mobile_view
+    @mobile_view = true
+  end
+ 
+  def is_mobile?
+    (request.user_agent =~ /Mobile|webOS/) && (request.user_agent !~ /iPad/)
   end
 
-  def force_home_layout
-    @layout = "home"
-  end
+  # def select_layout
+  #   if Rails.env.production? and (request.url == 'www.unisphere.eu' || 'unisphere.eu')
+  #     layout "home"
+  #   else
+  #     layout "main"
+  #   end
+  # end
 
-  def force_main_layout
-     @layout = "main"
-  end
+  # def force_home_layout
+  #   @layout = "home"
+  # end
+
+  # def force_main_layout
+  #    @layout = "main"
+  # end
 
   def random_password
     chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ0123456789'
