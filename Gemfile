@@ -34,6 +34,7 @@ gem 'omniauth'
 gem 'devise_token_auth'
 gem 'ng-rails-csrf'
 gem 'rollbar'
+gem 'devise_invitable'
 
 group :development, :test do
   gem 'rspec-rails'
