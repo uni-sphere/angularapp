@@ -31,9 +31,9 @@
       <a class="btn btn-add-document" ng-multiple="true" ng-file-select ng-model="fileStore.files" ng-click="storeClick(this)" ng-show="!
       item.document && admin" nodrag analytics-on="click" analytics-event="upload" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>" ><span class="fa fa-upload" ></span></a>
 
-      <a ng-href={{item.preview_link}} download class="btn btn-download" ng-show="item.document" nodrag analytics-on="click" analytics-event="download" ng-click="downloadItem(this)" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-arrow-circle-o-down"></span></a>
+      <a ng-href={{item.preview_link}} download class="btn btn-download" ng-show="item.document && item.type != 'application/pdf' && admin" nodrag analytics-on="click" analytics-event="download" ng-click="downloadItem(this)" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-arrow-circle-o-down"></span></a>
 
-      <a ng-href={{item.preview_link}} class="btn btn-preview" target="_blank" ng-show="item.document && item.type == 'application/pdf'" nodrag analytics-on="click" ng-click="downloadItem(this)" analytics-event="preview" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>" ><span class="fa fa-eye"></span></a>
+      <a ng-href={{item.preview_link}} class="btn btn-preview" target="_blank" ng-show="item.document && item.type == 'application/pdf'  && admin" nodrag analytics-on="click" ng-click="downloadItem(this)" analytics-event="preview" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>" ><span class="fa fa-eye"></span></a>
 
     </div>
     

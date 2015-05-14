@@ -5,10 +5,10 @@
       restrict: 'E',
       templateUrl: 'home/slide3.html',
       scope: {
-        sandboxNodes: '='
+        displayError: '='
       },
       link: function(scope) {
-
+        // scope.displayError("This is just a test version. You can't download files");
       }
     }
   }]);

@@ -6,14 +6,14 @@ angular
     $scope.sidebarMinified = true;
 
     //Check if the user is admin
-    var admin = $cookies.get('unisphere_api_admin');
+    // var admin = $cookies.get('unisphere_api_admin');
 
    
     // if(admin != undefined){
     //   $scope.admin = true;
     // }
 
-    $scope.admin = true;
+    // $scope.admin = true;
 
     $scope.adminDeco = function(){
       $scope.admin = false;
@@ -24,7 +24,7 @@ angular
     checkLocation = function(){
       var host = window.location.host;
       var pathname = window.location.pathname
-      if(pathname == '/home' || host == 'unisphere.eu'){
+      if(pathname == '/home' || host == 'home.unisphere.eu'){
         $scope.home = true
       } else{
         $scope.home = false;
@@ -66,6 +66,22 @@ angular
       console.log("There getting the university name");
       $scope.displayError("Sorry there was a mistake, refresh please");
     });
+
+    $scope.displayError = function(errorString){
+      if($scope.listError == undefined || $scope.listError.length == 0){
+         $scope.listError = [errorString];
+      } else{
+        $scope.listError.push(errorString);
+      }
+      $scope.showError = true;
+    }
+
+    $scope.hideError = function(){
+      $scope.listError = [];
+      $scope.showError = false;
+    }
+    
+    // $scope.displayError("This is just a test version. You can't download files");
 
 
   }]);

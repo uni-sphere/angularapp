@@ -21,6 +21,7 @@
           circleNoDoc();
           window.onresize = function() {
             circleNoDoc();
+
           };
 
           scope.$watch('activeNodes', function(newVals, oldVals){
@@ -159,14 +160,20 @@
             return treeData;
           }
 
+          // scope.displayError("This is just a test version. You can't download files");
 
           // We save the number of download
           scope.downloadItem = function(scope){
-            Restangular.one('activity').put().then(function(d) {
-              console.log("Download registered");
-            },function(d){
-              console.log("There was an error registering the download");
-            });
+            if(scope.home){
+              scope.displayError("This is just a test version. You can't download files");
+            }
+            else{
+              Restangular.one('activity').put().then(function(d) {
+                console.log("Download registered");
+              },function(d){
+                console.log("There was an error registering the download");
+              });
+            }
           }
 
 
@@ -299,14 +306,13 @@
                 parent_id: nodeData.id,
               }
 
-              //Demo version
-              if(scope.home){
+              Restangular.all('chapters').post(chapterToCreate).then(function(d) {
                 if(nodeData.items == undefined){
                   var depth = 0
                 } else{
                   depth = nodeData.depth + 1;
                 }
-                var a = {title: folder.name, id: dummyId, items: [], depth: depth}
+                var a = {title: folder.name, id: d.id, items: [], depth: depth}
 
                 if(nodeData.items == undefined){
                   scope.list.push(a);
@@ -317,34 +323,12 @@
                 }
 
                 console.log("OK chapter created:" + folder.name);
-                uploadFiles(files)
-              } 
-              //Real version
-              else{
-                Restangular.all('chapters').post(chapterToCreate).then(function(d) {
-                  if(nodeData.items == undefined){
-                    var depth = 0
-                  } else{
-                    depth = nodeData.depth + 1;
-                  }
-                  var a = {title: folder.name, id: d.id, items: [], depth: depth}
+                // uploadFiles(files)
 
-                  if(nodeData.items == undefined){
-                    scope.list.push(a);
-                    nodeDocData = scope.list[scope.list.length - 1];
-                  } else{
-                    nodeData.items.push(a);
-                    nodeDocData = nodeData.items[nodeData.items.length -1];
-                  }
-
-                  console.log("OK chapter created:" + folder.name);
-                  // uploadFiles(files)
-
-                // }, function(d) {
-                  scope.displayError("Failed to create chapter:" + folder.name);
-                  console.log("Failed to create chapter:" + folder.name);
-                });
-              }
+              // }, function(d) {
+                scope.displayError("Failed to create chapter:" + folder.name);
+                console.log("Failed to create chapter:" + folder.name);
+              });
             }
 
             /*==========  Upload all files in a directory  ==========*/
@@ -356,20 +340,13 @@
                 var numberItems = 0;
                 // console.log(nodeDocData);
 
-                $upload.upload({
-                  url: getApiUrl() + '/awsdocuments',
-                  file: file,
-                  fields: {
-                    title: file.name,
-                    node_id: scope.nodeEnd[0],
-                    chapter_id: nodeDocData.id,
-                    content: file
-                  }
-                }).then(function(d) {
-                  var a = {title: d.data.title, doc_id: d.data.id, document: true, type: d.data.file_type, preview_link: d.data.url}
+                console.log(file);
+                // Demo
+                if(scope.home){
+                  var a = {title: file.name, doc_id: dummyId, document: true, type: file.type}
 
                   numberItems ++;
-                  console.log("OK document uploaded:" + d.data.title);
+                  console.log("OK document uploaded:" + file.name);
                   if(numberItems == files.length){
                     console.log("OK upload of this level finished")
 
@@ -388,11 +365,49 @@
                   } else if(scope.documentAbsent){
                     scope.documentAbsent = false;
                   } 
+                } 
+                // Normal mode
+                else{
+                  $upload.upload({
+                    url: getApiUrl() + '/awsdocuments',
+                    file: file,
+                    fields: {
+                      title: file.name,
+                      node_id: scope.nodeEnd[0],
+                      chapter_id: nodeDocData.id,
+                      content: file
+                    }
+                  }).then(function(d) {
+                    var a = {title: d.data.title, doc_id: d.data.id, document: true, type: file.type, preview_link: d.data.url}
+                    numberItems ++;
+                    console.log(d);
+                    console.log("OK document uploaded:" + d.data.title);
+                    if(numberItems == files.length){
+                      console.log("OK upload of this level finished")
 
-                }, function(d) {
-                  scope.displayError("Failed to upload document:" +  file.name);
-                  console.log("Failed to upload document:" +  file.name);
-                });
+                      scope.dirUploaded = true;
+                    }
+
+                    // console.log(nodeDocData.items);
+                    if(nodeDocData.items == undefined){
+                      scope.list.unshift(a);
+                    } else{
+                      nodeDocData.items.unshift(a);
+                    }
+
+                    if(!dragAndDrop && !scope.documentAbsent && scope.lastClick != undefined){
+                      scope.lastClick.expand(); 
+                    } else if(scope.documentAbsent){
+                      scope.documentAbsent = false;
+                    } 
+
+                  }, function(d) {
+                    scope.displayError("Failed to upload document:" +  file.name);
+                    console.log("Failed to upload document:" +  file.name);
+                  });
+                }
+
+                
 
               }
             }
