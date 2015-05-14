@@ -1,0 +1,197 @@
+@font-face {
+  font-family: "Lato";
+  font-style: normal;
+  src: local("Lato Black"), local("Lato-Black"), url("https://fonts.gstatic.com/s/lato/v10/BVtM30trf7q_jfqYeHfjtA.woff") format("woff");
+}
+
+
+$light-gris: #f5f5f5;
+$ligthy-gris: #e6e6e6;
+$gris: #D8D8D8;
+$darky-gris: #9F9F9F;
+$dark-gris: #666666;
+
+$lighty-noir: #222222;
+$light-noir: #333333;
+$nice-noir: #262626;
+
+// Account
+$account-title-color: $light-noir;
+$account-subtitle-color: $dark-gris;
+$account-panel-header-bg: $light-gris;
+$account-input-bg: $light-gris;
+$account-border: $gris;
+
+
+//Sidebar
+$sidebar-bg: $light-gris;
+$sidebar-border: $gris;
+$sidebar-item-color: $dark-gris;
+$sidebar-item-hover-bg: $gris;
+$sidebar-item-hover-color: black;
+
+// Dashboard
+$group-button-border: $darky-gris;
+$group-button-hover: $ligthy-gris;
+$button-group-bg: $light-gris;
+$graph-fill: blue;
+$chart-title-color: $dark-gris;
+$chart-button-color: $dark-gris;
+$no-chart-color: $gris;
+
+//Navbar 
+$navbar-bg: $lighty-noir;
+$navbar-color: $light-gris;
+
+
+
+
+
+
+
+$border-error-prompt: #E9BCBC;
+$error-promt-color-dark: #9F1D1D;
+$error-promt-color-light: #B23B3B;
+$error-promt-bg: #F2DEDE;
+$error-promt-color-very-light: #C45858;
+
+
+$mega-light-grey: #FCFCFC;
+$ultra-light-grey: #FAFAFA;
+$supra-light-grey: #F2F2F2;
+$super-light-grey: #EEEEEE; // use for side
+$grey: #E6E6E6;
+$slight-dark-grey: #9A999E; 
+$dark-grey: #6C6B80;
+$very-dark-grey: #4A4A58;
+$light-grey: #CDCDCD;
+$dark: #4E4646;
+
+
+
+$group-bg: $ultra-light-grey;
+$group-header-bg: $ultra-light-grey;
+$chapter-header-bg: $mega-light-grey;
+$chapter-list-bg: $supra-light-grey;
+$group-doc-bg: white;
+$separation-lines: $light-grey;
+
+
+
+
+/*==========  view tree  ==========*/
+
+$tree-bg: white;
+$view-tree-color: $dark;
+$button-hover-color: $dark-grey;
+$button-active-color: $very-dark-grey;
+
+
+
+$popup-header-bg: #00BC5E;
+$popup-button-bg: whitesmoke;
+$popup-button-hover-bg: $navbar-bg;
+
+
+
+/*==========  View document  ==========*/
+
+$dropzone-color: $gris;
+
+$document-bg: white;
+
+$no-document-text-color: $ultra-light-grey;
+
+$document-absent-bg: $ultra-light-grey;
+$breadcrumb-bg: $grey;
+
+
+
+
+$document-color: $very-dark-grey;
+$document-fa-color: #3679A1;
+
+
+$document-bg: #F9F9F9;
+$document-hover: #E7EDFA;
+$document-border: #EBEBEB;
+
+
+// $chapter-folded-bg: #C9CCD4;
+// $chapter-folded-hover: #CAD2E4;
+
+$chapter-collapsed-bg: #D8DAE1;
+$chapter-collapsed-hover: #CAD2E4;
+
+$chapter-depth1-bg: #E5E7E9;
+$chapter-depth1-hover: #D1D7E6;
+
+$collapse-button-hover: tomato;
+$collapse-button-color: tomato;
+$fa-hover: black;
+$fa-color: $very-dark-grey;
+
+
+
+
+
+$bg: #8E639E;
+$bg2: #7B5589;
+$bg3: #330033;
+$test: #0000FF;
+$grey: #E0E0E0;
+$extreme-light-grey: #F9F9F9;
+$light-grey: #CECECE;
+$dark-green: #2CA078;
+$dark-blue: #2CA0B7;
+$dark-red: #D44D68; 
+$dark-grey: #989898;
+$grey-dropdown: #F0EFF0;
+$dark: #4B4B4B;
+
+$feature-1: $dark-green;
+$feature-2: $dark-grey;
+$feature-3: $dark-blue;
+$feature-4: $dark-red;
+
+
+
+$input-shadow: #666666;
+$hyper-light-blue: #3cb0fd;
+$super-light-blue: #3498db;
+$light-blue: #3498db;
+$blue: #2980b9;
+
+$light-red: #DC3435;
+$red: #D43434;
+
+$green: #2CA078;
+$light-green: #27A57B;
+$super-light-green: #20BF8A;
+$hyper-light-green: #21C68F;
+
+$input-bg: $extreme-light-grey;
+
+$place-holder: $light-grey;
+$dark-grey: #4e4e4e;
+$try-it-bg: $dark-green;
+$try-it-bg-hovered: #2CA0B7;
+
+$font-family: "Titillium Web", sans-serif;
+
+
+
+@font-face {
+  font-family: "um Web";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Titillium WebThin"), local("TitilliumWeb-Thin"), url("http://fonts.gstatic.com/s/titilliumweb/v4/anMUvcNT0H1YN4FII8wpr-JQgxo1bqIW_GZqCarw8nE.woff") format("woff");
+}
+
+
+/*============================================
+=            Presentation website            =
+============================================*/
+
+$computer-bg: #262626;
+// $computer-bg: black;

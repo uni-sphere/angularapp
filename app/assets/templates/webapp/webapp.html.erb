@@ -1,0 +1,14 @@
+<div ng-file-drop ng-model="files" drag-over-class="{accept:'dragoverAccept', reject:'dragoverReject', delay:100}"  ng-multiple="true" allow-dir="true" accept=".jpg,.png,.pdf" id="application-view">
+
+  <div id="view-tree" >
+    <collapsible-tree  node-end = 'nodeEnd' display-error ='displayError' active-nodes = 'activeNodes' admin = 'admin' sidebar-minified = 'sidebarMinified'></collapsible-tree>
+  </div>
+
+  <view-document active-nodes='activeNodes' node-end='nodeEnd' files = 'files' display-error = 'displayError' ng-show="nodeEnd" admin = 'admin'></view-document>
+
+  <dragndrop-view ng-show="nodeEnd"></dragndrop-view>
+</div>
+
+
+
+

@@ -6,19 +6,10 @@
         restrict: 'E',
         templateUrl: 'main/error-display.html',
         scope: {
-          displayError: '=',
-          hideError: '='
+          listError: '=',
+          showError: '='
         },
         link: function(scope) {
-          scope.displayError = function(errorString){
-            if(scope.listError == undefined || scope.listError.length == 0){
-               scope.listError = [errorString];
-            } else{
-              scope.listError.push(errorString);
-            }
-            scope.showError = true;
-          }
-
           scope.hideError = function(){
             scope.listError = [];
             scope.showError = false;

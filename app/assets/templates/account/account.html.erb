@@ -1,46 +1,46 @@
 <div id="account" ng-controller="AccountCtrl">
   <div class="panel">
-    <div class="panel-header">Profile</div>
+    <div class="panel-header">{{ 'PROFIL' | translate }}</div>
     <div class="panel-body">
-      <div class="panel-row-title">Name</div>
+      <div class="panel-row-title">{{ 'NAME' | translate }}</div>
       <input type="text" placeholder="" class="panel-input" ng-model="updatedName">
 
-      <div class="panel-row-title">Email</div>
+      <div class="panel-row-title">{{ 'EMAIL' | translate }}</div>
       <input type="email" placeholder="" class="panel-input" ng-model="updatedEmail">
 
-      <button class="panel-submit" ng-click="updateAccount()">Update profil</button>
+      <button class="panel-submit" ng-click="updateAccount()">{{ 'UPDATE_PROFIL' | translate }}</button>
     </div>
   </div>
 
   <form name="organizationForm" class="panel" id="panel-orgnanization">
-    <div class="panel-header">Organization</div>
+    <div class="panel-header">{{ 'ORGANIZATION' | translate }}</div>
     <div class="panel-body">
 
-      <div class="panel-row-title">New lecturer</div>
+      <div class="panel-row-title">{{ 'NEW_LECTURER' | translate }}</div>
       <input type="text" placeholder="" class="panel-input input-float" ng-model="newUser" >
 
       <div id="add-user" class="fa fa-plus" ng-click="addUser()"></div>
 
-      <button class="panel-submit" ng-click="inviteUsers()">Invite lecturers</button>
+      <button class="panel-submit" ng-click="inviteUsers()">{{ 'INVITE' | translate }}</button>
     </div>
   </form>
 
   <div class="panel">
-    <div class="panel-header">Password</div>
+    <div class="panel-header">{{ 'PASSWORD' | translate }}</div>
     <div class="panel-body">
 
-      <div class="panel-row-title">New Password</div>
+      <div class="panel-row-title">{{ 'NEW_PSW' | translate }}</div>
       <input type="password" class="panel-input" ng-model="newPsw" >
 
-      <div class="panel-row-title">Confirm new Password</div>
+      <div class="panel-row-title">{{ 'CONFIRM_PSW' | translate }}</div>
       <input type="password" class="panel-input" ng-model="confirmPsw" >
 
-      <button class="panel-submit" ng-click="updatePsw()">Update password</button>
+      <button class="panel-submit" ng-click="updatePsw()">{{ 'UPDATE_PSW' | translate }}</button>
     </div>
   </div>
 
   <div id="panel-user-to-invite"  ng-show="listUser">
-    <div class="panel-header header-special">User to invite</div>
+    <div class="panel-header header-special">{{ 'USERS_INVITED' | translate }}</div>
     <div class="panel-body body-special">
       <div class="item-user" ng-repeat="user in listUser">
         <i class="fa fa-envelope"></i>{{user}}

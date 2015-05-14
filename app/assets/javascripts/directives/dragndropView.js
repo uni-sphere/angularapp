@@ -4,7 +4,7 @@
     .directive('dragndropView', [function() {
       return {
         restrict: 'E',
-        templateUrl: 'application/dragndrop-view.html'
+        templateUrl: 'webapp/dragndrop-view.html'
       };
     }]);
 }());

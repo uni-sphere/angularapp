@@ -1,0 +1,152 @@
+
+#slide4{
+  margin-bottom: 100px;
+  // background: #2CA078;
+  padding-top: 60px;
+}
+
+#separation-title-features{
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  font-size: 1.5em;
+  line-height: 60px;
+  margin-bottom: 60px;
+  // background: #2CA078;
+}
+
+.features{
+  position: relative;
+  float: left;
+  width: 47%;
+}
+
+.features-lecturers{
+  margin-right: 3%;
+  
+  &:before{
+    position: absolute;
+    // z-index: 2;
+    top: 100px;
+    left: 3%;
+    bottom: -20px;
+    right: -10px;
+    border-radius: 10px;
+
+    content: "";
+    
+    // border: 2px solid #2CA078;
+    // background: white;
+  }
+
+}
+
+
+.feature-uni{
+  margin-left: 3%;
+
+  &:before{
+    position: absolute;
+    // z-index: 2;
+    top: 100px;
+    left: -10px;
+    bottom: -20px;
+    right: 3%;
+    border-radius: 10px;
+
+    content: "";
+    
+    // border: 2px solid #2CA078;
+  }
+
+}
+
+.features-title{
+  width: 90%;
+  display: inline-block;
+  text-align: center;
+
+  margin-top: 20px;
+  margin-bottom: 80px;
+
+  font-size: 1.5em;
+  .fa{
+    margin-right: 5px;
+  }
+  color: black;
+}
+
+.feature-row-left{
+  position: relative;
+  float: left;
+  width: 95%;
+  clear: left;
+
+  
+
+  // &:after{
+  //   position: absolute;
+  //   top: 0;
+  //   bottom:0;
+  //   left: 0;
+  //   right: 0;
+  //   background: #2CA078;
+  //   z-index: 100;
+  // }
+
+  // background: #2CA078;
+  // padding-bottom: 20px;
+  // padding-top: 20px;
+  margin-left: 5%;
+}
+
+.feature-row-right{
+  position: relative;
+  float: left;
+  width: 95%;
+  clear: left;
+  // background: #2CA078;
+
+  margin-right: 5%;
+}
+
+.second-row{
+  padding-top: 20px;
+}
+
+.feature{
+  position: relative;
+  float: left;
+  width: 48%;
+
+  padding-left: 1%;
+  padding-right: 1%;
+}
+
+.feature-title{
+  padding-bottom: 5px;
+  font-size: 1.2em;
+
+  .fa{
+    // background: red;
+    padding: 5px 5px;
+    border-radius:15px;
+    // color: white;
+  }
+}
+
+.feature-body{
+  color: $light-noir;
+}
+
+
+// Each features' color
+#feature-intuitive{
+  .fa{
+    background: green;
+  }
+  .feature-title-text{
+    color: green;
+  }
+}

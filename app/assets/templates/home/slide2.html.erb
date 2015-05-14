@@ -1,0 +1,91 @@
+<div id="slide2" class="slide">
+
+  <div class="slide-title">Find your university</div>
+  <map 
+    center="[48.46, 7.48]" 
+    disable-default-u-i="true"
+    disable-double-click-zoom="true"
+    draggable="true"
+    draggable-cursor="url(http://www.google.com/intl/en_ALL/mapfiles/openhand.cur), auto"
+    dragging-cursor="move"
+    keyboard-shortcuts="false"
+    zoom="6" 
+    max-zoom="12"
+    min-zoom="4"
+    tilt="45"
+    map-type-id="ROADMAP"
+    scrollwheel="false"
+    zoom-control="true"
+    pan-control="true"
+    >
+  </map>
+
+  <!-- Google Autocomplete -->
+  <div id="uni-input">
+    <div id="uni-input-black-bg"></div>
+    <div id="location-wrapper">
+      <div id="location" ng-show="geolocation" ng-click="centerMap()" class="fa fa-location-arrow"></div>
+      <div id="uni-input-form">
+        <!-- <button id="location-button" class="">ll</button> -->
+        <input places-auto-complete size=80 
+          ng-model="address" 
+          component-restrictions="{country:'fr'}"
+          types= ['establishment']
+          on-place-changed="placeChanged(place)" 
+          class="search-input home-input"
+          placeholder="School name"
+        /> 
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup if school exist -->
+  <div class="school-popup-wrapper" id="existing-school-display-wrapper" ng-show="showExistingSchool" ng-class="{'school-ready-to-disappear': !showExistingSchool, 'school-ready-to-appear': showExistingSchool}">
+    <div class="school-header">{{place.name}} already uses Unisphere<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
+    <div class="school-display">
+      <span class="school-display-row-center">{{place.formatted_address}} </span>
+      <span class="school-display-row-center"><a class="school-link" target="_blank" ng-href="http://{{showExistingSchool.url}}">http://{{showExistingSchool.url}}</a></span>
+    </div>
+    <div class="school-display-bg"></div>
+  </div>
+
+  <!-- Popup for new school -->
+  <div class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="showNewSchool" ng-class="{'school-ready-to-disappear': !showNewSchool, 'school-ready-to-appear': showNewSchool}">
+    <div class="school-header">Suscribe {{place.name}} to unisphere
+    <span class="fa fa-times" ng-click="closePopupMap()"></span></div>
+
+    <div class="school-display">
+      <span class="school-display-row-center">{{place.formatted_address}} </span>
+      <button id="add-school" class="home-button" ng-click="findUrl()">Get started</button>
+    </div>
+
+    <div class="school-display-bg"></div>
+  </div>
+
+  <!-- Signup -->
+  <div class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="signupShow" ng-class="{'school-ready-to-disappear': !signupShow, 'school-ready-to-appear': signupShow}">
+    <div class="school-header">Admin account for {{place.name}}<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
+
+    <div class="school-display">
+      <input type="text" class="signup-input home-input" ng-model="adminName" placeholder="Surname Name"/>
+      <input type="email" class="signup-input home-input" ng-model="adminEmail" placeholder="Email"/>
+      <input type="password" class="signup-input home-input" ng-model="adminPassword" placeholder="Password"/>
+      <button id="signup" class="home-button" ng-click="signup()">Sign up</button>
+    </div>
+
+    <div class="school-display-bg"></div>
+  </div>
+
+  <!-- SuccessFull signup -->
+  <div class="school-popup-wrapper" id="subdomain-created-wrapper" ng-show="subdomainCreated" ng-class="{'school-ready-to-disappear': !subdomainCreated, 'school-ready-to-appear': subdomainCreated}">
+    <div class="school-header">Congrats, {{place.name}} is registered<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
+
+    <div class="school-display">
+      <div class="school-display-row-center">Last step! Check your mailbox.</div>
+      <div class="school-display-row-center">{{adminEmail}}</div>
+    </div>
+
+    <div class="school-display-bg"></div>
+  </div>
+
+</div>

@@ -1,0 +1,45 @@
+
+#slide5{
+  padding-top: 80px;
+  background: #2f2f2f;
+}
+
+.contact-icons{
+  position: relative;
+  margin-left: 1/12 * 100%; 
+  width: calc(11/12 * 100%);
+  color: white;
+}
+
+.icon-hover{
+  position: relative;
+  float: left;
+  // display: inline-block;
+
+  height: 175px;
+  width: 1/6 * 100%;
+  text-align: center;
+  overflow: hidden;
+  padding-top: 20px;
+  transition: all ease-in .5s;
+
+  .hover-text {
+    display: none;
+    font-size: 20px;
+  }
+
+  .fa{
+    color: white;
+    // margin-left: 70px;
+    font-size: 70px;
+  }
+
+  &:hover {
+    height: 175px;
+    padding-top: 0;
+  }
+}
+
+
+
+

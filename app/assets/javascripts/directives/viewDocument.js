@@ -4,15 +4,25 @@
     .directive('viewDocument', ['$translate' , 'Restangular', 'browser', '$upload', function($translate, Restangular, browser, $upload) {
       return {
         restrict: 'E',
-        templateUrl: 'application/view-document.html',
+        templateUrl: 'webapp/view-document.html',
         scope:{
           activeNodes: '=',
           nodeEnd: '=',
           files: '=',
           displayError: '=',
-          admin: '='
+          admin: '=',
+          home: '='
         },
         link: function(scope){
+
+          var dummyId = 50;
+
+          //Some css
+          circleNoDoc();
+          window.onresize = function() {
+            circleNoDoc();
+
+          };
 
           scope.$watch('activeNodes', function(newVals, oldVals){
             if(newVals){
@@ -150,14 +160,20 @@
             return treeData;
           }
 
+          // scope.displayError("This is just a test version. You can't download files");
 
           // We save the number of download
           scope.downloadItem = function(scope){
-            Restangular.one('activity').put().then(function(d) {
-              console.log("Download registered");
-            },function(d){
-              console.log("There was an error registering the download");
-            });
+            if(scope.home){
+              scope.displayError("This is just a test version. You can't download files");
+            }
+            else{
+              Restangular.one('activity').put().then(function(d) {
+                console.log("Download registered");
+              },function(d){
+                console.log("There was an error registering the download");
+              });
+            }
           }
 
 
@@ -307,9 +323,9 @@
                 }
 
                 console.log("OK chapter created:" + folder.name);
-                uploadFiles(files)
+                // uploadFiles(files)
 
-              }, function(d) {
+              // }, function(d) {
                 scope.displayError("Failed to create chapter:" + folder.name);
                 console.log("Failed to create chapter:" + folder.name);
               });
@@ -324,20 +340,13 @@
                 var numberItems = 0;
                 // console.log(nodeDocData);
 
-                $upload.upload({
-                  url: getApiUrl() + '/awsdocuments',
-                  file: file,
-                  fields: {
-                    title: file.name,
-                    node_id: scope.nodeEnd[0],
-                    chapter_id: nodeDocData.id,
-                    content: file
-                  }
-                }).then(function(d) {
-                  var a = {title: d.data.title, doc_id: d.data.id, document: true, type: d.data.file_type, preview_link: d.data.url}
+                console.log(file);
+                // Demo
+                if(scope.home){
+                  var a = {title: file.name, doc_id: dummyId, document: true, type: file.type}
 
                   numberItems ++;
-                  console.log("OK document uploaded:" + d.data.title);
+                  console.log("OK document uploaded:" + file.name);
                   if(numberItems == files.length){
                     console.log("OK upload of this level finished")
 
@@ -356,11 +365,49 @@
                   } else if(scope.documentAbsent){
                     scope.documentAbsent = false;
                   } 
+                } 
+                // Normal mode
+                else{
+                  $upload.upload({
+                    url: getApiUrl() + '/awsdocuments',
+                    file: file,
+                    fields: {
+                      title: file.name,
+                      node_id: scope.nodeEnd[0],
+                      chapter_id: nodeDocData.id,
+                      content: file
+                    }
+                  }).then(function(d) {
+                    var a = {title: d.data.title, doc_id: d.data.id, document: true, type: file.type, preview_link: d.data.url}
+                    numberItems ++;
+                    console.log(d);
+                    console.log("OK document uploaded:" + d.data.title);
+                    if(numberItems == files.length){
+                      console.log("OK upload of this level finished")
 
-                }, function(d) {
-                  scope.displayError("Failed to upload document:" +  file.name);
-                  console.log("Failed to upload document:" +  file.name);
-                });
+                      scope.dirUploaded = true;
+                    }
+
+                    // console.log(nodeDocData.items);
+                    if(nodeDocData.items == undefined){
+                      scope.list.unshift(a);
+                    } else{
+                      nodeDocData.items.unshift(a);
+                    }
+
+                    if(!dragAndDrop && !scope.documentAbsent && scope.lastClick != undefined){
+                      scope.lastClick.expand(); 
+                    } else if(scope.documentAbsent){
+                      scope.documentAbsent = false;
+                    } 
+
+                  }, function(d) {
+                    scope.displayError("Failed to upload document:" +  file.name);
+                    console.log("Failed to upload document:" +  file.name);
+                  });
+                }
+
+                
 
               }
             }
@@ -454,6 +501,28 @@
           };
 
           checkIfChrome();
+
+          function circleNoDoc(){
+            var circleWidth = $('#document-absent-dropzone-image').width();
+            var circleHeight = $('#document-absent-dropzone-image').height();
+            var circleMarginTop = (circleHeight - circleWidth)/ 2
+
+            if(circleWidth > circleHeight){
+              var bordel = circleHeight * 15 / 100;
+              $('.dropzone-image-container').css("width", circleHeight);
+              $('.dropzone-image-container').css("height", circleHeight);
+              $('.dropzone-triangle').css("border-left", bordel + "px solid transparent");
+              $('.dropzone-triangle').css("border-right", bordel + "px solid transparent");
+              $('.dropzone-triangle').css("border-top", bordel + "px solid #D8D8D8");
+
+              // $('.circle-image').css("border-radius", circleHeight / 2);
+            } else{
+              $('.dropzone-image-container').css("margin-top", circleMarginTop);
+              $('.dropzone-image-container').css("width", circleWidth);
+              $('.dropzone-image-container').css("height", circleWidth);
+              // $('.circle-image').css("border-radius", circleWidth / 2);
+            }
+          }
 
 
         }

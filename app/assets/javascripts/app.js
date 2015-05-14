@@ -1,7 +1,6 @@
 (function(){
   angular.module('mainApp', [
     'ngAnimate',
-    'ui.router',
     'templates',
     'ngResource',
     'ui.tree', 
@@ -11,13 +10,14 @@
     'ngCookies',
     'restangular',
     'angularFileUpload',
-    'ngDialog',
     'angulartics', 
     'angulartics.google.analytics',
     'pascalprecht.translate',
 		'ngDropdowns',
 		'ng-token-auth',
-		'ng-rails-csrf'
+		'ng-rails-csrf',
+    'ui.router',
+    'ngMap'
   ])
   .config(function (
     $stateProvider,
@@ -27,8 +27,6 @@
     $translateProvider,
 		$authProvider
   ) {
-			
-				
       $translateProvider
         .translations('en', {
           HELP: 'Help',
@@ -122,7 +120,7 @@
 
           .state('main.application', {
               url: '',
-              templateUrl: 'application/application.html'
+              templateUrl: 'webapp/webapp.html'
           })
           .state('main.dashboard', {
               url: 'dashboard',
@@ -136,12 +134,7 @@
         .state('home', {
           url: '/home',
           templateUrl: 'main/main.html',
-          controller: 'MainCtrl',
-          resolve: {
-            nodesflat: function(Restangular){
-              return Restangular.one('nodes').get();
-            }
-          }
+          controller: 'MainCtrl'
         })
 
        // .state('dashboard', {

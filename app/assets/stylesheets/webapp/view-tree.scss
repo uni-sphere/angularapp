@@ -1,0 +1,65 @@
+collapsible-tree{
+  position: relative;
+  float: left;
+  width: calc(100%);
+  height: calc(100% - 4px);
+
+}
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke-width: 0.1em;
+}
+
+.node text {
+  font-size: 1em;
+  fill: $view-tree-color;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 0.1em;
+}
+
+.link-active{
+  fill: none;
+  stroke: cornflowerblue;
+  stroke-width: 0.1em;
+}
+
+// #admin-popup-content{
+//   // margin-top: 20px;
+//   // margin-bottom: 20px;
+// }
+
+
+// @keyframes ngdialog-flyout {
+//   0% {
+//     opacity: 1;
+//     transform: translateY(0);
+//   }
+
+//   100% {
+//     opacity: 0;
+//     transform: translateY(-40px);
+//   }
+// }
+
+// @keyframes ngdialog-flyin {
+//   0% {
+//     opacity: 0;
+//     transform: translateY(-40px);
+//   }
+
+//   100% {
+//     opacity: 1;
+//     transform: translateY(0);
+//   }
+// }
+
+

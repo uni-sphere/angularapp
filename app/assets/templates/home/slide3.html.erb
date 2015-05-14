@@ -1,25 +1,28 @@
-<div id="slide3" class="slide">
-  <div ng-repeat="uni in universities">
-    {{uni.name}}
-  </div>
-  {{newUniName}}
+<div class="slide" id="slide3">
 
+  <div id="demo-wrapper">
+    <div id="fake-camera-1"></div>
+    <div id="fake-camera-2"></div>
 
-  <div id="new-uni-form-wrapper">
-    <div id="new-uni-form">
-      <input class="sign-up-input"type="text" ng-model="newUniName" placeholder="university name">
-      <input class="sign-up-input" type="email" ng-model="newUniEmail" placeholder="Email adress">
-      <input  class="sign-up-input" type="password" ng-model="newUniPassword" placeholder="Password">
-      <button class="sign-up-button" ng-click="saveNewUni()">Save</button>
+    <div id="view-tree">
+      <collapsible-tree  node-end = 'nodeEnd' display-error ='displayError' active-nodes = 'activeNodes' admin = "true" home = "true" sandbox-nodes = 'sandboxNodes' ></collapsible-tree>
     </div>
+
+    <view-document active-nodes='activeNodes' node-end='nodeEnd' files = 'files' display-error = 'displayError' ng-show="nodeEnd" admin = "true" home = "true"></view-document>
   </div>
 
- <!--  <blockquote>
-    {{uniName}}
-  </blockquote>
+  <div id="fake-liasion">
+    <div id="fake-liasion-right"></div>
+    <div id="fake-liasion-left"></div>
+  </div>
 
-  <form name="uniForm" ng-submit="">
-    <input type="text" ng-model="uniName">
-    <input type="Submit" value="submit">
-  </form> -->
+  <div id="fake-keyboard-wrapper">
+    <div id="fake-pad"></div>
+  </div>
+  
+   <!-- <div id="separation-line"></div> -->
 </div>
+
+
+
+

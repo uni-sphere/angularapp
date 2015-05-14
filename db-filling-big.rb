@@ -1,7 +1,6 @@
 organization = Organization.create(name: 'Sandbox')
 date = organization.created_at-12*7.days
 organization.update(created_at: date)
-User.create!(name: 'clement')
 organization.nodes.create(name: "Sandbox", parent_id: 0)
 Node.last.reports.create
 organization.nodes.create(name: "premiere", parent_id: 1)

@@ -3,7 +3,11 @@ class CreateOrganizations < ActiveRecord::Migration
     create_table :organizations do |t|
       t.string :name
       t.string :subdomain
-			
+      t.float :latitude
+			t.float :longitude
+      t.string :place_id
+      t.string :website
+      
       t.timestamps
     end
   end

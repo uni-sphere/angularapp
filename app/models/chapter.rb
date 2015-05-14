@@ -4,6 +4,6 @@ class Chapter < ActiveRecord::Base
   belongs_to :node
   belongs_to :user
   
-  validates :title, :parent_id, :user_id, presence: true
+  validates :title, :parent_id, presence: true
   
 end

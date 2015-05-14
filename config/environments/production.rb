@@ -1,6 +1,11 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   
+  
+  config.sass.preferred_syntax = :scss
+  config.sass.line_comments = true
+  config.sass.cache = false
+
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
@@ -15,6 +20,7 @@ Rails.application.configure do
     password: '//11hello',
     enable_starttls_auto: true
   }
+
   
   # Code is not reloaded between requests.
   config.cache_classes = true
@@ -41,7 +47,7 @@ Rails.application.configure do
 
   # Compress JavaScripts and CSS.
   # config.assets.js_compressor = :uglifier
-  # config.assets.css_compressor = :scss
+  # config.assets.css_compressprecompileor = :scss
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
