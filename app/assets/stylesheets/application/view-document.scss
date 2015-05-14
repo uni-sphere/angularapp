@@ -160,7 +160,6 @@
   }
 }
 
-
 .isNew{
   .item-name, .chapter-number{
     // color: red;
@@ -279,13 +278,13 @@
 =            No document            =
 ===================================*/
 
-.breadcrumb-no-doc{
-  background: $document-absent-bg !important;
-}
+// .breadcrumb-no-doc{
+//   background: $document-absent-bg !important;
+// }
 
-.no-docs{
-  background: $document-absent-bg !important;
-}
+// .no-docs{
+//   background: $document-absent-bg !important;
+// }
 
 #document-absent-title, #document-absent-subtitle{
   position: relative;
@@ -304,16 +303,19 @@
   height: 10%;
 }
 #document-absent-subtitle{
-  // padding-bottom: 10px;
   height: 5%;
+  padding-bottom: 20px;
 }
+
+/*================================
+=            Dropzone            =
+================================*/
 
 #document-absent-dropzone-container{
   position: absolute;
   bottom: 0px;
-  height: calc(75% - 40px);
+  height: calc(75% - 80px);
   width: 90%;
-  // background: blue;
 }
 
 #document-absent-dropzone{
@@ -324,35 +326,57 @@
   margin-left: 10%;
   margin-top: 10%;
 
-  background: $ultra-light-grey;
+  // background: $ultra-light-grey;
   border-radius: 60px;
-  border: 4px dashed black;
+  border: 2px solid $dropzone-color;
 }
 
+// Pic
 #document-absent-dropzone-image{
   position: relative;
-  width: 100%;
-  display: inline-block;
-  text-align: center;
-
-  font-size: 10em;
-  color: black;
-  padding-top: 10%;
-
-  // line-height: 350px;
+  margin: 40px 20px 10px 20px;
+  width : calc(100% - 40px);
+  height: calc(100% - 180px);
 }
 
+.dropzone-image-container{
+  // border: 4px solid black;
+  display: table;
+  margin: 0 auto;
+}
+
+
+.dropzone-rectangle{
+  height: 60%;
+  width: 15%;
+  // max-height: 160px !important;
+  display: table;
+  margin: 0 auto;
+  margin-top: 10%;
+  background: $gris;
+}
+
+.dropzone-triangle{
+  position: relative;
+  margin-left: calc(50% - 15%);
+  width: 0;
+  height: 0; 
+  
+}
+
+
+// Text under the pic
 #document-absent-text-under-pic{
-  position: absolute;
-  bottom: 20px;
+  position: relative;
   width: 80%;
   left: 10%;
   text-align: center;
+  color: $dark-gris;
 }
 
 #document-absent-text-drop{
   font-size: 1.5em;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 
@@ -360,28 +384,7 @@
   font-size: .8em;
 }
 
-#document-absent-buttons-container{
-  position: relative;
-  float: left;
-  width: 100%;
-  display: inline-block;
-  text-align: center;
-}
-#document-absent-buttons{
-  position: relative;
-  float: center;
-  display: inline-block;
-}
 
-#create-first-document, #create-first-chapter{
-  position: relative;
-  float: left;
 
-  padding: 10px 10px;
-  margin: 0px 10px;
-  border: 1px solid black;
-  border-radius: 10px;
-  cursor: pointer;
-}
 
 

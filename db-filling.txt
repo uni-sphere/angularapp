@@ -3,7 +3,7 @@ rails c
 organization = Organization.create(name: 'Sandbox', website: 'http://sandbox.unisphere.eu')
 organization.nodes.create(name: "Sandbox", parent_id: 0)
 Node.last.reports.create
-organization.nodes.create(name: "premiere", parent_id: 1)
+organization.nodes.create(name: "Premiere", parent_id: 1)
 Node.last.reports.create
 organization.nodes.create(name: "S", parent_id: 2)
 Node.last.reports.create
@@ -11,12 +11,12 @@ Node.last.chapters.create(title: "main", parent_id: 0, user_id: 1)
 organization.nodes.create(name: "ES", parent_id: 2)
 Node.last.reports.create
 Node.last.chapters.create(title: "main", parent_id: 0, user_id: 1)
-organization.nodes.create(name: "terminal", parent_id: 1)
+organization.nodes.create(name: "Terminal", parent_id: 1)
 Node.last.reports.create
-organization.nodes.create(name: "L", parent_id: 5)
+organization.nodes.create(name: "S", parent_id: 5)
 Node.last.reports.create
 Node.last.chapters.create(title: "main", parent_id: 0, user_id: 1)
-organization.nodes.create(name: "STI", parent_id: 5)
+organization.nodes.create(name: "L", parent_id: 5)
 Node.last.reports.create
 Node.last.chapters.create(title: "main", parent_id: 0, user_id: 1)
 node = Organization.last.nodes.last
@@ -26,6 +26,8 @@ node.chapters.create(title: "Produit scalaire", parent_id: 5, user_id: 1)
 node.chapters.create(title: "Analyse", parent_id: 4, user_id: 1)
 node.chapters.create(title: "Fonctions", parent_id: 8, user_id: 1)
 node.chapters.create(title: "Derivees", parent_id: 8, user_id: 1)
+organization.nodes.create(name: "L", parent_id: 2)
+Node.last.reports.create
 
 ===
 chapters = Chapter.where(user_id: User.last.id)

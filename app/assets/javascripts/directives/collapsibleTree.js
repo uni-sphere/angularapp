@@ -17,16 +17,14 @@
         link: function(scope, iElement, iAttrs) {
 
           // First we get the nodes
-          if(!scope.home){
-            Restangular.one('nodes').get().then(function (nodes) {
-              scope.nodes = nodes.plain();
-              // scope.copyFlatData = Restangular.copy(nodes);
-            }, function(){
-              console.log("There getting the university name");
-            });
-          } else{
-            scope.nodes = scope.sandboxNodes;
-          }
+        
+          Restangular.one('nodes').get().then(function (nodes) {
+            scope.nodes = nodes.plain();
+            // scope.copyFlatData = Restangular.copy(nodes);
+          }, function(){
+            console.log("There getting the university name");
+          });
+         
 
           // scope.dataChanged = false;
 
@@ -102,7 +100,7 @@
 
           // We re-render when we switch admin on/off
           scope.$watch('admin',function(newVals, oldVals){
-            if(newVals && scope.nodes){
+            if(scope.nodes){
               render(makeNested(scope.nodes), iElement);
             }
           });
@@ -299,12 +297,19 @@
             scope.activeNodes = [];
 
             findActiveNodes(d);
+            if(scope.home){
+              scope.activeNodes = [[6,"S"],[5,"Terminal"],[1,"Sandbox"]]
+            }
+            // console.log(scope.activeNodes)
             findNodeEnd(d);
             findFoldedNodes(scope.root);
             colornodePath(scope.root);
 
+            
+            // $cookies.put('activeNodes', scope.activeNodes);
+            $cookies.put('activeNodes', scope.activeNodes);
+
             if(!scope.home){
-              $cookies.put('activeNodes', scope.activeNodes);
               $cookies.put('foldedNodes', scope.foldedNodes);
             }
             
@@ -333,6 +338,7 @@
             if(d.parent){
               findActiveNodes(d.parent)
             }
+
           }
 
           /*==========  Use activeNodes to color the nodes  ==========*/
@@ -352,9 +358,14 @@
           function findNodeEnd(d){
             if(!d.children && !d._children){
               scope.nodeEnd = [d.num, d.name];
+              // Demo mode
               if(!scope.home){
                 $cookies.put('nodeEnd', [d.num, d.name]);
               } 
+              // Normal mode
+              else{
+                $cookies.put('nodeEnd', [d.num, d.name]);
+              }
             } else{
               scope.nodeEnd = false;
               $cookies.put('nodeEnd', false);

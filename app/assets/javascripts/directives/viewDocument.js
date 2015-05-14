@@ -15,6 +15,12 @@
         },
         link: function(scope){
 
+          //Some css
+          circleNoDoc();
+          window.onresize = function() {
+            circleNoDoc();
+          };
+
           scope.$watch('activeNodes', function(newVals, oldVals){
             if(newVals){
               // console.log(newVals);
@@ -291,29 +297,52 @@
                 parent_id: nodeData.id,
               }
 
-              Restangular.all('chapters').post(chapterToCreate).then(function(d) {
-                if(nodeData.items == undefined){
-                  var depth = 0
-                } else{
-                  depth = nodeData.depth + 1;
-                }
-                var a = {title: folder.name, id: d.id, items: [], depth: depth}
+              // Demo version
+              // if(scope.home){
+                // if(nodeData.items == undefined){
+                //   var depth = 0
+                // } else{
+                //   depth = nodeData.depth + 1;
+                // }
+                // var a = {title: folder.name, id: d.id, items: [], depth: depth}
 
-                if(nodeData.items == undefined){
-                  scope.list.push(a);
-                  nodeDocData = scope.list[scope.list.length - 1];
-                } else{
-                  nodeData.items.push(a);
-                  nodeDocData = nodeData.items[nodeData.items.length -1];
-                }
+                // if(nodeData.items == undefined){
+                //   scope.list.push(a);
+                //   nodeDocData = scope.list[scope.list.length - 1];
+                // } else{
+                //   nodeData.items.push(a);
+                //   nodeDocData = nodeData.items[nodeData.items.length -1];
+                // }
 
-                console.log("OK chapter created:" + folder.name);
-                uploadFiles(files)
+                // console.log("OK chapter created:" + folder.name);
+                // uploadFiles(files)
+              // } 
+              // Real version
+              // else{
+                Restangular.all('chapters').post(chapterToCreate).then(function(d) {
+                  if(nodeData.items == undefined){
+                    var depth = 0
+                  } else{
+                    depth = nodeData.depth + 1;
+                  }
+                  var a = {title: folder.name, id: d.id, items: [], depth: depth}
 
-              }, function(d) {
-                scope.displayError("Failed to create chapter:" + folder.name);
-                console.log("Failed to create chapter:" + folder.name);
-              });
+                  if(nodeData.items == undefined){
+                    scope.list.push(a);
+                    nodeDocData = scope.list[scope.list.length - 1];
+                  } else{
+                    nodeData.items.push(a);
+                    nodeDocData = nodeData.items[nodeData.items.length -1];
+                  }
+
+                  console.log("OK chapter created:" + folder.name);
+                  // uploadFiles(files)
+
+                // }, function(d) {
+                  scope.displayError("Failed to create chapter:" + folder.name);
+                  console.log("Failed to create chapter:" + folder.name);
+                });
+              // }
             }
 
             /*==========  Upload all files in a directory  ==========*/
@@ -455,6 +484,28 @@
           };
 
           checkIfChrome();
+
+          function circleNoDoc(){
+            var circleWidth = $('#document-absent-dropzone-image').width();
+            var circleHeight = $('#document-absent-dropzone-image').height();
+            var circleMarginTop = (circleHeight - circleWidth)/ 2
+
+            if(circleWidth > circleHeight){
+              var bordel = circleHeight * 15 / 100;
+              $('.dropzone-image-container').css("width", circleHeight);
+              $('.dropzone-image-container').css("height", circleHeight);
+              $('.dropzone-triangle').css("border-left", bordel + "px solid transparent");
+              $('.dropzone-triangle').css("border-right", bordel + "px solid transparent");
+              $('.dropzone-triangle').css("border-top", bordel + "px solid #D8D8D8");
+
+              // $('.circle-image').css("border-radius", circleHeight / 2);
+            } else{
+              $('.dropzone-image-container').css("margin-top", circleMarginTop);
+              $('.dropzone-image-container').css("width", circleWidth);
+              $('.dropzone-image-container').css("height", circleWidth);
+              // $('.circle-image').css("border-radius", circleWidth / 2);
+            }
+          }
 
 
         }

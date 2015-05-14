@@ -20,8 +20,6 @@ angular
       if(chapterFolded == undefined){
         scope.toggle();
       } else{
-        // console.log(scope.$modelValue.items);
-        // console.log(scope.$modelValue.items.length);
 
         if(!isInArray(scope.$modelValue.id,chapterFolded)){
           scope.toggle();
@@ -30,7 +28,6 @@ angular
     }
 
     $scope.toggleItems = function(scope) {
-      // console.log("hello");
       if(scope.$childNodesScope.$modelValue != undefined){
         scope.toggle();
         addToChapterFolded(scope.$modelValue.id);
@@ -39,7 +36,6 @@ angular
           delete $scope.lastDeployedPosition.$modelValue.activeItem;
         }
         scope.$modelValue.activeItem = true;
-
 
         // save latest collapse position in case of dropped file
         if(scope.collapsed && scope.$parentNodeScope!= undefined){
@@ -66,8 +62,6 @@ angular
     function isInArray(value, array) {
       return array.indexOf(value.toString()) > -1;
     }
-
-    
 
   }]);
 })();
