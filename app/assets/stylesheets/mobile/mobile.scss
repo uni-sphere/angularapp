@@ -1,0 +1,30 @@
+html, body{
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  height: 100%;
+  width: 100%;
+
+  margin: 0px;
+  padding: 0px;
+}
+
+.hidden{
+  display: none;
+}
+
+body{
+  cursor: default;
+  font-size: 1em;
+  font-family: 'Ubuntu', sans-serif, "Lato";
+}
+
+
+#mobile-welcome{
+  position: relative;
+  width: 100%;
+  text-align: center;
+  line-height: 40px;
+  margin-top: 250px;
+}
