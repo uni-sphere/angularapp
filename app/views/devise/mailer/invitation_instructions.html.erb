@@ -283,7 +283,7 @@ a {
 								</tr>
 								<tr class="aligncenter">
 									<td class="content-block">
-										<p><%= link_to 'Start', accept_invitation_url(@resource, host: Organization.find(@resource.organization_id).subdomain+".unisphere.eu", invitation_token: @token, class: 'btn-primary') %></p>
+										<p><%= link_to 'Start', "http://"+ Organization.find(@resource.organization_id).subdomain+".unisphere.eu/auth/invitation/accept?invitation_token="+@token %></p>
 									</td>
 								</tr>
 							</table>

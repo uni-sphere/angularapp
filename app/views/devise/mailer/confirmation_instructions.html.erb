@@ -273,7 +273,7 @@ a {
 							<table width="100%" cellpadding="0" cellspacing="0">
 								<tr class="aligncenter">
 									<td class="content-block">
-										<!-- You created an organization available on <a href='<%#= "http://" + Organization.find(@resource.organization_id).subdomain + ".unisphere.eu" %>'><%#= "http://" + Organization.find(@resource.organization_id).subdomain + ".unisphere.eu" %></a> -->
+										You created an organization available on <a href='<%= "http://" + Organization.find(@resource.organization_id).subdomain + ".unisphere.eu" %>'><%= "http://" + Organization.find(@resource.organization_id).subdomain + ".unisphere.eu" %></a>
 									</td>
 								</tr>
 								<tr class="aligncenter">
@@ -283,7 +283,7 @@ a {
 								</tr>
 								<tr class="aligncenter">
 									<td class="content-block">
-										<%= link_to 'Confirm', confirmation_url(@resource, {confirmation_token: @token, config: message['client-config'].to_s, redirect_url: message['redirect-url']}).html_safe, host: Organization.find(@resource.organization_id).subdomain+".unisphere.eu", class: 'btn-primary' %></a>
+										<%= link_to 'Confirm', "http://"+Organization.find(@resource.organization_id).subdomain+".unisphere.eu/auth/confirmation?confirmation_token="+@token+"&config="+message['client-config'].to_s+"&redirect_url="+message['redirect-url'].to_s).html_safe %></a>
 									</td>
 								</tr>
 							</table>
