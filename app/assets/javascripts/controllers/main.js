@@ -4,6 +4,8 @@ angular
   .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', '$translate', '$auth', function ($scope, browser, $cookies, $timeout, Restangular, $upload, $translate, $auth) {
 
     $scope.sidebarMinified = true;
+    $scope.accountForgoten = false;
+    
 
     //Check if the user is admin
     // var admin = $cookies.get('unisphere_api_admin');
