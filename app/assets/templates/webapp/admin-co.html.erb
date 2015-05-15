@@ -4,16 +4,16 @@
     <i id="admin-co-image" class="fa fa-caret-up"></i>
   </div>
   <div id="admin-co-body" ng-class="{ hidden : !open}">
-    <input type="email" id="admin-co-email" placeholder="type your email" class="admin-co-input" ng-model="emailInput" autofocus>
+    <input type="email" id="admin-co-email" placeholder="Type your email" class="admin-co-input" ng-model="emailInput" autofocus>
 
-    <input type="password" placeholder="type your password" class="admin-co-input" ng-model="passwordInput"> 
+    <input type="password" placeholder="Type your password" class="admin-co-input" ng-model="passwordInput"> 
 
-    <button id="admin-co-button" ng-click="adminCoAttempt()">{{ 'VALIDATE' | translate }}</button>
+    <button class="button-green-black" ng-click="adminCoAttempt()">{{ 'VALIDATE' | translate }}</button>
 
 
     <div id="admin-co-secondary-options">
       <div id="admin-co-password-forgotten" ng-click="passwordForgotten()">Password forgotten</div>
-      <div id="admin-co-sign-up">Sign up</div>
+      <div id="admin-co-sign-up" ng-click="signupRequest()">Sign up</div>
     </div>
   </div>
 </div>
