@@ -8,47 +8,11 @@ module ApplicationHelper
     logger.info "************************************  #{log}  ************************************"
   end
 
-  def set_mobile_view
-    @mobile_view = true if is_mobile?
-  end
- 
-  def force_mobile_view
-    @mobile_view = true
-  end
- 
-  def is_mobile?
-    (request.user_agent =~ /Mobile|webOS/) && (request.user_agent !~ /iPad/)
-  end
-
-  # def select_layout
-  #   if Rails.env.production? and (request.url == 'www.unisphere.eu' || 'unisphere.eu')
-  #     layout "home"
-  #   else
-  #     layout "main"
-  #   end
-  # end
-
-  # def force_home_layout
-  #   @layout = "home"
-  # end
-
-  # def force_main_layout
-  #    @layout = "main"
-  # end
-
   def random_password
     chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ0123456789'
     password = ''
     10.times { password << chars[rand(chars.size)] }
     return password
-  end
-  
-  def forgot_password(email)
-    user = User.find_by_email(email)
-    psw = random_password
-    user.password = psw
-    user.save
-    return psw
   end
   
   private

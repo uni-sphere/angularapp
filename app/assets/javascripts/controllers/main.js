@@ -1,7 +1,7 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', '$translate', function ($scope, browser, $cookies, $timeout, Restangular, $upload, $translate) {
+  .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', '$translate', '$auth', function ($scope, browser, $cookies, $timeout, Restangular, $upload, $translate, $auth) {
 
     $scope.sidebarMinified = true;
 
@@ -15,9 +15,16 @@ angular
 
     // $scope.admin = true;
 
-    $scope.adminDeco = function(){
-      $scope.admin = false;
-    }
+		$scope.adminDeco = function(){
+			$auth.signOut()
+			.then(function(resp) {
+				$scope.admin = false;
+				console.log(resp)
+			})
+			.catch(function(resp) {
+				console.log(resp)
+			});
+		}
 
     $scope.inviteUser = ["clement@muller.uk.net","gabriel.muller.12@gmail.com"]
 
