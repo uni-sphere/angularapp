@@ -44,11 +44,13 @@
           // get university name for navbar
           Restangular.one('organization/is_signed_up').get({email: scope.emailInput}).then(function (signup) {
             if(signup.response == true){
+							
               // LOGIN
               var credentials = {
                 email: scope.emailInput,
                 password: scope.passwordInput
               };
+							
               $auth.submitLogin(credentials)
               .then(function(resp) {
                 scope.admin = true;
@@ -66,6 +68,7 @@
                 }
                 scope.passwordInput = "";
               });
+							
             } 
             // This email doesnt correspond to an admin of this orga
             else{

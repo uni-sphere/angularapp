@@ -64,7 +64,8 @@
 				//////
 		
 		
-				$scope.listUser = ["gabriel.muller.12@gmail.com","clement@muller.uk.net"]
+				$scope.listUser = ["clement.muller@unisphere.eu"]
+				
 				$scope.addUser = function(){
 					if(organizationForm.$valid){
 						$scope.listUser.push($scope.newUser);
