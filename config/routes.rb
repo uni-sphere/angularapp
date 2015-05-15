@@ -2,7 +2,6 @@ Rails.application.routes.draw do
 
   constraints subdomain: 'api' do
     mount_devise_token_auth_for 'User', at: 'auth'
-    # devise_for :users
     resources :nodes, only: [:create, :index, :update, :destroy]
     resources :organizations, only: [:create, :index, :update, :destroy]
     resources :chapters, only: [:create, :show, :index, :update, :destroy]

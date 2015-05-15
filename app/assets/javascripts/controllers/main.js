@@ -26,7 +26,7 @@ angular
 			});
 		}
 
-    $scope.inviteUser = ["clement@muller.uk.net","gabriel.muller.12@gmail.com"]
+    // $scope.inviteUser = ["clement@muller.uk.net","gabriel.muller.12@gmail.com"]
 
     checkLocation = function(){
       var host = window.location.host;

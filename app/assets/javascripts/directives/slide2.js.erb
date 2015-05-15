@@ -192,6 +192,22 @@
             $auth.submitRegistration(credentials)
             .then(function(resp) { 
               console.log("User created");
+							
+							// log in after sign in
+							
+              var login = {
+                email: scope.adminEmail,
+                password: scope.adminPassword
+              };
+							
+              $auth.submitLogin(login)
+              .then(function(resp) {
+                scope.admin = true;
+              })
+              .catch(function(resp) {
+                console.log(resp);
+              });
+							
             })
             .catch(function(resp) { 
               scope.displayError("Impossible to create your account, try again.");

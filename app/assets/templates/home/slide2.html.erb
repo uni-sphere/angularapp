@@ -51,7 +51,7 @@
 
   <!-- Popup for new school -->
   <div class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="showNewSchool" ng-class="{'school-ready-to-disappear': !showNewSchool, 'school-ready-to-appear': showNewSchool}">
-    <div class="school-header">Suscribe {{place.name}} to unisphere
+    <div class="school-header">Subscribe {{place.name}} to Unisphere
     <span class="fa fa-times" ng-click="closePopupMap()"></span></div>
 
     <div class="school-display">
@@ -64,7 +64,7 @@
 
   <!-- Signup -->
   <div class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="signupShow" ng-class="{'school-ready-to-disappear': !signupShow, 'school-ready-to-appear': signupShow}">
-    <div class="school-header">Admin account for {{place.name}}<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
+    <div class="school-header">Account for {{place.name}}<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
 
     <div class="school-display">
       <input type="text" class="signup-input home-input" ng-model="adminName" placeholder="Surname Name"/>
@@ -78,11 +78,11 @@
 
   <!-- SuccessFull signup -->
   <div class="school-popup-wrapper" id="subdomain-created-wrapper" ng-show="subdomainCreated" ng-class="{'school-ready-to-disappear': !subdomainCreated, 'school-ready-to-appear': subdomainCreated}">
-    <div class="school-header">Congrats, {{place.name}} is registered<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
+    <div class="school-header">Congrats! {{place.name}} is registered<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
 
     <div class="school-display">
-      <div class="school-display-row-center">Last step! Check your mailbox.</div>
-      <div class="school-display-row-center">{{adminEmail}}</div>
+      <div class="school-display-row-center">Your Unisphere App is available on</div>
+      <div class="school-display-row-center">URL</div>
     </div>
 
     <div class="school-display-bg"></div>

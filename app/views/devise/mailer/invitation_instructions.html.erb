@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Welcome to Unisphere</title>
+<title>Invitation to Unisphere</title>
 <link href="styles.css" media="all" rel="stylesheet" type="text/css" />
 
 <style>
@@ -265,7 +265,7 @@ a {
 				<table class="main" width="100%" cellpadding="0" cellspacing="0">
 					<tr>
 						<td class="alert alert-warning">
-							Welcome to Unisphere
+							Invitation to Unisphere
 						</td>
 					</tr>
 					<tr>
@@ -273,7 +273,7 @@ a {
 							<table width="100%" cellpadding="0" cellspacing="0">
 								<tr class="aligncenter">
 									<td class="content-block">
-										You have been invited to join <%= @organization %> at Unisphere as an administrator
+										You have been invited to join <%= Organization.find(@resource.organization_id).name %> at Unisphere
 									</td>
 								</tr>
 								<tr class="aligncenter">
@@ -283,7 +283,7 @@ a {
 								</tr>
 								<tr class="aligncenter">
 									<td class="content-block">
-										<p><%= link_to 'Start' accept_invitation_url("http://" + Organization.find(@resource.organization_id).subdomain + ".unisphere.eu", invitation_token: @token), class: 'btn-primary' %></p>
+										<p><%= link_to 'Start', accept_invitation_url(@resource, host: Organization.find(@resource.organization_id).subdomain+".unisphere.eu", invitation_token: @token, class: 'btn-primary') %></p>
 									</td>
 								</tr>
 							</table>

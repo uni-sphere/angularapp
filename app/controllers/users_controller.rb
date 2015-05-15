@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   
   def invite
-    # User.invite!(email: 'clement.muller@unisphere.eu', name: 'clementmuller', provider: 'email', organization_id: current_organization.id)
     if params[:emails]
       emails = params[:emails]
       emails.each do |email|
