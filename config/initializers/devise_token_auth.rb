@@ -26,4 +26,5 @@ end
 Devise.setup do |config|
   config.secret_key = '47393c590e48d45cd3e71d856a02ccd09f836ed324df66761974a9421bc87d04f75bea4b155f4c106633009702cb2fa312c54512c86d9fb928143c6308e4864c'
   config.mailer_sender = "hello@unisphere.eu"
+  config.invite_for = 0.weeks
 end

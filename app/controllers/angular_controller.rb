@@ -1,9 +1,12 @@
 class AngularController < ApplicationController
-
-  layout 'main'
   
+  layout 'main'
   def index
-    render 'mobile/main' if is_mobile?
+    # if is_mobile?
+#       render 'mobile/main'
+#     else
+#       layout 'main'
+#     end
   end
   
   def is_mobile?

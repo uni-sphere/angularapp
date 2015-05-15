@@ -21,10 +21,7 @@ Rails.application.routes.draw do
     get 'report/nodes', to: 'reports#nodes'
     put 'activity', to: 'reports#update'
     
-    # put 'user', to: 'users#update'
-    # post 'users/invite', to: 'users#invite'
-    # post 'users/login', to: 'users#login'
-    # post 'users/password_forgoten', to: 'users#password_forgoten'
+    post 'users/invite', to: 'users#invite'
     
   end
 
