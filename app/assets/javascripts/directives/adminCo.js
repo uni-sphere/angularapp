@@ -41,7 +41,6 @@
         
         scope.adminCoAttempt = function(){
 
-          // get university name for navbar
           Restangular.one('organization/is_signed_up').get({email: scope.emailInput}).then(function (signup) {
             if(signup.response == true){
 							
