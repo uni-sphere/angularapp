@@ -5,9 +5,8 @@ class UsersController < ApplicationController
       emails = params[:emails]
       emails.each do |email|
         psw = random_password
-        if user = User.invite!(email: email, name: email.split('@').first, provider: 'email', organization_id: current_organization.id, password: psw, password_confirmation: psw, skip_invitation: true, invitation_sent_at: DateTime.now)
+        if user = User.invite!(email: email, name: email.split('@').first, provider: 'email', organization_id: current_organization.id, password: psw, password_confirmation: psw, skip_invitation: true, invitation_sent_at: DateTime.now, invitation_accepted_at: DateTime.now)
           UserMailer.invite_user_email(email, current_organization, psw).deliver
-          User.accept_invitation!(invitation_token: user.invitation_token)
         else
           send_error('user not created', 500) 
         end
