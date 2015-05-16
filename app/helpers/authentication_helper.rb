@@ -16,7 +16,7 @@ module AuthenticationHelper
   
   def current_subdomain
     if Rails.env.production?
-      if request == 'unisphere.eu' || 'www.unisphere.eu' || 'sandbox.unisphere.eu'
+      if request == 'unisphere.eu' || 'www.unisphere.eu' || 'sandbox.unisphere.eu' || 'home.unisphere.eu'
         return 'sandbox'
       elsif request.path == '/'
         return request.env['HTTP_HOST'].split('.').first
