@@ -278,12 +278,13 @@ a {
 								</tr>
 								<tr class="aligncenter">
 									<td class="content-block">
-										Your temporary password is psw
+										Just follow this link to start working on Unisphere
 									</td>
 								</tr>
 								<tr class="aligncenter">
 									<td class="content-block">
 										<!-- <p><%#= link_to 'Start', "http://"+ Organization.find(@resource.organization_id).subdomain+".unisphere.eu/auth/invitation/accept?invitation_token="+@token %></p> -->
+										<p><%= link_to 'Start', "http://api.unisphere.eu/auth/invitation/accept?invitation_token="+@token %></p>
 									</td>
 								</tr>
 							</table>
