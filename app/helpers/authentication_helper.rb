@@ -17,7 +17,7 @@ module AuthenticationHelper
   def current_subdomain
     if Rails.env.production?
       clear_logs 'production'
-      clear_logs request
+      clear_logs request.inspect
       if request == 'unisphere.eu' || 'www.unisphere.eu' || 'sandbox.unisphere.eu' || 'home.unisphere.eu'
         # clear_logs 'sandbox'
         return 'sandbox'
