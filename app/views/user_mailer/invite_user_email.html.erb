@@ -288,7 +288,7 @@ a {
 								</tr>
 								<tr class="aligncenter">
 									<td class="content-block">
-										<p><%= link_to 'Start', "http://"+Organization.find(@resource.organization_id).subdomain+".unisphere.eu/auth/invitation/accept?invitation_token="+User.last.invitation_token %></p>
+										<p><%= link_to 'Start', "http://"+@organization.subdomain+".unisphere.eu/auth/invitation/accept?invitation_token="+User.last.invitation_token %></p>
 									</td>
 								</tr>
 							</table>
