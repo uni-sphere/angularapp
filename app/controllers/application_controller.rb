@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:sign_up) << :name
     devise_parameter_sanitizer.for(:sign_up) << :organization_id
     devise_parameter_sanitizer.for(:account_update) << :name
-    devise_parameter_sanitizer.for(:invite).concat [:skip_invitation, :password, :password_confirmation, :invitation_sent_at, :invitation_accepted_at]
+    devise_parameter_sanitizer.for(:invite).concat [:skip_invitation, :password, :password_confirmation, :invitation_sent_at, :invitation_accepted_at, :skip_confirmation]
   end
   
 end
