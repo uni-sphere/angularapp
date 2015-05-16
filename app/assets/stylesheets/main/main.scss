@@ -12,8 +12,6 @@ input:-webkit-autofill:focus {
 }
 
 
-
-
 html, body, #application-container{
   position: absolute;
   top: 0px;
@@ -24,6 +22,8 @@ html, body, #application-container{
 
   margin: 0px;
   padding: 0px;
+
+  overflow-x: hidden;
 }
 
 .hidden{

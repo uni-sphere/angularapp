@@ -1,94 +1,105 @@
 (function(){
-	angular
-	.module('mainApp.controllers')
-	.controller('AccountCtrl', ['$scope', 'Restangular', '$auth',  function ($scope, Restangular, $auth) {
+  angular
+  .module('mainApp.controllers')
+  .controller('AccountCtrl', ['$scope', 'Restangular', '$auth',  function ($scope, Restangular, $auth) {
 
-		// // Get the profile
-		// Restangular.one('user').get().then(function (user) {
-			//   $scope.accountEmail = user.name;
-			// }, function(d){
-				//   console.log(d);
-				//   console.log("Cannot get user profile");
-				// });
+    var top = $('#panel-orgnanization').offset().top - 50
+    $('#panel-user-to-invite').css("top", top);
+    $scope.listUser = [];
 
-				var top = $('#panel-orgnanization').offset().top - 50
-				console.log(top);
-				$('#panel-user-to-invite').css("top", top);
+    $scope.newUser = "";
+    $scope.updatedEmail = "";
 
-				////// SIGNOUT
-				$scope.deconnection = function(){
-					$auth.signOut()
-					.then(function(resp) { 
-						c.classList.add("wrapper__minify");
-						scope.admin = false;
-					})
-					.catch(function(resp) { 
-						// handle error response
-					});
-				}
-				////// UPDATE USER
-				
-				////// UPDATE USER
-				$scope.updateAccount = function() {
-					var credentials = {
-						name: $scope.updatedName,
-						email: $scope.updatedEmail
-					};
-					console.log(credentials);
-					$auth.updateAccount(credentials)
-					.then(function(resp) { 
-						console.log(resp);
-					})
-					.catch(function(resp) { 
-						console.log(resp);
-					});
-				}
-				//////
-		
-				////// UPDATE PASSWORD
-				$scope.updatePsw = function() {
-					var credentials = {
-						password: $scope.newPsw,
-						password_confirmation: $scope.confirmPsw
-					};
+    // SIGNOUT
+    $scope.deconnection = function(){
+      $auth.signOut()
+      .then(function(resp) { 
+        c.classList.add("wrapper__minify");
+        scope.admin = false;
+      })
+      .catch(function(resp) { 
+        // handle error response
+      });
+    }
+    
+    // UPDATE USER
+    $scope.updateAccount = function() {
+      if($scope.profileForm.$valid){
+        var credentials = {
+          name: $scope.updatedName,
+          email: $scope.updatedEmail
+        };
+        console.log(credentials);
+        $auth.updateAccount(credentials)
+        .then(function(resp) { 
+          console.log(resp);
+        })
+        .catch(function(resp) { 
+          console.log(resp);
+        });
+      } else{
+        console.log("Error: profile email invalid");
+        $scope.displayError("Enter a valid email!");
+      }
+    }
 
-					$auth.updatePassword(credentials)
-					.then(function(resp) {
-						console.log(resp);
-					})
-					.catch(function(resp) {
-						console.log(resp);
-						$scope.displayError("Try again to change your password");
-					});
-				}
-				//////
-		
-		
-				$scope.listUser = ["clement.muller@unisphere.eu"]
-				
-				$scope.addUser = function(){
-					if(organizationForm.$valid){
-						$scope.listUser.push($scope.newUser);
-						console.log($scope.newUser + " sucessfully addded");
-						$scope.newUser = "";
-					} else{
-						console.log("There was an error adding this user");
-						$scope.displayError($scope.newUser + " is not a valid email");
-					}
-				}
+    // UPDATE PASSWORD
+    $scope.updatePsw = function() {
+      
+      if($scope.passwordForm.$invalid){
+        console.log("ERROR: password rename. Password is too short");
+        $scope.displayError("Your new password is too short");
+        $scope.newPsw = "";
+        $scope.confirmPsw = "";
+        $scope.passwordForm.$setUntouched();
+        // $('#new-password').focus();
+      } else if($scope.newPsw != $scope.confirmPsw){
+        console.log("ERROR: password rename. Password different");
+        $scope.displayError("The password you typed are not the same");
+        $scope.confirmPsw = "";
+        $('#confirm-password').focus();
+      }else{
+        // var credentials = {
+        //   password: $scope.newPsw,
+        // };
 
-				// Invite users
-				$scope.inviteUsers = function(){
-					Restangular.all('users/invite').post({emails: $scope.listUser}).then(function () {
-						$scope.listUser = [];
-						console.log("New user added");
-					}, function(d){
-						console.log(d);
-						console.log("There was an error adding users");
-						$scope.displayError("Try again to invite lecturers");
-					});;
-				}
+        // $auth.updatePassword(credentials)
+        // .then(function(resp) {
+        //   console.log(resp);
+        // })
+        // .catch(function(resp) {
+        //   console.log(resp);
+        //   $scope.displayError("Try again to change your password");
+        // });
+      }
+    }
+
+    $scope.addUser = function(){
+      if($scope.organizationForm.$valid){
+        console.log($scope.newUser);
+        $scope.listUser.push($scope.newUser);
+        console.log($scope.newUser + " sucessfully addded");
+        $scope.newUser = "";
+        // $scope.organizationForm.$setUntouched();
+        $('#addAdmin').focus();
+      } else{
+        console.log("Email invalid");
+        $scope.displayError("Enter a valid email!");
+      }
+    }
+
+    // Invite users
+    $scope.inviteUsers = function(){
+      Restangular.all('users/invite').post({emails: $scope.listUser}).then(function () {
+        $scope.listUser = [];
+        console.log("New user added");
+      }, function(d){
+        console.log(d);
+        console.log("There was an error adding users");
+        $scope.displayError("Try again to invite lecturers");
+      });;
+    }
 
 
-			}]);
-		})();
+  }]);
+})();
