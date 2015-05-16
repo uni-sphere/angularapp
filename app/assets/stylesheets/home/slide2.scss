@@ -1,8 +1,5 @@
 #slide2{
   margin-top: 80px;
-  // margin-bottom: 100px;
-
-  
 }
 
 /*===================================
@@ -102,16 +99,9 @@ map{
   font-weight: bold;
 
   padding: 13px 10px;
-  
-
   color: black;
   
-  &:focus {
-    background: white;
-    box-shadow: 0px 0 1px 2px #2980b9;
-    
-    outline: none;
-  }
+
 }
 
 .input-action-design{
@@ -318,4 +308,4 @@ map{
 
 .school-ready-to-appear{
   animation: school-flyin 1s;
-}
+} 
