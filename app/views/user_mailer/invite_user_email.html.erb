@@ -273,7 +273,7 @@ a {
 							<table width="100%" cellpadding="0" cellspacing="0">
 								<tr class="aligncenter">
 									<td class="content-block">
-										You have been invited to join <%= @organization.name %> at Unisphere as an administrator
+										You have been invited to join <%= @organization.name %> at Unisphere
 									</td>
 								</tr>
 								<tr class="aligncenter">
@@ -288,7 +288,7 @@ a {
 								</tr>
 								<tr class="aligncenter">
 									<td class="content-block">
-										<p><%= link_to 'Start', "http://api.unisphere.eu/auth/invitation/accept?invitation_token="+User.last.invitation_token %></p>
+										<p><%= link_to 'Start', "http://"+Organization.find(@resource.organization_id).subdomain+".unisphere.eu/auth/invitation/accept?invitation_token="+User.last.invitation_token %></p>
 									</td>
 								</tr>
 							</table>
