@@ -22,8 +22,6 @@ html, body, #application-container{
 
   margin: 0px;
   padding: 0px;
-
-  overflow-x: hidden;
 }
 
 .hidden{
@@ -35,6 +33,7 @@ body{
   font-size: 1em;
   font-family: 'Ubuntu', sans-serif, "Lato";
   user-select: none;
+  overflow-x: hidden;
 }
 
 *:focus{
