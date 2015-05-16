@@ -12,13 +12,13 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'http://api.unisphere.com:3000' }
   
   config.action_mailer.smtp_settings = {
-    address: "mail.gandi.net",
+    address: "smtp.mandrillapp.com",
     port: 587,
-    authentication: :login,
-    user_name: 'hello@unisphere.eu',
-    domain: 'unisphere.eu',
-    password: '//11hello',
-    enable_starttls_auto: true
+    user_name: 'clement_muller@hotmail.fr',
+    password: 'R4-uL_WwBCbZKnZHoyAZuQ',
+    enable_starttls_auto: true,
+    authentication: 'login',
+    domain: 'unisphere.eu'
   }
 
   
