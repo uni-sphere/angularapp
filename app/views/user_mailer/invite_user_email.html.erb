@@ -286,6 +286,11 @@ a {
 										Your temporary password is <strong><%= @password %></strong>
 									</td>
 								</tr>
+								<tr class="aligncenter">
+									<td class="content-block">
+										<%= link_to 'Reset', "http://api.unisphere.eu/auth/invitation/accept?reset_password_token="+@token+"&config="+message['client-config'].to_s+"&redirect_url="+message['redirect-url'].to_s).html_safe %>
+									</td>
+								</tr>
 							</table>
 						</td>
 					</tr>
