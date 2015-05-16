@@ -29,7 +29,6 @@
         <!-- <button id="location-button" class="">ll</button> -->
         <input places-auto-complete size=80 
           ng-model="address" 
-          component-restrictions="{country:'fr'}"
           types= ['establishment']
           on-place-changed="placeChanged(place)" 
           class="search-input home-input"
@@ -63,13 +62,13 @@
   </div>
 
   <!-- Signup -->
-  <div class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="signupShow" ng-class="{'school-ready-to-disappear': !signupShow, 'school-ready-to-appear': signupShow}">
+  <form name="homeSignup" class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="signupShow" ng-class="{'school-ready-to-disappear': !signupShow, 'school-ready-to-appear': signupShow}">
     <div class="school-header">Account for {{place.name}}<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
 
     <div class="school-display">
-      <input type="text" class="signup-input home-input" ng-model="adminName" placeholder="Surname Name"/>
-      <input type="email" class="signup-input home-input" ng-model="adminEmail" placeholder="Email"/>
-      <input type="password" class="signup-input home-input" ng-model="adminPassword" placeholder="Password"/>
+      <input type="text" class="signup-input home-input input-action-design" ng-model="adminName" placeholder="Surname Name"/>
+      <input type="email" class="signup-input home-input input-action-design" ng-model="adminEmail" placeholder="Email"/>
+      <input type="password" ng-minLength=8 class="signup-input home-input input-action-design" id="homeSignupPassword" ng-model="adminPassword" placeholder="Password"/>
       <button id="signup" class="home-button" ng-click="signup()">Sign up</button>
     </div>
 

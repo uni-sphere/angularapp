@@ -12,8 +12,6 @@ input:-webkit-autofill:focus {
 }
 
 
-
-
 html, body, #application-container{
   position: absolute;
   top: 0px;
@@ -35,6 +33,7 @@ body{
   font-size: 1em;
   font-family: 'Ubuntu', sans-serif, "Lato";
   user-select: none;
+  overflow-x: hidden;
 }
 
 *:focus{

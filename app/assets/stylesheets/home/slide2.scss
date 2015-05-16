@@ -1,6 +1,8 @@
 #slide2{
   margin-top: 80px;
   // margin-bottom: 100px;
+
+  
 }
 
 /*===================================
@@ -18,7 +20,6 @@
   background: $nice-noir;
   color: white;
 }
-
 
 /*===========================
 =            Map            =
@@ -76,6 +77,20 @@ map{
 =            Input            =
 =============================*/
 
+// .home-input{
+//   position: relative;
+//   background: $input-bg;
+//   border-radius: 3px;
+//   border: none;
+//   box-shadow: inset 0 2px 3px rgba( 0, 0, 0, 0.1 );
+
+//   font-size: 15px;
+//   font-weight: bold;
+
+//   padding: 13px 10px;
+//   color: black;
+// }
+
 .home-input{
   position: relative;
   background: $input-bg;
@@ -96,6 +111,25 @@ map{
     box-shadow: 0px 0 1px 2px #2980b9;
     
     outline: none;
+  }
+}
+
+.input-action-design{
+  &.ng-untouched{
+    background: $account-input-bg ;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+  }
+  &.ng-touched.ng-valid{
+    box-shadow: 0px 0 1px 2px green;
+  }
+  &.ng-touched.ng-invalid{
+    box-shadow: 0px 0 1px 2px red;
+  }
+  &:focus {
+  background: white;
+  box-shadow: 0px 0 1px 2px #2980b9 !important;
+  
+  outline: none;
   }
 }
 
@@ -215,8 +249,6 @@ map{
     }
   }
 }
-
-
 
 .school-display-bg{
   position: absolute;
