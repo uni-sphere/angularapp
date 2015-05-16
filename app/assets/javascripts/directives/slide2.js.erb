@@ -17,30 +17,13 @@
         scope.signupShow = false;
         scope.geolocation = navigator.geolocation;
 
+        scope.adminEmail = "";
+
         Restangular.one('organizations').get().then(function (universities) {
           scope.universities = universities.plain();
         }, function(){
           console.log("There getting the universities");
         });
-
-        // // GET /organizations
-        // scope.universities = [
-        //   {
-        //     name: "Lycée Freppel",
-        //     latitude: "48.46",
-        //     longitude: "7.48",
-        //     place_id: "ChIJCfuBlFtNkUcR-ZdZvh89L6I",
-        //     url: "sandbox.unisphere.eu"
-        //   },
-        //   {
-        //     name: "Lycée Couffignal",
-        //     latitude: "48.560611",
-        //     longitude: "7.748023999999987",
-        //     place_id: "ChIJnXxeLaLJlkcRzlJLgTx2ws8",
-        //     url: "sandbox.unisphere.eu"
-        //   }
-        // ]
-
 
         var map;
         scope.marker = "";
@@ -159,81 +142,98 @@
 
         //Step 2 - Creation. Send info to backend
         scope.signup = function(){
-          // console.log(scope.place);
+          if(scope.homeSignup.$invalid){
+            if(scope.homeSignup.$error.email){
+              console.log("ERROR: Enter a valid email");
+              scope.displayError("You misstyped your email address")
+            } else if(scope.homeSignup.$error.minlength){
+              console.log("ERROR: your password is not long enough");
+              scope.displayError("Your password needs to have at least 8 characters");
+              scope.adminPassword = "";
+            } else{
+              console.log("ERROR: unknown");
+              scope.displayError("Uknown error");
+            }
+          } else{
+            var newUni = {
+              name: scope.place.name,
+              latitude: scope.place.geometry.location.A,
+              longitude: scope.place.geometry.location.F,
+              place_id: scope.place.place_id,
+              website: scope.place.website
+            }
 
-          var newUni = {
-            name: scope.place.name,
-            latitude: scope.place.geometry.location.A,
-            longitude: scope.place.geometry.location.F,
-            place_id: scope.place.place_id,
-            website: scope.place.website
-          }
+            // console.log(newUni);
 
-          // console.log(newUni);
+            Restangular.all('organizations').post(newUni).then(function(d) {
 
-          Restangular.all('organizations').post(newUni).then(function(d) {
+              var newOrga = d;
+              // console.log(d);
+              console.log("organization created");
 
-            var newOrga = d;
-            // console.log(d);
-            console.log("organization created");
+              // We push the new uni to our local storage
+              scope.universities.push(d.organization);
 
-            // We push the new uni to our local storage
-            scope.universities.push(d.organization);
-
-            // Sign up
-            var credentials = {
-              name: scope.adminName,
-              email: scope.adminEmail,
-              password: scope.adminPassword,
-              password_confirmation: scope.adminPassword,
-              organization_id: newOrga.organization.id
-            };
-
-            $auth.submitRegistration(credentials)
-            .then(function(resp) { 
-              console.log("User created");
-							
-							// log in after sign in
-							
-              var login = {
+              // Sign up
+              var credentials = {
+                name: scope.adminName,
                 email: scope.adminEmail,
-                password: scope.adminPassword
+                password: scope.adminPassword,
+                password_confirmation: scope.adminPassword,
+                organization_id: newOrga.organization.id
               };
-							
-              $auth.submitLogin(login)
-              .then(function(resp) {
-                scope.admin = true;
+
+              $auth.submitRegistration(credentials)
+              .then(function(resp) { 
+                console.log("User created");
+                
+                // log in after sign in
+                
+                var login = {
+                  email: scope.adminEmail,
+                  password: scope.adminPassword
+                };
+                
+                $auth.submitLogin(login)
+                .then(function(resp) {
+                  scope.admin = true;
+                })
+                .catch(function(resp) {
+                  console.log(resp);
+                });
+                
               })
-              .catch(function(resp) {
+              .catch(function(resp) { 
+                scope.displayError("Impossible to create your account, try again.");
                 console.log(resp);
-              });
-							
-            })
-            .catch(function(resp) { 
-              scope.displayError("Impossible to create your account, try again.");
-              console.log(resp);
 
-              // We delete the organization we just created
-              Restangular.all('organizations/' + newOrga.organization.id).remove().then(function() {
-                console.log("organization deleted");
-                console.log(d);
-              }, function(d) {
-                console.log("impossible to delete the organization");
-                console.log(d);
+                // We delete the organization we just created
+                Restangular.all('organizations/' + newOrga.organization.id).remove().then(function() {
+                  console.log("organization deleted");
+                  console.log(d);
+                }, function(d) {
+                  console.log("impossible to delete the organization");
+                  console.log(d);
+                });
+
               });
 
+              //We change popup
+              scope.signupShow = false;
+              scope.subdomainCreated =  true;
+
+            }, function(d){
+              console.log("error");
+              console.log(d);
+              scope.displayError("Impossible to create a subdomain for " + scope.place.name + ", try again");
+              scope.adminPassword = "";
             });
 
-            //We change popup
-            scope.signupShow = false;
-            scope.subdomainCreated =  true;
+          }
 
-          }, function(d){
-            console.log("error");
-            console.log(d);
-            scope.displayError("Impossible to create a subdomain for " + scope.place.name + ", try again");
-            scope.adminPassword = "";
-          });
+
+        
+
         }
 
         scope.closePopupMap = function(){

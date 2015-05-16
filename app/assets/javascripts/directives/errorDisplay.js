@@ -7,7 +7,8 @@
         templateUrl: 'main/error-display.html',
         scope: {
           listError: '=',
-          showError: '='
+          showError: '=',
+          hideError: '='
         },
         link: function(scope) {
           scope.hideError = function(){

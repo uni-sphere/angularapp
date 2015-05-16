@@ -5,7 +5,7 @@ angular
 
     $scope.sidebarMinified = true;
     $scope.accountForgoten = false;
-    
+
 
     //Check if the user is admin
     // var admin = $cookies.get('unisphere_api_admin');
