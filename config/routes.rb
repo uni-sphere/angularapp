@@ -30,6 +30,6 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'angular#index'
   get '/account', to: 'angular#index'
   
-  get '/devise/invitation/accept', to: 'devise/invitations#edit'
+  get '/auth/invitation/accept', to: 'devise/invitations#edit'
   
 end
