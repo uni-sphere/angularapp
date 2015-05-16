@@ -39,7 +39,7 @@
     </div>
   </form>
 
-  <div id="panel-user-to-invite"  ng-show="listUser.length != 0" ng-class="{'listUser-ready-to-disappear': listUser.length == 0, 'listUser-ready-to-appear': listUser.length != 0}">
+  <div id="panel-user-to-invite"  ng-show="listUserActive" ng-class="{'listUser-ready-to-disappear': !listUserActive, 'listUser-ready-to-appear': listUserActive}">
     <div class="panel-header header-special">{{ 'USERS_INVITED' | translate }}</div>
     <div class="panel-body body-special">
       <div class="item-user" ng-repeat="user in listUser">

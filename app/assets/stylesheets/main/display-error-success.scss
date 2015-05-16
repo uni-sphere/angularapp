@@ -35,7 +35,7 @@
 =            Error Popup            =
 ===================================*/
 
-#error-prompt{
+.prompt-wrapper{
   position: fixed;
   top: 60px;
   z-index: 90;
@@ -48,15 +48,26 @@
   text-align: center;
 }
 
-#error-prompt-title{
-  color: $error-promt-color-dark;
-  padding-left: calc(50% - 25px);
+.prompt-title{
+  
+  text-align: center;
   padding-top: 8px;
   padding-bottom: 8px;
-  background: $error-promt-bg;
-  border: 1px solid $border-error-prompt;
+  
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
+}
+
+#error-prompt-title{
+  color: $error-prompt-title-color;
+  background: $error-prompt-bg;
+  border: 1px solid $border-error-prompt;
+}
+
+#success-prompt-title{
+  color: $success-prompt-title-color;
+  background: $success-prompt-bg;
+  border: 1px solid $border-success-prompt;
 }
 
 #close-error-prompt{
@@ -66,18 +77,18 @@
   right: 10px;
   padding: 0px 10px;
   cursor: pointer;
-  color: $error-promt-color-very-light;
+  color: $error-prompt-color-very-light;
   line-height: 42px;
 
   &:hover{
-    color: $error-promt-color-dark;
+    color: $error-prompt-title-color;
   }
 }
 
 #error-prompt-text{
-  color: $error-promt-color-light;
+  color: $error-prompt-color-light;
   padding: 10px 10px 0px 10px;
-  background: $error-promt-bg;
+  background: $error-prompt-bg;
   background: white;
   border: 1px solid $border-error-prompt;
   border-top: none;
@@ -95,4 +106,25 @@
     margin-bottom: 10px;
   }
 }
+
+#success-prompt-text{
+  color: $success-prompt-color-light;
+  padding: 10px 10px 0px 10px;
+  background: $success-prompt-bg;
+  background: white;
+  border: 1px solid $border-success-prompt;
+  border-top: none;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+    text-align: center;
+
+
+  .error{
+    display: inline-block;
+    position: relative;
+    margin-left: 10px;
+    margin-bottom: 10px;
+  }
+}
+
 

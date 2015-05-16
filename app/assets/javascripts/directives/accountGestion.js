@@ -12,7 +12,8 @@
         displayError: '=',
         hideError: '=',
         accountForgotten: '=',
-        accountSignup: '='
+        accountSignup: '=',
+        displaySuccess: '='
       },
       link: function(scope, element) {
 
@@ -34,6 +35,7 @@
               .then(function(resp) { 
                 console.log("Password has been reset");
                 scope.accountForgotten = false;
+                displaySuccess("We sent you a mail with your password");
               })
               .catch(function(resp) { 
                 console.log("Unknown error");

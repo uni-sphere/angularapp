@@ -74,13 +74,13 @@
       }
     }
 
+    // Add user to the list
     $scope.addUser = function(){
       if($scope.organizationForm.$valid){
-        console.log($scope.newUser);
+        $scope.listUserActive = true;
         $scope.listUser.push($scope.newUser);
         console.log($scope.newUser + " sucessfully addded");
         $scope.newUser = "";
-        // $scope.organizationForm.$setUntouched();
         $('#addAdmin').focus();
       } else{
         console.log("Email invalid");
@@ -88,10 +88,14 @@
       }
     }
 
-    // Invite users
+    // Really invite user
     $scope.inviteUsers = function(){
+      $scope.listUser.push($scope.newUser);
       Restangular.all('users/invite').post({emails: $scope.listUser}).then(function () {
         $scope.listUser = [];
+        $scope.listUserActive = false;
+        $scope.newUser = "";
+        $scope.organizationForm.$setUntouched();
         console.log("New user added");
       }, function(d){
         console.log(d);
