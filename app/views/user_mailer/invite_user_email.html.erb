@@ -273,12 +273,12 @@ a {
 							<table width="100%" cellpadding="0" cellspacing="0">
 								<tr class="aligncenter">
 									<td class="content-block">
-										You have been invited to join <%= @organization %> at Unisphere as an administrator
+										You have been invited to join <%= @organization.name %> at Unisphere as an administrator
 									</td>
 								</tr>
 								<tr class="aligncenter">
 									<td class="content-block">
-										<a class="btn-primary" href="'http://' + <%= @organization.subdomain %> + '.unisphere.eu'" ><%= @organization %></a>
+										<a class="btn-primary" href="'http://' + <%= @organization.subdomain %> + '.unisphere.eu'" ><%= @organization.name %></a>
 									</td>
 								</tr>
 								<tr class="aligncenter">
