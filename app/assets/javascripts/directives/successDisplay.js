@@ -6,8 +6,8 @@
         restrict: 'E',
         templateUrl: 'main/success-display.html',
         scope: {
-          showSuccess: '=',
-          success: '='
+          showSuccesspop: '=',
+          success: '=',
         },
         link: function(scope) {
         }

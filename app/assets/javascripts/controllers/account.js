@@ -90,20 +90,24 @@
 
     // Really invite user
     $scope.inviteUsers = function(){
-      $scope.listUser.push($scope.newUser);
-      Restangular.all('users/invite').post({emails: $scope.listUser}).then(function () {
-        $scope.listUser = [];
-        $scope.listUserActive = false;
-        $scope.newUser = "";
-        $scope.organizationForm.$setUntouched();
-        console.log("New user added");
-      }, function(d){
-        console.log(d);
-        console.log("There was an error adding users");
-        $scope.displayError("Try again to invite lecturers");
-      });;
+      if($scope.organizationForm.$valid || $scope.listUser.length != 0){
+        $scope.listUser.push($scope.newUser);
+        Restangular.all('users/invite').post({emails: $scope.listUser}).then(function () {
+          $scope.listUser = [];
+          $scope.listUserActive = false;
+          $scope.newUser = "";
+          $scope.organizationForm.$setUntouched();
+          console.log("New user added");
+          $scope.displaySuccess("Your colleages have been invited");
+        }, function(d){
+          console.log(d);
+          console.log("There was an error adding users");
+          $scope.displayError("Try again to invite lecturers");
+        });
+      } else{
+        console.log("Email invalid");
+        $scope.displayError("Enter a valid email!");
+      }
     }
-
-
   }]);
 })();

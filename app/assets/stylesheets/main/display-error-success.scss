@@ -30,6 +30,10 @@
   animation: flyin .5s;
 }
 
+#success-prompt{
+  display: none;
+}
+
 
 /*===================================
 =            Error Popup            =
@@ -87,7 +91,7 @@
 
 #error-prompt-text{
   color: $error-prompt-color-light;
-  padding: 10px 10px 0px 10px;
+  padding: 10px;
   background: $error-prompt-bg;
   background: white;
   border: 1px solid $border-error-prompt;
@@ -103,27 +107,24 @@
     display: inline-block;
     position: relative;
     margin-left: 10px;
-    margin-bottom: 10px;
   }
 }
 
 #success-prompt-text{
   color: $success-prompt-color-light;
-  padding: 10px 10px 0px 10px;
+  padding: 10px;
   background: $success-prompt-bg;
   background: white;
   border: 1px solid $border-success-prompt;
   border-top: none;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
-    text-align: center;
+  text-align: center;
 
 
   .error{
     display: inline-block;
     position: relative;
-    margin-left: 10px;
-    margin-bottom: 10px;
   }
 }
 

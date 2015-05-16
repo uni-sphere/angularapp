@@ -88,8 +88,12 @@ angular
 
     $scope.displaySuccess = function(message){
       $scope.success = message;
-      $scope.showSuccess = true;
+      $('#success-prompt').show();
+      setTimeout(function(){
+         $('#success-prompt').hide();
+      },2000)
     }
+
 
     $scope.hideError = function(){
       $scope.listError = [];
