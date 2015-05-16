@@ -20,7 +20,6 @@ module AuthenticationHelper
         return 'sandbox'
       else
         uri = URI.parse(request.env['HTTP_ORIGIN']).host
-        clear_logs uri.split('.').first
         return uri.split('.').first
       end
     else
