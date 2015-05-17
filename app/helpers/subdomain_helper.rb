@@ -16,10 +16,27 @@ module SubdomainHelper
     end
   end
   
-  def delete_pointer(newsubdomain)
+  def delete_pointer(subdomain, id)
+    unless ['api.unisphere.eu', 'home.unisphere.eu', 'sandbox.unisphere.eu'].any? { |url| subdomain == url }
+      scalingo_resources[:subdomain]["/#{id}"].delete() { |response, request, result, &block|
+        if response.code != 204
+          return nil
+        end
+      }
+    end
+  end
+  
+  def reset_pointers
     if Rails.env.production?
-      scalingo_resources[:subdomain].delete({domain: {name: "#{newsubdomain.to_s}.unisphere.eu" }}) { |response, request, result, &block|
-        send_error('Problem occured while deleting subdomain', '500') if response.code != 204
+      scalingo_resources[:subdomain].get() { |response, request, result, &block|
+        if response.code != 200
+          send_error('Problem occured while getting subdomain', '500') 
+        else
+          JSON.parse(response).first[1].each do |data|
+            delete_pointer(data['name'], data['id'])
+          end
+          return true
+        end
       }
     end
   end

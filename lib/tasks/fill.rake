@@ -1,3 +1,6 @@
+require "#{Rails.root}/app/helpers/subdomain_helper"
+include SubdomainHelper
+
 namespace :fill do
   desc "inital filling"
   task initial: :environment do
@@ -5,6 +8,8 @@ namespace :fill do
     Rake::Task["db:drop"].invoke
     Rake::Task["db:create"].invoke
     Rake::Task["db:migrate"].invoke
+    # reset domains
+    reset_pointers
     # create sandbox
     organization = Organization.create(name: 'Sandbox', website: 'http://sandbox.unisphere.eu')
     # create first nodes
@@ -51,11 +56,11 @@ namespace :fill do
     node.chapters.create(title: "Cours", parent_id: 16, user_id: 1)
     node.chapters.create(title: "Exercices", parent_id: 16, user_id: 1)
     node.chapters.create(title: "La guerre de 100 ans", parent_id: 11, user_id: 1)
-    node.chapters.create(title: "Cours", parent_id: 16, user_id: 1)
-    node.chapters.create(title: "Videos", parent_id: 16, user_id: 1)
+    node.chapters.create(title: "Cours", parent_id: 19, user_id: 1)
+    node.chapters.create(title: "Videos", parent_id: 19, user_id: 1)
     node.chapters.create(title: "Preparation BAC", parent_id: 11, user_id: 1)
-    node.chapters.create(title: "Cours", parent_id: 16, user_id: 1)
-    node.chapters.create(title: "Annexes", parent_id: 16, user_id: 1)
+    node.chapters.create(title: "Cours", parent_id: 22, user_id: 1)
+    node.chapters.create(title: "Annexes", parent_id: 22, user_id: 1)
   end
 
 end

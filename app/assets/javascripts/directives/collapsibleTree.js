@@ -41,16 +41,23 @@
           /*==========  Cookie gestion  ==========*/
 
           // Folded nodes
-          scope.foldedNodes = $cookies.get('foldedNodes');
+          // Demo
+          if(scope.home){
+            scope.foldedNodes = ["4"]
+          }
+          // Normal version 
+          else{
+            scope.foldedNodes = $cookies.get('foldedNodes');
 
-          if( scope.foldedNodes !== undefined ){
-            scope.foldedNodes = scope.foldedNodes.split(',');
+            if( scope.foldedNodes !== undefined ){
+              scope.foldedNodes = scope.foldedNodes.split(',');
+            }
           }
 
           // Active nodes
           // Demo
           if(scope.home){
-            scope.activeNodes = [["6","S"],["5","Terminal"],["1","Sandbox"]]
+            scope.activeNodes = [["17","Histoire"],["9","S"],["3","Premiere"],["1","Sandbox"]]
           }
           // Normal version 
           else{
@@ -59,13 +66,13 @@
             if( scope.activeNodes !== undefined ){
               scope.activeNodes = scope.activeNodes.split(',');
               scope.activeNodes = transformArrayInDouble(scope.activeNodes);
-            }
+            } 
           }
 
           //Node end
           // Demo
           if(scope.home){
-            scope.nodeEnd = ["6","S"]
+            scope.nodeEnd = ["17","Histoire"]
           }
           // Normal version 
           else{

@@ -164,12 +164,9 @@
               website: scope.place.website
             }
 
-            // console.log(newUni);
-
             Restangular.all('organizations').post(newUni).then(function(d) {
 
               var newOrga = d;
-              // console.log(d);
               console.log("organization created");
 
               // We push the new uni to our local storage
@@ -186,21 +183,33 @@
 
               $auth.submitRegistration(credentials)
               .then(function(resp) { 
-                console.log("User created");
+                console.log("User signup");
                 
                 // log in after sign in
-                
                 var login = {
                   email: scope.adminEmail,
                   password: scope.adminPassword
                 };
                 
                 $auth.submitLogin(login)
-                .then(function(resp) {
-                  scope.admin = true;
+                .then(function(d) {
+                  console.log("User login");
+
+                  // Send email
+                  Restangular.one('user/welcome').get({id: d.id, organization_id: newOrga.organization.id}).then(function () {
+                    console.log("email sent");
+                    scope.signupShow = false;
+                    scope.displaySuccess(scope.place.name + " is now using unisphere! We sent you a mail at " + scope.adminEmail)
+                  }, function(d){
+                    console.log(d)
+                    scope.displayError("Unknown error, try again")
+                    console.log("Impossible to send a mail");
+                  });
                 })
-                .catch(function(resp) {
-                  console.log(resp);
+                .catch(function(d) {
+                  console.log(d);
+                  console.log("Unable to signin the user");
+                  scope.displayError("Unknown error, try again")
                 });
                 
               })
@@ -223,10 +232,7 @@
                 });
 
               });
-
-              //We change popup
-              scope.signupShow = false;
-              scope.subdomainCreated =  true;
+             
 
             }, function(d){
               console.log("merde alors");
