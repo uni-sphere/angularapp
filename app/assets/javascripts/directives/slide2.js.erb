@@ -194,14 +194,14 @@
                 $auth.submitLogin(login)
                 .then(function(d) {
                   console.log("User login");
-                  console.log(d);
 
                   // Send email
                   Restangular.one('user/welcome').get({id: d.id, organization_id: newOrga.organization.id}).then(function () {
                     console.log("email sent");
                     scope.signupShow = false;
-                    scope.displaySuccess(scope.place.name + "is now using unisphere! We sent you a mail at " + scope.adminEmail)
-                  }, function(){
+                    scope.displaySuccess(scope.place.name + " is now using unisphere! We sent you a mail at " + scope.adminEmail)
+                  }, function(d){
+                    console.log(d)
                     scope.displayError("Unknown error, try again")
                     console.log("Impossible to send a mail");
                   });
