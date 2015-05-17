@@ -6,7 +6,7 @@
 
   width: 100%;
 
-  background-image: url(image-path('bg1.jpg'));
+  background-image: url(image-path('11.jpg'));
   background-size: cover;
 
   color: white;
@@ -46,6 +46,7 @@
   height: 50px;
   width: calc(50% - 50px);
   background: white;
+  // border-top: 1px solid #393939;
 }
 
 #triangle-left{
@@ -54,10 +55,24 @@
   bottom: 0;
   width: 0; 
   height: 0; 
-  cursor: pointer;
   border-right: 50px solid transparent;
-  
   border-bottom: 50px solid white;
+  // &:before{
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0px;
+  //   border-right: 50px solid transparent;
+  //   border-bottom: 50px solid #393939;
+  //   content: "";
+  // }
+  //  &:after{
+  //   position: absolute;
+  //   top: 0;
+  //   left: -1px;
+  //   border-right: 50px solid transparent;
+  //   border-bottom: 50px solid white;
+  //   content: "";
+  // }
 }
 
 #triangle-right{
@@ -66,11 +81,24 @@
   bottom: 0;
   width: 0; 
   height: 0; 
-  cursor: pointer;
-  // border-left: 40px solid transparent;
   border-left: 50px solid transparent;
-  
   border-bottom: 50px solid white;
+  // &:before{
+  //   position: absolute;
+  //   top: 0;
+  //   left: -50px;
+  //   border-left: 50px solid transparent;
+  //   border-bottom: 50px solid #393939;
+  //   content: "";
+  // }
+  //  &:after{
+  //   position: absolute;
+  //   top: 0;
+  //   left: -49px;
+  //   border-left: 50px solid transparent;
+  //   border-bottom: 50px solid white;
+  //   content: "";
+  // }
 }
 
 #rectangle-right{
@@ -80,6 +108,8 @@
   height: 50px;
   width: calc(50% - 50px);
   background: white;
+  // border-top: 1px solid #393939;
+
 }
 
 

@@ -5,7 +5,8 @@
       restrict: 'E',
       templateUrl: 'home/slide2.html',
       scope: {
-        displayError: '='
+        displayError: '=',
+        displaySuccess: '='
       },
       link: function(scope) {
 
@@ -203,9 +204,14 @@
                 });
                 
               })
-              .catch(function(resp) { 
-                scope.displayError("Impossible to create your account, try again.");
-                console.log(resp);
+              .catch(function(d) { 
+                console.log(d);
+                if(d.status == 403){
+                  console.log("Your email account is already bound to another organization");
+                  scope.displayError("Currently we only allow a single organization per email addresses");
+                } else{
+                  scope.displayError("Impossible to create your account, try again.");
+                }
 
                 // We delete the organization we just created
                 Restangular.all('organizations/' + newOrga.organization.id).remove().then(function() {
@@ -223,7 +229,7 @@
               scope.subdomainCreated =  true;
 
             }, function(d){
-              console.log("error");
+              console.log("merde alors");
               console.log(d);
               scope.displayError("Impossible to create a subdomain for " + scope.place.name + ", try again");
               scope.adminPassword = "";

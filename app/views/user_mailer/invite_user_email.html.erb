@@ -286,11 +286,6 @@ a {
 										Your temporary password is <strong><%= @password %></strong>
 									</td>
 								</tr>
-								<tr class="aligncenter">
-									<td class="content-block">
-										<p><%= link_to 'Start', "http://"+@organization.subdomain+".unisphere.eu/auth/invitation/accept?invitation_token="+User.last.invitation_token %></p>
-									</td>
-								</tr>
 							</table>
 						</td>
 					</tr>

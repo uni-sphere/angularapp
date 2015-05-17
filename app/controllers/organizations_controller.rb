@@ -38,7 +38,7 @@ class OrganizationsController < ApplicationController
   end
   
   def destroy
-    Organization.find(param[:id]).destroy
+    Organization.find(params[:id]).destroy
     head 204
   end
   

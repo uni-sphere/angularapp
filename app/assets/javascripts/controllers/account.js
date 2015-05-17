@@ -5,7 +5,7 @@
 
     var top = $('#panel-orgnanization').offset().top - 50
     $('#panel-user-to-invite').css("top", top);
-    // $scope.listUser = [];
+    $scope.listUser = [];
 
     $scope.newUser = "";
     $scope.updatedEmail = "";
@@ -89,7 +89,7 @@
       }
     }
 
-    $scope.listUser = ["gabriel.muller@unisphere.eu"];
+    // $scope.listUser = ["gabriel.muller@unisphere.eu"];
     // Really invite user
     $scope.inviteUsers = function(){
       if($scope.organizationForm.$valid || $scope.listUser.length != 0){
@@ -102,38 +102,44 @@
         $scope.listUser.forEach(function(newUser) {
           var newPassword = makePassword(8);
 
-          Restangular.all('user/invite').post({email: newUser, password: newPassword}).then(function () {
-            // Sign up
-            console.log($scope.universityId);
-            var credentials = {
-              email: newUser,
-              password: newPassword,
-              password_confirmation: newPassword,
-              organization_id: $scope.universityId
-            };
+          // Sign up
+          var credentials = {
+            email: newUser,
+            password: newPassword,
+            password_confirmation: newPassword,
+            organization_id: $scope.universityId
+          };
 
-            $auth.submitRegistration(credentials)
-            .then(function(d) { 
-              console.log("User created");
-
-
+          $auth.submitRegistration(credentials)
+          .then(function(d) { 
+            Restangular.all('user/invite').post({email: newUser, password: newPassword}).then(function () {
               $scope.listUserActive = false;
               $scope.newUser = "";
               $scope.organizationForm.$setUntouched();
               console.log("New user added");
               $scope.displaySuccess("Your colleages have been invited");
-            })
-            .catch(function(d) { 
-              console.log("Impossible to signup the user")
+             
+            }, function(d){
               console.log(d);
-              $scope.displayError("Impossible to create this user account");
+              console.log("There was an error adding users");
+              $scope.displayError("Try again to invite lecturers");
             });
-           
-          }, function(d){
+          })
+          .catch(function(d) { 
+            console.log("Impossible to signup the user")
             console.log(d);
-            console.log("There was an error adding users");
-            $scope.displayError("Try again to invite lecturers");
+            if(d.status = 403){
+              console.log(d.data.data.email + " already uses Unisphere. We didn't invite him again");
+              $scope.displayError(d.data.data.email + " already uses Unisphere. We didn't invite him again");
+              $scope.listUserActive = false;
+              $scope.newUser = "";
+              $scope.organizationForm.$setUntouched();
+            } else{
+              $scope.displayError("Impossible to create an account");
+            }
+            
           });
+
         });
        
       } else{
