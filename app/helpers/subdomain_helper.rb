@@ -16,9 +16,9 @@ module SubdomainHelper
     end
   end
   
-  def delete_pointer(newsubdomain)
+  def delete_pointer(subdomain)
     if Rails.env.production?
-      scalingo_resources[:subdomain].delete({domain: {name: "#{newsubdomain.to_s}.unisphere.eu" }}) { |response, request, result, &block|
+      scalingo_resources[:subdomain].delete({domain: {name: "#{subdomain.to_s}.unisphere.eu" }}) { |response, request, result, &block|
         send_error('Problem occured while deleting subdomain', '500') if response.code != 204
       }
     end
