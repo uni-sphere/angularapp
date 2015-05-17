@@ -43,7 +43,6 @@
 
           Restangular.one('organization/is_signed_up').get({email: scope.emailInput}).then(function (signup) {
             if(signup.response == true){
-							
               // LOGIN
               var credentials = {
                 email: scope.emailInput,
@@ -81,10 +80,6 @@
             scope.displayError("There was an error, try to login again");
             scope.passwordInput = "";
           });
-
-
-
-
           
         }
       }

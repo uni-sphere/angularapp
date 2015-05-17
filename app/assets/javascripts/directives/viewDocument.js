@@ -17,12 +17,12 @@
 
           var dummyId = 50;
 
-          //Some css
-          circleNoDoc();
-          window.onresize = function() {
-            circleNoDoc();
+          // //Some css
+          // circleNoDoc();
+          // window.onresize = function() {
+          //   circleNoDoc();
 
-          };
+          // };
 
           scope.$watch('activeNodes', function(newVals, oldVals){
             if(newVals){

@@ -1,7 +1,7 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', '$translate', '$auth', function ($scope, browser, $cookies, $timeout, Restangular, $upload, $translate, $auth) {
+  .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', '$translate', '$auth', '$state', function ($scope, browser, $cookies, $timeout, Restangular, $upload, $translate, $auth, $state) {
 
     $scope.sidebarMinified = true;
     $scope.accountForgoten = false;
@@ -21,7 +21,8 @@ angular
 			$auth.signOut()
 			.then(function(resp) {
 				$scope.admin = false;
-				console.log(resp)
+				console.log(resp);
+        $state.transitionTo('main.application');
 			})
 			.catch(function(resp) {
 				console.log(resp)
@@ -84,6 +85,15 @@ angular
       }
       $scope.showError = true;
     }
+
+    $scope.displaySuccess = function(message){
+      $scope.success = message;
+      $('#success-prompt').show();
+      setTimeout(function(){
+         $('#success-prompt').hide();
+      },2000)
+    }
+
 
     $scope.hideError = function(){
       $scope.listError = [];

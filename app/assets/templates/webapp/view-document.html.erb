@@ -64,19 +64,19 @@
       </div>
     </div>
 
-    <div id="tip" ng-hide="documentAbsent || home">
+    <div id="tip" ng-hide="documentAbsent || home || !admin">
       <i class="fa fa-lightbulb-o"></i>
       <span id="tip-chrome" ng-show="isChrome">Tip: You can drag and drop folders!</span>
-      <span id="tip-chrome" ng-hide="isChrome">Tip: On chrome you could drag and drop whole folders!</span>
+      <span id="tip-chrome" ng-hide="isChrome">Tip: You can drag and drop files (folder only for chrome)!</span>
     </div>
 
     <div id="document-absent-dropzone-container" ng-show="documentAbsent && admin && !home">
       <div id="document-absent-dropzone" ng-show="documentAbsent">
 
         <div id="document-absent-dropzone-image" >
-          <div class="dropzone-image-container">
-            <div class="dropzone-rectangle"></div>
-            <div class="dropzone-triangle"></div>
+
+          <div id="dropzone-image-container">
+             <i class="fa fa-download"></i>
           </div>
         </div>
 

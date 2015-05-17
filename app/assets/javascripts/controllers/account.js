@@ -58,29 +58,30 @@
         $scope.displayError("The password you typed are not the same");
         $scope.confirmPsw = "";
         $('#confirm-password').focus();
-      }else{
-        // var credentials = {
-        //   password: $scope.newPsw,
-        // };
+      } else{
+        var credentials = {
+          password: $scope.newPsw,
+          password_confirmation: $scope.confirmPsw
+        };
 
-        // $auth.updatePassword(credentials)
-        // .then(function(resp) {
-        //   console.log(resp);
-        // })
-        // .catch(function(resp) {
-        //   console.log(resp);
-        //   $scope.displayError("Try again to change your password");
-        // });
+        $auth.updatePassword(credentials)
+        .then(function(resp) {
+          console.log(resp);
+        })
+        .catch(function(resp) {
+          console.log(resp);
+          $scope.displayError("Try again to change your password");
+        });
       }
     }
 
+    // Add user to the list
     $scope.addUser = function(){
       if($scope.organizationForm.$valid){
-        console.log($scope.newUser);
+        $scope.listUserActive = true;
         $scope.listUser.push($scope.newUser);
         console.log($scope.newUser + " sucessfully addded");
         $scope.newUser = "";
-        // $scope.organizationForm.$setUntouched();
         $('#addAdmin').focus();
       } else{
         console.log("Email invalid");
@@ -88,18 +89,26 @@
       }
     }
 
-    // Invite users
+    // Really invite user
     $scope.inviteUsers = function(){
-      Restangular.all('users/invite').post({emails: $scope.listUser}).then(function () {
-        $scope.listUser = [];
-        console.log("New user added");
-      }, function(d){
-        console.log(d);
-        console.log("There was an error adding users");
-        $scope.displayError("Try again to invite lecturers");
-      });;
+      if($scope.organizationForm.$valid || $scope.listUser.length != 0){
+        $scope.listUser.push($scope.newUser);
+        Restangular.all('users/invite').post({emails: $scope.listUser}).then(function () {
+          $scope.listUser = [];
+          $scope.listUserActive = false;
+          $scope.newUser = "";
+          $scope.organizationForm.$setUntouched();
+          console.log("New user added");
+          $scope.displaySuccess("Your colleages have been invited");
+        }, function(d){
+          console.log(d);
+          console.log("There was an error adding users");
+          $scope.displayError("Try again to invite lecturers");
+        });
+      } else{
+        console.log("Email invalid");
+        $scope.displayError("Enter a valid email!");
+      }
     }
-
-
   }]);
 })();

@@ -131,12 +131,14 @@
               templateUrl: 'account/account.html'
           })
 
-        .state('home', {
-          url: '/home',
-          templateUrl: 'main/main.html',
-          controller: 'MainCtrl'
-        })
-
+      if(window.location.host == 'localhost:3000'){
+        $stateProvider
+          .state('home', {
+            url: '/home',
+            templateUrl: 'main/main.html',
+            controller: 'MainCtrl'
+          })
+      }
        // .state('dashboard', {
        //    // abstract: true,
        //    url: '/dashboard',

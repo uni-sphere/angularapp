@@ -22,7 +22,6 @@ $account-panel-header-bg: $light-gris;
 $account-input-bg: $light-gris;
 $account-border: $gris;
 
-
 //Sidebar
 $sidebar-bg: $light-gris;
 $sidebar-border: $gris;
@@ -43,17 +42,26 @@ $no-chart-color: $gris;
 $navbar-bg: $lighty-noir;
 $navbar-color: $light-gris;
 
+// Error & success
 
 
 
-
-
-
+$error-prompt-title-color: #9F1D1D;
 $border-error-prompt: #E9BCBC;
-$error-promt-color-dark: #9F1D1D;
-$error-promt-color-light: #B23B3B;
-$error-promt-bg: #F2DEDE;
-$error-promt-color-very-light: #C45858;
+$error-prompt-bg: #F2DEDE;
+$error-prompt-color-light: #B23B3B;
+$error-prompt-color-very-light: #C45858;
+
+$success-prompt-title-color: #008D00;
+$border-success-prompt: #8CE48C;
+$success-prompt-bg: #9AEF9A;
+$success-prompt-color-light: #60C660;
+
+
+
+
+//Success
+
 
 
 $mega-light-grey: #FCFCFC;

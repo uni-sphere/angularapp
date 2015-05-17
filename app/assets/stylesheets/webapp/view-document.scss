@@ -334,40 +334,30 @@
 // Pic
 #document-absent-dropzone-image{
   position: relative;
-  margin: 40px 20px 10px 20px;
-  width : calc(100% - 40px);
-  height: calc(100% - 180px);
-}
-
-.dropzone-image-container{
-  // border: 4px solid black;
-  display: table;
-  margin: 0 auto;
-}
-
-
-.dropzone-rectangle{
   height: 60%;
-  width: 15%;
-  // max-height: 160px !important;
-  display: table;
-  margin: 0 auto;
-  margin-top: 10%;
-  background: $gris;
-}
+  // background: red;
 
-.dropzone-triangle{
-  position: relative;
-  margin-left: calc(50% - 15%);
-  width: 0;
-  height: 0; 
   
+}
+#dropzone-image-container{
+  position: absolute;
+  top: calc(50% - 35px); 
+  width: 100%;
+  
+  .fa-download{
+    margin: 0px auto;
+    display: table;
+    font-size: 4em;
+    color: $dark-gris;
+  }
 }
 
 
 // Text under the pic
 #document-absent-text-under-pic{
+  // background: blue;
   position: relative;
+  height: 40%;
   width: 80%;
   left: 10%;
   text-align: center;
