@@ -80,10 +80,6 @@
             scope.displayError("There was an error, try to login again");
             scope.passwordInput = "";
           });
-
-
-
-
           
         }
       }

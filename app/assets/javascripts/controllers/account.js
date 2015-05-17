@@ -58,19 +58,20 @@
         $scope.displayError("The password you typed are not the same");
         $scope.confirmPsw = "";
         $('#confirm-password').focus();
-      }else{
-        // var credentials = {
-        //   password: $scope.newPsw,
-        // };
+      } else{
+        var credentials = {
+          password: $scope.newPsw,
+          password_confirmation: $scope.confirmPsw
+        };
 
-        // $auth.updatePassword(credentials)
-        // .then(function(resp) {
-        //   console.log(resp);
-        // })
-        // .catch(function(resp) {
-        //   console.log(resp);
-        //   $scope.displayError("Try again to change your password");
-        // });
+        $auth.updatePassword(credentials)
+        .then(function(resp) {
+          console.log(resp);
+        })
+        .catch(function(resp) {
+          console.log(resp);
+          $scope.displayError("Try again to change your password");
+        });
       }
     }
 
