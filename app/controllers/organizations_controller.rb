@@ -13,7 +13,8 @@ class OrganizationsController < ApplicationController
     node = organization.nodes.new(name: params[:name], parent_id: 0)
     firstchild = organization.nodes.new(name: 'First Level')
     secondchild = organization.nodes.new(name: 'Second Level')
-    if organization.save and node.save and create_pointer(organization.subdomain)
+    if organization.save and node.save
+      create_pointer(organization.subdomain)
       firstchild.parent_id = node.id
       secondchild.parent_id = node.id
       firstchild.save
