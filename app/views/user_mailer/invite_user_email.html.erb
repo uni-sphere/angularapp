@@ -278,17 +278,12 @@ a {
 								</tr>
 								<tr class="aligncenter">
 									<td class="content-block">
-										<a class="btn-primary" href="'http://' + <%= @organization.subdomain %> + '.unisphere.eu'" ><%= @organization.name %></a>
+										<a class="btn-primary" href="http://<%= @organization.subdomain %>.unisphere.eu" ><%= @organization.name %></a>
 									</td>
 								</tr>
 								<tr class="aligncenter">
 									<td class="content-block">
 										Your temporary password is <strong><%= @password %></strong>
-									</td>
-								</tr>
-								<tr class="aligncenter">
-									<td class="content-block">
-										<p><%= link_to 'Start', "http://"+@organization.subdomain+".unisphere.eu/auth/invitation/accept?invitation_token="+User.last.invitation_token %></p>
 									</td>
 								</tr>
 							</table>
