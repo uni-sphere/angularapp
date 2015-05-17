@@ -1,6 +1,6 @@
 namespace :fill do
   desc "inital filling"
-  task inital: :environment do
+  task initial: :environment do
     # clear db
     Rake::Task["db:drop"].invoke
     Rake::Task["db:create"].invoke
