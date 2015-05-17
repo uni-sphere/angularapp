@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   end
   
   def welcome
-    if params[:email]
+    if params[:id]
       UserMailer.welcome_email(params[:id], current_organization).deliver
       render json: {success: true}.to_json, success: 200
     else
