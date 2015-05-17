@@ -63,11 +63,11 @@ module AuthenticationHelper
   end
   
   def user_nodes
-    if Chapter.exists?(user_id: User.first.id)
-      chapters = Chapter.where(user_id: User.first.id)
+    if Chapter.exists?(user_id: current_user.id)
+      chapters = Chapter.where(user_id: current_user.id)
       ids = []
       chapters.each do |chapter|
-        ids << chapter.node_id #if Chapter.where(node_id: chapter.node_id).count > 1 || chapter.awsdocuments.count > 0
+        ids << chapter.node_id if Chapter.where(node_id: chapter.node_id).count > 1 || chapter.awsdocuments.count > 0
       end
       if Node.exists?(id: ids)
         return Node.where(id: ids)

@@ -8,5 +8,14 @@ class UsersController < ApplicationController
       send_error('emails not received', 400)
     end
   end
+  
+  def welcome
+    if params[:id]
+      UserMailer.welcome_email(params[:id], current_organization).deliver
+      render json: {success: true}.to_json, success: 200
+    else
+      send_error('email not received', 400)
+    end
+  end
 
 end

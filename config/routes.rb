@@ -31,5 +31,6 @@ Rails.application.routes.draw do
   get '/account', to: 'angular#index'
   
   post '/user/invite', to: 'users#invite'
+  get '/user/welcome', to: 'users#welcome'
   
 end

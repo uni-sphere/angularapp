@@ -265,7 +265,7 @@ a {
 				<table class="main" width="100%" cellpadding="0" cellspacing="0">
 					<tr>
 						<td class="alert alert-warning">
-							Welcome to Unisphere
+							Welcome to Unisphere <%= @user.name %>
 						</td>
 					</tr>
 					<tr>
@@ -273,17 +273,12 @@ a {
 							<table width="100%" cellpadding="0" cellspacing="0">
 								<tr class="aligncenter">
 									<td class="content-block">
-										You have been invited to join <%= @organization.name %> at Unisphere
+										You have created a new organization at Unisphere
 									</td>
 								</tr>
 								<tr class="aligncenter">
 									<td class="content-block">
-										<a class="btn-primary" href="http://<%= @organization.subdomain %>.unisphere.eu" ><%= @organization.name %></a>
-									</td>
-								</tr>
-								<tr class="aligncenter">
-									<td class="content-block">
-										Your temporary password is <strong><%= @password %></strong>
+										<a class="btn-primary" href="http://<%= @organization.subdomain %>.unisphere.eu" >http://<%= @organization.subdomain %>.unisphere.eu</a>
 									</td>
 								</tr>
 							</table>
@@ -304,4 +299,3 @@ a {
 
 </body>
 </html>
-
