@@ -1,3 +1,6 @@
+require "#{Rails.root}/app/helpers/application_helper"
+include SubdomainHelper
+
 namespace :fill do
   desc "inital filling"
   task initial: :environment do
@@ -5,6 +8,9 @@ namespace :fill do
     Rake::Task["db:drop"].invoke
     Rake::Task["db:create"].invoke
     Rake::Task["db:migrate"].invoke
+    
+    
+    
     # create sandbox
     organization = Organization.create(name: 'Sandbox', website: 'http://sandbox.unisphere.eu')
     # create first nodes
