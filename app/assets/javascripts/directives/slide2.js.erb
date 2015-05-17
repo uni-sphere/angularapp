@@ -195,9 +195,10 @@
                 .then(function(d) {
                   console.log("User login");
                   console.log(d);
-                  Restangular.one('user/welcome').get({id: d.user}).then(function () {
+                  Restangular.one('user/welcome').get({id: d.id}).then(function () {
                     scope.universities = universities.plain();
                     console.log("email sent");
+                    scope.signupShow = false;
                     scope.displaySuccess(scope.place.name + "is now using unisphere! We sent you a mail at " + scope.adminEmail)
                   }, function(){
                     scope.displayError("Unknown error, try again")
@@ -230,10 +231,7 @@
                 });
 
               });
-
-              //We change popup
-              scope.signupShow = false;
-              scope.subdomainCreated =  true;
+             
 
             }, function(d){
               console.log("merde alors");
