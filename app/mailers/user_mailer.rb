@@ -18,10 +18,10 @@ class UserMailer < ActionMailer::Base
     mail(to: email, subject: 'Invitation to join Unisphere')
   end
   
-  def reset_password_email(email, organization, password)
+  def welcome_email(id, organization)
+    @user = User.find id
     @organization = organization
-    @password = password
-    mail(to: email, subject: 'Reset password Unisphere')
+    mail(to: @user.email, subject: 'Welcome to Unisphere')
   end
   
 end
