@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   before_create :skip_confirmation!
   
   include DeviseTokenAuth::Concerns::User
-  devise :invitable, :database_authenticatable, :registerable,
+  devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   
   require 'bcrypt'
