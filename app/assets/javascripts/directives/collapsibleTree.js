@@ -66,7 +66,7 @@
             if( scope.activeNodes !== undefined ){
               scope.activeNodes = scope.activeNodes.split(',');
               scope.activeNodes = transformArrayInDouble(scope.activeNodes);
-            }
+            } 
           }
 
           //Node end

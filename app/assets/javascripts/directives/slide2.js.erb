@@ -164,12 +164,9 @@
               website: scope.place.website
             }
 
-            // console.log(newUni);
-
             Restangular.all('organizations').post(newUni).then(function(d) {
 
               var newOrga = d;
-              // console.log(d);
               console.log("organization created");
 
               // We push the new uni to our local storage
@@ -186,21 +183,23 @@
 
               $auth.submitRegistration(credentials)
               .then(function(resp) { 
-                console.log("User created");
+                console.log("User signup");
                 
                 // log in after sign in
-                
                 var login = {
                   email: scope.adminEmail,
                   password: scope.adminPassword
                 };
                 
                 $auth.submitLogin(login)
-                .then(function(resp) {
-                  scope.admin = true;
+                .then(function(d) {
+                  console.log("User login")
+                  scope.displaySuccess(scope.place.name + "is now using unisphere! We sent you a mail at " + scope.adminEmail)
                 })
-                .catch(function(resp) {
-                  console.log(resp);
+                .catch(function(d) {
+                  console.log(d);
+                  console.log("Unable to signin the user");
+                  scope.displayError("Unknown error")
                 });
                 
               })
