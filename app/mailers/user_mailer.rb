@@ -20,7 +20,7 @@ class UserMailer < ActionMailer::Base
   
   def welcome_email(id, organization)
     @user = User.find id
-    @organization = organization
+    @organization = Organization.find organization
     mail(to: @user.email, subject: 'Welcome to Unisphere')
   end
   
