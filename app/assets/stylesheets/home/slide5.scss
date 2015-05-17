@@ -2,10 +2,12 @@
 #slide5{
   padding-top: 80px;
   background: #2f2f2f;
+  padding-bottom: 20px;
 }
 
 .contact-icons{
   position: relative;
+  float: left;
   margin-left: 1/12 * 100%; 
   width: calc(11/12 * 100%);
   color: white;
@@ -40,6 +42,33 @@
   }
 }
 
+#footer{
+  margin-top: 100px;
+  float: left;
+  position: relative;
+  display: block;
+  color: white;
+  text-align: center;
+  font-size: .8em;
+  width: 100%;
+  // width: calc(5/6 * 100%);
+  // margin-left: calc(1/12 * 100%);
+}
 
 
+#made-in{
+  // float: left;
+  .fa{
+    margin: 0 3px;
+    font-size: .9em;
+  }
+  padding-right: 80px;
+}
 
+#privacy{
+  // float: right;
+  .fa{
+    margin-right: 3px;
+    font-size: .9em;
+  }
+}
