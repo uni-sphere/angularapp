@@ -33,7 +33,7 @@
           Restangular.one('organization/is_signed_up').get({email: scope.accountForgottenInput}).then(function (signup) {
             if(signup.response == true){
 
-              
+              var newPassword = makePassword(8);
 
               var credentials = {
                 password: newPassword,
@@ -55,7 +55,7 @@
               })
               .catch(function(resp) {
                 console.log(resp);
-                $scope.displayError("Try again to change your password");
+                scope.displayError("Try again to change your password");
               });
 
               // var credentials = {

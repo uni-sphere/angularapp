@@ -18,11 +18,9 @@ class UsersController < ApplicationController
   # end
   
   def invite
-    if params[:emails]
-      emails = params[:emails]
-      emails.each do |email, psw|
-        UserMailer.invite_user_email(email, current_organization, psw).deliver
-      end
+    if params[:email]
+      UserMailer.invite_user_email(params[:email], current_organization, params[:password]).deliver
+      render json: {success: true}.to_json, success: 200
     else
       send_error('emails not received', 400)
     end

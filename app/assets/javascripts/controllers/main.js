@@ -71,7 +71,9 @@ angular
       
     // get university name for navbar
     Restangular.one('organization').get().then(function (university) {
-      $scope.university = university['name'];
+      $scope.university = university.organization.name;
+      // console.log(university.plain());
+      $scope.universityId = university.organization.id;
     }, function(){
       console.log("There getting the university name");
       $scope.displayError("Sorry there was a mistake, refresh please");
