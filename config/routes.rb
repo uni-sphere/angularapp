@@ -31,6 +31,5 @@ Rails.application.routes.draw do
   get '/account', to: 'angular#index'
   
   post '/user/invite', to: 'users#invite'
-  put '/user/reset_password', to: 'users#reset_password'
   
 end
