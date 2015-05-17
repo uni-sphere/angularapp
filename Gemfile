@@ -31,6 +31,7 @@ gem 'rails-i18n'
 gem 'whenever', require: false
 gem 'bcrypt'
 gem 'omniauth'
+gem 'devise'
 gem 'devise_token_auth'
 gem 'ng-rails-csrf'
 gem 'rollbar'

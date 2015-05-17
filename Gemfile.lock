@@ -346,6 +346,7 @@ DEPENDENCIES
   bcrypt
   bower-rails
   carrierwave
+  devise
   devise_invitable
   devise_token_auth
   fog
