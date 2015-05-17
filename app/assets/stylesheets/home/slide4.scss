@@ -2,7 +2,6 @@
 #slide4{
   margin-bottom: 100px;
   // background: #2CA078;
-  padding-top: 60px;
 }
 
 #separation-title-features{
@@ -11,7 +10,7 @@
   width: 100%;
   text-align: center;
   font-size: 1.5em;
-  line-height: 60px;
+  line-height: 30px;
   margin-bottom: 60px;
   // background: #2CA078;
 }
@@ -82,22 +81,6 @@
   float: left;
   width: 95%;
   clear: left;
-
-  
-
-  // &:after{
-  //   position: absolute;
-  //   top: 0;
-  //   bottom:0;
-  //   left: 0;
-  //   right: 0;
-  //   background: #2CA078;
-  //   z-index: 100;
-  // }
-
-  // background: #2CA078;
-  // padding-bottom: 20px;
-  // padding-top: 20px;
   margin-left: 5%;
 }
 
@@ -118,10 +101,10 @@
 .feature{
   position: relative;
   float: left;
-  width: 48%;
+  width: 46%;
 
-  padding-left: 1%;
-  padding-right: 1%;
+  padding-left: 2%;
+  padding-right: 2%;
 }
 
 .feature-title{
@@ -130,14 +113,29 @@
 
   .fa{
     // background: red;
-    padding: 5px 5px;
-    border-radius:15px;
+    padding: 8px 8px;
+    border-radius:18px;
     // color: white;
   }
+  .fa{
+    background: green;
+  }
+  .feature-title-text{
+    color: green;
+  }
+}
+
+.features-title-text{
+  margin-top: 15px;
+  font-size: .8em;
+  text-align: center;
+  display: block;
+  font-style: italic;
 }
 
 .feature-body{
   color: $light-noir;
+  text-align: justify;
 }
 
 
