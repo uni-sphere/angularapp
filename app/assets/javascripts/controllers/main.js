@@ -93,7 +93,7 @@ angular
       $('#success-prompt').show();
       setTimeout(function(){
          $('#success-prompt').hide();
-      },2000)
+      },10000)
     }
 
 
