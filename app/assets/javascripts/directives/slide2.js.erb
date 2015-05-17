@@ -188,18 +188,26 @@
                 // log in after sign in
                 var login = {
                   email: scope.adminEmail,
-                  password: scope.adminPassword
+                  password: scope.adminPassword,
                 };
                 
                 $auth.submitLogin(login)
                 .then(function(d) {
-                  console.log("User login")
-                  scope.displaySuccess(scope.place.name + "is now using unisphere! We sent you a mail at " + scope.adminEmail)
+                  console.log("User login");
+                  console.log(d);
+                  Restangular.one('user/welcome').get({id: d.user}).then(function () {
+                    scope.universities = universities.plain();
+                    console.log("email sent");
+                    scope.displaySuccess(scope.place.name + "is now using unisphere! We sent you a mail at " + scope.adminEmail)
+                  }, function(){
+                    scope.displayError("Unknown error, try again")
+                    console.log("Impossible to send a mail");
+                  });
                 })
                 .catch(function(d) {
                   console.log(d);
                   console.log("Unable to signin the user");
-                  scope.displayError("Unknown error")
+                  scope.displayError("Unknown error, try again")
                 });
                 
               })
