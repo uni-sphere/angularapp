@@ -1,4 +1,4 @@
-require "#{Rails.root}/app/helpers/application_helper"
+require "#{Rails.root}/app/helpers/subdomain_helper"
 include SubdomainHelper
 
 namespace :fill do
