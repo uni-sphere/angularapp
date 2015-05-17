@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'angular#index'
   get '/account', to: 'angular#index'
   
-  get '/auth/invitation/accept', to: 'devise/invitations#edit'
+  post '/user/invite', to: 'users#invite'
+  put '/user/reset_password', to: 'users#reset_password'
   
 end
