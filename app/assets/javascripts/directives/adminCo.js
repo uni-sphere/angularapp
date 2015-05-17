@@ -9,6 +9,7 @@
         admin: '=',
         displayError: '=',
         hideError: '=',
+        accountForgotten: '='
       },
       link: function(scope) {
 
@@ -31,22 +32,15 @@
         
         // PASSWORD FORGOTTEN
         scope.passwordForgotten = function() {
-          var credentials = {
-            email: scope.emailInput,
-          };
-          
-          $auth.requestPasswordReset(credentials)
-          .then(function(resp) { 
-            console.log(resp);
-          })
-          .catch(function(resp) { 
-            console.log(resp);
-          });
+          scope.accountForgotten = true;
+        }
+
+        scope.signupRequest = function(){
+          scope.displayError("This function is not yet available. Ask one of your colleage to invite you!");
         }
         
         scope.adminCoAttempt = function(){
 
-          // get university name for navbar
           Restangular.one('organization/is_signed_up').get({email: scope.emailInput}).then(function (signup) {
             if(signup.response == true){
               // LOGIN
@@ -54,6 +48,7 @@
                 email: scope.emailInput,
                 password: scope.passwordInput
               };
+							
               $auth.submitLogin(credentials)
               .then(function(resp) {
                 scope.admin = true;
@@ -71,6 +66,7 @@
                 }
                 scope.passwordInput = "";
               });
+							
             } 
             // This email doesnt correspond to an admin of this orga
             else{
@@ -84,10 +80,6 @@
             scope.displayError("There was an error, try to login again");
             scope.passwordInput = "";
           });
-
-
-
-
           
         }
       }

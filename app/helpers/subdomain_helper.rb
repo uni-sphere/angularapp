@@ -11,7 +11,15 @@ module SubdomainHelper
   def create_pointer(newsubdomain)
     if Rails.env.production?
       scalingo_resources[:subdomain].post({domain: {name: "#{newsubdomain.to_s}.unisphere.eu" }}) { |response, request, result, &block|
-        send_error('Problem occured while creating subdomain', '500') if response.code != 200
+        send_error('Problem occured while creating subdomain', '500') if response.code != 201
+      }
+    end
+  end
+  
+  def delete_pointer(newsubdomain)
+    if Rails.env.production?
+      scalingo_resources[:subdomain].delete({domain: {name: "#{newsubdomain.to_s}.unisphere.eu" }}) { |response, request, result, &block|
+        send_error('Problem occured while deleting subdomain', '500') if response.code != 204
       }
     end
   end

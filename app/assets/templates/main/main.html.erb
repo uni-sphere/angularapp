@@ -1,9 +1,10 @@
 <error-display list-error = 'listError' show-error = 'showError' ></error-display>
+<success-display show-successpop='showSuccesspop' success= ' success'></success-display>
 
 <div ng-if="home" id="home-container">
   <slide1></slide1>
   <slide3 display-error = 'displayError'></slide3>
-  <slide2 display-error = 'displayError'></slide2>
+  <slide2 display-error = 'displayError' display-success = 'displaySuccess'></slide2>
   <slide4></slide4>
   <slide5></slide5>
 </div>
@@ -12,7 +13,9 @@
 
   <div ng-include="'main/navbar.html'"></div>
 
-  <admin-co ng-hide="admin" display-error = 'displayError' hide-error = 'hideError' admin = 'admin'></admin-co>
+  <admin-co account-forgotten = 'accountForgotten' ng-hide="admin" display-error = 'displayError' hide-error = 'hideError' admin = 'admin'></admin-co>
+
+  <account-gestion account-forgotten = 'accountForgotten' account-signup = 'accountSignup' display-error = 'displayError' hide-error = 'hideError' admin = 'admin'></account-gestion>
   
   <sidebar ng-show="admin" admin-deco = 'adminDeco' sidebar-minified = 'sidebarMinified'></sidebar>
 
@@ -21,7 +24,6 @@
     <div ui-view id="ui-view-main-wrapper"></div>
   </div>
 
-  <!-- <div id="deco" ng-show="admin" ng-click="adminDeco()">Deconnection</div> -->
 </div>
 
 

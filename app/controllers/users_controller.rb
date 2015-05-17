@@ -1,20 +1,11 @@
 class UsersController < ApplicationController
   
   def invite
-    if params[:emails]
-      emails = params[:emails]
-      emails.each do |email|
-        user = current_organization.users.new(email: email)
-        psw = random_password
-        user.password = psw
-        if user.save
-          UserMailer.invite_user_email(email, current_organization, psw).deliver
-        else
-          send_error('user not created', 500)
-        end
-      end
+    if params[:email]
+      UserMailer.invite_user_email(params[:email], current_organization, params[:password]).deliver
+      render json: {success: true}.to_json, success: 200
     else
-      send_error('email not received', 400)
+      send_error('emails not received', 400)
     end
   end
 

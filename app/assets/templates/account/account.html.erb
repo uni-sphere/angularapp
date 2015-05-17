@@ -1,4 +1,4 @@
-<div id="account" ng-controller="AccountCtrl">
+<div name="profileForm" id="account" ng-controller="AccountCtrl">
   <div class="panel">
     <div class="panel-header">{{ 'PROFIL' | translate }}</div>
     <div class="panel-body">
@@ -17,7 +17,7 @@
     <div class="panel-body">
 
       <div class="panel-row-title">{{ 'NEW_LECTURER' | translate }}</div>
-      <input type="text" placeholder="" class="panel-input input-float" ng-model="newUser" >
+      <label><input name="input" required type="email" id="addAdmin" placeholder="" class="panel-input input-float" ng-model="newUser" ></label>
 
       <div id="add-user" class="fa fa-plus" ng-click="addUser()"></div>
 
@@ -25,21 +25,21 @@
     </div>
   </form>
 
-  <div class="panel">
+  <form name="passwordForm" class="panel">
     <div class="panel-header">{{ 'PASSWORD' | translate }}</div>
     <div class="panel-body">
 
       <div class="panel-row-title">{{ 'NEW_PSW' | translate }}</div>
-      <input type="password" class="panel-input" ng-model="newPsw" >
+      <input type="password" id="new-password" class="panel-input" ng-model="newPsw" ng-minlength=8 >
 
       <div class="panel-row-title">{{ 'CONFIRM_PSW' | translate }}</div>
-      <input type="password" class="panel-input" ng-model="confirmPsw" >
+      <input type="password" id="confirm-password" class="panel-input" ng-model="confirmPsw" ng-minlength=8>
 
       <button class="panel-submit" ng-click="updatePsw()">{{ 'UPDATE_PSW' | translate }}</button>
     </div>
-  </div>
+  </form>
 
-  <div id="panel-user-to-invite"  ng-show="listUser">
+  <div id="panel-user-to-invite"  ng-show="listUserActive" ng-class="{'listUser-ready-to-disappear': !listUserActive, 'listUser-ready-to-appear': listUserActive}">
     <div class="panel-header header-special">{{ 'USERS_INVITED' | translate }}</div>
     <div class="panel-body body-special">
       <div class="item-user" ng-repeat="user in listUser">

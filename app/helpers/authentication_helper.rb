@@ -16,10 +16,8 @@ module AuthenticationHelper
   
   def current_subdomain
     if Rails.env.production?
-      if request == 'unisphere.eu' || 'www.unisphere.eu' || 'sandbox.unisphere.eu'
+      if URI.parse(request.env['HTTP_ORIGIN']).host.include? 'home'
         return 'sandbox'
-      elsif request.path == '/'
-        return request.env['HTTP_HOST'].split('.').first
       else
         uri = URI.parse(request.env['HTTP_ORIGIN']).host
         return uri.split('.').first

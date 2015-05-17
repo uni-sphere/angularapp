@@ -13,9 +13,15 @@ class UserMailer < ActionMailer::Base
   end
   
   def invite_user_email(email, organization, password)
-    @organization = organization.name
+    @organization = organization
     @password = password
     mail(to: email, subject: 'Invitation to join Unisphere')
+  end
+  
+  def reset_password_email(email, organization, password)
+    @organization = organization
+    @password = password
+    mail(to: email, subject: 'Reset password Unisphere')
   end
   
 end

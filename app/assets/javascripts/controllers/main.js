@@ -1,9 +1,11 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', '$translate', function ($scope, browser, $cookies, $timeout, Restangular, $upload, $translate) {
+  .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', '$translate', '$auth', '$state', function ($scope, browser, $cookies, $timeout, Restangular, $upload, $translate, $auth, $state) {
 
     $scope.sidebarMinified = true;
+    $scope.accountForgoten = false;
+
 
     //Check if the user is admin
     // var admin = $cookies.get('unisphere_api_admin');
@@ -15,11 +17,19 @@ angular
 
     // $scope.admin = true;
 
-    $scope.adminDeco = function(){
-      $scope.admin = false;
-    }
+		$scope.adminDeco = function(){
+			$auth.signOut()
+			.then(function(resp) {
+				$scope.admin = false;
+				console.log(resp);
+        $state.transitionTo('main.application');
+			})
+			.catch(function(resp) {
+				console.log(resp)
+			});
+		}
 
-    $scope.inviteUser = ["clement@muller.uk.net","gabriel.muller.12@gmail.com"]
+    // $scope.inviteUser = ["clement@muller.uk.net","gabriel.muller.12@gmail.com"]
 
     checkLocation = function(){
       var host = window.location.host;
@@ -61,7 +71,9 @@ angular
       
     // get university name for navbar
     Restangular.one('organization').get().then(function (university) {
-      $scope.university = university['name'];
+      $scope.university = university.organization.name;
+      // console.log(university.plain());
+      $scope.universityId = university.organization.id;
     }, function(){
       console.log("There getting the university name");
       $scope.displayError("Sorry there was a mistake, refresh please");
@@ -75,6 +87,15 @@ angular
       }
       $scope.showError = true;
     }
+
+    $scope.displaySuccess = function(message){
+      $scope.success = message;
+      $('#success-prompt').show();
+      setTimeout(function(){
+         $('#success-prompt').hide();
+      },2000)
+    }
+
 
     $scope.hideError = function(){
       $scope.listError = [];

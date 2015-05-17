@@ -29,7 +29,6 @@
         <!-- <button id="location-button" class="">ll</button> -->
         <input places-auto-complete size=80 
           ng-model="address" 
-          component-restrictions="{country:'fr'}"
           types= ['establishment']
           on-place-changed="placeChanged(place)" 
           class="search-input home-input"
@@ -51,7 +50,7 @@
 
   <!-- Popup for new school -->
   <div class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="showNewSchool" ng-class="{'school-ready-to-disappear': !showNewSchool, 'school-ready-to-appear': showNewSchool}">
-    <div class="school-header">Suscribe {{place.name}} to unisphere
+    <div class="school-header">Subscribe {{place.name}} to Unisphere
     <span class="fa fa-times" ng-click="closePopupMap()"></span></div>
 
     <div class="school-display">
@@ -63,13 +62,13 @@
   </div>
 
   <!-- Signup -->
-  <div class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="signupShow" ng-class="{'school-ready-to-disappear': !signupShow, 'school-ready-to-appear': signupShow}">
-    <div class="school-header">Admin account for {{place.name}}<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
+  <form name="homeSignup" class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="signupShow" ng-class="{'school-ready-to-disappear': !signupShow, 'school-ready-to-appear': signupShow}">
+    <div class="school-header">Account for {{place.name}}<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
 
     <div class="school-display">
-      <input type="text" class="signup-input home-input" ng-model="adminName" placeholder="Surname Name"/>
-      <input type="email" class="signup-input home-input" ng-model="adminEmail" placeholder="Email"/>
-      <input type="password" class="signup-input home-input" ng-model="adminPassword" placeholder="Password"/>
+      <input type="text" class="signup-input home-input input-action-design" ng-model="adminName" placeholder="Surname Name"/>
+      <input type="email" class="signup-input home-input input-action-design" ng-model="adminEmail" placeholder="Email"/>
+      <input type="password" ng-minLength=8 class="signup-input home-input input-action-design" id="homeSignupPassword" ng-model="adminPassword" placeholder="Password"/>
       <button id="signup" class="home-button" ng-click="signup()">Sign up</button>
     </div>
 
@@ -78,11 +77,11 @@
 
   <!-- SuccessFull signup -->
   <div class="school-popup-wrapper" id="subdomain-created-wrapper" ng-show="subdomainCreated" ng-class="{'school-ready-to-disappear': !subdomainCreated, 'school-ready-to-appear': subdomainCreated}">
-    <div class="school-header">Congrats, {{place.name}} is registered<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
+    <div class="school-header">Congrats! {{place.name}} is registered<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
 
     <div class="school-display">
-      <div class="school-display-row-center">Last step! Check your mailbox.</div>
-      <div class="school-display-row-center">{{adminEmail}}</div>
+      <div class="school-display-row-center">Your Unisphere App is available on</div>
+      <div class="school-display-row-center">URL</div>
     </div>
 
     <div class="school-display-bg"></div>

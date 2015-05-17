@@ -12,8 +12,6 @@ input:-webkit-autofill:focus {
 }
 
 
-
-
 html, body, #application-container{
   position: absolute;
   top: 0px;
@@ -35,6 +33,7 @@ body{
   font-size: 1em;
   font-family: 'Ubuntu', sans-serif, "Lato";
   user-select: none;
+  overflow-x: hidden;
 }
 
 *:focus{
@@ -72,7 +71,37 @@ body{
 
 }
 
+.button-green-black{
+  border: 1px solid #2B2222;
+  color: #EEEEEE;
+  cursor: pointer;
+  background: #44AB52;
+  border-radius: 0.2em;
 
+  width: 140px;
+  margin-top: 10px;
+  margin-left: calc(50% - 70px);
+  padding: 10px 0px;
+
+  font-family: Arial;
+
+  font-size: .9em;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  &:hover{
+    border-color: black;
+    border-bottom-color: #2B2222;
+    background: #20B334;
+  }
+
+  &:active {
+    border-color: black;
+    border-bottom-color: #5C5454;
+    background-color: #1FC436;
+  }
+}
 
 
 

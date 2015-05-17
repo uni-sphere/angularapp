@@ -4,14 +4,20 @@ class OrganizationsController < ApplicationController
     if current_organization.users.where(email: params[:email]).exists? or current_organization.subdomain == 'sandbox'
       render json: {response: true}.to_json, status: 200
     else
-      send_error('You are not signed up', '500')
+      send_error('You are not signed up', '403')
     end
   end
     
   def create
     organization = Organization.new(name: params[:name], latitude: params[:latitude], longitude: params[:longitude], place_id: params[:place_id], website: params[:website])
     node = organization.nodes.new(name: params[:name], parent_id: 0)
-    if organization.save and node.save # and create_pointer(organization.subdomain)
+    firstchild = organization.nodes.new(name: 'First Level')
+    secondchild = organization.nodes.new(name: 'Second Level')
+    if organization.save and node.save and create_pointer(organization.subdomain)
+      firstchild.parent_id = node.id
+      secondchild.parent_id = node.id
+      firstchild.save
+      secondchild.save
       render json: { organization: organization, url: "http://#{organization.subdomain}.unisphere.eu" }.to_json, status: 201, location: organization
     else
       send_error('Problem occured while organization creation', '500')
@@ -20,7 +26,7 @@ class OrganizationsController < ApplicationController
   end
   
   def show
-    render json: {name: current_organization.name}.to_json, status: 200
+    render json: {organization: current_organization}.to_json, status: 200
   end
   
   def update
@@ -32,7 +38,7 @@ class OrganizationsController < ApplicationController
   end
   
   def destroy
-    Organization.find(param[:id]).destroy
+    Organization.find(params[:id]).destroy
     head 204
   end
   

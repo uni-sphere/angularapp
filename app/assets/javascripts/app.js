@@ -58,13 +58,13 @@
 					UPDATE_PROFIL: 'Update profil',
 					ORGANIZATION: 'Organization',
 					NEW_LECTURER: 'New lecturer (email)',
-					INVITE: 'Invite lecturers',
+					INVITE: 'Invite',
 					PASSWORD: 'Password',
 					OLD_PSW: 'Old Password',
 					NEW_PSW: 'New Password',
-					CONFIRME_PSW: 'Confirm',
+					CONFIRM_PSW: 'Confirm password',
 					UPDATE_PSW: 'Update password',
-					USERS_INVITED: 'Users added'
+					USERS_INVITED: 'List of lecturers to add'
         })
         .translations('fr', {
           HELP: 'Aide',
@@ -100,7 +100,7 @@
 					PASSWORD: 'Mot de passe',
 					OLD_PSW: 'Ancien mot de passe',
 					NEW_PSW: 'Nouveau mot de passe',
-					CONFIRME_PSW: 'Confirmation',
+					CONFIRM_PSW: 'Confirmation du mot de passe',
 					UPDATE_PSW: 'Modifier mot de passe',
 					USERS_INVITED: 'Utilisateurs ajoutés'
         })
@@ -131,12 +131,14 @@
               templateUrl: 'account/account.html'
           })
 
-        .state('home', {
-          url: '/home',
-          templateUrl: 'main/main.html',
-          controller: 'MainCtrl'
-        })
-
+      if(window.location.host == 'localhost:3000'){
+        $stateProvider
+          .state('home', {
+            url: '/home',
+            templateUrl: 'main/main.html',
+            controller: 'MainCtrl'
+          })
+      }
        // .state('dashboard', {
        //    // abstract: true,
        //    url: '/dashboard',
