@@ -76,8 +76,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
-  cursor: pointer;
-
   &:hover{
     border-color: #008EEC;
     border-bottom-color: #0084DC;
@@ -124,7 +122,11 @@
 }
 
 .item-name{
-  width: calc(100% - 240px);
+  width: calc(100% - 200px);
+
+  @media (max-width: 1500px) {
+   width: calc(100% - 140px);
+  }
   margin-left: 4px;
 }
 
@@ -139,8 +141,8 @@
   opacity: 1;
   font-weight: 500;
   border: 1px solid white;
-  // background: $chapter-depth1-bg;
   padding: 9px 9px;
+  cursor: default;
 
   &:hover{
     background: $document-hover;
@@ -196,39 +198,6 @@
   }
 }
 
-// .btn-download{
-//   float: right;
-//   margin-right: 10px;
-// }
-
-// .btn-preview{
-//   float: right;
-//   margin-right: 10px;
-// }
-
-// .btn-rename{
-//   float: right;
-//   margin-right: 10px;
-// }
-
-// .btn-delete{
-//   float: right;
-//   // margin-right: 20px;
-//   @media (max-width: 1900px) {
-//      margin-right: 10px;
-//   }
-// }
-
-// .btn-add{
-//   float: right;
-//   // margin-right: 10px;
-// }
-
-// .btn-add-document{
-//   float: right;
-//   // margin-right: 10px;
-// }
-
 .btn-collapse{
   font-size: 1.5em;
   
@@ -246,7 +215,7 @@
 }
 
 .btn-add, .btn-delete, .btn-rename, .btn-add-document, .btn-preview, .btn-download{
-  // display: none;
+  display: none;
   float: right;
 }
 
