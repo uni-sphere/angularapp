@@ -26,7 +26,7 @@ class OrganizationsController < ApplicationController
   end
   
   def show
-    render json: {name: current_organization.name}.to_json, status: 200
+    render json: {organization: current_organization}.to_json, status: 200
   end
   
   def update
