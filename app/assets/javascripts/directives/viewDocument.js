@@ -17,13 +17,6 @@
 
           var dummyId = 50;
 
-          // //Some css
-          // circleNoDoc();
-          // window.onresize = function() {
-          //   circleNoDoc();
-
-          // };
-
           scope.$watch('activeNodes', function(newVals, oldVals){
             if(newVals){
               // console.log(newVals);
@@ -501,29 +494,6 @@
           };
 
           checkIfChrome();
-
-          function circleNoDoc(){
-            var circleWidth = $('#document-absent-dropzone-image').width();
-            var circleHeight = $('#document-absent-dropzone-image').height();
-            var circleMarginTop = (circleHeight - circleWidth)/ 2
-
-            if(circleWidth > circleHeight){
-              var bordel = circleHeight * 15 / 100;
-              $('.dropzone-image-container').css("width", circleHeight);
-              $('.dropzone-image-container').css("height", circleHeight);
-              $('.dropzone-triangle').css("border-left", bordel + "px solid transparent");
-              $('.dropzone-triangle').css("border-right", bordel + "px solid transparent");
-              $('.dropzone-triangle').css("border-top", bordel + "px solid #D8D8D8");
-
-              // $('.circle-image').css("border-radius", circleHeight / 2);
-            } else{
-              $('.dropzone-image-container').css("margin-top", circleMarginTop);
-              $('.dropzone-image-container').css("width", circleWidth);
-              $('.dropzone-image-container').css("height", circleWidth);
-              // $('.circle-image').css("border-radius", circleWidth / 2);
-            }
-          }
-
 
         }
       };

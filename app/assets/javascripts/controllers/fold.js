@@ -4,15 +4,22 @@ angular
   .controller('FoldCtrl', ['$scope', 'Restangular', '$cookies', function ($scope, Restangular, $cookies) {
     
     // Find the chapter that are folded
-    var chapterFolded = $cookies.get('chapterFolded');
+    // demo
+    if($scope.home){
+      var chapterFolded = ["0", "19"];
+    }
+    // Normal mode
+    else{
+      var chapterFolded = $cookies.get('chapterFolded');
 
-    if( chapterFolded != undefined ){
-      chapterFolded = chapterFolded.split(',');
-      if(!isInArray(0,chapterFolded)){
-        chapterFolded.push("0");
+      if( chapterFolded != undefined ){
+        chapterFolded = chapterFolded.split(',');
+        if(!isInArray(0,chapterFolded)){
+          chapterFolded.push("0");
+        }
+      }else{
+        chapterFolded =["0"];
       }
-    }else{
-      chapterFolded =["0"];
     }
 
     // At init collapse items in cookie

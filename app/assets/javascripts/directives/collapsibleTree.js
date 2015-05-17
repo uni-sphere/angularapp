@@ -41,10 +41,17 @@
           /*==========  Cookie gestion  ==========*/
 
           // Folded nodes
-          scope.foldedNodes = $cookies.get('foldedNodes');
+          // Demo
+          if(scope.home){
+            scope.foldedNodes = ["4"]
+          }
+          // Normal version 
+          else{
+            scope.foldedNodes = $cookies.get('foldedNodes');
 
-          if( scope.foldedNodes !== undefined ){
-            scope.foldedNodes = scope.foldedNodes.split(',');
+            if( scope.foldedNodes !== undefined ){
+              scope.foldedNodes = scope.foldedNodes.split(',');
+            }
           }
 
           // Active nodes
