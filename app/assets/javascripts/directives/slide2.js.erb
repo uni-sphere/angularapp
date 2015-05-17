@@ -188,15 +188,16 @@
                 // log in after sign in
                 var login = {
                   email: scope.adminEmail,
-                  password: scope.adminPassword,
+                  password: scope.adminPassword
                 };
                 
                 $auth.submitLogin(login)
                 .then(function(d) {
                   console.log("User login");
                   console.log(d);
-                  Restangular.one('user/welcome').get({id: d.id}).then(function () {
-                    scope.universities = universities.plain();
+
+                  // Send email
+                  Restangular.one('user/welcome').get({id: d.id, organization_id: newOrga.organization.id}).then(function () {
                     console.log("email sent");
                     scope.signupShow = false;
                     scope.displaySuccess(scope.place.name + "is now using unisphere! We sent you a mail at " + scope.adminEmail)
