@@ -50,7 +50,7 @@
           // Active nodes
           // Demo
           if(scope.home){
-            scope.activeNodes = [["6","S"],["5","Terminal"],["1","Sandbox"]]
+            scope.activeNodes = [["17","Histoire"],["9","S"],["3","Premiere"],["1","Sandbox"]]
           }
           // Normal version 
           else{
@@ -65,7 +65,7 @@
           //Node end
           // Demo
           if(scope.home){
-            scope.nodeEnd = ["6","S"]
+            scope.nodeEnd = ["17","Histoire"]
           }
           // Normal version 
           else{
