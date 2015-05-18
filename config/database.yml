@@ -21,5 +21,8 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
+  adapter: sqlite3
   database: db/production.sqlite3
+  pool: 5
+  timeout: 10000
+  encoding: utf-8

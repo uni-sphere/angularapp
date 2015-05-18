@@ -19,10 +19,11 @@ class OrganizationsController < ApplicationController
       secondchild.parent_id = node.id
       firstchild.save
       secondchild.save
+      Rollbar.info("Organization created", organization: @organization.name)
       render json: { organization: organization, url: "http://#{organization.subdomain}.unisphere.eu" }.to_json, status: 201, location: organization
     else
       send_error('Problem occured while organization creation', '500')
-      Rollbar.error('Error: organization creation', name: organization.name)
+      Rollbar.error('Organization creation', name: organization.name)
     end
   end
   
