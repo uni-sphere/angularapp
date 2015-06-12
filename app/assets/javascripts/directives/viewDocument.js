@@ -19,7 +19,6 @@
 
           scope.$watch('activeNodes', function(newVals, oldVals){
             if(newVals){
-              // console.log(newVals);
 
               //breadcrumb
               scope.breadcrumb = []
@@ -33,10 +32,9 @@
 
                   document.shift();
 
-                  // console.log(scope.documentAbsent);
                   scope.list = makeNested(document);
                 });
-              } 
+              }
             }
           });
 
@@ -84,7 +82,7 @@
                     for(var i= 0; i < diff; i++){
                       newValueByDepth.pop();
                     }
-                    
+
                     savedValueByDepth[d.depth] = savedValueByDepth[d.depth];
                   }
 
@@ -135,7 +133,6 @@
             });
 
             flatData.forEach(function(node) {
-              // console.log(node);
               node.items = [];
 
               var parent = dataMap[node.parent];
@@ -148,16 +145,12 @@
               }
             });
 
-            // console.log(treeData);
-
             return treeData;
           }
 
-          // scope.displayError("This is just a test version. You can't download files");
-
           // We save the number of download
           scope.downloadItem = function(scope){
-            if(scope.home){
+            if(scope.home || scope.sandbox){
               scope.displayError("This is just a test version. You can't download files");
             }
             else{
@@ -169,13 +162,11 @@
             }
           }
 
-
           scope.fileStore =  [];
 
           // We watch when someone uploads files from the tree
           scope.$watch('fileStore.files', function (newVals, oldVals) {
             if(newVals){
-              // console.log("fileStore.files")
               upload(scope.fileStore.files,false);
             }
           });
@@ -201,11 +192,23 @@
             }
           });
 
-          // $scope.$watch('nodeEnd', function(newVals, oldVals) {
-          //   if(newVals){
-          //     console.log("gg");
-          //   }
-          // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -287,7 +290,7 @@
                   }
                   path.shift();
                   placeFolder();
-                } 
+                }
               }
 
               placeFolder();
@@ -335,7 +338,7 @@
 
                 console.log(file);
                 // Demo
-                if(scope.home){
+                if(scope.home || scope.sandbox){
                   var a = {title: file.name, doc_id: dummyId, document: true, type: file.type}
 
                   numberItems ++;
@@ -354,11 +357,11 @@
                   }
 
                   if(!dragAndDrop && !scope.documentAbsent && scope.lastClick != undefined){
-                    scope.lastClick.expand(); 
+                    scope.lastClick.expand();
                   } else if(scope.documentAbsent){
                     scope.documentAbsent = false;
-                  } 
-                } 
+                  }
+                }
                 // Normal mode
                 else{
                   $upload.upload({
@@ -389,10 +392,10 @@
                     }
 
                     if(!dragAndDrop && !scope.documentAbsent && scope.lastClick != undefined){
-                      scope.lastClick.expand(); 
+                      scope.lastClick.expand();
                     } else if(scope.documentAbsent){
                       scope.documentAbsent = false;
-                    } 
+                    }
 
                   }, function(d) {
                     scope.displayError("Failed to upload document:" +  file.name);
@@ -400,18 +403,18 @@
                   });
                 }
 
-                
+
 
               }
             }
 
             /*==========  Upload function  ==========*/
-            
+
             function uploadItems(){
               //IF the first element of the array is a directory we upload the dir
               if( scope.arrayFiles[0][0].type == "directory"){
                 uploadDir( scope.arrayFiles[0]);
-              } 
+              }
               //If the first element is a file we upload the file(s)
               else{
                 uploadFiles( scope.arrayFiles[0]);

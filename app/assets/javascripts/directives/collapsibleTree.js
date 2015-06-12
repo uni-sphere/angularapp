@@ -17,14 +17,14 @@
         link: function(scope, iElement, iAttrs) {
 
           // First we get the nodes
-        
+
           Restangular.one('nodes').get().then(function (nodes) {
             scope.nodes = nodes.plain();
             // scope.copyFlatData = Restangular.copy(nodes);
           }, function(){
             console.log("There getting the university name");
           });
-         
+
 
           // scope.dataChanged = false;
 
@@ -42,10 +42,10 @@
 
           // Folded nodes
           // Demo
-          if(scope.home){
+          if(scope.home || scope.sandbox){
             scope.foldedNodes = ["4"]
           }
-          // Normal version 
+          // Normal version
           else{
             scope.foldedNodes = $cookies.get('foldedNodes');
 
@@ -56,25 +56,25 @@
 
           // Active nodes
           // Demo
-          if(scope.home){
+          if(scope.home || scope.sandbox){
             scope.activeNodes = [["17","Histoire"],["9","S"],["3","Premiere"],["1","Sandbox"]]
           }
-          // Normal version 
+          // Normal version
           else{
             scope.activeNodes = $cookies.get('activeNodes');
 
             if( scope.activeNodes !== undefined ){
               scope.activeNodes = scope.activeNodes.split(',');
               scope.activeNodes = transformArrayInDouble(scope.activeNodes);
-            } 
+            }
           }
 
           //Node end
           // Demo
-          if(scope.home){
+          if(scope.home || scope.sandbox){
             scope.nodeEnd = ["17","Histoire"]
           }
-          // Normal version 
+          // Normal version
           else{
             scope.nodeEnd = $cookies.get('nodeEnd');
             if(scope.nodeEnd == "false"){
@@ -145,7 +145,7 @@
           //     console.log(scope.dataChanged)
           //     render(createTreeData(scope.copyFlatData), iElement, getCookieArray);
           //     // scope.dataChanged = false;
-          //   } 
+          //   }
           // })
 
           // scope.changeData = function(data){
@@ -160,7 +160,7 @@
           /*=======================================
           =            Update function            =
           =======================================*/
-          
+
           function update(source) {
             var duration = 750;
 
@@ -178,7 +178,7 @@
             // Enter any new nodes at the parent's previous position.
             var nodeEnter = node.enter().append("g")
               .attr("class", "node")
-              .attr("transform", function(d) { 
+              .attr("transform", function(d) {
                 return "translate(" + source.y0 + "," + source.x0 + ")";
               })
 
@@ -302,7 +302,7 @@
           /*======================================
           =            Open and Close            =
           ======================================*/
-          
+
           function openNode(d) {
             var clickedNode = d;
 
@@ -322,7 +322,7 @@
             findFoldedNodes(scope.root);
             colornodePath(scope.root);
 
-            if(!scope.home){
+            if(!scope.home && !scope.sandbox){
               $cookies.put('activeNodes', scope.activeNodes);
               $cookies.put('foldedNodes', scope.foldedNodes);
             }
@@ -333,7 +333,7 @@
 
 
           /*==========  Find the node that are collapsed and add them to cookies  ==========*/
-          
+
           function findFoldedNodes(d){
             if(d.children){
               d.children.forEach(findFoldedNodes);
@@ -345,7 +345,7 @@
           }
 
           /*==========  Find the node path and add it to active nodes ( in ordrer to color nodes)  ==========*/
-          
+
           function findActiveNodes(d){
             scope.activeNodes.push([d.num, d.name]);
             if(d.parent){
@@ -355,7 +355,7 @@
           }
 
           /*==========  Use activeNodes to color the nodes  ==========*/
-          
+
           function colornodePath(d) {
             d.active = false;
             if(intInDoubleArray(d.num,scope.activeNodes)){
@@ -367,14 +367,14 @@
           }
 
           /*==========  Save in cookies if the current node is an end node  ==========*/
-          
+
           function findNodeEnd(d){
             if(!d.children && !d._children){
               scope.nodeEnd = [d.num, d.name];
               // Demo mode
-              if(!scope.home){
+              if(!scope.home && !scope.sandbox){
                 $cookies.put('nodeEnd', [d.num, d.name]);
-              } 
+              }
             } else{
               scope.nodeEnd = false;
               $cookies.put('nodeEnd', false);
@@ -384,19 +384,19 @@
           /*=============================================
           =            Suppression of a node            =
           =============================================*/
-          
+
           function deleteNode(d){
             var nodeSelected = d;
 
             // Demo app
-            if(scope.home){
+            if(scope.home || scope.sandbox){
               var nodeToDelete = _.where(nodeSelected.parent.children, {id: nodeSelected.id});
               if (nodeToDelete){
                 nodeSelected.parent.children = _.without(nodeSelected.parent.children, nodeToDelete[0]);
               }
               update(nodeSelected);
             }
-            // If we are the app 
+            // If we are the app
             else{
               Restangular.all('nodes/' + d.num).remove().then(function() {
                 var nodeToDelete = _.where(nodeSelected.parent.children, {id: nodeSelected.id});
@@ -417,14 +417,14 @@
           /*==========================================
           =            Creation of a node            =
           ==========================================*/
-          
+
           function addNode(d){
 
             var nodeSelected = d
             var newBranch = {parent_id: d.num, name: "new"}
 
             // Demo app
-            if(scope.home){
+            if(scope.home || scope.sandbox){
               var a = {name: "new"}
 
               if( nodeSelected.children === undefined || nodeSelected.children == null ){
@@ -436,7 +436,7 @@
               update(nodeSelected);
             }
 
-            // Normal app 
+            // Normal app
             else{
               Restangular.all('nodes').post(newBranch).then(function(d) {
 
@@ -463,7 +463,7 @@
           /*========================================
           =            Rename of a node            =
           ========================================*/
-          
+
           function renameNode(d){
             var nodeSelected = d;
 
@@ -471,7 +471,7 @@
             if(result) {
               var nodeUpdate = {name: result}
 
-              if(scope.home){
+              if(scope.home || scope.sandbox){
                 nodeSelected.name = result;
                 update(nodeSelected);
               } else{
@@ -491,7 +491,7 @@
           /*=======================================
           =            Render function            =
           =======================================*/
-          
+
           function render(branch, iElement){
             svg.selectAll("*").remove();
 
@@ -526,7 +526,7 @@
           /*==========================================
           =            Collapse functions            =
           ==========================================*/
-          
+
           function collapseSelectively(d) {
             if (d.children){
               d.children.forEach(collapseSelectively);
@@ -573,7 +573,7 @@
           ========================================*/
 
           /*==========  flat data to nested data  ==========*/
-          
+
           function makeNested(flatData){
             var dataMap = flatData.reduce(function(map, node) {
               map[node.num] = node;
@@ -592,10 +592,10 @@
             });
             return treeData[0];
           }
-          
+
 
           /*==========  Compare objects  ==========*/
-          
+
           function compareObjects(x, y) {
             var objectId = false;
             for(var propertyName in x) {
@@ -681,8 +681,8 @@
                     if(compare){
                       objectId = compareObjects(a[i],b[j]);
                     };
-                  } 
-                } 
+                  }
+                }
               }
               return objectId;
             }
@@ -694,8 +694,8 @@
                 for(var i=0; i < a.length; i ++){
                   if(a[i].num == b[j].num){
                     idFound = true;
-                  } 
-                } 
+                  }
+                }
                 if(!idFound){
                   listObjectsId.push(b[j].num);
                 }

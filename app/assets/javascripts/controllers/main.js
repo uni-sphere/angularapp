@@ -6,27 +6,20 @@ angular
     $scope.sidebarMinified = true;
     $scope.accountForgoten = false;
 
-
-    //Check if the user is admin
-    // var admin = $cookies.get('unisphere_api_admin');
-
-   
-    // if(admin != undefined){
-    //   $scope.admin = true;
-    // }
-
-    // $scope.admin = true;
-
 		$scope.adminDeco = function(){
-			$auth.signOut()
-			.then(function(resp) {
-				$scope.admin = false;
-				console.log(resp);
-        $state.transitionTo('main.application');
-			})
-			.catch(function(resp) {
-				console.log(resp)
-			});
+      if(window.location.host == 'sandbox.unisphere.eu'){
+        $scope.admin = false;
+      } else{
+        $auth.signOut()
+        .then(function(resp) {
+          $scope.admin = false;
+          console.log(resp);
+          $state.transitionTo('main.application');
+        })
+        .catch(function(resp) {
+          console.log(resp)
+        });
+      }
 		}
 
     // $scope.inviteUser = ["clement@muller.uk.net","gabriel.muller.12@gmail.com"]
@@ -39,6 +32,7 @@ angular
       } else{
         $scope.home = false;
       }
+
     }();
 
     // Languages options
@@ -68,7 +62,7 @@ angular
       }
 			console.log($translate.use());
     }
-      
+
     // get university name for navbar
     Restangular.one('organization').get().then(function (university) {
       $scope.university = university.organization.name;
@@ -101,7 +95,7 @@ angular
       $scope.listError = [];
       $scope.showError = false;
     }
-    
+
     // $scope.displayError("This is just a test version. You can't download files");
 
 

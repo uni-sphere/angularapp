@@ -206,7 +206,7 @@ GEM
     minitest (5.5.1)
     multi_json (1.11.0)
     multi_xml (0.5.5)
-    mysql (2.9.1)
+    mysql2 (0.3.18)
     nenv (0.2.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -348,7 +348,7 @@ DEPENDENCIES
   fog
   font-awesome-rails
   guard-rspec
-  mysql
+  mysql2
   ng-rails-csrf
   omniauth
   puma

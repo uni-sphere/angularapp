@@ -17,7 +17,7 @@ angular
       if(nodeToDelete.$modelValue.document){
 
         // Demo mode
-        if($scope.home){
+        if($scope.home || $scope.sandbox){
           nodeToDelete.remove();
 
           if($scope.list.length == 0){
@@ -44,7 +44,7 @@ angular
       //delete the chapters
       else{
         // Demo mode
-        if($scope.home){
+        if($scope.home || $scope.sandbox){
           nodeToDelete.remove();
 
           if($scope.list.length == 0){
@@ -72,7 +72,7 @@ angular
     /*===========================================
     =            Create new chapter             =
     ===========================================*/
-    
+
     $scope.newSubItem = function(scope) {
 
       if(scope == undefined){
@@ -87,7 +87,7 @@ angular
         parent_id: nodeData.id,
       }
 
-      if($scope.home){
+      if($scope.home || $scope.sandbox){
         dummyId ++;
         if(nodeData.items == undefined){
           depth = 0
@@ -105,7 +105,7 @@ angular
         // Expands the containing folder
         if(!$scope.documentAbsent && scope!= undefined){
           scope.expand();
-        } 
+        }
         // Don't do it if we upload at the root
         else{
           $scope.documentAbsent = false;
@@ -130,7 +130,7 @@ angular
           // Expands the containing folder
           if(!$scope.documentAbsent && scope!= undefined){
             scope.expand();
-          } 
+          }
           // Don't do it if we upload at the root
           else{
             $scope.documentAbsent = false;
@@ -143,7 +143,7 @@ angular
 
         });
       }
-      
+
     };
 
 
@@ -170,7 +170,7 @@ angular
           var nodeUpdate = {title: result + "." + extension}
 
           // Demo version
-          if($scope.home){
+          if($scope.home || $scope.sandbox){
             itemToUpdate.title = result + "." + extension;
           }
           // Real version
@@ -188,7 +188,7 @@ angular
         }
       }
 
-      //If it is a chapter 
+      //If it is a chapter
       else{
         var chapterToUpdateId = itemToUpdate.id;
 
@@ -201,7 +201,7 @@ angular
           var nodeUpdate = {title: result, node_id: $scope.nodeEnd[0]}
 
           // Demo version
-          if($scope.home){
+          if($scope.home || $scope.sandbox){
             itemToUpdate.title = result;
           }
           // Real version

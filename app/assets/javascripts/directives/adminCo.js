@@ -19,6 +19,9 @@
           if ($cookies.get('auth_headers').indexOf("access-token") > -1) {
             scope.admin = true;
           }
+        } else if(window.location.host == 'sandbox.unisphere.eu'){
+          scope.sandbox = true
+          scope.admin = true
         } else {
           scope.admin = false;
         }

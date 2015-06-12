@@ -2,10 +2,10 @@
 angular
   .module('mainApp.controllers')
   .controller('FoldCtrl', ['$scope', 'Restangular', '$cookies', function ($scope, Restangular, $cookies) {
-    
+
     // Find the chapter that are folded
     // demo
-    if($scope.home){
+    if($scope.home || $scope.sandbox){
       var chapterFolded = ["0", "19"];
     }
     // Normal mode
