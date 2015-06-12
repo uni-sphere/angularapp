@@ -3,21 +3,22 @@
     'ngAnimate',
     'templates',
     'ngResource',
-    'ui.tree', 
+    'ui.tree',
     'mainApp.directives',
     'mainApp.controllers',
     'mainApp.filters',
     'ngCookies',
     'restangular',
     'angularFileUpload',
-    'angulartics', 
+    'angulartics',
     'angulartics.google.analytics',
     'pascalprecht.translate',
 		'ngDropdowns',
 		'ng-token-auth',
 		'ng-rails-csrf',
     'ui.router',
-    'ngMap'
+    'ngMap',
+    'angularSpinner'
   ])
   .config(function (
     $stateProvider,
@@ -108,7 +109,7 @@
 				.registerAvailableLanguageKeys(['fr'])
 			  .determinePreferredLanguage()
 			  .fallbackLanguage('en');
-      
+
       $stateProvider
 
         .state('main', {
@@ -144,7 +145,7 @@
        //    url: '/dashboard',
        //    templateUrl: 'dashboard/layout.html'
        //  })
-          
+
        //    // the default route when someone hits dashboard
        //    .state('dashboard.one', {
        //        url: '',
@@ -173,19 +174,19 @@
         return "http://api.unisphere.eu"
       }
     }
-		
+
 		//// AUTHENTICATION DEVISE
-		
+
 		$authProvider.configure({
 	  	apiUrl: getEnvironment()
 	  });
-		
+
 	  ////
 
     RestangularProvider.setBaseUrl(getEnvironment());
 
     // RestangularProvider.setDefaultHeaders({ 'Authorization': 'Token token=6632398822f1d84468ebde3c837338fb' });
-    
+
     RestangularProvider.setRequestInterceptor(function(element, operation, route, url) {
 
       // // SEND WHOLE TREE
@@ -214,6 +215,7 @@
   angular.module('mainApp.filters', []);
   angular.module('mainApp.controllers', []);
   angular.module('mainApp.directives', []);
+  angular.module('mainApp.services', []);
 
 })();
 

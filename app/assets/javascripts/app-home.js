@@ -3,13 +3,13 @@
     'ngAnimate',
     'templates',
     'ngResource',
-    'ui.tree', 
+    'ui.tree',
     'mainApp.directives',
     'mainApp.controllers',
     'mainApp.filters',
     'restangular',
     'angularFileUpload',
-    'angulartics', 
+    'angulartics',
     'angulartics.google.analytics',
     'pascalprecht.translate',
     'ngDropdowns',
@@ -29,19 +29,19 @@
       $translateProvider
         .translations('en', {
           HELP: 'Help',
-          
+
         })
         .translations('fr', {
           HELP: 'Aide',
           DROP: 'Glissez un document',
-         
+
           USERS_INVITED: 'Utilisateurs ajoutés'
         })
         .preferredLanguage('en')
         .registerAvailableLanguageKeys(['fr'])
         .determinePreferredLanguage()
         .fallbackLanguage('en');
-      
+
       $stateProvider
 
 
@@ -64,25 +64,26 @@
         return "http://api.unisphere.eu"
       }
     }
-    
+
     //// AUTHENTICATION DEVISE
-    
+
     $authProvider.configure({
       apiUrl: getEnvironment()
     });
-    
+
     ////
 
     RestangularProvider.setBaseUrl(getEnvironment());
 
     // RestangularProvider.setDefaultHeaders({ 'Authorization': 'Token token=6632398822f1d84468ebde3c837338fb' });
-    
-    
+
+
   });
 
   angular.module('mainApp.filters', []);
   angular.module('mainApp.controllers', []);
   angular.module('mainApp.directives', []);
+  angular.module('mainApp.services', []);
 
 })();
 

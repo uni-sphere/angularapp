@@ -6,7 +6,9 @@
       templateUrl: 'home/slide2.html',
       scope: {
         displayError: '=',
-        displaySuccess: '='
+        displaySuccess: '=',
+        activateSpinner: '=',
+        desactivateSpinner: '='
       },
       link: function(scope) {
 
@@ -31,11 +33,12 @@
 
         scope.$on('mapInitialized', function(evt, evtMap) {
           map = evtMap;
-          putMarkers();
+          addMarkers(scope.universities);
         });
 
-        function putMarkers(){
-          scope.universities.forEach(function(node) {
+        function addMarkers(list){
+          list.forEach(function(node) {
+            console.log(node)
             var pos = new google.maps.LatLng(node.latitude,node.longitude);
             var marker = new google.maps.Marker({
               position: pos,
@@ -61,7 +64,6 @@
           });
         }
 
-
         scope.centerMap = function(){
           if(navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -73,12 +75,6 @@
             displayError("Your browser doesn't support geolocation");
           }
         }
-
-        // scope.click = function(event) {
-        //   console.log("hello")
-        //   map.setZoom(8);
-        //   map.setCenter(marker.getPosition());
-        // }
 
         scope.placeChanged = function() {
           scope.place = this.getPlace();
@@ -161,6 +157,7 @@
 
         //Step 2 - Creation. Send info to backend
         scope.signup = function(){
+
           if(scope.homeSignup.$invalid){
             if(scope.homeSignup.$error.email){
               console.log("ERROR: Enter a valid email");
@@ -174,6 +171,9 @@
               scope.displayError("Uknown error");
             }
           } else{
+
+            scope.activateSpinner()
+
             var newUni = {
               name: scope.place.name,
               latitude: scope.place.geometry.location.A,
@@ -215,16 +215,31 @@
 
                   // Send email
                   Restangular.one('user/welcome').get({id: d.id, organization_id: newOrga.organization.id}).then(function () {
+                    scope.desactivateSpinner()
+
                     console.log("email sent");
                     scope.signupShow = false;
                     scope.displaySuccess(scope.place.name + " is now using unisphere! We sent you a mail at " + scope.adminEmail)
+
+                    // We remove the previous marker if there was one
+                    if(scope.selectedMarker){
+                      scope.selectedMarker.setMap(null);
+                    }
+
+                    // We add the new marker on the map
+                    addMarkers([newOrga.organization])
+
                   }, function(d){
+                    scope.desactivateSpinner()
+
                     console.log(d)
                     scope.displayError("Unknown error, try again")
                     console.log("Impossible to send a mail");
                   });
                 })
                 .catch(function(d) {
+                  scope.desactivateSpinner()
+
                   console.log(d);
                   console.log("Unable to signin the user");
                   scope.displayError("Unknown error, try again")

@@ -1,10 +1,14 @@
 <error-display list-error = 'listError' show-error = 'showError' ></error-display>
-<success-display show-successpop='showSuccesspop' success= ' success'></success-display>
+<success-display show-successpop='showSuccesspop' success= 'success'></success-display>
+
+<div id="loading-page" ng-show="currentlyLoading">
+  <span us-spinner="{radius:50, width:12, length: 16, color: 'white', position: 'fixed'}" spinner-key="spinner-1"></span>
+</div>
 
 <div ng-if="home" id="home-container">
   <slide1></slide1>
   <slide3 display-error = 'displayError'></slide3>
-  <slide2 display-error = 'displayError' display-success = 'displaySuccess'></slide2>
+  <slide2 desactivate-spinner = 'desactivateSpinner' activate-spinner = 'activateSpinner' display-error = 'displayError' display-success = 'displaySuccess'></slide2>
   <slide4></slide4>
   <slide5></slide5>
 </div>

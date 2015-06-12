@@ -19,6 +19,9 @@
 //= require	ng-token-auth/dist/ng-token-auth.min
 //= require ng-rails-csrf
 //= require ngmap/build/scripts/ng-map.min
+//= require spin.js/spin
+//= require angular-spinner/angular-spinner.min
+
 
 //= require angular-rails-templates
 //= require app

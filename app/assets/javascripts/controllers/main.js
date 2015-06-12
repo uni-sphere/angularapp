@@ -1,7 +1,7 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', '$translate', '$auth', '$state', function ($scope, browser, $cookies, $timeout, Restangular, $upload, $translate, $auth, $state) {
+  .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', '$translate', '$auth', '$state', 'usSpinnerService', function ($scope, browser, $cookies, $timeout, Restangular, $upload, $translate, $auth, $state, usSpinnerService) {
 
     $scope.sidebarMinified = true;
     $scope.accountForgoten = false;
@@ -94,6 +94,16 @@ angular
     $scope.hideError = function(){
       $scope.listError = [];
       $scope.showError = false;
+    }
+
+    $scope.activateSpinner = function(){
+      usSpinnerService.spin('spinner-1');
+      $scope.currentlyLoading = true
+    }
+
+    $scope.desactivateSpinner = function(){
+      usSpinnerService.stop('spinner-1');
+      $scope.currentlyLoading = false
     }
 
     // $scope.displayError("This is just a test version. You can't download files");
