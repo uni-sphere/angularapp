@@ -10,18 +10,20 @@ class OrganizationsController < ApplicationController
     
   def create
     organization = Organization.new(name: params[:name], latitude: params[:latitude], longitude: params[:longitude], place_id: params[:place_id], website: params[:website])
-    node = organization.nodes.new(name: params[:name], parent_id: 0)
-    firstchild = organization.nodes.new(name: 'First Level')
-    secondchild = organization.nodes.new(name: 'Second Level')
-    if organization.save and node.save
-      create_pointer(organization.subdomain)
-      firstchild.parent_id = node.id
-      secondchild.parent_id = node.id
+    if organization.save
+      node = organization.nodes.new(name: params[:name], parent_id: 0)
+      node.save
+      firstchild = organization.nodes.new(name: 'First Level', parent_id: node.id)
+      secondchild = organization.nodes.new(name: 'Second Level', parent_id: node.id)
       firstchild.save
       secondchild.save
-      Rollbar.info("Organization created", organization: @organization.name)
+      create_pointer(organization.subdomain)
+      Rollbar.info("Organization created", organization: organization.name)
       render json: { organization: organization, url: "http://#{organization.subdomain}.unisphere.eu" }.to_json, status: 201, location: organization
     else
+      logger.info '###################'
+      logger.info node.errors.inspect
+      logger.info organization.errors.inspect
       send_error('Problem occured while organization creation', '500')
       Rollbar.error('Organization creation', name: organization.name)
     end

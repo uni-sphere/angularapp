@@ -41,15 +41,14 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'spring-commands-rspec'
   gem 'rb-fsevent'
+  gem 'sqlite3'
 end
 
-# db
-gem 'sqlite3'
 
 # doc
 gem 'railroady'
 
 group :production do
-  gem 'mysql'
+  gem 'mysql2'
 end
 

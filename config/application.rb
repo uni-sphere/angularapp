@@ -31,7 +31,9 @@ module Uni2
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
     
-    config.encoding = "utf-8"
+    # Encoding.default_external = Encoding::UTF_8
+    # Encoding.default_internal = Encoding::UTF_8
+    # config.encoding = utf8
     
     config.to_prepare do
       DeviseController.respond_to :html, :json

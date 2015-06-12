@@ -25,4 +25,4 @@ production:
   database: db/production.sqlite3
   pool: 5
   timeout: 10000
-  encoding: utf-8
+  encoding: utf8
