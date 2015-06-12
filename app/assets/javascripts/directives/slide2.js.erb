@@ -45,6 +45,14 @@
               place_id: node.place_id
             });
             google.maps.event.addListener(marker, 'click', function() {
+
+              if(scope.selectedMarkerPerso){
+                scope.selectedMarkerPerso.setAnimation(null);
+              }
+
+              scope.selectedMarkerPerso = marker;
+              marker.setAnimation(google.maps.Animation.BOUNCE);
+
               map.setCenter(marker.getPosition());
               zoomMap(9);
             });
