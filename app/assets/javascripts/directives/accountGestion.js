@@ -3,7 +3,7 @@
 
   angular.module('mainApp.directives')
   .directive('accountGestion', [ '$auth', 'Restangular', function($auth, Restangular) {
-    
+
     return {
       restrict: 'E',
       templateUrl: 'main/account-gestion.html',
@@ -13,11 +13,11 @@
         hideError: '=',
         accountForgotten: '=',
         accountSignup: '=',
-        displaySuccess: '='
+        displaySuccess: '=',
+        emailInput: '=',
+        accountForgottenInput: '='
       },
       link: function(scope, element) {
-
-        
 
         scope.closeAccountSignup = function(){
           scope.accountSignup = false;
@@ -26,36 +26,28 @@
           scope.accountForgotten = false;
         }
 
-       
-
         // Account forgotten
         scope.resetAccount = function(){
           Restangular.one('organization/is_signed_up').get({email: scope.accountForgottenInput}).then(function (signup) {
-            if(signup.response == true){
-              var credentials = {
-                email: scope.accountForgottenInput
-              };
+            var credentials = {
+              email: scope.accountForgottenInput
+            };
 
-              $auth.requestPasswordReset(credentials)
-              .then(function(resp) {
-                console.log("Password has been reset");
-                scope.accountForgotten = false;
-                scope.displaySuccess("We sent you an email");
-              })
-              .catch(function(resp) {
-                console.log("Unknown error");
-                console.log(resp);
-                scope.displayError("Unknown error");
-              });
-			    	} else {
-              console.log("You misstyped your email");
-              scope.displayError("You misstyped your email");
-              scope.passwordInput = "";
-            }
+            $auth.requestPasswordReset(credentials)
+            .then(function(resp) {
+              console.log("Password has been reset");
+              scope.accountForgotten = false;
+              scope.displaySuccess("We sent you an email");
+            })
+            .catch(function(resp) {
+              console.log("Unknown error");
+              console.log(resp);
+              scope.displayError("Unknown error");
+            });
           }, function(d){
-            console.log("Error while trying to reset the account");
+            console.log("This email doesn't exist");
             console.log(d);
-            scope.displayError("There was an error, try again");
+            scope.displayError("This email doesn't exist");
           });
         }
 

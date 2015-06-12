@@ -99,8 +99,8 @@
                 node.setAnimation(google.maps.Animation.BOUNCE);
               }
             })
-          } 
-          // If the school doesn't exist 
+          }
+          // If the school doesn't exist
           else{
 
             // Gestion of popup
@@ -133,8 +133,8 @@
         /*=============================================
         =            Creation of a new uni            =
         =============================================*/
-        
-        
+
+
         // Step 1 - Look up for uni / extract url
         scope.findUrl = function(){
           scope.showNewSchool = false;
@@ -182,15 +182,15 @@
               };
 
               $auth.submitRegistration(credentials)
-              .then(function(resp) { 
+              .then(function(resp) {
                 console.log("User signup");
-                
+
                 // log in after sign in
                 var login = {
                   email: scope.adminEmail,
                   password: scope.adminPassword
                 };
-                
+
                 $auth.submitLogin(login)
                 .then(function(d) {
                   console.log("User login");
@@ -211,9 +211,9 @@
                   console.log("Unable to signin the user");
                   scope.displayError("Unknown error, try again")
                 });
-                
+
               })
-              .catch(function(d) { 
+              .catch(function(d) {
                 console.log(d);
                 if(d.status == 403){
                   console.log("Your email account is already bound to another organization");
@@ -232,20 +232,16 @@
                 });
 
               });
-             
+
 
             }, function(d){
-              console.log("merde alors");
+              console.log("Impossible to create a subdomain for " + scope.place.name + ", try again");
               console.log(d);
               scope.displayError("Impossible to create a subdomain for " + scope.place.name + ", try again");
               scope.adminPassword = "";
             });
 
           }
-
-
-        
-
         }
 
         scope.closePopupMap = function(){
@@ -254,11 +250,11 @@
           scope.subdomainCreated = false;
           scope.signupShow = false;
         }
-        
+
         /*=================================
         =            functions            =
         =================================*/
-        
+
         function findPlace(place){
           var uni = false;
           scope.universities.forEach(function(node) {

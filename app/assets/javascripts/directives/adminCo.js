@@ -9,7 +9,8 @@
         admin: '=',
         displayError: '=',
         hideError: '=',
-        accountForgotten: '='
+        accountForgotten: '=',
+        accountForgottenInput: '='
       },
       link: function(scope) {
 
@@ -29,16 +30,18 @@
             scope.open = true;
           }
         }
-        
+
         // PASSWORD FORGOTTEN
         scope.passwordForgotten = function() {
+          scope.accountForgottenInput = scope.emailInput
+          console.log(scope.accountForgottenInput)
           scope.accountForgotten = true;
         }
 
         scope.signupRequest = function(){
           scope.displayError("This function is not yet available. Ask one of your colleage to invite you!");
         }
-        
+
         scope.adminCoAttempt = function(){
 
           Restangular.one('organization/is_signed_up').get({email: scope.emailInput}).then(function (signup) {
@@ -48,7 +51,7 @@
                 email: scope.emailInput,
                 password: scope.passwordInput
               };
-							
+
               $auth.submitLogin(credentials)
               .then(function(resp) {
                 scope.admin = true;
@@ -66,8 +69,8 @@
                 }
                 scope.passwordInput = "";
               });
-							
-            } 
+
+            }
             // This email doesnt correspond to an admin of this orga
             else{
               console.log("You misstyped your email");
@@ -80,7 +83,7 @@
             scope.displayError("There was an error, try to login again");
             scope.passwordInput = "";
           });
-          
+
         }
       }
 
