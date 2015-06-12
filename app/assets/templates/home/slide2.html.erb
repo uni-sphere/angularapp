@@ -1,15 +1,15 @@
 <div id="slide2" class="slide">
 
   <div class="slide-title">Find your university</div>
-  <map 
-    center="[48.46, 7.48]" 
+  <map
+    center="[48.46, 7.48]"
     disable-default-u-i="true"
     disable-double-click-zoom="true"
     draggable="true"
     draggable-cursor="url(http://www.google.com/intl/en_ALL/mapfiles/openhand.cur), auto"
     dragging-cursor="move"
     keyboard-shortcuts="false"
-    zoom="6" 
+    zoom="6"
     max-zoom="12"
     min-zoom="4"
     tilt="45"
@@ -27,13 +27,13 @@
       <div id="location" ng-show="geolocation" ng-click="centerMap()" class="fa fa-location-arrow"></div>
       <div id="uni-input-form">
         <!-- <button id="location-button" class="">ll</button> -->
-        <input places-auto-complete size=80 
-          ng-model="address" 
+        <input places-auto-complete size=80
+          ng-model="address"
           types= ['establishment']
-          on-place-changed="placeChanged(place)" 
+          on-place-changed="placeChanged(place)"
           class="search-input home-input"
           placeholder="School name"
-        /> 
+        />
       </div>
     </div>
   </div>
@@ -43,7 +43,7 @@
     <div class="school-header">{{place.name}} already uses Unisphere<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
     <div class="school-display">
       <span class="school-display-row-center">{{place.formatted_address}} </span>
-      <span class="school-display-row-center"><a class="school-link" target="_blank" ng-href="http://{{showExistingSchool.url}}">http://{{showExistingSchool.url}}</a></span>
+      <span class="school-display-row-center"><a class="school-link" target="_blank" ng-href="{{showExistingSchool}}">{{showExistingSchool}}</a></span>
     </div>
     <div class="school-display-bg"></div>
   </div>

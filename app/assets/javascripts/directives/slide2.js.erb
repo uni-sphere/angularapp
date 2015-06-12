@@ -269,7 +269,7 @@
           var uni = false;
           scope.universities.forEach(function(node) {
             if(node.place_id == place.place_id){
-              uni = node;
+              uni = "http://" + node.subdomain + ".unisphere.eu";
             }
           });
           return uni
