@@ -32,7 +32,6 @@
         scope.$on('mapInitialized', function(evt, evtMap) {
           map = evtMap;
           putMarkers();
-          // marker = map.markers[0];
         });
 
         function putMarkers(){
@@ -45,9 +44,15 @@
               icon: '<%= asset_path "pin-colleg.png" %>',
               place_id: node.place_id
             });
+            google.maps.event.addListener(marker, 'click', function() {
+              map.setCenter(marker.getPosition());
+              zoomMap(9);
+            });
+
             scope.markerPerso.push(marker);
           });
         }
+
 
         scope.centerMap = function(){
           if(navigator.geolocation) {
@@ -61,9 +66,14 @@
           }
         }
 
+        // scope.click = function(event) {
+        //   console.log("hello")
+        //   map.setZoom(8);
+        //   map.setCenter(marker.getPosition());
+        // }
+
         scope.placeChanged = function() {
           scope.place = this.getPlace();
-          // console.log(scope.place);
           scope.showExistingSchool = findPlace(this.getPlace());
           scope.showNewSchoolUrl = false;
           scope.subdomainCreated = false;
