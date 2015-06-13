@@ -13,7 +13,7 @@ angular
       var chapterFolded = ipCookie('chapterFolded');
 
       if( chapterFolded != undefined ){
-        chapterFolded = chapterFolded.split(',');
+        // chapterFolded = chapterFolded.split(',');
         if(!isInArray(0,chapterFolded)){
           chapterFolded.push("0");
         }
@@ -52,7 +52,6 @@ angular
         }
       }
     };
-
     // Add folded chapters to cookie
     function addToChapterFolded(nb){
       if(chapterFolded == undefined){

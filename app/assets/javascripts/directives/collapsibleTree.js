@@ -43,44 +43,33 @@
           // Folded nodes
           // Demo
           if(scope.home || scope.sandbox){
-            scope.foldedNodes = ["4"]
+            scope.foldedNodes = [4]
           }
           // Normal version
           else{
             scope.foldedNodes = ipCookie('foldedNodes');
-
-            if( scope.foldedNodes !== undefined ){
-              scope.foldedNodes = scope.foldedNodes.split(',');
-            }
           }
 
           // Active nodes
           // Demo
           if(scope.home || scope.sandbox){
-            scope.activeNodes = [["17","Histoire"],["9","S"],["3","Premiere"],["1","Sandbox"]]
+            scope.activeNodes = [[17,"Histoire"],[9,"S"],[3,"Premiere"],[1,"Sandbox"]]
           }
           // Normal version
           else{
             scope.activeNodes = ipCookie('activeNodes');
-
-            if( scope.activeNodes !== undefined ){
-              scope.activeNodes = scope.activeNodes.split(',');
-              scope.activeNodes = transformArrayInDouble(scope.activeNodes);
-            }
           }
 
           //Node end
           // Demo
           if(scope.home || scope.sandbox){
-            scope.nodeEnd = ["17","Histoire"]
+            scope.nodeEnd = [17,"Histoire"]
           }
           // Normal version
           else{
             scope.nodeEnd = ipCookie('nodeEnd');
             if(scope.nodeEnd == "false"){
               scope.nodeEnd = false;
-            } else if(scope.nodeEnd != undefined){
-              scope.nodeEnd = scope.nodeEnd.split(',');
             }
           }
 
@@ -185,10 +174,13 @@
             nodeEnter.append("circle")
               .attr("class", "circleCollapse")
               .attr("r", 1e-6)
-              // .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
+              .style("stroke", "cornflowerblue")
+              .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff" })
               .on("click", openNode)
 
             if(!scope.admin){
+
+              // Label of the node. When clicked it opens the node
               nodeEnter.append("text")
               .attr("class", function(d){return typeof d.parent === 'object' ? "nameNode" : ""})
               .attr("x", function(d) { return d.children || d._children ? -15 : 10; })
@@ -200,6 +192,7 @@
             }
 
             if(scope.admin){
+              // Label of the node. When clicked it opens the rename
               nodeEnter.append("text")
                 .attr("class", function(d){return typeof d.parent === 'object' ? "nameNode" : ""})
                 .attr("x", function(d) { return d.children || d._children ? -15 : 10; })
@@ -209,7 +202,7 @@
                 .text(function(d) { return d.name; })
                 .on("click", renameNode)
 
-
+              // Little + to add a node
               nodeEnter.append("text")
                 .attr("class", "addNode")
                 .attr("x", "-16px")
@@ -217,8 +210,10 @@
                 .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
                 .text("+")
                 .style("fill-opacity", 1e-6)
+                .style("fill", "#F76565")
                 .on("click", addNode)
 
+              // Little - to remove a node
               nodeEnter.append("text")
                 .attr("class", "deleteNode")
                 .attr("x", "10px")
@@ -226,43 +221,52 @@
                 .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
                 .text("x")
                 .style("fill-opacity", 1e-6)
+                .style("fill", "cornflowerblue")
                 .on("click", deleteNode)
             }
 
             // Transition nodes to their new position.
+            // We make opace or inccrease the size of all elements
+
             var nodeUpdate = node.transition()
               .duration(duration)
               .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
             nodeUpdate.select("text.deleteNode")
-              .style("fill", "#F76565")
               .style("fill-opacity", 1)
 
             nodeUpdate.select("text.addNode")
-              .attr("r", function(d){ return d._children ? 0 : 3; })
-              .style("fill", "cornflowerblue")
-              .style("fill-opacity",  function(d){ return d._children ? 1e-6 : 1; })
+              .style("fill-opacity", 1)
 
             nodeUpdate.select("circle.circleCollapse")
               .attr("r", 6)
-              .style("stroke", "cornflowerblue")
-              .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+              .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff" })
 
             nodeUpdate.select("text.nameNode")
               .style("fill-opacity", 1)
               .text(function(d) { return d.name; });
 
             // Transition exiting nodes to the parent's new position.
+            // We reduce or make transparent all elements
+
             var nodeExit = node.exit().transition()
               .duration(duration)
               .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
               .remove();
 
-              nodeExit.select("circle.circleCollapse")
-              .attr("r", 1e-6);
+            nodeExit.select("text.deleteNode")
+              .style("fill-opacity", 1e-6)
+
+            nodeExit.select("text.addNode")
+              .style("fill-opacity", 1e-6)
+
+            nodeExit.select("circle.circleCollapse")
+              .attr("r", 1e-6)
+              .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff" })
 
             nodeExit.select("text.nameNode")
               .style("fill-opacity", 1e-6);
+
 
             // Update the links…
             var link = svg.selectAll("path.link")
@@ -510,6 +514,7 @@
             scope.diagonal = d3.svg.diagonal()
               .projection(function(d) { return [d.y, d.x]; });
 
+            // console.log(scope.foldedNodes)
             if(scope.foldedNodes == undefined){
               branch.children.forEach(collapseAll);
             } else{
@@ -561,8 +566,8 @@
           ===================================*/
           function colorActiveNodes(d) {
             if(isInDoubleArray(d.num,scope.activeNodes)){
-                d.active = true;
-              }
+              d.active = true;
+            }
             if (d.children){
               d.children.forEach(colorActiveNodes);
             }
@@ -612,7 +617,7 @@
           }
 
           function isInArray(value, array) {
-            return array.indexOf(value.toString()) > -1;
+            return array.indexOf(value) > -1
           }
 
           function intInArray(value, array) {
