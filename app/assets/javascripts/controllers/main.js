@@ -1,7 +1,7 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('MainCtrl', ['$scope', 'browser', '$cookies','$timeout', 'Restangular', '$upload', '$translate', '$auth', '$state', 'usSpinnerService', function ($scope, browser, $cookies, $timeout, Restangular, $upload, $translate, $auth, $state, usSpinnerService) {
+  .controller('MainCtrl', ['$scope', 'browser','$timeout', 'Restangular', '$upload', '$translate', '$auth', '$state', 'usSpinnerService', function ($scope, browser, $timeout, Restangular, $upload, $translate, $auth, $state, usSpinnerService) {
 
     $scope.sidebarMinified = true;
     $scope.accountForgoten = false;

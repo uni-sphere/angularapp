@@ -1,3 +1,6 @@
+if typeof module != 'undefined' and typeof exports != 'undefined' and module.exports == exports
+  module.exports = 'ng-token-auth'
+
 angular.module('ng-token-auth', ['ipCookie'])
   .provider('$auth', ->
     configs =
@@ -501,6 +504,8 @@ angular.module('ng-token-auth', ['ipCookie'])
             # remove any assumptions about current configuration
             @deleteData('currentConfigName')
 
+            $timeout.cancel @timer if @timer?
+
             # kill cookies, otherwise session will resume on page reload
             # setting this value to null will force the validateToken method
             # to re-validate credentials with api server when validate is called
@@ -561,7 +566,8 @@ angular.module('ng-token-auth', ['ipCookie'])
               when 'localStorage'
                 $window.localStorage.setItem(key, JSON.stringify(val))
               else
-                ipCookie(key, val, {path: '/'})
+                expiry = @getConfig().parseExpiry(val || {})
+                ipCookie(key, val, {path: '/', expires: expiry})
 
 
           # abstract persistent data retrieval
@@ -584,7 +590,20 @@ angular.module('ng-token-auth', ['ipCookie'])
           # persist authentication token, client id, uid
           setAuthHeaders: (h) ->
             newHeaders = angular.extend((@retrieveData('auth_headers') || {}), h)
-            @persistData('auth_headers', newHeaders)
+            result = @persistData('auth_headers', newHeaders)
+
+            expiry = @getExpiry()
+            now    = new Date().getTime()
+
+            if expiry > now
+              $timeout.cancel @timer if @timer?
+
+              @timer = $timeout (=>
+                @validateUser {config: @getSavedConfig()}
+              ), parseInt (expiry - now) / 1000
+
+            result
+
 
 
           # ie8 + ie9 cannot use xdomain postMessage
@@ -723,7 +742,7 @@ angular.module('ng-token-auth', ['ipCookie'])
     # disable IE ajax request caching for each of the necessary http methods
     angular.forEach(httpMethods, (method) ->
       $httpProvider.defaults.headers[method] ?= {}
-      $httpProvider.defaults.headers[method]['If-Modified-Since'] = '0'
+      $httpProvider.defaults.headers[method]['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT'
     )
   ])
 

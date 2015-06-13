@@ -2,11 +2,12 @@
 //= require angular
 //= require angular-animate
 //= require angular-ui-router
+//= require angular-cookies
+//= require angular-cookie
 //= require d3
 //= require angular-resource
 //= require angular-ui-tree
 //= require underscore
-//= require angular-cookies
 //= require ng-file-upload/angular-file-upload-shim
 //= require ng-file-upload/angular-file-upload
 //= require restangular
@@ -16,7 +17,7 @@
 //= require	angular-translate/angular-translate.min
 //= require	angular-dropdowns/dist/angular-dropdowns
 //= require	metrics-graphics/dist/metricsgraphics.min
-//= require	ng-token-auth/dist/ng-token-auth.min
+//= require	ng-token-auth/dist/ng-token-auth
 //= require ng-rails-csrf
 //= require ngmap/build/scripts/ng-map.min
 //= require spin.js/spin

@@ -43,6 +43,7 @@ This project comes bundled with a test app. You can run the demo locally by foll
 * [Events](#events)
   * [`auth:login-success`](#authlogin-success)
   * [`auth:login-error`](#authlogin-error)
+  * [`auth:invalid`](#authinvalid)
   * [`auth:validation-success`](#authvalidation-success)
   * [`auth:validation-error`](#authvalidation-error)
   * [`auth:logout-success`](#authlogout-success)
@@ -61,6 +62,7 @@ This project comes bundled with a test app. You can run the demo locally by foll
   * [`auth:account-update-error`](#authaccount-update-error)
   * [`auth:account-destroy-success`](#authaccount-destroy-success)
   * [`auth:account-destroy-error`](#authaccount-destroy-error)
+  * [`auth:session-expired`](#authsession-expired)
 * [Using alternate response formats](#using-alternate-response-formats)
 * [Multiple user types](#using-multiple-user-types)
 * [File uploads](#file-uploads)
@@ -74,6 +76,7 @@ This project comes bundled with a test app. You can run the demo locally by foll
 * [Notes on Batch Requests](#about-batch-requests)
 * [Notes on Token Formatting](#identifying-users-on-the-server)
 * [Internet Explorer Caveats](#internet-explorer)
+* [FAQ](#faq)
 * [Development](#development)
 * [Contribution Guidelines](#contributing)
 * [Alteratives to This Module](#alternatives)
@@ -84,6 +87,8 @@ This project comes bundled with a test app. You can run the demo locally by foll
 This module relies on [token based authentication](http://stackoverflow.com/questions/1592534/what-is-token-based-authentication). This requires coordination between the client and the server. [Diagrams](#conceptual) are included to illustrate this relationship.
 
 This module was designed to work out of the box with the outstanding [devise token auth](https://github.com/lynndylanhurley/devise_token_auth) gem, but it's seen use in other environments as well ([go](http://golang.org/), [gorm](https://github.com/jinzhu/gorm) and [gomniauth](https://github.com/stretchr/gomniauth) for example).
+
+Not using AngularJS? Use [jToker](https://github.com/lynndylanhurley/j-toker) instead!
 
 **About security**: [read here](http://stackoverflow.com/questions/18605294/is-devises-token-authenticatable-secure) for more information on securing your token auth system. The [devise token auth](https://github.com/lynndylanhurley/devise_token_auth#security) gem has adequate security measures in place, and the gem works seamlessly with this module.
 
@@ -146,9 +151,9 @@ angular.module('myApp', ['ng-token-auth'])
       accountUpdatePath:       '/auth',
       accountDeletePath:       '/auth',
       confirmationSuccessUrl:  window.location.href,
-      passwordResetPath:       '/auth/password'
-      passwordUpdatePath:      '/auth/password'
-      passwordResetSuccessUrl: window.location.href
+      passwordResetPath:       '/auth/password',
+      passwordUpdatePath:      '/auth/password',
+      passwordResetSuccessUrl: window.location.href,
       emailSignInPath:         '/auth/sign_in',
       storage:                 'cookies',
       proxyIf:                 function() { return false; },
@@ -239,7 +244,7 @@ This method emits the following events:
 #### Example use in a controller
 ~~~javascript
 angular.module('ngTokenAuthTestApp')
-  .controller('IndexCtrl', function($auth) {
+  .controller('IndexCtrl', function($scope, $auth) {
     $scope.handleBtnClick = function() {
       $auth.authenticate('github')
         .then(function(resp) { 
@@ -269,6 +274,7 @@ This method will broadcast the following events:
 * On page load:
   * [`auth:validation-success`](#authvalidation-success)
   * [`auth:validation-error`](#authvalidation-error)
+  * [`auth:session-expired`](#authsession-expired)
 * When visiting email confirmation links:
   * [`auth:email-confirmation-success`](#authemail-confirmation-success)
   * [`auth:email-confirmation-error`](#authemail-confirmation-error)
@@ -333,7 +339,7 @@ This method broadcasts the following events:
 ##### Example use in a controller:
 ~~~javascript
 angular.module('ngTokenAuthTestApp')
-  .controller('IndexCtrl', function($auth) {
+  .controller('IndexCtrl', function($scope, $auth) {
     $scope.handleRegBtnClick = function() {
       $auth.submitRegistration($scope.registrationForm)
         .then(function(resp) { 
@@ -383,7 +389,7 @@ This method broadcasts the following events:
 ##### Example use in a controller:
 ~~~javascript
 angular.module('ngTokenAuthTestApp')
-  .controller('IndexCtrl', function($auth) {
+  .controller('IndexCtrl', function($scope, $auth) {
     $scope.handleLoginBtnClick = function() {
       $auth.submitLogin($scope.loginForm)
         .then(function(resp) { 
@@ -424,7 +430,7 @@ This method broadcasts the following events:
 ##### Example use in a controller:
 ~~~javascript
 angular.module('ngTokenAuthTestApp')
-  .controller('IndexCtrl', function($auth) {
+  .controller('IndexCtrl', function($scope, $auth) {
     $scope.handleSignOutBtnClick = function() {
       $auth.signOut()
         .then(function(resp) { 
@@ -455,7 +461,7 @@ This method broadcasts the following events:
 ##### Example use in a controller:
 ~~~javascript
 angular.module('ngTokenAuthTestApp')
-  .controller('IndexCtrl', function($auth) {
+  .controller('IndexCtrl', function($scope, $auth) {
     $scope.handlePwdResetBtnClick = function() {
       $auth.requestPasswordReset($scope.pwdResetForm)
         .then(function(resp) { 
@@ -496,7 +502,7 @@ This method broadcasts the following events:
 ##### Example use in a controller:
 ~~~javascript
 angular.module('ngTokenAuthTestApp')
-  .controller('IndexCtrl', function($auth) {
+  .controller('IndexCtrl', function($scope, $auth) {
     $scope.handleUpdatePasswordBtnClick = function() {
       $auth.updatePassword($scope.updatePasswordForm)
         .then(function(resp) { 
@@ -514,12 +520,12 @@ angular.module('ngTokenAuthTestApp')
 <form ng-submit="updatePassword(changePasswordForm)" role="form" ng-init="changePasswordForm = {}">
   <div class="form-group">
     <label>password</label>
-    <input type="password" name="password" ng-model="changePasswordForm.password" required="required" class="form-control"/>
+    <input type="password" name="password" ng-model="changePasswordForm.password" required="required" class="form-control">
   </div>
 
   <div class="form-group">
     <label>password confirmation</label>
-    <input type="password" name="password_confirmation" ng-model="changePasswordForm.password_confirmation" required="required"/>
+    <input type="password" name="password_confirmation" ng-model="changePasswordForm.password_confirmation" required="required" class="form-control">
   </div>
 
   <button type="submit">Change your password</button>
@@ -551,7 +557,7 @@ This method broadcasts the following events:
 ##### Example use in a controller:
 ~~~javascript
 angular.module('ngTokenAuthTestApp')
-  .controller('IndexCtrl', function($auth) {
+  .controller('IndexCtrl', function($scope, $auth) {
     $scope.handleUpdateAccountBtnClick = function() {
       $auth.updateAccount($scope.updateAccountForm)
         .then(function(resp) { 
@@ -577,7 +583,7 @@ This method broadcasts the following events:
 ##### Example use in a controller:
 ~~~javascript
 angular.module('ngTokenAuthTestApp')
-  .controller('IndexCtrl', function($auth) {
+  .controller('IndexCtrl', function($scope, $auth) {
     $scope.handleDestroyAccountBtnClick = function() {
       $auth.destroyAccount()
         .then(function(resp) { 
@@ -633,7 +639,10 @@ $rootScope.$on('auth:login-error', function(ev, reason) {
 Broadcast when a user's token is successfully verified using the [`$auth.validateUser`](#authvalidateuser) method.
 
 ###auth:validation-error
-Broadcast when a user's token fails validation using the [`$auth.validateUser`](#authvalidateuser) method.
+Broadcast when the [`$auth.validateUser`](#authvalidateuser) method fails (network error, etc). Note that this does not indicate an invalid token, but an error in the validation process. See the [`auth:invalid`](#authinvalid) event for invalid token notification.
+
+###auth:invalid
+Broadcast when a user's token fails validation using the [`$auth.validateUser`](#authvalidateuser) method. This is different from the [`auth:validation-error`](#authvalidation-error) in that it indicates an invalid token, whereas the [`auth:validation-error`](#authvalidation-error) event indicates an error in the validation process.
 
 ###auth:logout-success
 Broadcast after user is successfully logged out using the [`$auth.signOut`](#authsignout) method. This event does not contain a message.
@@ -690,7 +699,7 @@ $scope.$on('auth:email-confirmation-success', function(ev, user) {
 ~~~
 
 ###auth:email-confirmation-error
-Broadcast when a user arrives from a link contained in a password-reset email, but the confirmation token fails to validate.
+Broadcast when a user arrives from a link contained in a confirmation email, but the confirmation token fails to validate.
 
 This event is broadcast by the [`$auth.validateUser`](#authvalidateuser) method.
 
@@ -809,6 +818,16 @@ Broadcast when requests resulting from the [`$auth.destroyAccount`](#authdestroy
 ~~~javascript
 $scope.$on('auth:account-destroy-error', function(ev, reason) {
   alert("Account deletion failed: " + reason.errors[0]);
+});
+~~~
+
+###auth:session-expired
+Broadcast when the [`$auth.validateUser`](#authvalidateuser) method fails because a user's token has expired.
+
+##### Example:
+~~~javascript
+$scope.$on('auth:session-expired', function(ev) {
+  alert('Session has expired');
 });
 ~~~
 
@@ -1247,6 +1266,16 @@ These steps are taken automatically when using this module with IE8+.
 
 ---
 
+# FAQ
+
+### Why does this module use `ipCookies` instead of `ngCookies`?
+
+It's impossible to control cookies' path values using `ngCookies`. This results in the creation of multiple auth tokens, and it becomes impossible to send the correct token to the API.
+
+The only options were to re-implement cookie storage from scratch, or to use the [ipCookie module](https://github.com/ivpusic/angular-cookie). The ipCookie module seemed like the better choice, and it's been working well so far.
+
+Please direct complaints regarding this problem to [this angular issue](https://github.com/angular/angular.js/issues/1786).
+
 # Development
 
 ### Running the dev server
@@ -1306,6 +1335,9 @@ Thanks to the following contributors:
 * [@jasonswett](https://github.com/jasonswett)
 * [@m2omou](https://github.com/m2omou)
 * [@smarquez1](https://github.com/smarquez1)
+* [@jartek](https://github.com/jartek)
+* [@flaviogranero](https://github.com/flaviogranero)
+* [@askobara](https://github.com/askobara)
 
 Special thanks to [@jasonswett](https://github.com/jasonswett) for [this helpful guide](https://www.airpair.com/ruby-on-rails-4/posts/authentication-with-angularjs-and-ruby-on-rails)!
 

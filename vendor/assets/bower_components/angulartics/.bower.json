@@ -38,6 +38,6 @@
     "commit": "1b8bbf0608bec2c23105e2b31e86293e9c0ed5d6"
   },
   "_source": "git://github.com/luisfarzati/angulartics.git",
-  "_target": "0.17.2",
+  "_target": "~0.17.2",
   "_originalSource": "angulartics"
 }

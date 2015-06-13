@@ -38,7 +38,6 @@
 
         function addMarkers(list){
           list.forEach(function(node) {
-            console.log(node)
             var pos = new google.maps.LatLng(node.latitude,node.longitude);
             var marker = new google.maps.Marker({
               position: pos,

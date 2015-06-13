@@ -13,9 +13,9 @@
     'angulartics',
     'angulartics.google.analytics',
     'pascalprecht.translate',
-		'ngDropdowns',
-		'ng-token-auth',
-		'ng-rails-csrf',
+    'ngDropdowns',
+    'ng-token-auth',
+    'ng-rails-csrf',
     'ui.router',
     'ngMap',
     'angularSpinner'
@@ -26,7 +26,7 @@
     $locationProvider,
     RestangularProvider,
     $translateProvider,
-		$authProvider
+    $authProvider
   ) {
       $translateProvider
         .translations('en', {
@@ -42,30 +42,30 @@
           CHAPTER: 'New chapter',
           DROP_ZONE: 'DROP ZONE',
           DROP_EXPLANATION: 'You can even drop folders containing folders containing folders.. ',
-					COLLAPSE: 'Collapse',
-					DASHBOARD: 'Dashboard',
-					HOME: 'Home',
-					ACCOUNT: 'Account',
-					SIGNOUT: 'Sign out',
-					LEFT_STATISTICS: 'Your statistics: downloads in',
-					RIGHT_STATISTICS: 'statistics:',
-					NEW_NODE: 'This is a new node',
-					NO_DOWNLOADS: 'There is no download yet',
-					NEW_ORGA: 'is a new organization',
-					WAIT: 'Wait one week for statistics',
-					PROFIL: 'Profil',
-					NAME: 'Name Firstname',
-					EMAIL: 'Email',
-					UPDATE_PROFIL: 'Update profil',
-					ORGANIZATION: 'Organization',
-					NEW_LECTURER: 'New lecturer (email)',
-					INVITE: 'Invite',
-					PASSWORD: 'Password',
-					OLD_PSW: 'Old Password',
-					NEW_PSW: 'New Password',
-					CONFIRM_PSW: 'Confirm password',
-					UPDATE_PSW: 'Update password',
-					USERS_INVITED: 'List of lecturers to add'
+          COLLAPSE: 'Collapse',
+          DASHBOARD: 'Dashboard',
+          HOME: 'Home',
+          ACCOUNT: 'Account',
+          SIGNOUT: 'Sign out',
+          LEFT_STATISTICS: 'Your statistics: downloads in',
+          RIGHT_STATISTICS: 'statistics:',
+          NEW_NODE: 'This is a new node',
+          NO_DOWNLOADS: 'There is no download yet',
+          NEW_ORGA: 'is a new organization',
+          WAIT: 'Wait one week for statistics',
+          PROFIL: 'Profil',
+          NAME: 'Name Firstname',
+          EMAIL: 'Email',
+          UPDATE_PROFIL: 'Update profil',
+          ORGANIZATION: 'Organization',
+          NEW_LECTURER: 'New lecturer (email)',
+          INVITE: 'Invite',
+          PASSWORD: 'Password',
+          OLD_PSW: 'Old Password',
+          NEW_PSW: 'New Password',
+          CONFIRM_PSW: 'Confirm password',
+          UPDATE_PSW: 'Update password',
+          USERS_INVITED: 'List of lecturers to add'
         })
         .translations('fr', {
           HELP: 'Aide',
@@ -80,35 +80,35 @@
           CHAPTER: 'Nouveau chapitre',
           DROP_ZONE: 'DROP ZONE',
           DROP_EXPLANATION: "Vous pouvez importer des dossiers contenants d'autres dossiers",
-					COLLAPSE: 'Réduire',
-					DASHBOARD: 'Statistiques',
-					HOME: 'Home',
-					ACCOUNT: 'Compte',
-					SIGNOUT: 'Déconnexion',
-					LEFT_STATISTICS: 'Vos statistiques: consultations dans',
-					RIGHT_STATISTICS: 'statistiques:',
-					NEW_NODE: "C'est un nouveau new",
-					NO_DOWNLOADS: "Il n'y a pas encore de document",
-					NEW_ORGA: 'est une nouvelle organisation',
-					WAIT: 'Attendez une semaine pour visualiser des données',
-					PROFIL: 'Profile',
-					NAME: 'Nom Prénom',
-					EMAIL: 'Email',
-					UPDATE_PROFIL: 'Modifier profile',
-					ORGANIZATION: 'Organisation',
-					NEW_LECTURER: 'Nouvel enseignant (email)',
-					INVITE: 'Inviter un enseignant',
-					PASSWORD: 'Mot de passe',
-					OLD_PSW: 'Ancien mot de passe',
-					NEW_PSW: 'Nouveau mot de passe',
-					CONFIRM_PSW: 'Confirmation du mot de passe',
-					UPDATE_PSW: 'Modifier mot de passe',
-					USERS_INVITED: 'Utilisateurs ajoutés'
+          COLLAPSE: 'Réduire',
+          DASHBOARD: 'Statistiques',
+          HOME: 'Home',
+          ACCOUNT: 'Compte',
+          SIGNOUT: 'Déconnexion',
+          LEFT_STATISTICS: 'Vos statistiques: consultations dans',
+          RIGHT_STATISTICS: 'statistiques:',
+          NEW_NODE: "C'est un nouveau new",
+          NO_DOWNLOADS: "Il n'y a pas encore de document",
+          NEW_ORGA: 'est une nouvelle organisation',
+          WAIT: 'Attendez une semaine pour visualiser des données',
+          PROFIL: 'Profile',
+          NAME: 'Nom Prénom',
+          EMAIL: 'Email',
+          UPDATE_PROFIL: 'Modifier profile',
+          ORGANIZATION: 'Organisation',
+          NEW_LECTURER: 'Nouvel enseignant (email)',
+          INVITE: 'Inviter un enseignant',
+          PASSWORD: 'Mot de passe',
+          OLD_PSW: 'Ancien mot de passe',
+          NEW_PSW: 'Nouveau mot de passe',
+          CONFIRM_PSW: 'Confirmation du mot de passe',
+          UPDATE_PSW: 'Modifier mot de passe',
+          USERS_INVITED: 'Utilisateurs ajoutés'
         })
         .preferredLanguage('en')
-				.registerAvailableLanguageKeys(['fr'])
-			  .determinePreferredLanguage()
-			  .fallbackLanguage('en');
+        .registerAvailableLanguageKeys(['fr'])
+        .determinePreferredLanguage()
+        .fallbackLanguage('en');
 
       $stateProvider
 
@@ -175,13 +175,13 @@
       }
     }
 
-		//// AUTHENTICATION DEVISE
+    //// AUTHENTICATION DEVISE
 
-		$authProvider.configure({
-	  	apiUrl: getEnvironment()
-	  });
+    $authProvider.configure({
+      apiUrl: getEnvironment()
+    });
 
-	  ////
+    ////
 
     RestangularProvider.setBaseUrl(getEnvironment());
 
@@ -215,7 +215,6 @@
   angular.module('mainApp.filters', []);
   angular.module('mainApp.controllers', []);
   angular.module('mainApp.directives', []);
-  angular.module('mainApp.services', []);
 
 })();
 

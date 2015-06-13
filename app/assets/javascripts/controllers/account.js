@@ -13,15 +13,15 @@
     // SIGNOUT
     $scope.deconnection = function(){
       $auth.signOut()
-      .then(function(resp) { 
+      .then(function(resp) {
         c.classList.add("wrapper__minify");
         scope.admin = false;
       })
-      .catch(function(resp) { 
+      .catch(function(resp) {
         // handle error response
       });
     }
-    
+
     // UPDATE USER
     $scope.updateAccount = function() {
       if($scope.profileForm.$valid){
@@ -31,10 +31,10 @@
         };
         console.log(credentials);
         $auth.updateAccount(credentials)
-        .then(function(resp) { 
+        .then(function(resp) {
           console.log(resp);
         })
-        .catch(function(resp) { 
+        .catch(function(resp) {
           console.log(resp);
         });
       } else{
@@ -45,7 +45,7 @@
 
     // UPDATE PASSWORD
     $scope.updatePsw = function() {
-      
+
       if($scope.passwordForm.$invalid){
         console.log("ERROR: password rename. Password is too short");
         $scope.displayError("Your new password is too short");
@@ -111,21 +111,21 @@
           };
 
           $auth.submitRegistration(credentials)
-          .then(function(d) { 
+          .then(function(d) {
             Restangular.all('user/invite').post({email: newUser, password: newPassword}).then(function () {
               $scope.listUserActive = false;
               $scope.newUser = "";
               $scope.organizationForm.$setUntouched();
               console.log("New user added");
               $scope.displaySuccess("Your colleages have been invited");
-             
+
             }, function(d){
               console.log(d);
               console.log("There was an error adding users");
               $scope.displayError("Try again to invite lecturers");
             });
           })
-          .catch(function(d) { 
+          .catch(function(d) {
             console.log("Impossible to signup the user")
             console.log(d);
             if(d.status = 403){
@@ -137,11 +137,11 @@
             } else{
               $scope.displayError("Impossible to create an account");
             }
-            
+
           });
 
         });
-       
+
       } else{
         console.log("Email invalid");
         $scope.displayError("Enter a valid email!");
@@ -149,7 +149,7 @@
     }
 
 
- 
+
 
 
 

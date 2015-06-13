@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('mainApp.directives')
-    .directive('collapsibleTree', ['$cookies','$timeout', 'Restangular', function($cookies, $timeout, Restangular) {
+    .directive('collapsibleTree', ['$cookies', '$timeout', 'Restangular', function($cookies, $timeout, Restangular) {
       return {
         restrict: 'EA',
         scope: {

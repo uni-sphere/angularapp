@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   angular.module('mainApp.directives')
-  .directive('adminCo', [ 'Restangular', '$cookies', '$auth', function(Restangular, $cookies, $auth) {
+  .directive('adminCo', [ 'Restangular', '$auth', function(Restangular, $auth) {
     return {
       restrict: 'E',
       templateUrl: 'webapp/admin-co.html',
@@ -14,17 +14,20 @@
       },
       link: function(scope) {
 
-        // SET INITIAL ADMIN
-        if ($cookies.get('auth_headers') != undefined) {
-          if ($cookies.get('auth_headers').indexOf("access-token") > -1) {
-            scope.admin = true;
+        // Check in cookies if the user is loged in
+        $auth.validateUser().then(function(){
+          scope.admin = true;
+          console.log("Authentificated")
+        }, function(){
+          if(window.location.host == 'sandbox.unisphere.eu'){
+            console.log("Sandbox")
+            scope.sandbox = true
+            scope.admin = true
+          } else{
+            scope.admin = false
+            console.log("Not authentificated")
           }
-        } else if(window.location.host == 'sandbox.unisphere.eu'){
-          scope.sandbox = true
-          scope.admin = true
-        } else {
-          scope.admin = false;
-        }
+        })
 
         scope.toggleAdmin = function(){
           if(scope.open == true){
