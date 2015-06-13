@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('mainApp.directives')
-    .directive('collapsibleTree', ['$cookies', '$timeout', 'Restangular', function($cookies, $timeout, Restangular) {
+    .directive('collapsibleTree', ['ipCookie', '$timeout', 'Restangular', function(ipCookie, $timeout, Restangular) {
       return {
         restrict: 'EA',
         scope: {
@@ -47,7 +47,7 @@
           }
           // Normal version
           else{
-            scope.foldedNodes = $cookies.get('foldedNodes');
+            scope.foldedNodes = ipCookie('foldedNodes');
 
             if( scope.foldedNodes !== undefined ){
               scope.foldedNodes = scope.foldedNodes.split(',');
@@ -61,7 +61,7 @@
           }
           // Normal version
           else{
-            scope.activeNodes = $cookies.get('activeNodes');
+            scope.activeNodes = ipCookie('activeNodes');
 
             if( scope.activeNodes !== undefined ){
               scope.activeNodes = scope.activeNodes.split(',');
@@ -76,7 +76,7 @@
           }
           // Normal version
           else{
-            scope.nodeEnd = $cookies.get('nodeEnd');
+            scope.nodeEnd = ipCookie('nodeEnd');
             if(scope.nodeEnd == "false"){
               scope.nodeEnd = false;
             } else if(scope.nodeEnd != undefined){
@@ -323,8 +323,8 @@
             colornodePath(scope.root);
 
             if(!scope.home && !scope.sandbox){
-              $cookies.put('activeNodes', scope.activeNodes);
-              $cookies.put('foldedNodes', scope.foldedNodes);
+              ipCookie('activeNodes', scope.activeNodes);
+              ipCookie('foldedNodes', scope.foldedNodes);
             }
 
             scope.$apply();
@@ -373,11 +373,11 @@
               scope.nodeEnd = [d.num, d.name];
               // Demo mode
               if(!scope.home && !scope.sandbox){
-                $cookies.put('nodeEnd', [d.num, d.name]);
+                ipCookie('nodeEnd', [d.num, d.name]);
               }
             } else{
               scope.nodeEnd = false;
-              $cookies.put('nodeEnd', false);
+              ipCookie('nodeEnd', false);
             }
           };
 

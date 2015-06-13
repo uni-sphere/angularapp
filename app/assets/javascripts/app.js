@@ -7,7 +7,7 @@
     'mainApp.directives',
     'mainApp.controllers',
     'mainApp.filters',
-    'ngCookies',
+    'ipCookie',
     'restangular',
     'angularFileUpload',
     'angulartics',

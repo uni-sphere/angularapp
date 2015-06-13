@@ -1,7 +1,7 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('FoldCtrl', ['$scope', 'Restangular', '$cookies', function ($scope, Restangular, $cookies) {
+  .controller('FoldCtrl', ['$scope', 'Restangular', 'ipCookie', function ($scope, Restangular, ipCookie) {
 
     // Find the chapter that are folded
     // demo
@@ -10,7 +10,7 @@ angular
     }
     // Normal mode
     else{
-      var chapterFolded = $cookies.get('chapterFolded');
+      var chapterFolded = ipCookie('chapterFolded');
 
       if( chapterFolded != undefined ){
         chapterFolded = chapterFolded.split(',');
@@ -63,7 +63,7 @@ angular
       } else{
         chapterFolded.push(nb.toString());
       };
-      $cookies.put('chapterFolded', chapterFolded);
+      ipCookie('chapterFolded', chapterFolded);
     }
 
     function isInArray(value, array) {

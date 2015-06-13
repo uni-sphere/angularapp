@@ -11,6 +11,8 @@
           hideError: '='
         },
         link: function(scope) {
+          scope.listError = []
+          scope.showError = false
           scope.hideError = function(){
             scope.listError = [];
             scope.showError = false;

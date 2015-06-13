@@ -2,7 +2,6 @@
 //= require angular
 //= require angular-animate
 //= require angular-ui-router
-//= require angular-cookies
 //= require angular-cookie
 //= require d3
 //= require angular-resource

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   angular.module('mainApp.directives')
-    .directive('adminPopup', ['Restangular','$cookies', function(Restangular,$cookies) {
+    .directive('adminPopup', ['Restangular','ipCookie', function(Restangular, ipCookie) {
       return {
         restrict: 'E',
         templateUrl: 'main/admin-popup.html',
@@ -27,7 +27,7 @@
             var connection = {email: scope.emailInput, password:scope.passwordInput}
             Restangular.all('users/login').post(connection).then(function(d) {
               // console.log(d);
-              $cookies.put('unisphere_api_admin', d.cookie);
+              ipCookie('unisphere_api_admin', d.cookie);
               scope.admin = true;
               scope.hideAdminPopup();
             }, function(d){
