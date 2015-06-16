@@ -10,7 +10,8 @@
         displayError: '=',
         hideError: '=',
         accountForgotten: '=',
-        accountForgottenInput: '='
+        accountForgottenInput: '=',
+        local: '='
       },
       link: function(scope) {
 
@@ -19,7 +20,13 @@
           if(scope.open == true){
             scope.open = false;
           } else{
-            scope.open = true;
+            console.log(scope.local)
+            // If we are in local or in sandbox we directly co as admins
+            if(scope.sandbox || scope.local){
+              scope.admin = true
+            } else{
+              scope.open = true;
+            }
           }
         }
 
