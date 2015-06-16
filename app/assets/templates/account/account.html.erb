@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <form name="organizationForm" class="panel" id="panel-orgnanization">
+  <form name="organizationForm" class="panel" id="panel-orgnanization" ng-hide="sandbox">
     <div class="panel-header">{{ 'ORGANIZATION' | translate }}</div>
     <div class="panel-body">
 
@@ -25,7 +25,7 @@
     </div>
   </form>
 
-  <form name="passwordForm" class="panel">
+  <form name="passwordForm" class="panel" ng-hide="sandbox">
     <div class="panel-header">{{ 'PASSWORD' | translate }}</div>
     <div class="panel-body">
 

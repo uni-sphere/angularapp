@@ -44,7 +44,9 @@
               map: map,
               title: node.name,
               icon: '<%= asset_path "pin-colleg.png" %>',
-              place_id: node.place_id
+              place_id: node.place_id,
+              subdomain: node.subdomain,
+              name: node.name
             });
             google.maps.event.addListener(marker, 'click', function() {
 
@@ -53,10 +55,15 @@
               }
 
               scope.selectedMarkerPerso = marker;
-              marker.setAnimation(google.maps.Animation.BOUNCE);
+              // marker.setAnimation(google.maps.Animation.BOUNCE);
 
               map.setCenter(marker.getPosition());
               zoomMap(9);
+
+
+              scope.place = marker
+              scope.showExistingSchool = "http://" + marker.subdomain + ".unisphere.eu";
+              scope.$apply()
             });
 
             scope.markerPerso.push(marker);
@@ -78,9 +85,11 @@
         scope.placeChanged = function() {
           scope.place = this.getPlace();
           scope.showExistingSchool = findPlace(this.getPlace());
+          console.log(scope.showExistingSchool)
           scope.showNewSchoolUrl = false;
           scope.subdomainCreated = false;
           scope.signupShow = false;
+          scope.showNewSchool = false;
 
           // We move the map to the place searched
           map.panTo(this.getPlace().geometry.location);
@@ -102,14 +111,11 @@
           if(scope.showExistingSchool){
             console.log("school already uses unisphere");
 
-            // Gestion of popup
-            scope.showNewSchool = false;
-
             // We make the marker bounce
             scope.markerPerso.forEach(function(node){
               if(node.place_id == scope.place.place_id){
                 scope.selectedMarkerPerso = node;
-                node.setAnimation(google.maps.Animation.BOUNCE);
+                // node.setAnimation(google.maps.Animation.BOUNCE);
               }
             })
           }

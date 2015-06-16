@@ -100,7 +100,7 @@ map{
 
   padding: 13px 10px;
   color: black;
-  
+
 
 }
 
@@ -118,7 +118,7 @@ map{
   &:focus {
   background: white;
   box-shadow: 0px 0 1px 2px #2980b9 !important;
-  
+
   outline: none;
   }
 }
@@ -277,6 +277,10 @@ map{
   font-size: 1.1em;
 }
 
+.school-link{
+  color: white;
+}
+
 
 @keyframes school-flyout {
   0% {
@@ -308,4 +312,4 @@ map{
 
 .school-ready-to-appear{
   animation: school-flyin 1s;
-} 
+}
