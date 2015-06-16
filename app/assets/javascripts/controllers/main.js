@@ -7,13 +7,12 @@ angular
     $scope.accountForgoten = false;
 
 		$scope.adminDeco = function(){
-      if(window.location.host == 'sandbox.unisphere.eu'){
+      if(window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'localhost:300'){
         $scope.admin = false;
       } else{
         $auth.signOut()
         .then(function(resp) {
           $scope.admin = false;
-          console.log(resp);
           $state.transitionTo('main.application');
         })
         .catch(function(resp) {

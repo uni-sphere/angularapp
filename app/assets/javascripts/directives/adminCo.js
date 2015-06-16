@@ -13,13 +13,12 @@
         accountForgottenInput: '='
       },
       link: function(scope) {
-
         // Check in cookies if the user is loged in
         $auth.validateUser().then(function(){
           scope.admin = true;
           console.log("Authentificated")
         }, function(){
-          if(window.location.host == 'sandbox.unisphere.eu'){
+          if(window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'localhost:3000'){
             console.log("Sandbox")
             scope.sandbox = true
             scope.admin = true

@@ -210,7 +210,7 @@
                 .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
                 .text("+")
                 .style("fill-opacity", 1e-6)
-                .style("fill", "#F76565")
+                .style("fill", "cornflowerblue")
                 .on("click", addNode)
 
               // Little - to remove a node
@@ -221,7 +221,7 @@
                 .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
                 .text("x")
                 .style("fill-opacity", 1e-6)
-                .style("fill", "cornflowerblue")
+                .style("fill", "#F76565")
                 .on("click", deleteNode)
             }
 
@@ -237,6 +237,7 @@
 
             nodeUpdate.select("text.addNode")
               .style("fill-opacity", 1)
+              .style("fill-opacity",  function(d){ return d._children ? 1e-6 : 1; })
 
             nodeUpdate.select("circle.circleCollapse")
               .attr("r", 6)
@@ -259,6 +260,7 @@
 
             nodeExit.select("text.addNode")
               .style("fill-opacity", 1e-6)
+
 
             nodeExit.select("circle.circleCollapse")
               .attr("r", 1e-6)
