@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     put 'activity', to: 'reports#update'
     
     post 'users/invite', to: 'users#invite'
+    get 'users', to: 'users#show'
     
   end
 

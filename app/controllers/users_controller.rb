@@ -1,5 +1,13 @@
 class UsersController < ApplicationController
-
+  
+  def show
+    if current_user
+      render json: {user: {name: current_user.name, email: current_user.email}}.to_json, success: 200
+    else
+      send_error('Unauthorized', 401)
+    end
+  end
+  
   def invite
     if params[:email]
       UserMailer.invite_user_email(params[:email], current_organization, params[:password]).deliver
