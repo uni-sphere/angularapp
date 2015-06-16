@@ -10,16 +10,17 @@
     $scope.newUser = "";
     $scope.updatedEmail = "";
 
-
     // We get the user email and name to display them
-    Restangular.one('chapters').get({node_id: scope.nodeEnd[0]}).then(function (document) {
-      $scope.accountEmail =
-      $scope.accountName =
-    }, function(d){
-      console.log("Impossible to get the user infos");
-      console.log(d)
-      displayError("We temporarly can't display user informations")
-    });
+    if(!$scope.local && !$scope.sandbox){
+      Restangular.one('users').get().then(function (d) {
+        $scope.accountEmail = d.user.email
+        $scope.accountName = d.user.name
+      }, function(d){
+        console.log("Impossible to get the user infos");
+        console.log(d)
+        $scope.displayError("We temporarly can't display user informations")
+      });
+    }
 
     // SIGNOUT
     $scope.deconnection = function(){
@@ -91,7 +92,7 @@
       if($scope.organizationForm.$valid){
         $scope.listUserActive = true;
         $scope.listUser.push($scope.newUser);
-        console.log($scope.newUser + " sucessfully addded");
+        console.log($scope.newUser + " successfully addded");
         $scope.newUser = "";
         $('#addAdmin').focus();
       } else{

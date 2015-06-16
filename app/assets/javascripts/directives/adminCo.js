@@ -13,20 +13,7 @@
         accountForgottenInput: '='
       },
       link: function(scope) {
-        // Check in cookies if the user is loged in
-        $auth.validateUser().then(function(){
-          scope.admin = true;
-          console.log("Authentificated")
-        }, function(){
-          if(window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'localhost:3000'){
-            console.log("Sandbox")
-            scope.sandbox = true
-            scope.admin = true
-          } else{
-            scope.admin = false
-            console.log("Not authentificated")
-          }
-        })
+
 
         scope.toggleAdmin = function(){
           if(scope.open == true){
@@ -50,8 +37,6 @@
         scope.adminCoAttempt = function(){
 
           Restangular.one('organization/is_signed_up').get({email: scope.emailInput}).then(function (signup) {
-            if(signup.response == true){
-              // LOGIN
               var credentials = {
                 email: scope.emailInput,
                 password: scope.passwordInput
@@ -75,17 +60,9 @@
                 scope.passwordInput = "";
               });
 
-            }
-            // This email doesnt correspond to an admin of this orga
-            else{
-              console.log("You misstyped your email");
-              scope.displayError("You misstyped your email");
-              scope.passwordInput = "";
-            }
           }, function(d){
-            console.log("There was an error, try to login again");
             console.log(d);
-            scope.displayError("There was an error, try to login again");
+            scope.displayError("You misstyped your email");
             scope.passwordInput = "";
           });
 

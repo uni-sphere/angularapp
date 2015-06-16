@@ -4,10 +4,27 @@ angular
   .controller('MainCtrl', ['$scope', 'browser','$timeout', 'Restangular', '$upload', '$translate', '$auth', '$state', 'usSpinnerService', function ($scope, browser, $timeout, Restangular, $upload, $translate, $auth, $state, usSpinnerService) {
 
     $scope.sidebarMinified = true;
-    $scope.accountForgoten = false;
 
-		$scope.adminDeco = function(){
-      if(window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'localhost:300'){
+    if(window.location.host == 'sandbox.unisphere.eu'){
+      console.log("Sandbox")
+      $scope.sandbox = true
+      $scope.admin = true
+    } else if(window.location.host == 'localhost:3000'){
+      $scope.admin = true
+      $scope.local = true
+    } else{
+      $auth.validateUser().then(function(){
+        $scope.admin = true;
+        console.log("Authentificated")
+      }, function(){
+        $scope.admin = false
+        console.log("Not authentificated")
+      })
+    }
+
+
+    $scope.adminDeco = function(){
+      if($scope.sandbox || $scope.local){
         $scope.admin = false;
       } else{
         $auth.signOut()
@@ -19,7 +36,7 @@ angular
           console.log(resp)
         });
       }
-		}
+    }
 
     // $scope.inviteUser = ["clement@muller.uk.net","gabriel.muller.12@gmail.com"]
 
@@ -59,7 +76,7 @@ angular
       } else {
         $translate.use('en');
       }
-			console.log($translate.use());
+      console.log($translate.use());
     }
 
     // get university name for navbar

@@ -120,17 +120,19 @@
         })
 
           .state('main.application', {
-              url: '',
-              templateUrl: 'webapp/webapp.html'
+            url: '',
+            templateUrl: 'webapp/webapp.html'
           })
           .state('main.dashboard', {
-              url: 'dashboard',
-              templateUrl: 'dashboard/one.html'
+            url: 'dashboard',
+            templateUrl: 'dashboard/one.html'
           })
           .state('main.account', {
-              url: 'account',
-              templateUrl: 'account/account.html'
+            url: 'account',
+            templateUrl: 'account/account.html'
           })
+
+
 
       if(window.location.host == 'localhost:3000'){
         $stateProvider

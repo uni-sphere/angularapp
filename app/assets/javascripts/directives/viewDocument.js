@@ -37,7 +37,7 @@
                 }, function(d){
                   console.log("Impossible to get the document");
                   console.log(d)
-                  displayError("We temporarly can't display the documents")
+                  scope.displayError("We temporarly can't display the documents")
                 });
               }
             }
