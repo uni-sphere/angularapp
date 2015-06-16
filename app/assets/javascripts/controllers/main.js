@@ -97,12 +97,13 @@ angular
 
     $scope.activateSpinner = function(){
       usSpinnerService.spin('spinner-1');
-      $scope.currentlyLoading = true
+      $scope.greyBackground = true
     }
 
     $scope.desactivateSpinner = function(){
       usSpinnerService.stop('spinner-1');
-      $scope.currentlyLoading = false
+      $scope.greyBackground = false
+      $scope.$apply()
     }
 
     // $scope.displayError("This is just a test version. You can't download files");

@@ -11,7 +11,9 @@
           files: '=',
           displayError: '=',
           admin: '=',
-          home: '='
+          home: '=',
+          activateSpinner: '=',
+          desactivateSpinner: '='
         },
         link: function(scope){
 
@@ -30,10 +32,12 @@
               //Loads docs
               if(scope.nodeEnd){
                 Restangular.one('chapters').get({node_id: scope.nodeEnd[0]}).then(function (document) {
-
                   document.shift();
-
                   scope.list = makeNested(document);
+                }, function(d){
+                  console.log("Impossible to get the document");
+                  console.log(d)
+                  displayError("We temporarly can't display the documents")
                 });
               }
             }
@@ -155,9 +159,11 @@
               scope.displayError("This is just a test version. You can't download files");
             }
             else{
-              Restangular.one('activity').put().then(function(d) {
+              console.log(scope.nodeEnd[0])
+              Restangular.one('activity').put({node_id: scope.nodeEnd[0]}).then(function(d) {
                 console.log("Download registered");
               },function(d){
+                console.log(d)
                 console.log("There was an error registering the download");
               });
             }
@@ -180,7 +186,6 @@
           // We watch when someone drag and drops a file / folder
           scope.$watch('files', function (newVals, oldVals) {
             if(newVals){
-              // console.log("files")
               upload(scope.files, true);
             }
           });
@@ -268,6 +273,7 @@
             /*==========  Upload the dir first  ==========*/
 
             function uploadDir(files){
+
               var folder = files.shift();
 
               var path = folder.way;
@@ -319,10 +325,11 @@
                   nodeDocData = nodeData.items[nodeData.items.length -1];
                 }
 
+                scope.progressionUpload --;
                 console.log("OK chapter created:" + folder.name);
-                // uploadFiles(files)
+                uploadFiles(files)
 
-              // }, function(d) {
+              }, function(d) {
                 scope.displayError("Failed to create chapter:" + folder.name);
                 console.log("Failed to create chapter:" + folder.name);
               });
@@ -333,11 +340,10 @@
              function uploadFiles(files){
               for (var i = 0; i < files.length; i++) {
 
+
                 var file = files[i];
                 var numberItems = 0;
-                // console.log(nodeDocData);
 
-                console.log(file);
                 // Demo
                 if(scope.home || scope.sandbox){
                   var a = {title: file.name, doc_id: dummyId, document: true, type: file.type}
@@ -375,6 +381,7 @@
                       content: file
                     }
                   }).then(function(d) {
+                    scope.progressionUpload --;
                     var a = {title: d.data.title, doc_id: d.data.id, document: true, type: file.type, preview_link: d.data.url}
                     numberItems ++;
                     console.log(d);
@@ -431,7 +438,9 @@
                     resolve();
                   }
                 }).then(function(){
-                  if( scope.arrayFiles.length != 0){
+                  if(scope.arrayFiles.length == 0){
+                    scope.desactivateSpinner()
+                  } else{
                     console.log("|| MORE FOLDER TO UPLOAD");
                     console.log("---------");
                     uploadItems();
@@ -444,6 +453,7 @@
 
 
             if (files && files.length) {
+              scope.progressionUpload = files.length
               // console.log(files);
 
               var savedPath;
@@ -470,7 +480,8 @@
               }
 
               var nodeDocData = masternodeData;
-              // console.log(nodeDocData);
+
+              scope.activateSpinner()
               orderFiles(files);
               uploadItems();
             }

@@ -10,6 +10,17 @@
     $scope.newUser = "";
     $scope.updatedEmail = "";
 
+
+    // We get the user email and name to display them
+    Restangular.one('chapters').get({node_id: scope.nodeEnd[0]}).then(function (document) {
+      $scope.accountEmail =
+      $scope.accountName =
+    }, function(d){
+      console.log("Impossible to get the user infos");
+      console.log(d)
+      displayError("We temporarly can't display user informations")
+    });
+
     // SIGNOUT
     $scope.deconnection = function(){
       $auth.signOut()

@@ -37,7 +37,7 @@
 }
 
 .breadcrumb-separator{
-  padding: 0px 8px; 
+  padding: 0px 8px;
 }
 
 /*===============================
@@ -107,8 +107,10 @@
 	font-size: 16px;
   position: absolute;
   top: 100px;
-  height: calc(100% - 100px);
+  // height: calc(100% - 160px);
+  bottom: 60px;
   width: 90%;
+  z-index: 10;
 
   overflow-y: auto;
 }
@@ -200,7 +202,7 @@
 
 .btn-collapse{
   font-size: 1.5em;
-  
+
   width: 24px !important;
   height: 24px !important;
   margin-right: 8px;
@@ -250,6 +252,7 @@
   margin-left: 20px;
   font-size: .9em;
   color: $dark-gris;
+  z-index: 0
 }
 
 
@@ -317,13 +320,13 @@
   height: 60%;
   // background: red;
 
-  
+
 }
 #dropzone-image-container{
   position: absolute;
-  top: calc(50% - 35px); 
+  top: calc(50% - 35px);
   width: 100%;
-  
+
   .fa-download{
     margin: 0px auto;
     display: table;
