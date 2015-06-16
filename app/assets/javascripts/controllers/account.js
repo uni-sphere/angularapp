@@ -41,12 +41,16 @@
           name: $scope.updatedName,
           email: $scope.updatedEmail
         };
-        console.log(credentials);
         $auth.updateAccount(credentials)
         .then(function(resp) {
+          $scope.displaySuccess("Profile updated")
+          $scope.updatedName = ""
+          $scope.updatedEmail = ""
           console.log(resp);
         })
         .catch(function(resp) {
+          $scope.displayError("Unable to update the profile")
+          console.log("Unable to update the profile")
           console.log(resp);
         });
       } else{
@@ -63,7 +67,7 @@
         $scope.displayError("Your new password is too short");
         $scope.newPsw = "";
         $scope.confirmPsw = "";
-        $scope.passwordForm.$setUntouched();
+        // $scope.passwordForm.$setUntouched();
         // $('#new-password').focus();
       } else if($scope.newPsw != $scope.confirmPsw){
         console.log("ERROR: password rename. Password different");
@@ -101,7 +105,8 @@
       }
     }
 
-    // $scope.listUser = ["gabriel.muller@unisphere.eu"];
+    // $scope.listUser = ["gab.muller@unisphere.eu","dsfsdf@mm.fr"];
+    // $scope.listUserActive = true
     // Really invite user
     $scope.inviteUsers = function(){
       if($scope.organizationForm.$valid || $scope.listUser.length != 0){
@@ -125,12 +130,11 @@
           $auth.submitRegistration(credentials)
           .then(function(d) {
             Restangular.all('user/invite').post({email: newUser, password: newPassword}).then(function () {
-              $scope.listUserActive = false;
+              // $scope.listUserActive = false;
               $scope.newUser = "";
               $scope.organizationForm.$setUntouched();
               console.log("New user added");
               $scope.displaySuccess("Your colleages have been invited");
-
             }, function(d){
               console.log(d);
               console.log("There was an error adding users");
@@ -143,7 +147,6 @@
             if(d.status = 403){
               console.log(d.data.data.email + " already uses Unisphere. We didn't invite him again");
               $scope.displayError(d.data.data.email + " already uses Unisphere. We didn't invite him again");
-              $scope.listUserActive = false;
               $scope.newUser = "";
               $scope.organizationForm.$setUntouched();
             } else{
@@ -154,15 +157,16 @@
 
         });
 
+        // We clean the list of user to invite
+        $scope.listUser = []
+        $scope.listUserActive = false;
+
+
       } else{
         console.log("Email invalid");
         $scope.displayError("Enter a valid email!");
       }
     }
-
-
-
-
 
 
     // Creation of a random password

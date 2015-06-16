@@ -26,6 +26,7 @@ angular
     $scope.adminDeco = function(){
       if($scope.sandbox || $scope.local){
         $scope.admin = false;
+        $state.transitionTo('main.application');
       } else{
         $auth.signOut()
         .then(function(resp) {

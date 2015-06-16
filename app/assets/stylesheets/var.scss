@@ -38,7 +38,7 @@ $chart-title-color: $dark-gris;
 $chart-button-color: $dark-gris;
 $no-chart-color: $gris;
 
-//Navbar 
+//Navbar
 $navbar-bg: $lighty-noir;
 $navbar-color: $light-gris;
 
@@ -69,7 +69,7 @@ $ultra-light-grey: #FAFAFA;
 $supra-light-grey: #F2F2F2;
 $super-light-grey: #EEEEEE; // use for side
 $grey: #E6E6E6;
-$slight-dark-grey: #9A999E; 
+$slight-dark-grey: #9A999E;
 $dark-grey: #6C6B80;
 $very-dark-grey: #4A4A58;
 $light-grey: #CDCDCD;
@@ -152,7 +152,7 @@ $extreme-light-grey: #F9F9F9;
 $light-grey: #CECECE;
 $dark-green: #2CA078;
 $dark-blue: #2CA0B7;
-$dark-red: #D44D68; 
+$dark-red: #D44D68;
 $dark-grey: #989898;
 $grey-dropdown: #F0EFF0;
 $dark: #4B4B4B;
@@ -203,3 +203,27 @@ $font-family: "Titillium Web", sans-serif;
 
 $computer-bg: #262626;
 // $computer-bg: black;
+
+
+// input.ng-invalid-required{
+//   border-color: ragb(0,0,0,0.075) !important;
+// }
+
+input{
+  // Basic colors
+  &.ng-untouched, &.ng-pristine{
+    background: #FAFAFA ;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+  }
+  &.ng-invalid-required{
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075) !important;
+  }
+
+  // Error Color
+  &.ng-touched.ng-invalid{
+    box-shadow: 0px 0px 0px 2px #FF7F7F,inset 0 0 0 0 #000;
+  }
+
+
+}
+

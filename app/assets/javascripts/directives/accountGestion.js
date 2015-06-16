@@ -39,15 +39,16 @@
               scope.accountForgotten = false;
               scope.displaySuccess("We sent you an email");
             })
-            .catch(function(resp) {
-              console.log("Unknown error");
-              console.log(resp);
-              scope.displayError("Unknown error");
+            .catch(function(d) {
+              console.log("This email doesn't exist");
+              console.log(d);
+              scope.displayError("This email doesn't exist");
+
             });
           }, function(d){
-            console.log("This email doesn't exist");
+            console.log("Unknown error");
             console.log(d);
-            scope.displayError("This email doesn't exist");
+            scope.displayError("Unknown error");
           });
         }
 

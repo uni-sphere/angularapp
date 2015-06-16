@@ -1,16 +1,16 @@
-<div name="profileForm" id="account" ng-controller="AccountCtrl">
-  <div class="panel">
+<div  id="account" ng-controller="AccountCtrl">
+  <form class="panel" name="profileForm">
     <div class="panel-header">{{ 'PROFIL' | translate }}</div>
     <div class="panel-body">
       <div class="panel-row-title">{{ 'NAME' | translate }}</div>
-      <input type="text" placeholder="{{accountName}}" class="panel-input" ng-model="updatedName">
+      <input type="text" placeholder="{{accountName}}" class="panel-input" ng-model="updatedName" required>
 
       <div class="panel-row-title">{{ 'EMAIL' | translate }}</div>
-      <input type="email" placeholder="{{accountEmail}}" class="panel-input" ng-model="updatedEmail">
+      <input type="email" placeholder="{{accountEmail}}" class="panel-input" ng-model="updatedEmail" required>
 
-      <button class="panel-submit" ng-click="updateAccount()">{{ 'UPDATE_PROFIL' | translate }}</button>
+      <button class="panel-submit" ng-click="updateAccount()" ng-class="{'valid' : profileForm.$valid}">{{ 'UPDATE_PROFIL' | translate }}</button>
     </div>
-  </div>
+  </form>
 
   <form name="organizationForm" class="panel" id="panel-orgnanization" ng-hide="sandbox">
     <div class="panel-header">{{ 'ORGANIZATION' | translate }}</div>
@@ -19,9 +19,9 @@
       <div class="panel-row-title">{{ 'NEW_LECTURER' | translate }}</div>
       <label><input name="input" required type="email" id="addAdmin" placeholder="" class="panel-input input-float" ng-model="newUser" ></label>
 
-      <div id="add-user" class="fa fa-plus" ng-click="addUser()"></div>
+      <div id="add-user" class="fa fa-plus" ng-click="addUser()" ng-class="{'add-user-possible': organizationForm.$valid}"></div>
 
-      <button class="panel-submit" ng-click="inviteUsers()">{{ 'INVITE' | translate }}</button>
+      <button class="panel-submit" ng-class="{'valid' : organizationForm.$valid}" ng-click="inviteUsers()">{{ 'INVITE' | translate }}</button>
     </div>
   </form>
 
@@ -30,10 +30,10 @@
     <div class="panel-body">
 
       <div class="panel-row-title">{{ 'NEW_PSW' | translate }}</div>
-      <input type="password" id="new-password" class="panel-input" ng-model="newPsw" ng-minlength=8 >
+      <input type="password" id="new-password" class="panel-input" ng-model="newPsw" ng-minlength=8 required>
 
       <div class="panel-row-title">{{ 'CONFIRM_PSW' | translate }}</div>
-      <input type="password" id="confirm-password" class="panel-input" ng-model="confirmPsw" ng-minlength=8>
+      <input type="password" id="confirm-password" class="panel-input" ng-model="confirmPsw" ng-minlength=8 required>
 
       <button class="panel-submit" ng-click="updatePsw()">{{ 'UPDATE_PSW' | translate }}</button>
     </div>

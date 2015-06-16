@@ -11,7 +11,7 @@
         hideError: '=',
         accountForgotten: '=',
         accountForgottenInput: '=',
-        local: '='
+        sandbox: '='
       },
       link: function(scope) {
 
@@ -20,9 +20,8 @@
           if(scope.open == true){
             scope.open = false;
           } else{
-            console.log(scope.local)
-            // If we are in local or in sandbox we directly co as admins
-            if(scope.sandbox || scope.local){
+            // If we are in sandbox we directly co as admins
+            if(scope.sandbox){
               scope.admin = true
             } else{
               scope.open = true;
@@ -33,8 +32,8 @@
         // PASSWORD FORGOTTEN
         scope.passwordForgotten = function() {
           scope.accountForgottenInput = scope.emailInput
-          console.log(scope.accountForgottenInput)
           scope.accountForgotten = true;
+          $('#account-forgotten-email').focus();
         }
 
         scope.signupRequest = function(){
