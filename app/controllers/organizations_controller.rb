@@ -1,7 +1,7 @@
 class OrganizationsController < ApplicationController
 
   def is_signed_up?
-    if current_organization.users.where(email: params[:email]).exists? or current_organization.subdomain == 'sandbox'
+    if current_organization.users.where(email: params[:email]).exists?
       render json: {response: true}.to_json, status: 200
     else
       send_error('You are not signed up', '403')

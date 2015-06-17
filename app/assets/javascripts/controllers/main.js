@@ -9,22 +9,21 @@ angular
       console.log("Sandbox")
       $scope.sandbox = true
       $scope.admin = true
-    } else if(window.location.host == 'localhost:3000'){
-      $scope.admin = true
-      $scope.local = true
     } else{
       $auth.validateUser().then(function(){
         $scope.admin = true;
-        console.log("Authentificated")
       }, function(){
         $scope.admin = false
-        console.log("Not authentificated")
       })
+    }
+
+    if(window.location.host == 'localhost:3000'){
+      $scope.local = true
     }
 
 
     $scope.adminDeco = function(){
-      if($scope.sandbox || $scope.local){
+      if($scope.sandbox){
         $scope.admin = false;
         $state.transitionTo('main.application');
       } else{

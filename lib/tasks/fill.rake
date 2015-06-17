@@ -12,13 +12,16 @@ namespace :fill do
     reset_pointers
     # create sandbox
     organization = Organization.create(name: 'Sandbox', website: 'http://sandbox.unisphere.eu')
+    # Create a user
+    User.create!(email: "gab@mul.fr", name: "Gabriel", uid: "foo", provider: 'email', password: 'gabgabgab', organization_id: 1)
+    # User.new({:email => "gab@mul.fr", :password => "gabgabgab", :password_confirmation => "gabgabgab", :organization_id => 1, :confirmed_at => Time.now}).save(:validate => false)
     # create first nodes
     organization.nodes.create(name: "Sandbox", parent_id: 0)
     # create nodes
     organization.nodes.create(name: "Seconde", parent_id: 1)
     organization.nodes.create(name: "Premiere", parent_id: 1)
     organization.nodes.create(name: "Terminal", parent_id: 1)
-    # 
+    #
     organization.nodes.create(name: "1", parent_id: 2)
     Node.last.chapters.create(title: "main", parent_id: 0, user_id: 1)
     organization.nodes.create(name: "2", parent_id: 2)
@@ -27,13 +30,13 @@ namespace :fill do
     Node.last.chapters.create(title: "main", parent_id: 0, user_id: 1)
     organization.nodes.create(name: "4", parent_id: 2)
     Node.last.chapters.create(title: "main", parent_id: 0, user_id: 1)
-    # 
+    #
     organization.nodes.create(name: "S", parent_id: 3)
     organization.nodes.create(name: "ES", parent_id: 3)
     Node.last.chapters.create(title: "main", parent_id: 0, user_id: 1)
     organization.nodes.create(name: "L", parent_id: 3)
     Node.last.chapters.create(title: "main", parent_id: 0, user_id: 1)
-    # 
+    #
     organization.nodes.create(name: "S", parent_id: 4)
     Node.last.chapters.create(title: "main", parent_id: 0, user_id: 1)
     organization.nodes.create(name: "ES", parent_id: 4)

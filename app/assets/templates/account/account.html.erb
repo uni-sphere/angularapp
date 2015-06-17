@@ -1,50 +1,62 @@
 <div  id="account" ng-controller="AccountCtrl">
-  <form class="panel" name="profileForm">
+  <form class="panel" name="profileForm" id="panel-profil" novalidate>
     <div class="panel-header">{{ 'PROFIL' | translate }}</div>
     <div class="panel-body">
       <div class="panel-row-title">{{ 'NAME' | translate }}</div>
-      <input type="text" placeholder="{{accountName}}" class="panel-input" ng-model="updatedName" required>
+      <input type="text" placeholder="{{accountName}}" class="panel-input" name="updatedNameValid" ng-model="updatedName" required>
 
       <div class="panel-row-title">{{ 'EMAIL' | translate }}</div>
-      <input type="email" placeholder="{{accountEmail}}" class="panel-input" ng-model="updatedEmail" required>
+      <input type="email" placeholder="{{accountEmail}}" name="updatedEmailValid" class="panel-input" ng-model="updatedEmail" name="plopp" required>
 
-      <button class="panel-submit" ng-click="updateAccount()" ng-class="{'valid' : profileForm.$valid}">{{ 'UPDATE_PROFIL' | translate }}</button>
+      <button class="panel-submit" ng-click="updateAccount()" ng-class="{'valid' : profileForm.updatedNameValid.$valid || profileForm.updatedEmailValid.$valid}">{{ 'UPDATE_PROFIL' | translate }}</button>
     </div>
   </form>
 
-  <form name="organizationForm" class="panel" id="panel-orgnanization" ng-hide="sandbox">
+  <form name="organizationForm" class="panel" id="panel-organization" ng-hide="sandbox">
     <div class="panel-header">{{ 'ORGANIZATION' | translate }}</div>
     <div class="panel-body">
+      <div class="panel-row-title">List of lecturers</div>
+      <div id="listUser">
+        <div ng-repeat="user in listUser" class="element-user">
+          <i class="fa fa-user"></i>{{user}}
+        </div>
+      </div>
+      <div id="display-new-user" class="element-user"><i class="fa fa-user-plus" ng-show="newUser"></i>{{newUser}}</div>
 
       <div class="panel-row-title">{{ 'NEW_LECTURER' | translate }}</div>
-      <label><input name="input" required type="email" id="addAdmin" placeholder="" class="panel-input input-float" ng-model="newUser" ></label>
+      <label><input name="input" required type="email" id="addAdmin" placeholder="Input an email" class="panel-input input-float" ng-model="newUser" ></label>
 
-      <div id="add-user" class="fa fa-plus" ng-click="addUser()" ng-class="{'add-user-possible': organizationForm.$valid}"></div>
+      <!-- <div id="add-user" class="fa fa-plus" ng-click="addUser()" ng-class="{'add-user-possible': organizationForm.$valid}"></div> -->
 
       <button class="panel-submit" ng-class="{'valid' : organizationForm.$valid}" ng-click="inviteUsers()">{{ 'INVITE' | translate }}</button>
     </div>
   </form>
 
-  <form name="passwordForm" class="panel" ng-hide="sandbox">
+  <form name="passwordForm" class="panel" ng-hide="sandbox" id="panel-password" novalidate>
     <div class="panel-header">{{ 'PASSWORD' | translate }}</div>
     <div class="panel-body">
 
       <div class="panel-row-title">{{ 'NEW_PSW' | translate }}</div>
       <input type="password" id="new-password" class="panel-input" ng-model="newPsw" ng-minlength=8 required>
+      <div class="fa fa-check password-notif"></div>
+
+      <div class="password-tip"><i class="fa fa-lightbulb-o"></i>Use at least 8 characters</div>
+
+      <div id="password-strength" class="short">
+        <span class="strength-fixed-text">Password strength:</span>
+        <span class="strength-text">Too short</span>
+
+        <div class="visual-indicator-container">
+          <div class="visual-indicator"></div>
+        </div>
+      </div>
 
       <div class="panel-row-title">{{ 'CONFIRM_PSW' | translate }}</div>
       <input type="password" id="confirm-password" class="panel-input" ng-model="confirmPsw" ng-minlength=8 required>
+      <div class="fa fa-check password-check-notif-ok"></div>
 
-      <button class="panel-submit" ng-click="updatePsw()">{{ 'UPDATE_PSW' | translate }}</button>
+
+      <button class="panel-submit" ng-class="{'valid' : newPasswordConfirmed}" ng-click="updatePsw()">{{ 'UPDATE_PSW' | translate }}</button>{{newPasswordConfirmed}}
     </div>
   </form>
-
-  <div id="panel-user-to-invite"  ng-show="listUserActive" ng-class="{'listUser-ready-to-disappear': !listUserActive, 'listUser-ready-to-appear': listUserActive}">
-    <div class="panel-header header-special">{{ 'USERS_INVITED' | translate }}</div>
-    <div class="panel-body body-special">
-      <div class="item-user" ng-repeat="user in listUser">
-        <i class="fa fa-envelope"></i>{{user}}
-      </div>
-    </div>
-  </div>
 </div>

@@ -44,7 +44,6 @@ group :development, :test do
   gem 'sqlite3'
 end
 
-
 # doc
 gem 'railroady'
 

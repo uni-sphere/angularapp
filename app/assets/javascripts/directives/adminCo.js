@@ -51,7 +51,7 @@
               $auth.submitLogin(credentials)
               .then(function(resp) {
                 scope.admin = true;
-                console.log(resp);
+                // console.log(resp);
                 console.log("You have been authentificated")
               })
               .catch(function(resp) {

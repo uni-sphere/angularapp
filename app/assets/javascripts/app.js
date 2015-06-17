@@ -58,7 +58,7 @@
           EMAIL: 'Email',
           UPDATE_PROFIL: 'Update profil',
           ORGANIZATION: 'Organization',
-          NEW_LECTURER: 'New lecturer (email)',
+          NEW_LECTURER: 'New lecturer',
           INVITE: 'Invite',
           PASSWORD: 'Password',
           OLD_PSW: 'Old Password',

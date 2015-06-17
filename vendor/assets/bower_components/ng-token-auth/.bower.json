@@ -38,6 +38,6 @@
     "commit": "00b9767816ec38af40482e3da5916996617f2f16"
   },
   "_source": "git://github.com/lynndylanhurley/ng-token-auth.git",
-  "_target": "~0.0.24",
+  "_target": "~0.0.25",
   "_originalSource": "ng-token-auth"
 }

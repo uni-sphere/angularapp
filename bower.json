@@ -23,9 +23,9 @@
     "angular-ui-router": "~0.2.15",
     "restangular": "~1.5.1",
     "underscore": "~1.8.3",
-    "angular-spinner": "~0.6.1"
+    "angular-spinner": "~0.6.1",
   },
   "resolutions": {
-    "angular": "1.4.0"
+    "angular": "~1.4.0"
   }
 }
