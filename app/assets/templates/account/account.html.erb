@@ -3,7 +3,7 @@
     <div class="panel-header">{{ 'PROFIL' | translate }}</div>
     <div class="panel-body">
       <div class="panel-row-title">{{ 'NAME' | translate }}</div>
-      <input type="text" placeholder="{{accountName}}" class="panel-input" name="updatedNameValid" ng-model="updatedName" required>
+      <input type="text" placeholder="{{accountName}}" class="panel-input" name="updatedNameValid" ng-model="updatedName" if="updatedName" required>
 
       <div class="panel-row-title">{{ 'EMAIL' | translate }}</div>
       <input type="email" placeholder="{{accountEmail}}" name="updatedEmailValid" class="panel-input" ng-model="updatedEmail" name="plopp" required>
@@ -12,13 +12,13 @@
     </div>
   </form>
 
-  <form name="organizationForm" class="panel" id="panel-organization" ng-hide="sandbox">
+  <form name="organizationForm" class="panel" id="panel-organization" ng-hide="sandbox" novalidate>
     <div class="panel-header">{{ 'ORGANIZATION' | translate }}</div>
     <div class="panel-body">
       <div class="panel-row-title">List of lecturers</div>
       <div id="listUser">
         <div ng-repeat="user in listUser" class="element-user">
-          <i class="fa fa-user"></i>{{user}}
+          <i class="fa fa-user"></i>{{user.email}}
         </div>
       </div>
       <div id="display-new-user" class="element-user"><i class="fa fa-user-plus" ng-show="newUser"></i>{{newUser}}</div>

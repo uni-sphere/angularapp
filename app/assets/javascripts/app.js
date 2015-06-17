@@ -54,7 +54,7 @@
           NEW_ORGA: 'is a new organization',
           WAIT: 'Wait one week for statistics',
           PROFIL: 'Profil',
-          NAME: 'Name Firstname',
+          NAME: 'Name',
           EMAIL: 'Email',
           UPDATE_PROFIL: 'Update profil',
           ORGANIZATION: 'Organization',

@@ -5,21 +5,6 @@ angular
 
     $scope.sidebarMinified = true;
 
-    if(window.location.host == 'sandbox.unisphere.eu'){
-      console.log("Sandbox")
-      $scope.sandbox = true
-      $scope.admin = true
-    } else{
-      $auth.validateUser().then(function(){
-        $scope.admin = true;
-      }, function(){
-        $scope.admin = false
-      })
-    }
-
-    if(window.location.host == 'localhost:3000'){
-      $scope.local = true
-    }
 
 
     $scope.adminDeco = function(){

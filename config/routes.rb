@@ -11,7 +11,7 @@ Rails.application.routes.draw do
       end
     end
     resources :reports, only: [:update]
-    
+
     get 'organization/is_signed_up', to: 'organizations#is_signed_up?'
     get 'reports/firstchart', to: 'reports#first_chart'
     get 'reports/secondchart', to: 'reports#second_chart'
@@ -19,11 +19,11 @@ Rails.application.routes.draw do
     get 'awsdocuments/archives', to: 'awsdocuments#archives'
     get 'report/nodes', to: 'reports#nodes'
     put 'activity', to: 'reports#update'
-    
+
     post 'users/invite', to: 'users#invite'
-    get 'users', to: 'users#show'
-    get 'user', to: 'users#index'
-    
+    get 'user', to: 'users#show'
+    get 'users', to: 'users#index'
+
   end
 
   root 'angular#index'
@@ -31,8 +31,8 @@ Rails.application.routes.draw do
   get '/home', to: 'angular#index'
   get '/dashboard', to: 'angular#index'
   get '/account', to: 'angular#index'
-  
+
   post '/user/invite', to: 'users#invite'
   get '/user/welcome', to: 'users#welcome'
-  
+
 end

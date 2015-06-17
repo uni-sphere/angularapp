@@ -107,21 +107,22 @@
   display: table;
   margin: 0px auto 40px auto;
   width: 800px;
+
+  .fa-user{
+    margin-right: 6px;
+    margin-left: 6px;
+  }
+
+  .fa-user-plus{
+    margin-right: 3px;
+    margin-left: 6px;
+  }
 }
 
 #listUser{
   margin-top: 10px;
 }
-.fa-user{
-  margin-right: 6px;
-  margin-left: 6px;
-}
 
-.fa-user-plus{
-  margin-right: 3px;
-  margin-left: 6px;
-
-}
 
 #display-new-user{
   height: 25px;
