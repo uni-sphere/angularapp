@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     
     post 'users/invite', to: 'users#invite'
     get 'users', to: 'users#show'
+    get 'user', to: 'users#index'
     
   end
 
