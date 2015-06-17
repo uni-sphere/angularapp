@@ -1,5 +1,13 @@
 class UsersController < ApplicationController
   
+  def index
+    if current_user
+      render json: {users: current_organization.users}.to_json, success: 200
+    else
+      send_error('Unauthorized', 401)
+    end
+  end
+  
   def show
     if current_user
       render json: {user: {name: current_user.name, email: current_user.email}}.to_json, success: 200
