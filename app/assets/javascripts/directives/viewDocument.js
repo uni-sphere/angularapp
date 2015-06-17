@@ -13,7 +13,8 @@
           admin: '=',
           home: '=',
           activateSpinner: '=',
-          desactivateSpinner: '='
+          desactivateSpinner: '=',
+          sandbox: '='
         },
         link: function(scope){
 
