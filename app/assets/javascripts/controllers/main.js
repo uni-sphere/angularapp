@@ -6,12 +6,10 @@ angular
     $scope.sidebarMinified = true;
 
     if(window.location.host == 'sandbox.unisphere.eu'){
-      // console.log("Sandbox")
       $scope.sandbox = true
       $scope.admin = true
     } else{
       $auth.validateUser().then(function(){
-        // console.log("Authentificated")
         $scope.admin = true;
         $scope.getBasicInfo()
 

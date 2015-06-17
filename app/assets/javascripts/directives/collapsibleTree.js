@@ -12,7 +12,7 @@
           admin: '=',
           sidebarMinified: '=',
           home: '=',
-          sandboxNodes: '='
+          sandbox: '='
         },
         link: function(scope, iElement, iAttrs) {
 
@@ -20,6 +20,11 @@
 
           Restangular.one('nodes').get().then(function (nodes) {
             scope.nodes = nodes.plain();
+            scope.$watch('admin',function(newVals, oldVals){
+              if(newVals){
+                render(makeNested(scope.nodes), iElement);
+              }
+            });
             // scope.copyFlatData = Restangular.copy(nodes);
           }, function(){
             console.log("There getting the university name");
@@ -108,19 +113,25 @@
             render(makeNested(scope.nodes), iElement);
           };
 
-          // We re-render when we switch admin on/off
-          scope.$watch('admin',function(newVals, oldVals){
-            if(scope.nodes){
-              render(makeNested(scope.nodes), iElement);
-            }
-          });
+          // The problem is the nodes might not be here when we look
+          // So we keep looking until they are
 
-          // We resize when the data changes
-          scope.$watch('nodes', function(newVals, oldVals) {
-            if(newVals){
-              render(makeNested(scope.nodes), iElement);
-            }
-          });
+          // We re-render when we switch admin on/off
+          // setTimeout(function(){
+          //   scope.$watch('admin',function(newVals, oldVals){
+          //     if(newVals){
+          //       console.log("admin")
+          //       render(makeNested(scope.nodes), iElement);
+          //     }
+          //   });
+          // },1000);
+
+          // // We resize when the data changes
+          // scope.$watch('nodes', function(newVals, oldVals) {
+          //   if(newVals){
+          //     render(makeNested(scope.nodes), iElement);
+          //   }
+          // });
 
 
           // watch for data changes and re-render
@@ -151,6 +162,7 @@
           =======================================*/
 
           function update(source) {
+            console.log(source)
             var duration = 750;
 
             // Compute the new tree layout.
