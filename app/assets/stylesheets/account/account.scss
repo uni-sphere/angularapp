@@ -1,12 +1,7 @@
 #account{
   padding: 40px;
 
-  input{
-    &:focus, &.ng-valid{
-      box-shadow: 0px 0px 0px 2px #A0D1FA,inset 0 0 0 0 #000 !important;
-      background: white !important;
-    }
-  }
+
 }
 
 /*========================================
@@ -94,7 +89,23 @@
   }
 }
 
+.panel{
+  input{
+    &:focus{
+      box-shadow: 0px 0px 0px 2px #A0D1FA,inset 0 0 0 0 #000 !important;
+      background: white !important;
+    }
+  }
+}
 
+#panel-password, #panel-organization{
+  input{
+    &.ng-valid{
+      box-shadow: 0px 0px 0px 2px #A0D1FA,inset 0 0 0 0 #000 !important;
+      background: white !important;
+    }
+  }
+}
 // .input-float{
 //   float: left;
 //   margin-bottom: 20px;

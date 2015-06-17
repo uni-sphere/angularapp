@@ -8,18 +8,28 @@
     ======================================*/
 
     $scope.updateAccount = function() {
-      if($scope.profileForm.updatedNameValid.$valid || $scope.profileForm.updatedEmailValid.$valid){
-        if(!$scope.profileForm.updatedNameValid.$valid){
-          var credentials = {
-            name: $scope.accountName,
-            email: $scope.updatedEmail
-          };
-        } else if(!$scope.profileForm.updatedEmailValid.$valid){
-          var credentials = {
-            name: $scope.updatedName,
-            email: $scope.accountEmail
-          };
-        }
+      // console.log($scope.updatedName)
+      // console.log($scope.updatedEmail)
+      // console.log($scope.profileForm.updatedNameValid.$error.minlength)
+      // console.log($scope.profileForm.updatedEmailValid.$valid)
+
+      if($scope.updatedName == ""){
+        $scope.updatedName = undefined
+      }
+      if($scope.updatedEmail == ""){
+        $scope.updatedEmail = undefined
+      }
+
+      if(!$scope.profileForm.updatedEmailValid.$valid){
+        $scope.displayError("Enter a valid mail")
+      } else if($scope.profileForm.updatedNameValid.$error.minlength){
+        $scope.displayError("Enter a valid name")
+      } else {
+
+        var credentials = {
+          name: $scope.updatedName,
+          email: $scope.updatedEmail
+        };
 
         $auth.updateAccount(credentials)
         .then(function(resp) {
@@ -29,7 +39,7 @@
           $scope.accountName = resp.data.data.name
           $scope.updatedName = ""
           $scope.updatedEmail = ""
-          $scope.profileForm.$setUntouched();
+          // $scope.profileForm.$setUntouched();
         })
         .catch(function(resp) {
           $scope.displayError("Unable to update the profile")

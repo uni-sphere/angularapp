@@ -3,10 +3,10 @@
     <div class="panel-header">{{ 'PROFIL' | translate }}</div>
     <div class="panel-body">
       <div class="panel-row-title">{{ 'NAME' | translate }}</div>
-      <input type="text" placeholder="{{accountName}}" class="panel-input" name="updatedNameValid" ng-model="updatedName" if="updatedName" required>
+      <input type="text" placeholder="{{accountName}}" class="panel-input" name="updatedNameValid" ng-model="updatedName" if="updatedName" ng-minlength=3>
 
       <div class="panel-row-title">{{ 'EMAIL' | translate }}</div>
-      <input type="email" placeholder="{{accountEmail}}" name="updatedEmailValid" class="panel-input" ng-model="updatedEmail" name="plopp" required>
+      <input type="email" placeholder="{{accountEmail}}" name="updatedEmailValid" class="panel-input" ng-model="updatedEmail" name="plopp">
 
       <button class="panel-submit" ng-click="updateAccount()" ng-class="{'valid' : profileForm.updatedNameValid.$valid || profileForm.updatedEmailValid.$valid}">{{ 'UPDATE_PROFIL' | translate }}</button>
     </div>

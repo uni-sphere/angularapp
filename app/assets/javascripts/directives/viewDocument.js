@@ -223,6 +223,7 @@
             /*==========  Order the files (one folder and than all files inside)  ==========*/
 
             function orderFiles(files){
+              console.log(files);
               for (var i = 0; i < files.length; i++){
                 if(files[i].type == "directory"){
 
@@ -258,7 +259,7 @@
               } else{
                 for (var i = 0; i < files.length; i++){
                   for(var j = 0; j <  scope.arrayFiles.length; j++){
-                    if(files[i].type != "directory"){
+                    if(files[i].type != "directory" && files[i].name[0] != '.'){
                       var dir = files[i].path.split("/");
                       dir.pop();
                       if(dir.join('/') == scope.arrayFiles[j][0].path){
@@ -481,6 +482,14 @@
 
               var nodeDocData = masternodeData;
 
+              // for (var i = 0; i < files.length; i++) {
+              //   if(files[i].name[0] == '.'){
+              //     console.log(files[i])
+              //     delete files[i]
+              //   }
+              // }
+
+              console.log(files)
               scope.activateSpinner()
               orderFiles(files);
               uploadItems();
