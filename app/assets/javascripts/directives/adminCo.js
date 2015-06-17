@@ -11,7 +11,8 @@
         hideError: '=',
         accountForgotten: '=',
         accountForgottenInput: '=',
-        sandbox: '='
+        sandbox: '=',
+        getBasicInfo: '='
       },
       link: function(scope) {
 
@@ -51,6 +52,7 @@
               $auth.submitLogin(credentials)
               .then(function(resp) {
                 scope.admin = true;
+                scope.getBasicInfo()
                 // console.log(resp);
                 console.log("You have been authentificated")
               })

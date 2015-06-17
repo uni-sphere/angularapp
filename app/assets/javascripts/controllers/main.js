@@ -5,7 +5,25 @@ angular
 
     $scope.sidebarMinified = true;
 
+    if(window.location.host == 'sandbox.unisphere.eu'){
+      // console.log("Sandbox")
+      $scope.sandbox = true
+      $scope.admin = true
+    } else{
+      $auth.validateUser().then(function(){
+        // console.log("Authentificated")
+        $scope.admin = true;
+        $scope.getBasicInfo()
 
+
+      }, function(){
+        $scope.admin = false
+      })
+    }
+
+    if(window.location.host == 'localhost:3000'){
+      $scope.local = true
+    }
 
     $scope.adminDeco = function(){
       if($scope.sandbox){
@@ -106,6 +124,27 @@ angular
       usSpinnerService.stop('spinner-1');
       $scope.greyBackground = false
       $scope.$apply()
+    }
+
+    $scope.getBasicInfo = function(){
+      // We get the user email and name to display them
+      Restangular.one('user').get().then(function (d) {
+        $scope.accountEmail = d.user.email
+        $scope.accountName = d.user.name
+
+        // We get the list of user in the organization
+        Restangular.one('users').get().then(function (d) {
+          $scope.listUser = d.users
+        }, function(d){
+          console.log("Impossible to get the user infos");
+          console.log(d)
+        });
+
+      }, function(d){
+        console.log("Impossible to get the user infos");
+        console.log(d)
+        // $scope.displayError("We temporarly can't display user informations")
+      });
     }
 
     // $scope.displayError("This is just a test version. You can't download files");

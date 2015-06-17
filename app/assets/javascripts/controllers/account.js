@@ -3,48 +3,6 @@
   .module('mainApp.controllers')
   .controller('AccountCtrl', ['$scope', 'Restangular', '$auth', function ($scope, Restangular, $auth) {
 
-
-
-    if(window.location.host == 'localhost:3000'){
-      $scope.local = true
-    }
-
-
-    // We get the user email and name to display them
-    if(!$scope.sandbox){
-      Restangular.one('user').get().then(function (d) {
-        $scope.accountEmail = d.user.email
-        $scope.accountName = d.user.name
-      }, function(d){
-        console.log("Impossible to get the user infos");
-        console.log(d)
-        $scope.displayError("We temporarly can't display user informations")
-      });
-    }
-
-    // We get the list of user in the organization
-    if(!$scope.sandbox){
-      Restangular.one('users').get().then(function (d) {
-        $scope.listUser = d.users
-      }, function(d){
-        console.log("Impossible to get the user infos");
-        console.log(d)
-        $scope.displayError("We temporarly can't display user informations")
-      });
-    }
-
-    // SIGNOUT
-    $scope.deconnection = function(){
-      $auth.signOut()
-      .then(function(resp) {
-        c.classList.add("wrapper__minify");
-        scope.admin = false;
-      })
-      .catch(function(resp) {
-        // handle error response
-      });
-    }
-
     /*======================================
     =            Update profile            =
     ======================================*/
