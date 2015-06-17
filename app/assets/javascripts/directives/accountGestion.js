@@ -15,7 +15,7 @@
         accountSignup: '=',
         displaySuccess: '=',
         emailInput: '=',
-        accountForgottenInput: '='
+        accountForgottenEmail: '='
       },
       link: function(scope, element) {
 
@@ -28,9 +28,9 @@
 
         // Account forgotten
         scope.resetAccount = function(){
-          Restangular.one('organization/is_signed_up').get({email: scope.accountForgottenInput}).then(function (signup) {
+          Restangular.one('organization/is_signed_up').get({email: scope.accountForgottenEmail}).then(function (signup) {
             var credentials = {
-              email: scope.accountForgottenInput
+              email: scope.accountForgottenEmail
             };
 
             $auth.requestPasswordReset(credentials)
@@ -43,12 +43,13 @@
               console.log("This email doesn't exist");
               console.log(d);
               scope.displayError("This email doesn't exist");
-
+              $('#account-forgotten-email').focus()
             });
           }, function(d){
-            console.log("Unknown error");
+            console.log("This email doesn't exist");
             console.log(d);
-            scope.displayError("Unknown error");
+            scope.displayError("This email doesn't exist");
+            $('#account-forgotten-email').focus()
           });
         }
 

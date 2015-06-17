@@ -10,7 +10,7 @@
         displayError: '=',
         hideError: '=',
         accountForgotten: '=',
-        accountForgottenInput: '=',
+        accountForgottenEmail: '=',
         sandbox: '=',
         getBasicInfo: '='
       },
@@ -32,7 +32,7 @@
 
         // PASSWORD FORGOTTEN
         scope.passwordForgotten = function() {
-          scope.accountForgottenInput = scope.emailInput
+          scope.accountForgottenEmail = scope.admincoEmail
           scope.accountForgotten = true;
           $('#account-forgotten-email').focus();
         }
@@ -43,10 +43,10 @@
 
         scope.adminCoAttempt = function(){
 
-          Restangular.one('organization/is_signed_up').get({email: scope.emailInput}).then(function (signup) {
+          Restangular.one('organization/is_signed_up').get({email: scope.admincoEmail}).then(function (signup) {
               var credentials = {
-                email: scope.emailInput,
-                password: scope.passwordInput
+                email: scope.admincoEmail,
+                password: scope.admincoPassword
               };
 
               $auth.submitLogin(credentials)
@@ -61,17 +61,19 @@
                 if(resp.reason == "unauthorized"){
                   console.log("You misstyped your password");
                   scope.displayError("You misstyped your password");
+                  $('#admin-co-password').focus()
                 } else{
                   console.log("Unknown error");
                   scope.displayError("Unknown error");
                 }
-                scope.passwordInput = "";
+                scope.admincoPassword = "";
               });
 
           }, function(d){
             console.log(d);
             scope.displayError("You misstyped your email");
-            scope.passwordInput = "";
+            scope.admincoPassword = "";
+            $('#admin-co-email').focus()
           });
 
         }

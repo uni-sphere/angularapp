@@ -17,9 +17,9 @@
 
   <div ng-include="'main/navbar.html'"></div>
 
-  <admin-co account-forgotten = 'accountForgotten' ng-hide="admin" display-error = 'displayError' account-forgotten-input ='accountForgottenInput' hide-error = 'hideError' admin = 'admin' sandbox= 'sandbox' get-basic-info = 'getBasicInfo'></admin-co>
+  <admin-co account-forgotten = 'accountForgotten' ng-hide="admin" display-error = 'displayError' account-forgotten-email ='accountForgottenEmail' hide-error = 'hideError' admin = 'admin' sandbox= 'sandbox' get-basic-info = 'getBasicInfo'></admin-co>
 
-  <account-gestion  account-forgotten-input ='accountForgottenInput' account-forgotten = 'accountForgotten' account-signup = 'accountSignup' display-error = 'displayError' display-success = 'displaySuccess' hide-error = 'hideError' admin = 'admin'></account-gestion>
+  <account-gestion  account-forgotten-email ='accountForgottenEmail' account-forgotten = 'accountForgotten' account-signup = 'accountSignup' display-error = 'displayError' display-success = 'displaySuccess' hide-error = 'hideError' admin = 'admin'></account-gestion>
 
   <sidebar ng-show="admin" admin-deco = 'adminDeco' sidebar-minified = 'sidebarMinified'></sidebar>
 

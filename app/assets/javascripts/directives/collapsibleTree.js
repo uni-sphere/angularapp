@@ -21,7 +21,7 @@
           Restangular.one('nodes').get().then(function (nodes) {
             scope.nodes = nodes.plain();
             scope.$watch('admin',function(newVals, oldVals){
-              if(newVals){
+              if(newVals != undefined){
                 render(makeNested(scope.nodes), iElement);
               }
             });
@@ -162,7 +162,6 @@
           =======================================*/
 
           function update(source) {
-            console.log(source)
             var duration = 750;
 
             // Compute the new tree layout.
