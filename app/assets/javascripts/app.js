@@ -125,11 +125,21 @@
           })
           .state('main.dashboard', {
             url: 'dashboard',
-            templateUrl: 'dashboard/one.html'
+            templateUrl: 'dashboard/one.html',
+            resolve: {
+              auth: function($auth){
+                return $auth.validateUser();
+              }
+            }
           })
           .state('main.account', {
             url: 'account',
-            templateUrl: 'account/account.html'
+            templateUrl: 'account/account.html',
+            resolve: {
+              auth: function($auth){
+                return $auth.validateUser();
+              }
+            }
           })
 
 

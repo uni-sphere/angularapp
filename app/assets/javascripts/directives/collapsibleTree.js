@@ -173,7 +173,7 @@
 
             // Update the nodes…
             var node = svg.selectAll("g.node")
-              .data(nodes, function(d) { return d.id || (d.id = ++scope.i); });
+              .data(nodes, function(d) { return d.id || (d.id = d.num); });
 
             // Enter any new nodes at the parent's previous position.
             var nodeEnter = node.enter().append("g")
@@ -424,7 +424,7 @@
                 // We check if the node end was in the node deleted.
                 // than we need to change the cookies
 
-                console.log(ipCookie('chapterFolded'))
+                // console.log(ipCookie('chapterFolded'))
                 function deleteProperly(node){
                   if(node.num == scope.nodeEnd[0]){
                     scope.nodeEnd = [scope.root.num, scope.root.name]
@@ -436,7 +436,7 @@
                     colornodePath(scope.root);
                   }
                   if(node.children){
-                    console.log(node.children)
+                    // console.log(node.children)
                     node.children.forEach(deleteProperly)
                   }
                   if(node._children){
@@ -474,7 +474,6 @@
               if( nodeSelected.children === undefined || nodeSelected.children == null ){
                 nodeSelected.children = [];
               }
-
               nodeSelected.children.push(a);
 
               update(nodeSelected);
@@ -491,8 +490,10 @@
                   nodeSelected.children = [];
                 }
 
-                console.log(nodeSelected)
                 nodeSelected.children.push(a);
+                // console.log(nodeSelected)
+                // console.log(scope.root)
+                // console.log(nodeSelected.children)
                 update(nodeSelected);
 
 
