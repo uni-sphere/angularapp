@@ -420,7 +420,10 @@
                 if (nodeToDelete){
                   nodeSelected.parent.children = _.without(nodeSelected.parent.children, nodeToDelete[0]);
                 }
-                update(nodeSelected);
+
+                setTimeout(function(){
+                  update(nodeSelected);
+                },50);
                 console.log("Objects deleted");
               }, function(d) {
                 console.log(d);
