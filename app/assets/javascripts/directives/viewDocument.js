@@ -494,7 +494,7 @@
               var nodeDocData = masternodeData;
 
               // console.log(files)
-              // scope.activateSpinner()
+              scope.activateSpinner()
               orderFiles(files);
               uploadItems();
             }
