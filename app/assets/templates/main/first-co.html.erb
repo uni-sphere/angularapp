@@ -1,0 +1,49 @@
+<div id="first-co-wrapper">
+  <div id="first-co-left-background-right" class="black-bg" ng-show="leftAdvise"></div>
+  <div id="first-co-left-background-top" class="black-bg" ng-show="leftAdvise"></div>
+  <div id="first-co-left-background-left" class="black-bg" ng-show="leftAdvise"></div>
+  <div id="first-co-left-background-bottom" class="black-bg" ng-show="leftAdvise"></div>
+
+  <div id="first-co-right-background-left" class="black-bg" ng-show="rightAdvise"></div>
+  <div id="first-co-right-background-bottom" class="black-bg" ng-show="rightAdvise"></div>
+  <div id="first-co-right-background-top" class="black-bg" ng-show="rightAdvise"></div>
+  <div id="first-co-right-background-right" class="black-bg" ng-show="rightAdvise"></div>
+ <!--  <div id="bubble-action-node">
+    <div class="bubble-action" ng-click="diplayBubbleNode=true"></div>
+    <div class="bubble-content" tip="Delete a node"></div>
+  </div> -->
+</div>
+
+
+<div id="first-co-advise">
+
+  <div id="first-co-advise-left" ng-show="leftAdvise">
+    <div class="fa fa-caret-right" ng-click="TransitionRightAdvise()"></div>
+    <div class="first-co-advise-title">1. Create your class</div>
+    <div class="first-co-advise-body">
+      The left side of the screen is dedicated to classes. You can:
+    <ul>
+      <li>Create your class</li>
+      <li>Delete your class</li>
+      <li>Rename your class</li>
+    </ul>
+    </div>
+  </div>
+
+  <div id="first-co-advise-right" ng-show="rightAdvise">
+    <div class="fa fa-caret-left" ng-click="TransitionLeftAdvise()"></div>
+    <div class="fa fa-caret-right" ng-click="closeAdvise()"></div>
+    <div class="first-co-advise-title">2. Upload your lessons</div>
+    <div class="first-co-advise-body">
+      The right side of the screen is dedicated to lessons. You can:
+    <ul>
+      <li>Create chapters</li>
+      <li>Upload files</li>
+      <li>Rename files and chapters</li>
+      <li>Consult and download files</li>
+    </ul>
+    </div>
+  </div>
+
+
+</div>

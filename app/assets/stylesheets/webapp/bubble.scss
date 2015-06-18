@@ -24,7 +24,9 @@
   // }
 }
 
-.bubble-action
+.bubble-action{
+  position: relative;
+}
 
 // a[bubbletooltip]:link, a[bubbletooltip]:visited{
 //   text-decoration: none;
@@ -32,35 +34,33 @@
 //   color : red;
 // }
 
-a[bubbletooltip]:before
-{
+.bubble-content:before{
   content: "";
   position: absolute;
-  border-right: 21px solid #97a5db;
-  border-top: 21px solid transparent;
-  border-bottom: 21px solid transparent;
-  visibility: hidden;
-  bottom: -12px;
-  right: -20px;
+  border-top: 14px solid #97a5db;
+  border-right: 14px solid transparent;
+  border-left: 14px solid transparent;
+  // visibility: hidden;
+  bottom: 12px;
+  right: -8px;
 }
 
-a[bubbletooltip]:after
-{
+.bubble-content:after{
   position: absolute;
-  content: attr(bubbletooltip);
+  content: "Delete a node";
   color: #FFF;
-  font-weight:bold;
-  right: -68px;
-  bottom: -16px;
-  width:40px;
+  // font-weight:bold;
+  right: -188px;
+  bottom: 24px;
+  width: 200px;
   background: #97a5db;
   padding: 5px 10px;
   border-radius: 6px;
-  visibility: hidden;
+  // visibility: hidden;
 }
 
-// a[bubbletooltip]:hover:before, a[bubbletooltip]:hover:after
-// {
-//   visibility: visible;
-//   -moz-transition: visibility 0s linear .3s;
-// }
+.bubble-content:before, .bubble-content:after
+{
+  visibility: visible;
+  transition: visibility 0s linear .3s;
+}
