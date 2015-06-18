@@ -85,14 +85,14 @@
 
   text-decoration: none;
 
-  &.valid:hover{
+  &:hover{
     cursor: pointer;
     border-color: #008EEC;
     border-bottom-color: #0084DC;
     background: #008DEB;
   }
 
-  &.valid:active {
+  &:active {
     border-color: #2a65a0;
     border-bottom-color: #3884cd;
     background-color: #3072b3;

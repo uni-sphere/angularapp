@@ -20,7 +20,9 @@
         $scope.updatedEmail = undefined
       }
 
-      if(!$scope.profileForm.updatedEmailValid.$valid){
+      if($scope.updatedName == undefined && $scope.updatedEmail == undefined){
+        $scope.displayError("Enter either a valid new name or email")
+      }else if(!$scope.profileForm.updatedEmailValid.$valid){
         $scope.displayError("Enter a valid mail")
       } else if($scope.profileForm.updatedNameValid.$error.minlength){
         $scope.displayError("Enter a valid name")

@@ -468,7 +468,7 @@
                 // console.log(nodeSelected.children)
                 setTimeout(function(){
                   update(nodeSelected);
-                },10);
+                },50);
               }, function(d) {
                 console.log(d);
                 scope.displayError("Try again to create a node");
