@@ -175,6 +175,7 @@
           // We watch when someone uploads files from the tree
           scope.$watch('fileStore.files', function (newVals, oldVals) {
             if(newVals){
+              console.log("fileStore.files")
               upload(scope.fileStore.files,false);
             }
           });
@@ -187,6 +188,7 @@
           // We watch when someone drag and drops a file / folder
           scope.$watch('files', function (newVals, oldVals) {
             if(newVals){
+              console.log("files")
               upload(scope.files, true);
             }
           });
@@ -194,7 +196,7 @@
           // We watch when someone uploads a file at the root
           scope.$watch('firstFiles', function (newVals, oldVals) {
             if(newVals){
-              // console.log("firstFiles")
+              console.log("firstFiles")
               upload(scope.firstFiles, false);
             }
           });
@@ -379,6 +381,8 @@
                 }
                 // Normal mode
                 else{
+                  // console.log("nodeEnd " + scope.nodeEnd[0])
+                  // console.log("chapter id " + nodeDocData.id)
                   $upload.upload({
                     url: getApiUrl() + '/awsdocuments',
                     file: file,
@@ -392,7 +396,6 @@
                     scope.progressionUpload --;
                     var a = {title: d.data.title, doc_id: d.data.id, document: true, type: file.type, preview_link: d.data.url}
                     numberItems ++;
-                    console.log(d);
                     console.log("OK document uploaded:" + d.data.title);
                     if(numberItems == files.length){
                       console.log("OK upload of this level finished")
@@ -472,7 +475,7 @@
               scope.arrayFiles = undefined;
 
               if(!dragAndDrop){
-                // console.log(scope.lastClick);
+                console.log(scope.lastClick);
                 // If we upload the first file
                 if(scope.lastClick == undefined){
                   var masternodeData = {id: 0};

@@ -421,9 +421,33 @@
                   nodeSelected.parent.children = _.without(nodeSelected.parent.children, nodeToDelete[0]);
                 }
 
-                setTimeout(function(){
-                  update(nodeSelected);
-                },50);
+                // We check if the node end was in the node deleted.
+                // than we need to change the cookies
+
+                console.log(ipCookie('chapterFolded'))
+                function deleteProperly(node){
+                  if(node.num == scope.nodeEnd[0]){
+                    scope.nodeEnd = [scope.root.num, scope.root.name]
+                    scope.activeNodes = [scope.nodeEnd]
+                    findFoldedNodes(scope.root);
+                    ipCookie('activeNodes', scope.activeNodes);
+                    ipCookie('nodeEnd', scope.nodeEnd);
+                    ipCookie('foldedNodes', scope.foldedNodes);
+                    colornodePath(scope.root);
+                  }
+                  if(node.children){
+                    console.log(node.children)
+                    node.children.forEach(deleteProperly)
+                  }
+                  if(node._children){
+                    node._children.forEach(deleteProperly)
+                  }
+                }
+
+                deleteProperly(nodeSelected)
+
+
+                update(nodeSelected);
                 console.log("Objects deleted");
               }, function(d) {
                 console.log(d);
@@ -467,11 +491,11 @@
                   nodeSelected.children = [];
                 }
 
+                console.log(nodeSelected)
                 nodeSelected.children.push(a);
-                // console.log(nodeSelected.children)
-                setTimeout(function(){
-                  update(nodeSelected);
-                },50);
+                update(nodeSelected);
+
+
               }, function(d) {
                 console.log(d);
                 scope.displayError("Try again to create a node");
