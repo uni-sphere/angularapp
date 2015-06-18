@@ -224,7 +224,6 @@
             /*==========  Order the files (one folder and than all files inside)  ==========*/
 
             function orderFiles(files){
-              console.log(files);
               for (var i = 0; i < files.length; i++){
                 if(files[i].type == "directory"){
 
@@ -329,7 +328,14 @@
 
                 scope.progressionUpload --;
                 console.log("OK chapter created:" + folder.name);
-                uploadFiles(files)
+
+                // If there is no files to upload. We put dirUploaded to true
+                if(files.length == 0){
+                  scope.dirUploaded = true;
+                } else{
+                   uploadFiles(files)
+                }
+
 
               }, function(d) {
                 scope.displayError("Failed to create chapter:" + folder.name);
@@ -421,9 +427,10 @@
             /*==========  Upload function  ==========*/
 
             function uploadItems(){
+              // console.log(scope.arrayFiles)
               //IF the first element of the array is a directory we upload the dir
               if( scope.arrayFiles[0][0].type == "directory"){
-                uploadDir( scope.arrayFiles[0]);
+                uploadDir(scope.arrayFiles[0]);
               }
               //If the first element is a file we upload the file(s)
               else{
@@ -431,11 +438,14 @@
               }
               // We remove the array we uploaded
               scope.arrayFiles.shift();
+              // console.log(scope.arrayFiles)
 
               // We wait until the directory is uploaded
               scope.$watch('dirUploaded', function () {
+                // console.log("Dir changed" + scope.dirUploaded)
                 var promise = new Promise(function(resolve, reject){
                   if(scope.dirUploaded){
+                    // console.log("Dir uploaded")
                     scope.dirUploaded = false;
                     resolve();
                   }
@@ -483,15 +493,8 @@
 
               var nodeDocData = masternodeData;
 
-              // for (var i = 0; i < files.length; i++) {
-              //   if(files[i].name[0] == '.'){
-              //     console.log(files[i])
-              //     delete files[i]
-              //   }
-              // }
-
-              console.log(files)
-              scope.activateSpinner()
+              // console.log(files)
+              // scope.activateSpinner()
               orderFiles(files);
               uploadItems();
             }
