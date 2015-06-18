@@ -460,16 +460,18 @@
                 console.log("Object saved OK");
                 var a = {name: "new", num: d.id}
 
-                if( nodeSelected.children === undefined || nodeSelected.children == null ){
+                if( nodeSelected.children == undefined || nodeSelected.children == null ){
                   nodeSelected.children = [];
                 }
 
                 nodeSelected.children.push(a);
-
-                update(nodeSelected);
+                // console.log(nodeSelected.children)
+                setTimeout(function(){
+                  update(nodeSelected);
+                },10);
               }, function(d) {
                 console.log(d);
-                scope.displayError(["Try again to create a node"]);
+                scope.displayError("Try again to create a node");
                 console.log("There was an error saving");
               });
             }
