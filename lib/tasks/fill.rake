@@ -23,6 +23,7 @@ namespace :fill do
     organization = Organization.create(name: 'Sandbox', website: 'http://sandbox.unisphere.eu')
     # Create a user
     User.create!(email: "gab@mul.fr", name: "Gabriel", uid: "foo", provider: 'email', password: 'gabgabgab', organization_id: 1)
+    User.create!(email: "teacher@university.com", name: "Teacher", uid: "foo", provider: 'email', password: 'gabgabgab', organization_id: 1)
     # User.new({:email => "gab@mul.fr", :password => "gabgabgab", :password_confirmation => "gabgabgab", :organization_id => 1, :confirmed_at => Time.now}).save(:validate => false)
     # create first nodes
     organization.nodes.create(name: "Sandbox", parent_id: 0)
