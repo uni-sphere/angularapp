@@ -1,10 +1,10 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('MainCtrl', ['$scope', 'browser','$timeout', 'Restangular', '$upload', '$translate', '$auth', '$state', 'usSpinnerService', function ($scope, browser, $timeout, Restangular, $upload, $translate, $auth, $state, usSpinnerService) {
+  .controller('MainCtrl', ['$scope', 'browser','$timeout', 'Restangular', '$translate', '$auth', '$state', 'usSpinnerService', function ($scope, browser, $timeout, Restangular, $translate, $auth, $state, usSpinnerService) {
 
     $scope.sidebarMinified = true;
-    $('#first-connection').fadeIn(2000)
+    // $('#first-connection').fadeIn(1500)
 
     if(window.location.host == 'sandbox.unisphere.eu'){
       $scope.sandbox = true

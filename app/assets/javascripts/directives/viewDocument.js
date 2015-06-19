@@ -229,6 +229,7 @@
               for (var i = 0; i < files.length; i++){
                 if(files[i].type == "directory"){
 
+
                   var path  = files[i].path.split("/");
                   var postPath = [];
 
@@ -421,9 +422,6 @@
                     console.log("Failed to upload document:" +  file.name);
                   });
                 }
-
-
-
               }
             }
 
@@ -496,10 +494,19 @@
 
               var nodeDocData = masternodeData;
 
-              // console.log(files)
-              scope.activateSpinner()
-              orderFiles(files);
-              uploadItems();
+              if(scope.isChrome){
+                scope.activateSpinner()
+                orderFiles(files);
+                uploadItems();
+              } else{
+                if(files[0].type == "directory" || files[0].size == 0){
+                  scope.displayError("You can only upload folder on Chrome")
+                } else{
+                  scope.activateSpinner()
+                  orderFiles(files);
+                  uploadItems();
+                }
+              }
             }
           };
 
