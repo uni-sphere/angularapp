@@ -1,6 +1,15 @@
 require "#{Rails.root}/app/helpers/subdomain_helper"
 include SubdomainHelper
 
+def add_reports(node)
+  for i in 1..10
+    node.reports.create(downloads: Random.rand(50))
+    report = Report.last
+    date = report.created_at-(11-i)*7.days
+    report.update(created_at: date)
+  end
+end
+
 namespace :fill do
   desc "inital filling"
   task initial: :environment do
@@ -45,10 +54,13 @@ namespace :fill do
     Node.last.chapters.create(title: "main", parent_id: 0, user_id: 1)
     # create topics
     organization.nodes.create(name: "Maths", parent_id: 9)
+    add_reports(Node.last)
     Node.last.chapters.create(title: "main", parent_id: 0, user_id: 1)
     organization.nodes.create(name: "Anglais", parent_id: 9)
+    add_reports(Node.last)
     Node.last.chapters.create(title: "main", parent_id: 0, user_id: 1)
     organization.nodes.create(name: "Histoire", parent_id: 9)
+    add_reports(Node.last)
     Node.last.chapters.create(title: "main", parent_id: 0, user_id: 1)
     # create chapters
     node = Organization.last.nodes.last
