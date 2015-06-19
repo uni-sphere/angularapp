@@ -1,10 +1,11 @@
 (function () {
   'use strict';
-  angular.module('mainApp.directives').directive('firstCo', [ function() {
+  angular.module('mainApp.directives').directive('firstCo', ['$auth', function($auth) {
     return {
       restrict: 'E',
       templateUrl: 'main/first-co.html',
       scope: {
+        help: '='
       },
       link: function(scope) {
 
@@ -29,6 +30,14 @@
         scope.closeAdvise = function(){
           scope.sidebarAdvise = false
           $('#first-connection').fadeOut(200)
+          scope.help = false
+          $auth.updateAccount({help: false})
+          .then(function(resp) {
+            console.log('help set to false')
+          })
+          .catch(function(resp) {
+            console.log(resp)
+          });
         }
 
       }

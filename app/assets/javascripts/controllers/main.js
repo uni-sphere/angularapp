@@ -4,7 +4,6 @@ angular
   .controller('MainCtrl', ['$scope', 'browser','$timeout', 'Restangular', '$translate', '$auth', '$state', 'usSpinnerService', function ($scope, browser, $timeout, Restangular, $translate, $auth, $state, usSpinnerService) {
 
     $scope.sidebarMinified = true;
-    // $('#first-connection').fadeIn(1500)
 
     if(window.location.host == 'sandbox.unisphere.eu'){
       $scope.sandbox = true
@@ -13,8 +12,6 @@ angular
       $auth.validateUser().then(function(){
         $scope.admin = true;
         $scope.getBasicInfo()
-
-
       }, function(){
         $scope.admin = false
       })
@@ -130,6 +127,11 @@ angular
       Restangular.one('user').get().then(function (d) {
         $scope.accountEmail = d.user.email
         $scope.accountName = d.user.name
+        $scope.help = d.user.help
+
+        if($scope.help) {
+          $('#first-connection').fadeIn(2000)
+        }
 
         // We get the list of user in the organization
         Restangular.one('users').get().then(function (d) {

@@ -38,6 +38,7 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration
       t.string :nickname
       t.string :image
       t.string :email
+      t.boolean :help, default: true
       t.integer :organization_id
       t.boolean :activity_reports, default: true
 
