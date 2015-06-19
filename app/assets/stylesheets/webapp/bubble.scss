@@ -1,66 +1,52 @@
-#bubble-action-node{
-  position: absolute;
-  top: 200px;
-  left: 500px;
-  z-index: 100
-}
-.bubble-action{
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background: red;
-  cursor: pointer;
-
-  // &:after{
-  //   content: "";
-  //   position: absolute;
-  //   z-index: 200;
-  //   left: 20px;
-  //   right: 20px;
-  //   // top: 5px;
-  //   // bottom: 5px;
-  //   background: blue;
-  //   // border: 1px solid red;
-  // }
-}
-
-.bubble-action
-
-// a[bubbletooltip]:link, a[bubbletooltip]:visited{
-//   text-decoration: none;
-//   position: relative;
-//   color : red;
+// .bubble:before{
+//   content: "";
+//   position: absolute;
+//   border-top: 14px solid #97a5db;
+//   border-right: 14px solid transparent;
+//   border-left: 14px solid transparent;
+//   top: 10px;
+//   left: 40px;
+//   z-index: 999
 // }
 
-a[bubbletooltip]:before
-{
-  content: "";
+.bubble:after{
   position: absolute;
-  border-right: 21px solid #97a5db;
-  border-top: 21px solid transparent;
-  border-bottom: 21px solid transparent;
-  visibility: hidden;
-  bottom: -12px;
-  right: -20px;
-}
-
-a[bubbletooltip]:after
-{
-  position: absolute;
-  content: attr(bubbletooltip);
+  content: attr(write);
   color: #FFF;
-  font-weight:bold;
-  right: -68px;
-  bottom: -16px;
-  width:40px;
+  left: 20px;
+  top: -22px;
+  white-space: nowrap;
+  // width: 200px;
   background: #97a5db;
   padding: 5px 10px;
   border-radius: 6px;
-  visibility: hidden;
+  z-index: 999
 }
 
-// a[bubbletooltip]:hover:before, a[bubbletooltip]:hover:after
-// {
-//   visibility: visible;
-//   -moz-transition: visibility 0s linear .3s;
+#mybubble{
+  position: absolute;
+  top: 400px;
+  left: 600px;
+  z-index: 999
+}
+
+.bubble-chapter{
+
+}
+
+.bubble-file{
+
+}
+
+.bubble{
+  position: absolute
+}
+// .bubble-rectangle{
+//   color: #FFF;
+//   white-space: nowrap;
+//   background: #97a5db !important;
+//   padding: 5px 10px;
+//   border-radius: 6px;
+//   z-index: 999;
+//   cursor: default;
 // }

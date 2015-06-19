@@ -1,0 +1,135 @@
+#first-connection{
+  display: none;
+}
+
+#first-co-wrapper{
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 900;
+}
+
+.black-bg{
+  position: absolute;
+  background: black;
+  opacity: 0.6;
+}
+
+// Left advise
+#first-co-left-background-right{
+  top: 60px;
+  bottom: 40px;
+  width: 70%;
+  right: 0px;
+}
+
+#first-co-left-background-top{
+  top: 0px;
+  width: 100%;
+  height: 60px;
+}
+
+#first-co-left-background-left{
+  top: 60px;
+  width: 50px;
+  bottom: 40px;
+  left: 0px;
+}
+
+#first-co-left-background-bottom{
+  height: 40px;
+  bottom: 0px;
+  width: 100%;
+}
+
+// Right advise
+#first-co-right-background-left{
+  top: 60px;
+  bottom: 200px;
+  width: 68%;
+  left: 0px;
+}
+
+#first-co-right-background-bottom{
+  height: 200px;
+  left: 0px;
+  right: 30px;
+  bottom: 0px;
+}
+
+#first-co-right-background-top{
+  top: 0px;
+  left: 0px;
+  right: 30px;
+  height: 60px;
+}
+
+#first-co-right-background-right{
+  height: 100%;
+  width: 30px;
+  right: 0px;
+}
+
+// Sidebar Advise
+
+#first-co-sidebar-background-bottom{
+  height: 70%;
+  bottom: 0px;
+  width: 100%;
+}
+
+#first-co-sidebar-background-top{
+  top: 0px;
+  height: 5%;
+  width: 100%;
+}
+
+#first-co-sidebar-background-right{
+  width: calc(100% - 50px);
+  left: 50px;
+  height: 25%;
+  top: 5%;
+}
+
+
+
+#first-co-advise{
+  position: absolute;
+  height: 250px;
+  width: 450px;
+  top: calc(50% - 125px);
+  left: calc(50% - 225px);
+
+  background: white;
+  z-index: 999;
+  box-shadow: 1px 2px 2px 0px black;
+  border-radius: 10px;
+
+  .fa-caret-left, .fa-caret-right{
+    position: absolute;
+    line-height: 250px;
+    font-size: 3em;
+    color: #18A1FC;
+    z-index: 999;
+    cursor: pointer;
+  }
+  .fa-caret-right{
+    right: 20px;
+  }
+  .fa-caret-left{
+    left: 20px;
+  }
+
+}
+
+.first-co-advise-title{
+  display: table;
+  margin: 10px auto 10px auto;
+  font-size: 1.2em;
+}
+
+.first-co-advise-body{
+  padding: 20px 60px 0px 60px;
+  border-top: 1px solid #e5e5e5;
+  background: #f6f9fc
+}
