@@ -167,6 +167,7 @@
             // Compute the new tree layout.
             var nodes = scope.tree.nodes(scope.root).reverse();
             var links = scope.tree.links(nodes);
+            console.log(nodes)
 
             // Normalize for fixed-depth.
             nodes.forEach(function(d) { d.y = d.depth * 140});

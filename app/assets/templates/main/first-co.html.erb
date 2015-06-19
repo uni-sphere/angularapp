@@ -8,6 +8,11 @@
   <div id="first-co-right-background-bottom" class="black-bg" ng-show="rightAdvise"></div>
   <div id="first-co-right-background-top" class="black-bg" ng-show="rightAdvise"></div>
   <div id="first-co-right-background-right" class="black-bg" ng-show="rightAdvise"></div>
+
+  <div id="first-co-sidebar-background-bottom" class="black-bg" ng-show="sidebarAdvise"></div>
+  <div id="first-co-sidebar-background-top" class="black-bg" ng-show="sidebarAdvise"></div>
+  <div id="first-co-sidebar-background-right" class="black-bg" ng-show="sidebarAdvise"></div>
+
  <!--  <div id="bubble-action-node">
     <div class="bubble-action" ng-click="diplayBubbleNode=true"></div>
     <div class="bubble-content" tip="Delete a node"></div>
@@ -19,9 +24,9 @@
 
   <div id="first-co-advise-left" ng-show="leftAdvise">
     <div class="fa fa-caret-right" ng-click="TransitionRightAdvise()"></div>
-    <div class="first-co-advise-title">1. Create your class</div>
+    <div class="first-co-advise-title">Class administration</div>
     <div class="first-co-advise-body">
-      The left side of the screen is dedicated to classes. You can:
+      The left side of the screen is dedicated to classes.
     <ul>
       <li>Create your class</li>
       <li>Delete your class</li>
@@ -32,15 +37,28 @@
 
   <div id="first-co-advise-right" ng-show="rightAdvise">
     <div class="fa fa-caret-left" ng-click="TransitionLeftAdvise()"></div>
-    <div class="fa fa-caret-right" ng-click="closeAdvise()"></div>
-    <div class="first-co-advise-title">2. Upload your lessons</div>
+    <div class="fa fa-caret-right" ng-click="TransitionSidebarAdvise()"></div>
+    <div class="first-co-advise-title">Lesson administration</div>
     <div class="first-co-advise-body">
-      The right side of the screen is dedicated to lessons. You can:
+      The right side of the screen is dedicated to lessons.
     <ul>
       <li>Create chapters</li>
       <li>Upload files</li>
       <li>Rename files and chapters</li>
       <li>Consult and download files</li>
+    </ul>
+    </div>
+  </div>
+
+  <div id="first-co-advise-sidebar" ng-show="sidebarAdvise">
+    <div class="fa fa-caret-left" ng-click="TransitionRightAdvise()"></div>
+    <div class="fa fa-caret-right" ng-click="closeAdvise()"></div>
+    <div class="first-co-advise-title">Sidebar</div>
+    <div class="first-co-advise-body">
+      In the sidebar you can:
+    <ul>
+      <li>Look at statistics of your lessons</li>
+      <li>Change your profile / Invite colleages</li>
     </ul>
     </div>
   </div>

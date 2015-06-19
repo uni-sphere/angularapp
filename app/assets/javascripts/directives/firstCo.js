@@ -5,7 +5,6 @@
       restrict: 'E',
       templateUrl: 'main/first-co.html',
       scope: {
-        firstConnection: '='
       },
       link: function(scope) {
 
@@ -14,6 +13,7 @@
         scope.TransitionRightAdvise = function(){
           scope.leftAdvise = false
           scope.rightAdvise = true
+          scope.sidebarAdvise = false
         }
 
         scope.TransitionLeftAdvise = function(){
@@ -21,9 +21,14 @@
           scope.rightAdvise = false
         }
 
-        scope.closeAdvise = function(){
+        scope.TransitionSidebarAdvise = function(){
           scope.rightAdvise = false
-          scope.firstConnection = false
+          scope.sidebarAdvise = true
+        }
+
+        scope.closeAdvise = function(){
+          scope.sidebarAdvise = false
+          $('#first-connection').fadeOut(200)
         }
 
       }

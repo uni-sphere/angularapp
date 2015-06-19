@@ -1,8 +1,18 @@
+#first-connection{
+  display: none;
+}
+
 #first-co-wrapper{
   position: fixed;
   height: 100%;
   width: 100%;
-  z-index: 900
+  z-index: 900;
+}
+
+.black-bg{
+  position: absolute;
+  background: black;
+  opacity: 0.6;
 }
 
 // Left advise
@@ -32,8 +42,6 @@
   width: 100%;
 }
 
-
-
 // Right advise
 #first-co-right-background-left{
   top: 60px;
@@ -62,19 +70,36 @@
   right: 0px;
 }
 
-.black-bg{
-  position: absolute;
-  background: black;
-  opacity: 0.6;
+// Sidebar Advise
+
+#first-co-sidebar-background-bottom{
+  height: 70%;
+  bottom: 0px;
+  width: 100%;
 }
+
+#first-co-sidebar-background-top{
+  top: 0px;
+  height: 5%;
+  width: 100%;
+}
+
+#first-co-sidebar-background-right{
+  width: calc(100% - 50px);
+  left: 50px;
+  height: 25%;
+  top: 5%;
+}
+
 
 
 #first-co-advise{
   position: absolute;
-  height: 300px;
-  width: 500px;
-  top: calc(50% - 150px);
-  left: calc(50% - 250px);
+  height: 250px;
+  width: 450px;
+  top: calc(50% - 125px);
+  left: calc(50% - 225px);
+
   background: white;
   z-index: 999;
   box-shadow: 1px 2px 2px 0px black;
@@ -82,9 +107,9 @@
 
   .fa-caret-left, .fa-caret-right{
     position: absolute;
-    line-height: 300px;
+    line-height: 250px;
     font-size: 3em;
-    color: black;
+    color: #18A1FC;
     z-index: 999;
     cursor: pointer;
   }
@@ -99,10 +124,12 @@
 
 .first-co-advise-title{
   display: table;
-  margin: 10px auto 20px auto;
-  font-size: 1.2em
+  margin: 10px auto 10px auto;
+  font-size: 1.2em;
 }
 
 .first-co-advise-body{
-  padding: 10px 80px;
+  padding: 20px 60px 0px 60px;
+  border-top: 1px solid #e5e5e5;
+  background: #f6f9fc
 }
