@@ -19,6 +19,7 @@
         link: function(scope){
 
           var dummyId = 50;
+          // scope.viewDocumentRename = true;
 
           scope.$watch('activeNodes', function(newVals, oldVals){
             if(newVals){

@@ -9,6 +9,11 @@ angular
 
     var dummyId = 30;
 
+    $scope.closeViewDocumentRename = function(){
+      $('#view-document-rename-popup').slideUp(400);
+    }
+
+
     $scope.removeItem = function(scope) {
       var nodeToDelete = scope;
       var parent = nodeToDelete.$parentNodeScope;
@@ -146,21 +151,23 @@ angular
 
     };
 
-
     /*====================================
     =            Rename items            =
     ====================================*/
 
     $scope.renameItems = function(scope){
-      var itemToUpdate = scope.$modelValue;
+      $scope.itemToUpdate = scope.$modelValue;
+      $('#view-document-rename-popup').slideDown(400);
+    }
 
+    $scope.saveViewDocumentRename = function(){
+      console.log($scope.itemToUpdate)
       //If it is a document
-      if(itemToUpdate.document){
-        var extension = itemToUpdate.title.split('.')[1];
-        var documentToUpdateId = itemToUpdate.doc_id;
+      if($scope.itemToUpdate.document){
+        var extension = $scope.itemToUpdate.title.split('.')[1];
+        var documentToUpdateId = $scope.itemToUpdate.doc_id;
 
-        var result = prompt('Change the name of the document',scope.title);
-        if(result) {
+        if($scope.updateNameItem != undefined) {
 
           // We check the user didn't change the extension
           if(result.indexOf('.') > -1){
@@ -171,12 +178,12 @@ angular
 
           // Demo version
           if($scope.home || $scope.sandbox){
-            itemToUpdate.title = result + "." + extension;
+            $scope.itemToUpdate.title = result + "." + extension;
           }
           // Real version
           else{
             Restangular.one('awsdocuments/' + documentToUpdateId).put(nodeUpdate).then(function(d) {
-              itemToUpdate.title = result + "." + extension;
+              $scope.itemToUpdate.title = result + "." + extension;
 
               console.log("Object updated");
             }, function(d) {
@@ -190,11 +197,10 @@ angular
 
       //If it is a chapter
       else{
-        var chapterToUpdateId = itemToUpdate.id;
+        var chapterToUpdateId = $scope.itemToUpdate.id;
 
-        var result = prompt('Change the name of the chapter',scope.title);
-        if(result) {
-
+        if($scope.updateNameItem) {
+          console.log("hello")
           // Uppercase the first letter
           result = result[0].toUpperCase() + result.slice(1);
 
@@ -202,12 +208,12 @@ angular
 
           // Demo version
           if($scope.home || $scope.sandbox){
-            itemToUpdate.title = result;
+            $scope.itemToUpdate.title = result;
           }
           // Real version
           else{
             Restangular.one('chapters/' + chapterToUpdateId).put(nodeUpdate).then(function(d) {
-              itemToUpdate.title = result;
+              $scope.itemToUpdate.title = result;
 
               console.log("Object updated");
             }, function(d) {

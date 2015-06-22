@@ -7,6 +7,24 @@
     =            Update profile            =
     ======================================*/
 
+    $scope.formData = {
+    };
+    $scope.formFields= [{
+      type: "input",
+      key: "updatedProfileName",
+      templateOptions:{
+        label: 'Name'
+      }
+    },
+    {
+      type: "input",
+      key: "updatedProfileEmail",
+      templateOptions:{
+        label: 'Email address',
+        type: 'email'
+      }
+    }];
+
     $scope.updateAccount = function() {
       // console.log($scope.updatedName)
       // console.log($scope.updatedEmail)
@@ -19,6 +37,8 @@
       if($scope.updatedEmail == ""){
         $scope.updatedEmail = undefined
       }
+
+
 
       if($scope.updatedName == undefined && $scope.updatedEmail == undefined){
         $scope.displayError("Enter either a valid new name or email")

@@ -1,9 +1,11 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('MainCtrl', ['$scope', 'browser','$timeout', 'Restangular', '$translate', '$auth', '$state', 'usSpinnerService', function ($scope, browser, $timeout, Restangular, $translate, $auth, $state, usSpinnerService) {
+  .controller('MainCtrl', ['$scope', 'browser','$timeout', 'Restangular', '$translate', '$auth', '$state', 'usSpinnerService', 'Notification', function ($scope, browser, $timeout, Restangular, $translate, $auth, $state, usSpinnerService, Notification) {
 
     $scope.sidebarMinified = true;
+
+    // Notification.success('Success notification Success notificationSuccess notificationSuccess notification');
 
     if(window.location.host == 'sandbox.unisphere.eu'){
       $scope.sandbox = true
