@@ -123,13 +123,14 @@
 .first-co-advise-title{
   display: table;
   margin: 0px auto;
-  font-size: 1.2em;
+  font-size: 1em;
   color: white;
+  text-align: center;
 }
 
 .first-co-advise-body{
   padding: 20px 60px 0px 60px;
-  background: #f6f9fc
+  background: #FDFDFD;
 }
 
 .first-co-header{
@@ -139,3 +140,12 @@
   border-top-right-radius: 10px;
   border-bottom: 1px solid black;
 }
+
+#left-help {
+  position: relative;
+  height: 300px;
+}
+
+
+
+

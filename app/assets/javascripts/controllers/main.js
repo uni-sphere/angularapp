@@ -2,7 +2,7 @@
 angular
   .module('mainApp.controllers')
   .controller('MainCtrl', ['$scope', 'browser','$timeout', 'Restangular', '$translate', '$auth', '$state', 'usSpinnerService', 'Notification', function ($scope, browser, $timeout, Restangular, $translate, $auth, $state, usSpinnerService, Notification) {
-    $('#first-connection').fadeIn(1)
+    // $('#first-connection').fadeIn(1)
     $scope.sidebarMinified = true;
 
     // Notification.success('Success notification Success notificationSuccess notificationSuccess notification');
@@ -131,13 +131,7 @@ angular
         $scope.accountEmail = d.user.email
         $scope.accountName = d.user.name
         $scope.help = d.user.help
-<<<<<<< HEAD
-        
         if($scope.help || $scope.sandbox) {
-=======
-
-        if($scope.help) {
->>>>>>> 8b61be799b23921ba73495029cc58950e5d5b150
           $('#first-connection').fadeIn(2000)
         }
 
