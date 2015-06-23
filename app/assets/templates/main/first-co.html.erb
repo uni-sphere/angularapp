@@ -24,11 +24,11 @@
 
   <div id="first-co-advise-left" ng-show="leftAdvise">
     <div class="first-co-header">
-      <div class="first-co-advise-title">Create levels, classes and subjects as node in the Tree</div>
+      <div class="first-co-advise-title">Subject administration</div>
     </div>
     <div class="first-co-advise-body">
       <div class="fa fa-caret-right" ng-click="TransitionRightAdvise()"></div>
-      <%= image_tag "left.svg", id: "left-help" %>
+      <%= image_tag "left.svg", class: "advise-image" %>
     </div>
   </div>
 
@@ -39,13 +39,7 @@
       <div class="first-co-advise-title">Lesson administration</div>
     </div>
     <div class="first-co-advise-body">
-      The right side of the screen is dedicated to lessons.
-    <ul>
-      <li>Create chapters</li>
-      <li>Upload files</li>
-      <li>Rename files and chapters</li>
-      <li>Consult and download files</li>
-    </ul>
+      <%= image_tag "right.svg", class: "advise-image" ,id: "advise-image-right"%>
     </div>
   </div>
 

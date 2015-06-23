@@ -93,11 +93,13 @@
 
 #first-co-advise{
   position: absolute;
-  width: 700px;
+  width: 680px;
+  height: 510px;
   top: calc(50% - 230px);
-  left: calc(50% - 350px);
+  left: calc(50% - 340px);
 
-  background: #f6f9fc;
+  // background: #f6f9fc;
+  background: white;
   z-index: 999;
   box-shadow: 1px 2px 2px 0px black;
   border-radius: 10px;
@@ -129,7 +131,8 @@
 
 .first-co-advise-body{
   padding: 20px 60px;
-  background: #FDFDFD;
+  // background: #FDFDFD;
+  background: white;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -142,11 +145,14 @@
   border-bottom: 1px solid black;
 }
 
-#left-help {
+.advise-image {
   position: relative;
   width: 100%;
 }
 
+#advise-image-right{
+  margin-top: 80px;
+}
 
 
 
