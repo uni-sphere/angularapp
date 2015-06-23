@@ -411,6 +411,25 @@
                 nodeSelected.parent.children = _.without(nodeSelected.parent.children, nodeToDelete[0]);
               }
               update(nodeSelected);
+
+              function deleteProperly(node){
+                if(node.num == scope.nodeEnd[0]){
+                  scope.nodeEnd = [scope.root.num, scope.root.name]
+                  scope.activeNodes = [scope.nodeEnd]
+                  findFoldedNodes(scope.root);
+                  colornodePath(scope.root);
+                }
+                if(node.children){
+                  // console.log(node.children)
+                  node.children.forEach(deleteProperly)
+                }
+                if(node._children){
+                  node._children.forEach(deleteProperly)
+                }
+              }
+
+              deleteProperly(nodeSelected)
+
             }
             // If we are the app
             else{
@@ -423,7 +442,6 @@
                 // We check if the node end was in the node deleted.
                 // than we need to change the cookies
 
-                // console.log(ipCookie('chapterFolded'))
                 function deleteProperly(node){
                   if(node.num == scope.nodeEnd[0]){
                     scope.nodeEnd = [scope.root.num, scope.root.name]
