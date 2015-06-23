@@ -6,7 +6,6 @@ angular
     $scope.sidebarMinified = true;
 
     // Notification.success('Success notification Success notificationSuccess notificationSuccess notification');
-    $('#first-connection').fadeIn(1);
 
     if(window.location.host == 'sandbox.unisphere.eu'){
       $scope.sandbox = true
