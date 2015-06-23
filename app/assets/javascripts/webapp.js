@@ -23,11 +23,7 @@
 //= require angular-spinner/angular-spinner.min
 //= require angular-ui-notification/dist/angular-ui-notification.min
 //= require api-check/dist/api-check.min
-//= require angular-messages/angular-messages.min
-//= require angular-aria/angular-aria.min
 //= require angular-formly/dist/formly.min
-//= require lumx/dist/lumx.min
-//= require angular-formly-templates-lumx/dist/formlyLumx
 
 
 //= require angular-rails-templates

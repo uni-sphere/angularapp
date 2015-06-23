@@ -1,5 +1,5 @@
 (function(){
-  angular.module('mainApp', [
+  var app = angular.module('mainApp', [
     'ngAnimate',
     'templates',
     'ngResource',
@@ -20,11 +20,7 @@
     'ngMap',
     'angularSpinner',
     'ui-notification',
-    'ngMessages',
-    'ngAria',
     'formly',
-    'lumx',
-    'formlyLumx'
   ])
   .config(function (
     $stateProvider,
@@ -64,6 +60,7 @@
           auth: function($auth){
             return $auth.validateUser();
           }
+
         }
       })
 
@@ -195,6 +192,17 @@
   angular.module('mainApp.filters', []);
   angular.module('mainApp.controllers', []);
   angular.module('mainApp.directives', []);
+
+  app.run(function(formlyConfig){
+    formlyConfig.setType({
+      name: 'default-input',
+      templateUrl: 'formly/default-input.html'
+    })
+    formlyConfig.setType({
+      name: 'email-input',
+      templateUrl: 'formly/email-input.hmtl'
+    })
+  })
 
 })();
 
