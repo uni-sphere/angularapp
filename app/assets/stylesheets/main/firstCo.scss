@@ -19,7 +19,7 @@
 #first-co-left-background-right{
   top: 60px;
   bottom: 40px;
-  width: 70%;
+  width: 81%;
   right: 0px;
 }
 
@@ -93,10 +93,9 @@
 
 #first-co-advise{
   position: absolute;
-  height: 250px;
-  width: 450px;
-  top: calc(50% - 125px);
-  left: calc(50% - 225px);
+  width: 700px;
+  top: calc(50% - 230px);
+  left: calc(50% - 350px);
 
   background: #f6f9fc;
   z-index: 999;
@@ -105,7 +104,7 @@
 
   .fa-caret-left, .fa-caret-right{
     position: absolute;
-    top: 130px;
+    top: 260px;
     font-size: 2.5em;
     color: #18A1FC;
     z-index: 999;
@@ -129,8 +128,10 @@
 }
 
 .first-co-advise-body{
-  padding: 20px 60px 0px 60px;
+  padding: 20px 60px;
   background: #FDFDFD;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .first-co-header{
@@ -143,7 +144,7 @@
 
 #left-help {
   position: relative;
-  height: 300px;
+  width: 100%;
 }
 
 
