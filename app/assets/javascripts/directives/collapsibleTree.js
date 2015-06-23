@@ -15,6 +15,7 @@
         },
         link: function(scope, iElement, iAttrs) {
 
+          // scope.sandbox = true;
           // First we get the nodes
           Restangular.one('nodes').get().then(function (nodes) {
             scope.nodes = nodes.plain();
@@ -409,7 +410,29 @@
               if (nodeToDelete){
                 nodeSelected.parent.children = _.without(nodeSelected.parent.children, nodeToDelete[0]);
               }
+
+
+              function deleteProperly(node){
+                if(node.num == scope.nodeEnd[0]){
+                  scope.nodeEnd = [scope.root.num, scope.root.name]
+                  scope.activeNodes = [scope.nodeEnd]
+                  findFoldedNodes(scope.root);
+                  colornodePath(scope.root);
+
+                  scope.$apply()
+                }
+                if(node.children){
+                  // console.log(node.children)
+                  node.children.forEach(deleteProperly)
+                }
+                if(node._children){
+                  node._children.forEach(deleteProperly)
+                }
+              }
+
+              deleteProperly(nodeSelected)
               update(nodeSelected);
+
             }
             // If we are the app
             else{
@@ -422,7 +445,6 @@
                 // We check if the node end was in the node deleted.
                 // than we need to change the cookies
 
-                // console.log(ipCookie('chapterFolded'))
                 function deleteProperly(node){
                   if(node.num == scope.nodeEnd[0]){
                     scope.nodeEnd = [scope.root.num, scope.root.name]
