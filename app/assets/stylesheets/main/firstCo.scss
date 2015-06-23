@@ -91,8 +91,6 @@
   top: 5%;
 }
 
-
-
 #first-co-advise{
   position: absolute;
   height: 250px;
@@ -100,15 +98,15 @@
   top: calc(50% - 125px);
   left: calc(50% - 225px);
 
-  background: white;
+  background: #f6f9fc;
   z-index: 999;
   box-shadow: 1px 2px 2px 0px black;
   border-radius: 10px;
 
   .fa-caret-left, .fa-caret-right{
     position: absolute;
-    line-height: 250px;
-    font-size: 3em;
+    top: 130px;
+    font-size: 2.5em;
     color: #18A1FC;
     z-index: 999;
     cursor: pointer;
@@ -124,12 +122,20 @@
 
 .first-co-advise-title{
   display: table;
-  margin: 10px auto 10px auto;
+  margin: 0px auto;
   font-size: 1.2em;
+  color: white;
 }
 
 .first-co-advise-body{
   padding: 20px 60px 0px 60px;
-  border-top: 1px solid #e5e5e5;
   background: #f6f9fc
+}
+
+.first-co-header{
+  padding: 20px 0px;
+  background: #18A1FC;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom: 1px solid black;
 }

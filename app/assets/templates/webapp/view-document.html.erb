@@ -86,11 +86,25 @@
         <div id="document-absent-text-under-pic">
           <div id="document-absent-text-drop">{{ 'DROP_ZONE' | translate }}</div>
           <div id="document-absent-type-item-droppable" ng-show="isChrome">{{ 'DROP_EXPLANATION' | translate }}<i class="fa fa-smile-o"></i></div>
+          <div id="document-absent-type-item-droppable" ng-hide="isChrome">You can drag and drop files! <i class="fa fa-smile-o"></i></div>
         </div>
       </div>
     </div>
 
-    <!-- <button id="test-button" ng-click="testtest()">hopla</button> -->
+
 
   </div>
 </div>
+
+<div id="view-document-rename-popup" ng-controller="CrudCtrl">
+  <div class="popup-header">Rename node<span class="fa fa-times" ng-click="closeViewDocumentRename()"></span></div>
+    <form class="formPopup" novalidate>
+
+       <input type="email" placeholder=previousNameNode class="admin-co-input" ng-model="updateNameItem">
+
+      <button class="button-green-black" ng-click="saveViewDocumentRename()">Rename</button>
+
+    </form>
+  <div class="account-gestion-bg"></div>
+</div>
+

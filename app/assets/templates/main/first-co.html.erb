@@ -23,9 +23,11 @@
 <div id="first-co-advise">
 
   <div id="first-co-advise-left" ng-show="leftAdvise">
-    <div class="fa fa-caret-right" ng-click="TransitionRightAdvise()"></div>
-    <div class="first-co-advise-title">Class administration</div>
+    <div class="first-co-header">
+      <div class="first-co-advise-title">Class administration</div>
+    </div>
     <div class="first-co-advise-body">
+      <div class="fa fa-caret-right" ng-click="TransitionRightAdvise()"></div>
       The left side of the screen is dedicated to classes.
       <img src="../../images/left.svg" alt="" id="tree-pic1"/>
     </div>
@@ -34,7 +36,9 @@
   <div id="first-co-advise-right" ng-show="rightAdvise">
     <div class="fa fa-caret-left" ng-click="TransitionLeftAdvise()"></div>
     <div class="fa fa-caret-right" ng-click="TransitionSidebarAdvise()"></div>
-    <div class="first-co-advise-title">Lesson administration</div>
+    <div class="first-co-header">
+      <div class="first-co-advise-title">Lesson administration</div>
+    </div>
     <div class="first-co-advise-body">
       The right side of the screen is dedicated to lessons.
     <ul>
@@ -49,7 +53,9 @@
   <div id="first-co-advise-sidebar" ng-show="sidebarAdvise">
     <div class="fa fa-caret-left" ng-click="TransitionRightAdvise()"></div>
     <div class="fa fa-caret-right" ng-click="closeAdvise()"></div>
-    <div class="first-co-advise-title">Sidebar</div>
+    <div class="first-co-header">
+      <div class="first-co-advise-title">Sidebar</div>
+    </div>
     <div class="first-co-advise-body">
       In the sidebar you can:
     <ul>

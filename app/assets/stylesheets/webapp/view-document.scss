@@ -124,11 +124,11 @@
 }
 
 .item-name{
-  width: calc(100% - 200px);
+  // width: calc(100% - 200px);
 
-  @media (max-width: 1500px) {
-   width: calc(100% - 140px);
-  }
+  // @media (max-width: 1500px) {
+  //  width: calc(100% - 140px);
+  // }
   margin-left: 4px;
 }
 
@@ -195,7 +195,7 @@
   cursor: pointer;
 
   &:hover, &:focus,{
-    color: $button-active-color !important;
+    color: #0065A8 !important;
     text-decoration: none;
   }
 }
@@ -205,14 +205,14 @@
 
   width: 24px !important;
   height: 24px !important;
-  margin-right: 8px;
+  padding-right: 8px;
   display: inline-block;
   text-align: center;
   cursor: pointer;
-  color: $collapse-button-color;
+  color: #007CCE;
 
   &:hover,&:focus {
-    color: $collapse-button-hover;
+    color: #0065A8;
   }
 }
 
@@ -309,7 +309,6 @@
   margin-left: 10%;
   margin-top: 10%;
 
-  // background: $ultra-light-grey;
   border-radius: 60px;
   border: 2px solid $dropzone-color;
 }
@@ -318,7 +317,6 @@
 #document-absent-dropzone-image{
   position: relative;
   height: 60%;
-  // background: red;
 
 
 }
@@ -338,7 +336,6 @@
 
 // Text under the pic
 #document-absent-text-under-pic{
-  // background: blue;
   position: relative;
   height: 40%;
   width: 80%;
@@ -356,6 +353,118 @@
 #document-absent-type-item-droppable{
   font-size: .8em;
 }
+
+
+
+/*===================================
+=            Rename Node            =
+===================================*/
+
+#view-document-rename-popup{
+  position: absolute;
+  top: 300px;
+  width: 100%;
+  z-index: 100;
+  width: 500px;
+  display: none;
+}
+
+.account-gestion{
+  position: relative;
+  display: table;
+  margin: 0 auto;
+}
+
+.popup-header{
+  position: relative;
+  line-height: 40px;
+  padding: 0px 20px;
+  background: black;
+  color: white;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  text-align: center;
+  font-size: 1.2em;
+
+  .fa-times{
+    position: relative;
+    float: right;
+    padding-left: 80px;
+    line-height: 40px;
+    cursor: pointer;
+    font-size: .8em;
+    color: $gris;
+    &:hover{
+      color: white;
+    }
+  }
+}
+
+.account-gestion-row-center{
+  display: block;
+  text-align: center;
+  font-size: 1.1em;
+  z-index: 10 !important;
+  color: white;
+}
+
+.account-gestion-bg{
+  position: absolute;
+  background: black;
+  top: 40px;
+  left: 0;
+
+  height: calc(100% - 40px);
+  width: 100%;
+  opacity: 0.7;
+  z-index: 1;
+
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.formPopup{
+  position: relative;
+  padding: 40px 20px;
+  z-index: 10;
+}
+
+#accountSignupButton, #accountForgottenButton{
+  margin-top: 40px;
+}
+
+@keyframes account-gestion-flyout {
+  0% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-700px);
+  }
+}
+
+@keyframes account-gestion-flyin {
+  0% {
+    opacity: 0;
+    transform: translateY(-700px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.viewDocument-rename-ready-to-disappear{
+  animation: account-gestion-flyout 1s;
+}
+
+.viewDocument-rename-ready-to-appear{
+  animation: account-gestion-flyin 1s;
+}
+
 
 
 
