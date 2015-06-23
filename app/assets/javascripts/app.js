@@ -45,17 +45,17 @@
         templateUrl: 'webapp/webapp.html'
       })
 
-      if(window.location.host == 'sandbox.unisphere.eu'){
-        $stateProvider
-        .state('main.dashboard', {
-          url: 'dashboard',
-          templateUrl: 'dashboard/one.html'
-        })
-        .state('main.account', {
-          url: 'account',
-          templateUrl: 'account/account.html'
-        })
-      } else{
+      // if(window.location.host == 'sandbox.unisphere.eu'){
+      //   $stateProvider
+      //   .state('main.dashboard', {
+      //     url: 'dashboard',
+      //     templateUrl: 'dashboard/one.html'
+      //   })
+      //   .state('main.account', {
+      //     url: 'account',
+      //     templateUrl: 'account/account.html'
+      //   })
+      // } else{
         $stateProvider
         .state('main.dashboard', {
           url: 'dashboard',
@@ -76,7 +76,7 @@
 
           }
         })
-      }
+      // }
 
 
     if(window.location.host == 'localhost:3000'){

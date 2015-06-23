@@ -18,8 +18,7 @@
         },
         link: function(scope){
 
-          console.log(scope.home)
-
+          // scope.home = true
           var dummyId = 50;
           // scope.viewDocumentRename = true;
 
@@ -191,7 +190,6 @@
           // We watch when someone drag and drops a file / folder
           scope.$watch('files', function (newVals, oldVals) {
             if(newVals){
-              console.log("files")
               upload(scope.files, true);
             }
           });
@@ -316,13 +314,15 @@
                 parent_id: nodeData.id,
               }
 
-              Restangular.all('chapters').post(chapterToCreate).then(function(d) {
+              // Demo
+              if(scope.home || scope.sandbox){
                 if(nodeData.items == undefined){
                   var depth = 0
                 } else{
                   depth = nodeData.depth + 1;
                 }
-                var a = {title: folder.name, id: d.id, items: [], depth: depth}
+                var a = {title: folder.name, id: dummyId, items: [], depth: depth}
+                dummyId ++;
 
                 if(nodeData.items == undefined){
                   scope.list.push(a);
@@ -333,44 +333,69 @@
                 }
 
                 scope.progressionUpload --;
-                console.log("OK chapter created:" + folder.name);
+                console.log("OK fake chapter created:" + folder.name);
 
                 // If there is no files to upload. We put dirUploaded to true
                 if(files.length == 0){
                   scope.dirUploaded = true;
                 } else{
-                   uploadFiles(files)
+                  uploadFiles(files)
                 }
+              } else{
+                // Real
+                Restangular.all('chapters').post(chapterToCreate).then(function(d) {
+                  if(nodeData.items == undefined){
+                    var depth = 0
+                  } else{
+                    depth = nodeData.depth + 1;
+                  }
+                  var a = {title: folder.name, id: d.id, items: [], depth: depth}
+
+                  if(nodeData.items == undefined){
+                    scope.list.push(a);
+                    nodeDocData = scope.list[scope.list.length - 1];
+                  } else{
+                    nodeData.items.push(a);
+                    nodeDocData = nodeData.items[nodeData.items.length -1];
+                  }
+
+                  scope.progressionUpload --;
+                  console.log("OK chapter created:" + folder.name);
+
+                  // If there is no files to upload. We put dirUploaded to true
+                  if(files.length == 0){
+                    scope.dirUploaded = true;
+                  } else{
+                     uploadFiles(files)
+                  }
 
 
-              }, function(d) {
-                scope.displayError("Failed to create chapter:" + folder.name);
-                console.log("Failed to create chapter:" + folder.name);
-              });
+                }, function(d) {
+                  scope.displayError("Failed to create chapter:" + folder.name);
+                  console.log("Failed to create chapter:" + folder.name);
+                });
+              }
             }
 
             /*==========  Upload all files in a directory  ==========*/
 
              function uploadFiles(files){
+              var numberItems = 0;
               for (var i = 0; i < files.length; i++) {
-
-
                 var file = files[i];
-                var numberItems = 0;
 
                 // Demo
                 if(scope.home || scope.sandbox){
                   var a = {title: file.name, doc_id: dummyId, document: true, type: file.type}
 
                   numberItems ++;
-                  console.log("OK document uploaded:" + file.name);
+                  dummyId ++;
+                  console.log("Fake file uploaded:" + file.name);
                   if(numberItems == files.length){
                     console.log("OK upload of this level finished")
-
                     scope.dirUploaded = true;
                   }
 
-                  // console.log(nodeDocData.items);
                   if(nodeDocData.items == undefined){
                     scope.list.unshift(a);
                   } else{
@@ -385,8 +410,6 @@
                 }
                 // Normal mode
                 else{
-                  // console.log("nodeEnd " + scope.nodeEnd[0])
-                  // console.log("chapter id " + nodeDocData.id)
                   $upload.upload({
                     url: getApiUrl() + '/awsdocuments',
                     file: file,
@@ -431,7 +454,6 @@
             /*==========  Upload function  ==========*/
 
             function uploadItems(){
-              // console.log(scope.arrayFiles)
               //IF the first element of the array is a directory we upload the dir
               if( scope.arrayFiles[0][0].type == "directory"){
                 uploadDir(scope.arrayFiles[0]);
@@ -442,14 +464,11 @@
               }
               // We remove the array we uploaded
               scope.arrayFiles.shift();
-              // console.log(scope.arrayFiles)
 
               // We wait until the directory is uploaded
               scope.$watch('dirUploaded', function () {
-                // console.log("Dir changed" + scope.dirUploaded)
                 var promise = new Promise(function(resolve, reject){
                   if(scope.dirUploaded){
-                    // console.log("Dir uploaded")
                     scope.dirUploaded = false;
                     resolve();
                   }

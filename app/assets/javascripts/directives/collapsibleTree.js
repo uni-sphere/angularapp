@@ -16,10 +16,7 @@
         },
         link: function(scope, iElement, iAttrs) {
 
-          console.log(scope.home)
-          console.log(scope.sandbox)
           // First we get the nodes
-
           Restangular.one('nodes').get().then(function (nodes) {
             scope.nodes = nodes.plain();
             scope.$watch('admin',function(newVals, oldVals){
