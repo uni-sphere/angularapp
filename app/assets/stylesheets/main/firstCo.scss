@@ -98,9 +98,7 @@
   height: 510px;
   top: calc(50% - 230px);
   left: calc(50% - 340px);
-
-  // background: #f6f9fc;
-  background: white;
+  background: #FDFDFD;
   z-index: 999;
   box-shadow: 1px 2px 2px 0px black;
   border-radius: 10px;
@@ -132,13 +130,12 @@
 
 .first-co-advise-body{
   padding: 20px 60px;
-  // background: #FDFDFD;
-  background: white;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
 
 .first-co-header{
+  font-size: 1.4em;
   padding: 20px 0px;
   background: #18A1FC;
   border-top-left-radius: 10px;
@@ -151,8 +148,20 @@
   width: 100%;
 }
 
+.advise-image {
+  position: relative;
+  width: 100%;
+}
+
 #advise-image-right{
   margin-top: 80px;
+}
+
+#advise-image-menu {
+  display: table;
+  margin: 0px auto;
+  position: relative;
+  height: 420px;
 }
 
 
