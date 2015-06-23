@@ -2,7 +2,7 @@
 angular
   .module('mainApp.controllers')
   .controller('MainCtrl', ['$scope', 'browser','$timeout', 'Restangular', '$upload', '$translate', '$auth', '$state', 'usSpinnerService', function ($scope, browser, $timeout, Restangular, $upload, $translate, $auth, $state, usSpinnerService) {
-
+    $('#first-connection').fadeIn(1)
     $scope.sidebarMinified = true;
     
     if(window.location.host == 'sandbox.unisphere.eu'){
