@@ -113,6 +113,7 @@ angular
     }
 
     $scope.activateSpinner = function(){
+      console.log("hello")
       usSpinnerService.spin('spinner-1');
       $scope.greyBackground = true
     }

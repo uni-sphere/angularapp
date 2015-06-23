@@ -1,5 +1,5 @@
 <error-display list-error = 'listError' show-error = 'showError' ></error-display>
-<success-display show-successpop='showSuccesspop' success= 'success'></success-display>
+<success-display success= 'success'></success-display>
 
 <div id="grey-background" ng-show="greyBackground"></div>
 <first-co help = 'help' id="first-connection"></first-co>
@@ -8,7 +8,7 @@
 
 <div ng-if="home" id="home-container">
   <slide1></slide1>
-  <slide3 display-error = 'displayError'></slide3>
+  <slide3 desactivate-spinner = 'desactivateSpinner' activate-spinner = 'activateSpinner' home ='home' sandbox='sandbox'></slide3>
   <slide2 desactivate-spinner = 'desactivateSpinner' activate-spinner = 'activateSpinner' display-error = 'displayError' display-success = 'displaySuccess'></slide2>
   <slide4></slide4>
   <slide5></slide5>

@@ -11,12 +11,14 @@
           files: '=',
           displayError: '=',
           admin: '=',
-          home: '=',
           activateSpinner: '=',
           desactivateSpinner: '=',
-          sandbox: '='
+          sandbox: '=',
+          home: '='
         },
         link: function(scope){
+
+          console.log(scope.home)
 
           var dummyId = 50;
           // scope.viewDocumentRename = true;

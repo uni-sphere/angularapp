@@ -44,25 +44,40 @@
         url: '',
         templateUrl: 'webapp/webapp.html'
       })
-      .state('main.dashboard', {
-        url: 'dashboard',
-        templateUrl: 'dashboard/one.html',
-        resolve: {
-          auth: function($auth){
-            return $auth.validateUser();
-          }
-        }
-      })
-      .state('main.account', {
-        url: 'account',
-        templateUrl: 'account/account.html',
-        resolve: {
-          auth: function($auth){
-            return $auth.validateUser();
-          }
 
-        }
-      })
+      if(window.location.host == 'sandbox.unisphere.eu'){
+        $stateProvider
+        .state('main.dashboard', {
+          url: 'dashboard',
+          templateUrl: 'dashboard/one.html'
+        })
+        .state('main.account', {
+          url: 'account',
+          templateUrl: 'account/account.html'
+        })
+      } else{
+        $stateProvider
+        .state('main.dashboard', {
+          url: 'dashboard',
+          templateUrl: 'dashboard/one.html',
+          resolve: {
+            auth: function($auth){
+              return $auth.validateUser();
+            }
+          }
+        })
+        .state('main.account', {
+          url: 'account',
+          templateUrl: 'account/account.html',
+          resolve: {
+            auth: function($auth){
+              return $auth.validateUser();
+            }
+
+          }
+        })
+      }
+
 
     if(window.location.host == 'localhost:3000'){
       $stateProvider
