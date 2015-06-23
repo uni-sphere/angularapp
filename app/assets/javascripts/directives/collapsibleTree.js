@@ -16,6 +16,7 @@
         },
         link: function(scope, iElement, iAttrs) {
 
+          // scope.sandbox = true;
           // First we get the nodes
           Restangular.one('nodes').get().then(function (nodes) {
             scope.nodes = nodes.plain();
@@ -410,7 +411,7 @@
               if (nodeToDelete){
                 nodeSelected.parent.children = _.without(nodeSelected.parent.children, nodeToDelete[0]);
               }
-              update(nodeSelected);
+
 
               function deleteProperly(node){
                 if(node.num == scope.nodeEnd[0]){
@@ -418,6 +419,8 @@
                   scope.activeNodes = [scope.nodeEnd]
                   findFoldedNodes(scope.root);
                   colornodePath(scope.root);
+
+                  scope.$apply()
                 }
                 if(node.children){
                   // console.log(node.children)
@@ -429,6 +432,7 @@
               }
 
               deleteProperly(nodeSelected)
+              update(nodeSelected);
 
             }
             // If we are the app
