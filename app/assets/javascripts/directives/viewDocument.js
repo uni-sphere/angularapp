@@ -1,5 +1,5 @@
 (function () {
-  // 'use strict';
+
   angular.module('mainApp.directives')
     .directive('viewDocument', ['$translate' , 'Restangular', 'browser', '$upload', function($translate, Restangular, browser, $upload) {
       return {

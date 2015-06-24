@@ -1,5 +1,5 @@
 (function () {
-  'use strict';
+  
   angular.module('mainApp.directives').directive('firstCo', ['$auth', function($auth) {
     return {
       restrict: 'E',

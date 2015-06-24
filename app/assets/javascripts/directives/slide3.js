@@ -1,5 +1,5 @@
 (function () {
-  'use strict';
+  
   angular.module('mainApp.directives').directive('slide3', ['Restangular', function(Restangular) {
     return {
       restrict: 'E',

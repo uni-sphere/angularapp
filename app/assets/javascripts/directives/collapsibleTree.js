@@ -1,5 +1,4 @@
 (function () {
-  'use strict';
 
   angular.module('mainApp.directives')
     .directive('collapsibleTree', ['ipCookie', '$timeout', 'Restangular', function(ipCookie, $timeout, Restangular) {

@@ -1,5 +1,4 @@
 (function () {
-  'use strict';
   angular.module('mainApp.directives')
     .directive('adminPopup', ['Restangular','ipCookie', function(Restangular, ipCookie) {
       return {

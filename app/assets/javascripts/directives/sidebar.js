@@ -1,5 +1,5 @@
 (function () {
-  'use strict';
+  
   angular.module('mainApp.directives').directive('sidebar', [function() {
     return {
       restrict: 'E',

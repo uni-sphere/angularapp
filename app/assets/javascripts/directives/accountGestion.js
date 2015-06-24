@@ -1,5 +1,4 @@
 (function () {
-  'use strict';
 
   angular.module('mainApp.directives')
   .directive('accountGestion', [ '$auth', 'Restangular', function($auth, Restangular) {
