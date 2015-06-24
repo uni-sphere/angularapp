@@ -101,7 +101,7 @@ module AuthenticationHelper
       place_att = Geokit::Geocoders::MultiGeocoder.geocode(request.remote_ip)
       place = "#{place_att.city}::#{place_att.country}"
       if current_organization.connexions.find_by_ip(ip)
-        current_organization.connexions.find_by_ip(ip).increase_count() if (current_organization.connexions.find_by_ip(ip).updated_at - DateTime.now) > 60.minutes
+        current_organization.connexions.find_by_ip(ip).activity() if (current_organization.connexions.find_by_ip(ip).updated_at - DateTime.now) > 60.seconds
       else
         current_organization.connexions.create(ip: ip, place: place)
       end

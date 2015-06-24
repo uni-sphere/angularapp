@@ -1,13 +1,21 @@
-<div ng-controller="AdminCtrl">
-  <div ng-repeat="(subdomain, item) in active_data" class="admin-dashboard">
-    <h1 ng:class="{true:'admin-dashboard-title-active', false:'admin-dashboard-title-inactive'}[item[0]!=0]">
-      {{ subdomain }}
-    </h1>
-    active users: {{ item[0] }}</br>
-    <div ng-repeat="connexion in item[3]">
-      {{ connexion['ip'] }} connected {{ connexion['count']}} times at {{ connexion['place']}}</br>
-    </div>
-    documents: {{ item[1] }}</br>
-    users: {{ item[2] }}</br>
-  </div>
+<div ng-controller="AdminCtrl" id="admin-dashboard">
+  <span id='admin-dashboard-title'>Unisphere Administrator Dashboard</span>
+  <table id="admin-dashboard">
+    <tr id='admin-dashboard-table-title'>
+      <td>subdomain</td>
+      <td>active</td>
+      <td>documents</td>
+      <td>users</td>
+      <td>top users</td>
+    </tr>
+    <tr ng-repeat="(subdomain, item) in active_data" ng:class="{true:'admin-dashboard-title-active', false:'admin-dashboard-title-inactive'}[item[0]!=0]">
+       <td class="first">{{ subdomain }}</td>
+       <td>{{ item[0] }}</td>
+       <td>{{ item[1] }}</td>
+       <td>{{ item[2] }}</td>
+       <td ng-repeat="connexion in item[3]">
+         {{ connexion['ip'] }} connected {{ connexion['count']}} times at {{ connexion['place']}}
+       </td>
+    </tr>
+  </table>
 </div>
