@@ -4,11 +4,11 @@ class Connexion < ActiveRecord::Base
   belongs_to :organization
   
   def activity
-    if updated_at - DateTime.now > 30.minutes
-      update_attributes(count: count + 1)
-    else
-      update_attributes(updated_at: DateTime.now)
-    end 
+    update_attributes(updated_at: DateTime.now)
+  end
+  
+  def increase_count
+    update_attributes(count: count + 1)
   end
 
 end
