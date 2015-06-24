@@ -16,7 +16,8 @@
         },
         link: function(scope, iElement, iAttrs) {
 
-          // scope.sandbox = true;
+          var dummyId = 50
+
           // First we get the nodes
           Restangular.one('nodes').get().then(function (nodes) {
             scope.nodes = nodes.plain();
@@ -490,7 +491,8 @@
 
             // Demo app
             if(scope.home || scope.sandbox){
-              var a = {name: "new"}
+              var a = {name: "new", num: dummyId}
+              dummyId ++;
 
               if( nodeSelected.children === undefined || nodeSelected.children == null ){
                 nodeSelected.children = [];
