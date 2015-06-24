@@ -66,6 +66,10 @@
             }
           }
         })
+        .state('admin', {
+          url: '/admin',
+          templateUrl: 'admin/admin.html',
+        })
         .state('main.account', {
           url: 'account',
           templateUrl: 'account/account.html',

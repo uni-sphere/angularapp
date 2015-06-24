@@ -94,6 +94,19 @@ module AuthenticationHelper
       send_error('chapter id not received', 400)
     end
   end
+  
+  def track_connexion
+    if request.path != '/'
+      ip = request.remote_ip
+      place_att = Geokit::Geocoders::MultiGeocoder.geocode(request.remote_ip)
+      place = "#{place_att.city}::#{place_att.country}"
+      if current_organization.connexions.find_by_ip(ip)
+        current_organization.connexions.find_by_ip(ip).increase_count() if (current_organization.connexions.find_by_ip(ip).updated_at - DateTime.now) > 60.minutes
+      else
+        current_organization.connexions.create(ip: ip, place: place)
+      end
+    end
+  end
 
 end  
 

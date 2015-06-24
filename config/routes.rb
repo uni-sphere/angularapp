@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     post 'users/invite', to: 'users#invite'
     get 'user', to: 'users#show'
     get 'users', to: 'users#index'
+    get 'connected', to: 'connexions#index'
 
   end
 
@@ -31,6 +32,7 @@ Rails.application.routes.draw do
   get '/home', to: 'angular#index'
   get '/dashboard', to: 'angular#index'
   get '/account', to: 'angular#index'
+  get '/admin', to: 'angular#index'
 
   post '/user/invite', to: 'users#invite'
   get '/user/welcome', to: 'users#welcome'

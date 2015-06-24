@@ -1,0 +1,13 @@
+<div ng-controller="AdminCtrl">
+  <div ng-repeat="(subdomain, item) in active_data" class="admin-dashboard">
+    <h1 ng:class="{true:'admin-dashboard-title-active', false:'admin-dashboard-title-inactive'}[item[0]!=0]">
+      {{ subdomain }}
+    </h1>
+    active users: {{ item[0] }}</br>
+    <div ng-repeat="connexion in item[3]">
+      {{ connexion['ip'] }} connected {{ connexion['count']}} times at {{ connexion['place']}}</br>
+    </div>
+    documents: {{ item[1] }}</br>
+    users: {{ item[2] }}</br>
+  </div>
+</div>
