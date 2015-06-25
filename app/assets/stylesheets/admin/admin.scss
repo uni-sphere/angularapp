@@ -3,11 +3,12 @@
   padding: 70px calc(50% - 500px);
   width: 1000px;
   text-align: center;
-  
-  td .fa {
-    padding-right: 10px;
+  td .last {
+    .fa {
+      padding-right: 10px;
+    }
+    text-align: left;
   }
-  text-align: left;
 }
 
 #admin-dashboard-title {
@@ -19,10 +20,6 @@
 #admin-dashboard-table-title td {
   font-size: 36px;
   padding-bottom: 40px;
-}
-
-.admin-dashboard-active .last {
-  text-align: left;
 }
 
 .admin-dashboard-active {
