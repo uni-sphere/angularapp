@@ -3,7 +3,13 @@
   padding: 70px calc(50% - 500px);
   width: 1000px;
   text-align: center;
+  
+  td .fa {
+    padding-right: 10px;
+  }
+  text-align: left;
 }
+
 #admin-dashboard-title {
   font-family: 'Roboto', sans-serif;
   font-size: 22px;
@@ -15,11 +21,11 @@
   padding-bottom: 40px;
 }
 
-.admin-dashboard-title-active .last {
+.admin-dashboard-active .last {
   text-align: left;
 }
 
-.admin-dashboard-title-active {
+.admin-dashboard-active {
   .first {
     color: blue;
   }

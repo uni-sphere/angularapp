@@ -8,11 +8,11 @@
       <td>users</td>
       <td>top users</td>
     </tr>
-    <tr ng-repeat="(subdomain, item) in active_data" ng:class="{true:'admin-dashboard-title-active', false:'admin-dashboard-title-inactive'}[item[0]!=0]">
+    <tr ng-repeat="(subdomain, item) in active_data" ng:class="{true:'admin-dashboard-active', false:'admin-dashboard-inactive'}[item[0]!=0]">
        <td class="first">{{ subdomain }}</td>
        <td>{{ item[0] }}</td>
        <td>{{ item[1] }}</td>
-       <td>{{ item[2] }}</td>
+       <td class="last">{{ item[2] }}</td>
        <td>
          <div ng-repeat="connexion in item[3]" class="last">
            <i class="fa fa-angle-right"></i>{{ connexion['ip'] }} connected {{ connexion['count']}} times at {{ connexion['place']}}
