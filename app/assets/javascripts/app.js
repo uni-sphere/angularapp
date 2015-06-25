@@ -32,55 +32,53 @@
     NotificationProvider
   ) {
 
-    $stateProvider
-    .state('main', {
-      url: '/',
-      abstract: true,
-      templateUrl: 'main/main.html',
-      controller: 'MainCtrl',
-    })
+    if(window.location.host == "admin.unisphere.eu"){
+      $stateProvider
+      .state('admin', {
+        url: '/',
+        templateUrl: 'admin/admin.html',
+      })
+
+    } else{
+      $stateProvider
+      .state('main', {
+        url: '/',
+        abstract: true,
+        templateUrl: 'main/main.html',
+        controller: 'MainCtrl',
+      })
+
+      .state('admin', {
+        url: '/admin',
+        templateUrl: 'admin/admin.html',
+      })
 
       .state('main.application', {
         url: '',
         templateUrl: 'webapp/webapp.html'
       })
 
-      // if(window.location.host == 'sandbox.unisphere.eu'){
-      //   $stateProvider
-      //   .state('main.dashboard', {
-      //     url: 'dashboard',
-      //     templateUrl: 'dashboard/one.html'
-      //   })
-      //   .state('main.account', {
-      //     url: 'account',
-      //     templateUrl: 'account/account.html'
-      //   })
-      // } else{
-        $stateProvider
-        .state('main.dashboard', {
-          url: 'dashboard',
-          templateUrl: 'dashboard/one.html',
-          resolve: {
-            auth: function($auth){
-              return $auth.validateUser();
-            }
+      .state('main.dashboard', {
+        url: 'dashboard',
+        templateUrl: 'dashboard/one.html',
+        resolve: {
+          auth: function($auth){
+            return $auth.validateUser();
           }
-        })
-        .state('admin', {
-          url: '/admin',
-          templateUrl: 'admin/admin.html',
-        })
-        .state('main.account', {
-          url: 'account',
-          templateUrl: 'account/account.html',
-          resolve: {
-            auth: function($auth){
-              return $auth.validateUser();
-            }
+        }
+      })
 
+      .state('main.account', {
+        url: 'account',
+        templateUrl: 'account/account.html',
+        resolve: {
+          auth: function($auth){
+            return $auth.validateUser();
           }
-        })
-      // }
+
+        }
+      })
+    }
 
 
     if(window.location.host == 'localhost:3000'){
