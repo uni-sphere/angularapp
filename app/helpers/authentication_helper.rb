@@ -96,7 +96,7 @@ module AuthenticationHelper
   end
   
   def track_connexion
-    if request.path != '/' and request.remote_ip != '127.0.0.1' and current_subdomain != 'sandbox'
+    if request.path != '/' and request.remote_ip != '127.0.0.1' and current_subdomain != 'admin'
       ip = request.remote_ip
       place_att = Geokit::Geocoders::MultiGeocoder.geocode(request.remote_ip)
       place = "#{place_att.city}::#{place_att.country}"
