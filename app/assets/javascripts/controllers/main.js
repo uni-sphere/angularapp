@@ -6,7 +6,9 @@ angular
 
     // Notification.success('Success notification Success notificationSuccess notificationSuccess notification');
 
-    if(window.location.host == 'sandbox.unisphere.eu'){
+    if(window.location.host == 'admin.unisphere.eu'){
+      $scope.adminVue = true
+    } else if(window.location.host == 'sandbox.unisphere.eu'){
       $scope.sandbox = true
       $scope.admin = true
     } else{
