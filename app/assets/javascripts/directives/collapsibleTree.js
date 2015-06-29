@@ -25,6 +25,11 @@
                 render(makeNested(scope.nodes), iElement);
               }
             });
+
+            window.onresize = function() {
+              console.log("resize")
+              render(makeNested(scope.nodes), iElement);
+            };
             // scope.copyFlatData = Restangular.copy(nodes);
           }, function(){
             console.log("There getting the university name");
@@ -109,9 +114,7 @@
           // });
 
           // We re-render when the size of the window changes
-          window.onresize = function() {
-            render(makeNested(scope.nodes), iElement);
-          };
+
 
           // The problem is the nodes might not be here when we look
           // So we keep looking until they are
