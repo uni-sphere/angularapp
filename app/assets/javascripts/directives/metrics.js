@@ -1,6 +1,4 @@
 (function () {
-  
-
   angular.module('mainApp.directives')
   .directive('metrics', [ 'Restangular', function(Restangular) {
     
@@ -22,7 +20,7 @@
             if (scope.sidebarMinified) {
               options1.width = $('#chart-1').width();
               options2.width = $('#chart-2').width();
-            } else{
+            } else {
               options1.width = $('#chart-1').width() - 150;
               options2.width = $('#chart-2').width() - 150;
             }
@@ -68,7 +66,7 @@
           xax_start_at_min: 'true',
           inflator: 15/10,
           interpolate: 'linear',
-          max_x: current_time,
+          // max_x: current_time,
 
           mouseover: function(d, i) {
             var date = $('.mg-active-datapoint tspan').text().split(',')[0];
@@ -77,7 +75,7 @@
         };
 
         // Function to change Node
-        scope.selectOtherNode = function(button){
+        scope.selectOtherNode = function(button) {
           scope.userActiveNode = button.node;
         }
 
@@ -85,13 +83,17 @@
         scope.$watch('userActiveNode', function(newVals, oldVals){
           if(newVals){
             Restangular.one('reports/firstchart').get({node_id: newVals.id}).then(function(rawData) {
-              scope.chart1rdy = true;
-              if(rawData.plain().length != 1 && rawData.plain()[0] != 0){
-                var data = MG.convert.date(rawData.plain(), 'date');
-                options1.data = data;
-                MG.data_graphic(options1);
-                scope.graph1Empty = false;
-              } else{
+              if (!rawData.empty) {
+                scope.chart1rdy = true;
+                if(rawData.plain().length != 1 && rawData.plain()[0] != 0){
+                  var data = MG.convert.date(rawData.plain(), 'date');
+                  options1.data = data;
+                  MG.data_graphic(options1);
+                  scope.graph1Empty = false;
+                } else {
+                  scope.graph1Empty = true;
+                }
+              } else {
                 scope.graph1Empty = true;
               }
             });
@@ -134,15 +136,15 @@
         scope.$watch('activeStat', function(newVals, oldVals){
           if(newVals){
             options2.y_accessor = newVals.name;
-            if(options2.data[0].length != 1){
+            if (options2.data[0].length == undefined || options2.data[0].length == 1) {
+              scope.graph2Empty = true;
+            } else {
               options2.mouseover = function(d, i) {
                 var date = $('.mg-active-datapoint tspan').text().split(',')[0];
                 $('.mg-active-datapoint tspan').text(date + " " +  ": " + d[newVals.name] + " " + newVals.name)
               }
               MG.data_graphic(options2);
               scope.graph2Empty = false;
-            } else{
-              scope.graph2Empty = true;
             }
           }
         });

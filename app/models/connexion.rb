@@ -3,6 +3,8 @@ class Connexion < ActiveRecord::Base
   after_create :increase_count
   belongs_to :organization
   
+  validates :ip, uniqueness: true
+  
   def activity
     update_attributes(updated_at: DateTime.now)
   end
