@@ -5,10 +5,11 @@
     <meta charset="utf-8">
     <base href="/">
     <title>Unisphere</title>
+    <%= favicon_link_tag 'favicon.ico' %>
     <%= stylesheet_link_tag 'webapp', media: 'all'%>
     <%= javascript_include_tag 'webapp' %>
     <%= csrf_meta_tags %>
-    
+
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
     <script>
       // GOOGLE ANALYTICS
@@ -18,7 +19,7 @@
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
       ga('create', 'UA-62034618-1', 'auto');
     </script>
-      
+
   </head>
   <body>
     <%= yield %>
