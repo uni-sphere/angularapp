@@ -1,7 +1,0 @@
-JSON to send:
-
-	organization_token: 'string',
-  datas: {
-    admin: 'true',
-    classes: [[2,S,3],[1,ES,4],...]
-  }

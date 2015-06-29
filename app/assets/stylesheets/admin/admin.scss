@@ -1,0 +1,34 @@
+#admin-dashboard {
+  font-family: 'Roboto Condensed', sans-serif;
+  padding: 70px calc(50% - 500px);
+  width: 1000px;
+  text-align: center;
+  td .last {
+    .fa {
+      padding-right: 10px;
+    }
+    padding-left: 30px;
+    font-size: 12px;
+    text-align: left;
+  }
+}
+
+#admin-dashboard-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+
+#admin-dashboard-table-title td {
+  font-size: 36px;
+  padding-bottom: 40px;
+  padding: 0px 30px;
+}
+
+.admin-dashboard-active .first {
+  color: blue;
+}
+
+.admin-dashboard-inactive  .first {
+  color: red;
+}

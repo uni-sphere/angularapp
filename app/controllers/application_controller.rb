@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   include SubdomainHelper
   
   protect_from_forgery with: :null_session
-  before_action :authentication
+  before_action :track_connexion
   
   protected
   

@@ -35,6 +35,7 @@ gem 'devise'
 gem 'devise_token_auth'
 gem 'ng-rails-csrf'
 gem 'rollbar'
+gem 'geokit-rails'
 
 group :development, :test do
   gem 'rspec-rails'
