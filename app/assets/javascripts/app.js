@@ -122,6 +122,7 @@
     RestangularProvider.setBaseUrl(getEnvironment());
 
     $translateProvider
+    .useSanitizeValueStrategy(null)
     .translations('en', {
       HELP: 'Help',
       DROP: 'Drop a file',
