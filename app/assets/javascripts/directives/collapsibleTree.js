@@ -30,7 +30,7 @@
             };
             // scope.copyFlatData = Restangular.copy(nodes);
           }, function(){
-            console.log("There getting the university name");
+            console.log("Error: Get nodes");
           });
 
 
