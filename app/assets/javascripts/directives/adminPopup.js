@@ -1,6 +1,6 @@
 (function () {
   angular.module('mainApp.directives')
-    .directive('adminPopup', ['Restangular','ipCookie', function(Restangular, ipCookie) {
+    .directive('adminPopup', ['Restangular','ipCookie', 'Notification', function(Restangular, ipCookie, Notification) {
       return {
         restrict: 'E',
         templateUrl: 'main/admin-popup.html',
@@ -8,8 +8,6 @@
           displayAdminPopup: '=',
           showGreyPanel: '=',
           admin: '=',
-          displayError: '=',
-          hideError: '='
         },
         link: function(scope) {
           scope.displayAdminPopup = function(){
@@ -17,15 +15,12 @@
             scope.showGreyPanel = true;
           }
           scope.hideAdminPopup = function(){
-            // console.log("ff");
-            scope.hideError();
             scope.showGreyPanel =  false;
             scope.showAdmin = false;
           }
           scope.validateAdmin = function(){
             var connection = {email: scope.emailInput, password:scope.passwordInput}
             Restangular.all('users/login').post(connection).then(function(d) {
-              // console.log(d);
               ipCookie('unisphere_api_admin', d.cookie);
               scope.admin = true;
               scope.hideAdminPopup();

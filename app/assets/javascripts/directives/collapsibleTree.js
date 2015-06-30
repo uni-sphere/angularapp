@@ -1,12 +1,11 @@
 (function () {
 
   angular.module('mainApp.directives')
-    .directive('collapsibleTree', ['ipCookie', '$timeout', 'Restangular', function(ipCookie, $timeout, Restangular) {
+    .directive('collapsibleTree', ['ipCookie', '$timeout', 'Restangular', 'Notification', function(ipCookie, $timeout, Restangular, Notification) {
       return {
         restrict: 'EA',
         scope: {
           nodeEnd: '=',
-          displayError: '=',
           activeNodes: '=',
           admin: '=',
           sidebarMinified: '=',
@@ -524,7 +523,7 @@
               }, function(d) {
                 console.log("Error: New node");
                 console.log(d);
-                scope.displayError("You can't temporarily create a new node");
+                Notification.error("You can't temporarily create a new node");
 
               });
             }

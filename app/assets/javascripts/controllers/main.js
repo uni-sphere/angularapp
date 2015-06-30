@@ -4,7 +4,7 @@ angular
   .controller('MainCtrl', ['$scope', 'browser','$timeout', 'Restangular', '$translate', '$auth', '$state', 'usSpinnerService', 'Notification', function ($scope, browser, $timeout, Restangular, $translate, $auth, $state, usSpinnerService, Notification) {
     $scope.sidebarMinified = true;
 
-    if(window.location.host == 'sandbox.unisphere.eu'){
+    if(window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu'){
       $scope.sandbox = true
       $scope.admin = true
       $('#first-connection').fadeIn(1000)
@@ -42,7 +42,7 @@ angular
     checkLocation = function(){
       var host = window.location.host;
       var pathname = window.location.pathname
-      if(pathname == '/home' || host == 'unisphere.eu'){
+      if(pathname == '/home' || host == 'unisphere.eu' || host == 'home.dev.unisphere.eu'){
         $scope.home = true
       } else{
         $scope.home = false;
@@ -81,35 +81,11 @@ angular
     // get university name for navbar
     Restangular.one('organization').get().then(function (university) {
       $scope.university = university.organization.name;
-      // console.log(university.plain());
       $scope.universityId = university.organization.id;
     }, function(){
-      console.log("There getting the university name");
-      $scope.displayError("Sorry there was a mistake, refresh please");
+      console.log("Error: Get uni name");
+      Notification.error("Can you please refresh the page, there was an error");
     });
-
-    $scope.displayError = function(errorString){
-      if($scope.listError == undefined || $scope.listError.length == 0){
-         $scope.listError = [errorString];
-      } else{
-        $scope.listError.push(errorString);
-      }
-      $scope.showError = true;
-    }
-
-    $scope.displaySuccess = function(message){
-      $scope.success = message;
-      $('#success-prompt').show();
-      setTimeout(function(){
-         $('#success-prompt').hide();
-      },10000)
-    }
-
-
-    $scope.hideError = function(){
-      $scope.listError = [];
-      $scope.showError = false;
-    }
 
     $scope.activateSpinner = function(){
       usSpinnerService.spin('spinner-1');
@@ -143,11 +119,8 @@ angular
       }, function(d){
         console.log("Impossible to get the user infos");
         console.log(d)
-        // $scope.displayError("We temporarly can't display user informations")
       });
     }
-
-    // $scope.displayError("This is just a test version. You can't download files");
 
 
   }]);

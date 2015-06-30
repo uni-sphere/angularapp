@@ -32,7 +32,7 @@
     NotificationProvider
   ) {
 
-    if(window.location.host == "unisphere.eu"){
+    if(window.location.host == "unisphere.eu" || window.location.host == "home.dev.unisphere.eu"){
       $stateProvider
       .state('admin', {
         url: '/',
