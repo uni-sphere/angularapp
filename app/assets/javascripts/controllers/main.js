@@ -42,7 +42,7 @@ angular
     checkLocation = function(){
       var host = window.location.host;
       var pathname = window.location.pathname
-      if(pathname == '/home' || host == 'home.unisphere.eu'){
+      if(pathname == '/home' || host == 'unisphere.eu'){
         $scope.home = true
       } else{
         $scope.home = false;
