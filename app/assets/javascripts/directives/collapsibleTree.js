@@ -474,8 +474,8 @@
                 console.log("Objects deleted");
               }, function(d) {
                 console.log(d);
-                console.log("There was an error deleting");
-                scope.displayError(["Try again to delete this node"]);
+                console.log("Error: Delete node");
+               Notification.error('You can\'t temporarily delete a node');
               });
             }
 
@@ -522,9 +522,10 @@
 
 
               }, function(d) {
+                console.log("Error: New node");
                 console.log(d);
-                scope.displayError("Try again to create a node");
-                console.log("There was an error saving");
+                scope.displayError("You can't temporarily create a new node");
+
               });
             }
 
@@ -551,9 +552,9 @@
                   update(nodeSelected);
                   console.log("Object updated");
                 }, function(d) {
+                  console.log("Error: Rename node");
                   console.log(d);
-                  console.log("There was an error updating");
-                  scope.displayError(["Try again to change this node's name"]);
+                  Notification.error("We can't temporarily rename this node")
                 });
               }
             }

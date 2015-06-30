@@ -128,7 +128,6 @@ angular
         $scope.accountEmail = d.user.email
         $scope.accountName = d.user.name
         $scope.help = d.user.help
-        console.log(d.user)
         if($scope.help) {
           $('#first-connection').fadeIn(1000)
         }
