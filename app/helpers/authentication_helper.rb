@@ -85,7 +85,6 @@ module AuthenticationHelper
       if current_node.chapters.exists? params[:chapter_id]
         return current_node.chapters.find params[:chapter_id]
       elsif params[:chapter_id] == '0'
-        clear_logs current_node.chapters.first
         return current_node.chapters.first
       else
         send_error('chapter not found', 404)
