@@ -5,12 +5,9 @@ class AngularController < ApplicationController
   def index
     if is_mobile?
       render :layout => 'mobile'
-    end
-
-    if request.original_fullpath == "/home" || request.subdomain ==  "home"
+    elsif request.original_fullpath == "/home" || request.subdomain ==  "home"
       render :layout => 'home'
     end
-
   end
 
   def is_mobile?

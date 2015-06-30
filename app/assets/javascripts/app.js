@@ -39,7 +39,7 @@
         templateUrl: 'admin/admin.html',
       })
 
-    } else{
+    } else {
       $stateProvider
       .state('main', {
         url: '/',
