@@ -26,8 +26,6 @@
       <div class="panel-row-title">{{ 'NEW_LECTURER' | translate }}</div>
       <label><input name="input" required type="email" id="addAdmin" placeholder="Input an email" class="panel-input input-float" ng-model="newUser" ></label>
 
-      <!-- <div id="add-user" class="fa fa-plus" ng-click="addUser()" ng-class="{'add-user-possible': organizationForm.$valid}"></div> -->
-
       <button class="panel-submit" ng-class="{'valid' : organizationForm.$valid}" ng-click="inviteUsers()">{{ 'INVITE' | translate }}</button>
     </div>
   </form>
