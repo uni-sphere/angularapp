@@ -27,7 +27,6 @@
             });
 
             window.onresize = function() {
-              console.log("resize")
               render(makeNested(scope.nodes), iElement);
             };
             // scope.copyFlatData = Restangular.copy(nodes);
