@@ -1,35 +1,14 @@
 (function(){
   angular
   .module('mainApp.controllers')
-  .controller('AccountCtrl', ['$scope', 'Restangular', '$auth', function ($scope, Restangular, $auth) {
+  .controller('AccountCtrl', ['$scope', 'Restangular', '$auth', 'Notification', function ($scope, Restangular, $auth, Notification) {
 
     /*======================================
     =            Update profile            =
     ======================================*/
 
-    $scope.formData = {
-    };
-    $scope.formFields= [{
-      type: "input",
-      key: "updatedProfileName",
-      templateOptions:{
-        label: 'Name'
-      }
-    },
-    {
-      type: "input",
-      key: "updatedProfileEmail",
-      templateOptions:{
-        label: 'Email address',
-        type: 'email'
-      }
-    }];
 
     $scope.updateAccount = function() {
-      // console.log($scope.updatedName)
-      // console.log($scope.updatedEmail)
-      // console.log($scope.profileForm.updatedNameValid.$error.minlength)
-      // console.log($scope.profileForm.updatedEmailValid.$valid)
 
       if($scope.updatedName == ""){
         $scope.updatedName = undefined
@@ -38,14 +17,12 @@
         $scope.updatedEmail = undefined
       }
 
-
-
       if($scope.updatedName == undefined && $scope.updatedEmail == undefined){
-        $scope.displayError("Enter either a valid new name or email")
-      }else if(!$scope.profileForm.updatedEmailValid.$valid){
-        $scope.displayError("Enter a valid mail")
+        Notification.error('Enter either a valid new name or email');
+      } else if(!$scope.profileForm.updatedEmailValid.$valid){
+        Notification.error('Enter a valid mail');
       } else if($scope.profileForm.updatedNameValid.$error.minlength){
-        $scope.displayError("Enter a valid name")
+        Notification.error('Enter a valid name');
       } else {
 
         var credentials = {
@@ -56,7 +33,7 @@
         $auth.updateAccount(credentials)
         .then(function(resp) {
           console.log("Profil updated")
-          $scope.displaySuccess("Profile updated")
+          Notification.success('Profile updated');
           $scope.accountEmail = resp.data.data.email
           $scope.accountName = resp.data.data.name
           $scope.updatedName = ""
@@ -64,66 +41,13 @@
           // $scope.profileForm.$setUntouched();
         })
         .catch(function(resp) {
-          $scope.displayError("Unable to update the profile")
+          Notification.error('Unable to update the profile');
           console.log("Unable to update the profile")
           console.log(resp);
           $('updatedName').focus()
         });
       }
     }
-
-    /*================================
-    =            Password            =
-    ================================*/
-
-    $scope.updatePsw = function() {
-      if(!$scope.newPasswordValid){
-        console.log("ERROR: your password is too short");
-        $scope.displayError("Your password is too short");
-        $('#new-password').focus();
-      } else if(!$scope.newPasswordConfirmed){
-        console.log("ERROR: password rename. Password different");
-        $scope.displayError("The password you typed are not the same");
-        $scope.confirmPsw = "";
-        $('#confirm-password').focus();
-      } else{
-        var credentials = {
-          password: $scope.newPsw,
-          password_confirmation: $scope.confirmPsw
-        };
-
-        $auth.updatePassword(credentials)
-        .then(function(resp) {
-          console.log("Password changed")
-          $scope.displaySuccess("Password Changed")
-
-          // We remove all what was displayed
-          $scope.newPsw = "";
-          $scope.confirmPsw = "";
-          $('#password-strength').fadeOut(400);
-          $('.password-notif').fadeOut(400);
-          $scope.newPasswordValid = false
-          $('.password-check-notif-ok').fadeOut(400)
-          $scope.newPasswordConfirmed = false
-        })
-        .catch(function(resp) {
-          console.log(resp);
-          $scope.displayError("Try again to change your password");
-
-          // We remove all what was displayed
-          $scope.newPsw = "";
-          $scope.confirmPsw = "";
-          $('#password-strength').fadeOut(400);
-          $('.password-notif').fadeOut(400);
-          $scope.newPasswordValid = false
-          $('.password-check-notif-ok').fadeOut(400)
-          $scope.newPasswordConfirmed = false
-
-          $('#new-password').focus();
-        });
-      }
-    }
-
 
     /*===================================
     =            Invite User            =
@@ -147,35 +71,91 @@
             $scope.listUser.push(userInfo.data.data);
             $scope.newUser = "";
             console.log("New user added");
-            $scope.displaySuccess("Your colleages have been invited");
+            Notification.success('Your colleague has been invited');
           }, function(d){
+            console.log("Error: Invite colleague");
             console.log(d);
-            console.log("There was an error adding users");
-            $scope.displayError("Try again to invite lecturers");
-            $('#addAdmin').focus()
+            Notification.error('We didn\'t manage to invite your colleague. We will fix this soon');
+            $scope.newUser = "";
+            $scope.organizationForm.$setUntouched();
           });
         })
         .catch(function(d) {
-          console.log("Impossible to signup the user")
-          console.log(d);
           if(d.status = 403){
-            console.log(d.data.data.email + " already uses Unisphere. We didn't invite him again");
-            $scope.displayError(d.data.data.email + " already uses Unisphere. We didn't invite him again");
+            console.log("Error: Invite colleague | he already uses unisphere");
+            console.log(d);
+            Notification.error(d.data.data.email + " already uses Unisphere. We didn't invite him again")
             $scope.newUser = "";
             $scope.organizationForm.$setUntouched();
           } else{
-            $scope.displayError("Impossible to create an account");
+            console.log("Error: Invite colleague");
+            console.log(d);
+            Notification.error('We didn\'t manage to invite your colleague. We will fix this soon')
             $('#addAdmin').focus()
           }
-
         });
 
       } else{
-        console.log("Email invalid");
-        $scope.displayError("Enter a valid email!");
+        console.log("Error: Invite colleague | Email invalid");
+        Notification.error("Enter a valid email!")
         $('#addAdmin').focus()
       }
     }
+
+    /*================================
+    =            Password            =
+    ================================*/
+
+    $scope.updatePsw = function() {
+      if(!$scope.newPasswordValid){
+        Notification.error('Your password is too short');
+        console.log("Error: Change password | Password is too short");
+        $('#new-password').focus();
+      } else if(!$scope.newPasswordConfirmed){
+        Notification.error('The password you typed are not the same');
+        console.log("Error: Change password | Password different");
+        $scope.confirmPsw = "";
+        $('#confirm-password').focus();
+      } else{
+        var credentials = {
+          password: $scope.newPsw,
+          password_confirmation: $scope.confirmPsw
+        };
+
+        $auth.updatePassword(credentials).then(function(resp) {
+          Notification.success('Password updated');
+
+          // We remove all what was displayed
+          $scope.newPsw = "";
+          $scope.confirmPsw = "";
+          $('#password-strength').fadeOut(400);
+          $('.password-notif').fadeOut(400);
+          $scope.newPasswordValid = false
+          $('.password-check-notif-ok').fadeOut(400)
+          $scope.newPasswordConfirmed = false
+        }).catch(function(resp) {
+          console.log("Error: Change password")
+          console.log(resp);
+          Notification.error('Try again to change your password');
+
+          // We remove all what was displayed
+          $scope.newPsw = "";
+          $scope.confirmPsw = "";
+          $('#password-strength').fadeOut(400);
+          $('.password-notif').fadeOut(400);
+          $scope.newPasswordValid = false
+          $('.password-check-notif-ok').fadeOut(400)
+          $scope.newPasswordConfirmed = false
+
+          $('#new-password').focus();
+        });
+      }
+    }
+
+
+    /*=================================
+    =            Functions            =
+    =================================*/
 
 
     // Creation of a random password
