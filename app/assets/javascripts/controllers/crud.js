@@ -1,7 +1,7 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('CrudCtrl', ['$scope', 'Restangular', function ($scope, Restangular) {
+  .controller('CrudCtrl', ['$scope', 'Restangular', 'Notification', function ($scope, Restangular, Notification) {
 
     /*========================================
     =            Delete Documents            =
@@ -34,9 +34,9 @@ angular
               $scope.documentAbsent = true;
             }
           }, function(d) {
-            console.log("There was an error deleting the file");
+            console.log("Error: Delete file");
             console.log(d);
-            scope.displayError("Try again to delete the document: " + nodeToDelete.$modelValue.title);
+            Notification.error("We can't temporarily delete the file " + nodeToDelete.$modelValue.title);
           });
         }
       }
@@ -61,9 +61,9 @@ angular
               $scope.documentAbsent = true;
             }
           }, function(d) {
-            console.log("There was an error deleting the chapter");
+            console.log("Error: Delete a chapter");
             console.log(d);
-            scope.displayError("Try again to delete the chapter: " + nodeToDelete.$modelValue.title);
+            Notification.error("We can't temporarily delete the chapter: " + nodeToDelete.$modelValue.title);
           });
         }
       }
@@ -137,9 +137,9 @@ angular
           }
 
         }, function(d) {
-          console.log("Impossible to create the chapter");
+          console.log("Error: Create a chapter");
           console.log(d);
-          $scope.displayError("Try again to create the chapter");
+          Notification.error("We can't temporarily create a chapter");
 
         });
       }
@@ -180,9 +180,9 @@ angular
 
               console.log("Object updated");
             }, function(d) {
-              console.log("There was an error updating the document");
+              console.log("Error: Rename document");
               console.log(d);
-              scope.displayError("Try again to change this document's name");
+              Notification.error("We can't temporarily rename this document");
             });
           }
         }
@@ -211,9 +211,9 @@ angular
 
               console.log("Object updated");
             }, function(d) {
-              console.log("There was an error updating");
+              console.log("Error: Rename chapter");
               console.log(d);
-              scope.displayError("Try again to change this chapter's name");
+              Notification.error("We can't temporarily rename the chapter");
             });
           }
         }
