@@ -32,7 +32,7 @@
     NotificationProvider
   ) {
 
-    if(window.location.host == "unisphere.eu" || window.location.host == "home.dev.unisphere.eu"){
+    if(window.location.host == "admin.unisphere.eu" || window.location.host == "admin.dev.unisphere.eu"){
       $stateProvider
       .state('admin', {
         url: '/',
@@ -82,8 +82,7 @@
 
 
     if(window.location.host == 'localhost:3000'){
-      $stateProvider
-        .state('home', {
+      $stateProvider.state('home', {
           url: '/home',
           templateUrl: 'main/main.html',
           controller: 'MainCtrl'
