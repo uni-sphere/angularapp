@@ -7,6 +7,7 @@ angular
     if(window.location.host == 'sandbox.unisphere.eu'){
       $scope.sandbox = true
       $scope.admin = true
+      $('#first-connection').fadeIn(1000)
     } else{
       $auth.validateUser().then(function(){
         $scope.admin = true;
@@ -127,8 +128,8 @@ angular
         $scope.accountEmail = d.user.email
         $scope.accountName = d.user.name
         $scope.help = d.user.help
-        if($scope.help || $scope.sandbox) {
-          $('#first-connection').fadeIn(2000)
+        if($scope.help) {
+          $('#first-connection').fadeIn(1000)
         }
 
         // We get the list of user in the organization
