@@ -20,7 +20,6 @@
     'ngMap',
     'angularSpinner',
     'ui-notification',
-    'formly',
   ])
   .config(function (
     $stateProvider,

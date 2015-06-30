@@ -24,8 +24,6 @@
     "underscore": "~1.8.3",
     "angular-spinner": "~0.6.1",
     "angular-ui-notification": "~0.0.11",
-    "api-check": "~7.4.0",
-    "angular-formly": "~6.15.1"
   },
   "resolutions": {
     "angular": "^1.2.0"
