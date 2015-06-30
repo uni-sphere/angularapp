@@ -1,5 +1,5 @@
 class AngularController < ApplicationController
-  
+
   layout 'webapp'
 
   def index
