@@ -211,17 +211,6 @@
   angular.module('mainApp.controllers', []);
   angular.module('mainApp.directives', []);
 
-  app.run(function(formlyConfig){
-    formlyConfig.setType({
-      name: 'default-input',
-      templateUrl: 'formly/default-input.html'
-    })
-    formlyConfig.setType({
-      name: 'email-input',
-      templateUrl: 'formly/email-input.hmtl'
-    })
-  })
-
 })();
 
 
