@@ -1,30 +1,59 @@
-html, body{
-  position: absolute;
-  top: 0;
-  left: 0;
+@import url(http://fonts.googleapis.com/css?family=Ubuntu);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab);
 
-  height: 100%;
-  width: 100%;
-
-  margin: 0px;
-  padding: 0px;
-}
-
-.hidden{
-  display: none;
-}
-
-body{
-  cursor: default;
-  font-size: 1em;
-  font-family: 'Ubuntu', sans-serif, "Lato";
-}
-
-
-#mobile-welcome{
-  position: relative;
-  width: 100%;
+body {
   text-align: center;
-  line-height: 40px;
-  margin-top: 250px;
+  font-family: Roboto, sans-serif;
+  margin: 0px;
+}
+
+#mob-first-slide {
+  background-image: url(image-path('top-mobile.png'));
+  background-position:center center;
+  color: white;
+  height: 150px;
+}
+
+#mob-title {
+  font-family: 'Roboto Slab', serif;
+  letter-spacing: 2px;
+  padding: 30px;
+}
+
+#mob-picture {
+  padding: 30px 0px;
+  height: 100px;
+  background-image: url(image-path('mini-app.png'));
+  background-repeat:no-repeat;
+  background-position:center center;
+}
+
+#mob-app-title {
+  padding: 15px;
+  color: orange;
+}
+
+#mob-features {
+  font-size: 12px;
+  background: #2F2F2F;
+  color: white;
+}
+
+#mob-features-title {
+  padding: 10px 0px;
+  color: orange;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.mob-feature {
+  padding: 5px 0px;
+}
+
+.mob-feature-title {
+  padding: 5px 0px;
+}
+
+.mob-feature-content {
+  padding: 5px 10px;
 }
