@@ -524,7 +524,6 @@
                 console.log("Error: New node");
                 console.log(d);
                 Notification.error("You can't temporarily create a new node");
-
               });
             }
 
