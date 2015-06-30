@@ -17,6 +17,8 @@ class OrganizationsController < ApplicationController
       secondchild = organization.nodes.new(name: 'Second Level', parent_id: node.id)
       firstchild.save
       secondchild.save
+      firstchild.chapters.create(title: 'main', parent_id: 0, user_id: current_user.id)
+      secondchild.chapters.create(title: 'main', parent_id: 0, user_id: current_user.id)
       create_pointer(organization.subdomain)
       Rollbar.info("Organization created", organization: organization.name)
       render json: { organization: organization, url: "http://#{organization.subdomain}.unisphere.eu" }.to_json, status: 201, location: organization
