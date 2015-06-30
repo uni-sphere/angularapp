@@ -4,10 +4,12 @@ angular
   .controller('MainCtrl', ['$scope', 'browser','$timeout', 'Restangular', '$translate', '$auth', '$state', 'usSpinnerService', 'Notification', function ($scope, browser, $timeout, Restangular, $translate, $auth, $state, usSpinnerService, Notification) {
     $scope.sidebarMinified = true;
 
-    if(window.location.host == 'sandbox.unisphere.eu'){
+    /*==========  Location variable  ==========*/
+
+    if(window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu'){
       $scope.sandbox = true
       $scope.admin = true
-      $('#first-connection').fadeIn(1000)
+      $('#first-connection').fadeIn(2000)
     } else{
       $auth.validateUser().then(function(){
         $scope.admin = true;
@@ -20,6 +22,18 @@ angular
     if(window.location.host == 'localhost:3000'){
       $scope.local = true
     }
+
+    checkLocation = function(){
+      var host = window.location.host;
+      var pathname = window.location.pathname
+      if(pathname == '/home' || host == 'www.unisphere.eu' || host == 'home.dev.unisphere.eu'){
+        $scope.home = true
+      } else{
+        $scope.home = false;
+      }
+    }();
+
+    /*==========  Admin deco  ==========*/
 
     $scope.adminDeco = function(){
       if($scope.sandbox){
@@ -37,18 +51,7 @@ angular
       }
     }
 
-    // $scope.inviteUser = ["clement@muller.uk.net","gabriel.muller.12@gmail.com"]
-
-    checkLocation = function(){
-      var host = window.location.host;
-      var pathname = window.location.pathname
-      if(pathname == '/home' || host == 'unisphere.eu'){
-        $scope.home = true
-      } else{
-        $scope.home = false;
-      }
-
-    }();
+    /*==========  Languages stuff  ==========*/
 
     // Languages options
     $scope.ddSelectOptions = [
@@ -78,38 +81,18 @@ angular
       console.log($translate.use());
     }
 
-    // get university name for navbar
+    /*==========  Get organization  ==========*/
+
     Restangular.one('organization').get().then(function (university) {
       $scope.university = university.organization.name;
-      // console.log(university.plain());
       $scope.universityId = university.organization.id;
-    }, function(){
-      console.log("There getting the university name");
-      $scope.displayError("Sorry there was a mistake, refresh please");
+    }, function(d){
+      console.log("Error: Get uni name");
+      console.log(d)
+      Notification.error("Can you please refresh the page, there was an error");
     });
 
-    $scope.displayError = function(errorString){
-      if($scope.listError == undefined || $scope.listError.length == 0){
-         $scope.listError = [errorString];
-      } else{
-        $scope.listError.push(errorString);
-      }
-      $scope.showError = true;
-    }
-
-    $scope.displaySuccess = function(message){
-      $scope.success = message;
-      $('#success-prompt').show();
-      setTimeout(function(){
-         $('#success-prompt').hide();
-      },10000)
-    }
-
-
-    $scope.hideError = function(){
-      $scope.listError = [];
-      $scope.showError = false;
-    }
+    /*==========  Spinner  ==========*/
 
     $scope.activateSpinner = function(){
       usSpinnerService.spin('spinner-1');
@@ -122,6 +105,9 @@ angular
       $scope.$apply()
     }
 
+
+    /*==========  Function  ==========*/
+
     $scope.getBasicInfo = function(){
       // We get the user email and name to display them
       Restangular.one('user').get().then(function (d) {
@@ -129,7 +115,7 @@ angular
         $scope.accountName = d.user.name
         $scope.help = d.user.help
         if($scope.help) {
-          $('#first-connection').fadeIn(1000)
+          $('#first-connection').fadeIn(2000)
         }
 
         // We get the list of user in the organization
@@ -143,11 +129,8 @@ angular
       }, function(d){
         console.log("Impossible to get the user infos");
         console.log(d)
-        // $scope.displayError("We temporarly can't display user informations")
       });
     }
-
-    // $scope.displayError("This is just a test version. You can't download files");
 
 
   }]);

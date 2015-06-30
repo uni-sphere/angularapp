@@ -1,7 +1,7 @@
 (function () {
 
   angular.module('mainApp.directives')
-    .directive('viewDocument', ['$translate' , 'Restangular', 'browser', '$upload', function($translate, Restangular, browser, $upload) {
+    .directive('viewDocument', ['$translate' , 'Restangular', 'browser', '$upload', 'Notification', function($translate, Restangular, browser, $upload, Notification) {
       return {
         restrict: 'E',
         templateUrl: 'webapp/view-document.html',
@@ -9,7 +9,6 @@
           activeNodes: '=',
           nodeEnd: '=',
           files: '=',
-          displayError: '=',
           admin: '=',
           activateSpinner: '=',
           desactivateSpinner: '=',
@@ -28,7 +27,6 @@
               //breadcrumb
               scope.breadcrumb = []
               for(var i = scope.activeNodes.length - 2; i >= 0; i--){
-                // console.log(scope.activeNodes)
                 scope.breadcrumb.push(scope.activeNodes[i][1]);
               }
 
@@ -38,9 +36,9 @@
                   document.shift();
                   scope.list = makeNested(document);
                 }, function(d){
-                  console.log("Impossible to get the document");
+                  console.log("Error: Get document");
                   console.log(d)
-                  scope.displayError("We temporarly can't display the documents")
+                  Notification.error("We temporarly can't display the documents")
                 });
               }
             }
@@ -159,7 +157,7 @@
           // We save the number of download
           scope.downloadItem = function(scope){
             if(scope.home || scope.sandbox){
-              scope.displayError("This is just a test version. You can't download files");
+              Notification.error("This is just a test version. You can't download files")
             }
             else{
               console.log(scope.nodeEnd[0])
@@ -167,7 +165,7 @@
                 console.log("Download registered");
               },function(d){
                 console.log(d)
-                console.log("There was an error registering the download");
+                console.log("Error: Register the download");
               });
             }
           }
@@ -371,8 +369,8 @@
 
 
                 }, function(d) {
-                  scope.displayError("Failed to create chapter:" + folder.name);
-                  console.log("Failed to create chapter:" + folder.name);
+                  Notification.error("We didn't manage to create the chapter: " + folder.name)
+                  console.log("Error: Failed to create chapter:" + folder.name);
                 });
               }
             }
@@ -444,8 +442,8 @@
                     }
 
                   }, function(d) {
-                    scope.displayError("Failed to upload document:" +  file.name);
-                    console.log("Failed to upload document:" +  file.name);
+                    Notification.error("We didn't manage to upload the document: " + file.name)
+                    console.log("Error: Upload document failed :" +  file.name);
                   });
                 }
               }
@@ -522,7 +520,7 @@
                 uploadItems();
               } else{
                 if(files[0].type == "directory" || files[0].size == 0){
-                  scope.displayError("You can only upload folder on Chrome")
+                  Notification.error("You can only upload folder on Chrome")
                 } else{
                   scope.activateSpinner()
                   orderFiles(files);

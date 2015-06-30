@@ -1,11 +1,12 @@
 (function () {
-  
+
   angular.module('mainApp.directives').directive('firstCo', ['$auth', function($auth) {
     return {
       restrict: 'E',
       templateUrl: 'main/first-co.html',
       scope: {
-        help: '='
+        help: '=',
+        sandbox: '='
       },
       link: function(scope) {
 
@@ -31,13 +32,15 @@
           scope.sidebarAdvise = false
           $('#first-connection').fadeOut(200)
           scope.help = false
-          $auth.updateAccount({help: false})
-          .then(function(resp) {
-            console.log('help set to false')
-          })
-          .catch(function(resp) {
-            console.log(resp)
-          });
+          if(!scope.sandbox){
+            $auth.updateAccount({help: false})
+            .then(function(resp) {
+              console.log('help set to false')
+            })
+            .catch(function(resp) {
+              console.log(resp)
+            });
+          }
         }
 
       }

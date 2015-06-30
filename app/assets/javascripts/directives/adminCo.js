@@ -1,13 +1,11 @@
 (function () {
   angular.module('mainApp.directives')
-  .directive('adminCo', [ 'Restangular', '$auth', function(Restangular, $auth) {
+  .directive('adminCo', [ 'Restangular', '$auth', 'Notification', function(Restangular, $auth, Notification) {
     return {
       restrict: 'E',
       templateUrl: 'webapp/admin-co.html',
       scope: {
         admin: '=',
-        displayError: '=',
-        hideError: '=',
         accountForgotten: '=',
         accountForgottenEmail: '=',
         sandbox: '=',
@@ -37,7 +35,7 @@
         }
 
         scope.signupRequest = function(){
-          scope.displayError("This function is not yet available. Ask one of your colleage to invite you!");
+          Notification.success("This function is not yet available. Ask one of your colleage to invite you!");
         }
 
         scope.adminCoAttempt = function(){
@@ -58,17 +56,18 @@
               .catch(function(resp) {
                 console.log(resp);
                 if(resp.reason == "unauthorized"){
-                  console.log("You misstyped your password");
-                  scope.displayError("You misstyped your password");
+                  console.log("Error: Admin co | misstyped your password");
+                  Notification.error("You misstyped your password");
                   $('#admin-co-password').focus()
                 } else{
-                  console.log("Unknown error");
-                  scope.displayError("Unknown error");
+                  console.log("Error: Admin co");
+                  Notification.error("We can't temporarily login you");
                 }
                 scope.admincoPassword = "";
               });
 
           }, function(d){
+            console.log("Error: Admin co | you misstyped your email");
             console.log(d);
             scope.displayError("You misstyped your email");
             scope.admincoPassword = "";

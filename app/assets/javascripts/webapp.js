@@ -20,10 +20,8 @@
 //= require ng-rails-csrf
 //= require ngmap/build/scripts/ng-map.min
 //= require spin.js/spin
-//= require angular-spinner/angular-spinner.min
+//= require angular-spinner/angular-spinner
 //= require angular-ui-notification/dist/angular-ui-notification.min
-//= require api-check/dist/api-check.min
-//= require angular-formly/dist/formly.min
 
 
 //= require angular-rails-templates

@@ -2,14 +2,16 @@ class NodesController < ApplicationController
 	
   def create
     node = current_organization.nodes.new(name: params[:name], parent_id: params[:parent_id])
-    chapter = node.chapters.new(title: 'main', parent_id: 0, user_id: current_user.id)
     parent = current_organization.nodes.find params[:parent_id]
     report = node.reports.new
-    if node.save and chapter.save and report.save
-      if parent.chapters.count >= 2
-        Chapter.where(node_id: parent.id).each do |chapter|
+    if node.save and report.save
+      if parent.chapters.count > 1
+        parent.chapters.each do |chapter|
           chapter.update(node_id: node.id)
         end
+      else
+        chapter = node.chapters.new(title: 'main', parent_id: 0, user_id: current_user.id)
+        chapter.save
       end
       render json: node, status: 201, location: node
     else

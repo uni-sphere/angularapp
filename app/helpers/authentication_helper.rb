@@ -1,22 +1,22 @@
 module AuthenticationHelper
-  
+
   private
-  
+
   $TOKEN = '6632398822f1d84468ebde3c837338fb'
-  
+
   def authentication
     # authenticate_client unless request.path == '/'
   end
-  
+
   def authenticate_client
     # authenticate_with_http_token do |token, options|
     #   send_error('Bad token', 401) unless token == $TOKEN
     # end
   end
-  
+
   def current_subdomain
     if Rails.env.production?
-      if URI.parse(request.env['HTTP_ORIGIN']).host.include? 'home'
+      if URI.parse(request.env['HTTP_ORIGIN']).host == 'sandbox.unisphere.eu' || URI.parse(request.env['HTTP_ORIGIN']).host == 'home.dev.unisphere.eu' || URI.parse(request.env['HTTP_ORIGIN']).host == 'www.unisphere.eu' || URI.parse(request.env['HTTP_ORIGIN']).host == 'dev.unisphere.eu'
         return 'sandbox'
       else
         uri = URI.parse(request.env['HTTP_ORIGIN']).host
@@ -26,7 +26,7 @@ module AuthenticationHelper
       return 'sandbox'
     end
   end
-  
+
   def current_organization
     if Rails.env.production?
       subdomain = current_subdomain
@@ -40,7 +40,7 @@ module AuthenticationHelper
       return Organization.first
     end
   end
-  
+
   def current_awsdocument
     if Awsdocument.exists? params[:id]
       @awsdocument = Awsdocument.find_unarchived params[:id]
@@ -48,7 +48,7 @@ module AuthenticationHelper
       send_error('resource not found', 404)
     end
   end
-  
+
   def current_node
     params[:node_id] = params[:id] if request.url.split('?').first.include? 'node'
     if params[:node_id]
@@ -61,7 +61,7 @@ module AuthenticationHelper
       send_error('node id not received', 400)
     end
   end
-  
+
   def user_nodes
     if Chapter.exists?(user_id: current_user.id)
       chapters = Chapter.where(user_id: current_user.id)
@@ -94,7 +94,7 @@ module AuthenticationHelper
       send_error('chapter id not received', 400)
     end
   end
-  
+
   def track_connexion
     ip = request.remote_ip
     if request.path != '/' and ip != '127.0.0.1' and ip != '88.169.99.128' and current_subdomain != 'admin'
@@ -114,7 +114,7 @@ module AuthenticationHelper
     end
   end
 
-end  
+end
 
 
 

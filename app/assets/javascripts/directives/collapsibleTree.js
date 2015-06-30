@@ -1,12 +1,11 @@
 (function () {
 
   angular.module('mainApp.directives')
-    .directive('collapsibleTree', ['ipCookie', '$timeout', 'Restangular', function(ipCookie, $timeout, Restangular) {
+    .directive('collapsibleTree', ['ipCookie', '$timeout', 'Restangular', 'Notification', function(ipCookie, $timeout, Restangular, Notification) {
       return {
         restrict: 'EA',
         scope: {
           nodeEnd: '=',
-          displayError: '=',
           activeNodes: '=',
           admin: '=',
           sidebarMinified: '=',
@@ -29,9 +28,10 @@
             window.onresize = function() {
               render(makeNested(scope.nodes), iElement);
             };
-            // scope.copyFlatData = Restangular.copy(nodes);
-          }, function(){
-            console.log("There getting the university name");
+          }, function(d){
+            Notification.error("We temporarily can't display the nodes")
+            console.log("Error: Get nodes");
+            console.log(d)
           });
 
 
@@ -474,8 +474,8 @@
                 console.log("Objects deleted");
               }, function(d) {
                 console.log(d);
-                console.log("There was an error deleting");
-                scope.displayError(["Try again to delete this node"]);
+                console.log("Error: Delete node");
+               Notification.error('You can\'t temporarily delete a node');
               });
             }
 
@@ -522,9 +522,10 @@
 
 
               }, function(d) {
+                console.log("Error: New node");
                 console.log(d);
-                scope.displayError("Try again to create a node");
-                console.log("There was an error saving");
+                Notification.error("You can't temporarily create a new node");
+
               });
             }
 
@@ -551,9 +552,9 @@
                   update(nodeSelected);
                   console.log("Object updated");
                 }, function(d) {
+                  console.log("Error: Rename node");
                   console.log(d);
-                  console.log("There was an error updating");
-                  scope.displayError(["Try again to change this node's name"]);
+                  Notification.error("We can't temporarily rename this node")
                 });
               }
             }

@@ -20,7 +20,6 @@
     'ngMap',
     'angularSpinner',
     'ui-notification',
-    'formly',
   ])
   .config(function (
     $stateProvider,
@@ -32,7 +31,7 @@
     NotificationProvider
   ) {
 
-    if(window.location.host == "unisphere.eu"){
+    if(window.location.host == "admin.unisphere.eu" || window.location.host == "admin.dev.unisphere.eu"){
       $stateProvider
       .state('admin', {
         url: '/',
@@ -75,15 +74,13 @@
           auth: function($auth){
             return $auth.validateUser();
           }
-
         }
       })
     }
 
 
     if(window.location.host == 'localhost:3000'){
-      $stateProvider
-        .state('home', {
+      $stateProvider.state('home', {
           url: '/home',
           templateUrl: 'main/main.html',
           controller: 'MainCtrl'
@@ -95,7 +92,7 @@
     $locationProvider.html5Mode(true);
 
     NotificationProvider.setOptions({
-      delay: 10000,
+      delay: 5000,
       startTop: 100,
       startRight: 40,
       verticalSpacing: 20,
@@ -212,17 +209,6 @@
   angular.module('mainApp.filters', []);
   angular.module('mainApp.controllers', []);
   angular.module('mainApp.directives', []);
-
-  app.run(function(formlyConfig){
-    formlyConfig.setType({
-      name: 'default-input',
-      templateUrl: 'formly/default-input.html'
-    })
-    formlyConfig.setType({
-      name: 'email-input',
-      templateUrl: 'formly/email-input.hmtl'
-    })
-  })
 
 })();
 

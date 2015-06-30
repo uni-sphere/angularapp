@@ -1,18 +1,15 @@
 (function () {
 
   angular.module('mainApp.directives')
-  .directive('accountGestion', [ '$auth', 'Restangular', function($auth, Restangular) {
+  .directive('accountGestion', [ '$auth', 'Restangular', 'Notification', function($auth, Restangular, Notification) {
 
     return {
       restrict: 'E',
       templateUrl: 'main/account-gestion.html',
       scope: {
         admin: '=',
-        displayError: '=',
-        hideError: '=',
         accountForgotten: '=',
         accountSignup: '=',
-        displaySuccess: '=',
         emailInput: '=',
         accountForgottenEmail: '='
       },
@@ -32,22 +29,21 @@
               email: scope.accountForgottenEmail
             };
 
-            $auth.requestPasswordReset(credentials)
-            .then(function(resp) {
-              console.log("Password has been reset");
+            $auth.requestPasswordReset(credentials).then(function(resp) {
+              console.log("Ok: Password reset");
               scope.accountForgotten = false;
-              scope.displaySuccess("We sent you an email");
+              Notification.success("Your password has been reset. We sent you an email.")
             })
             .catch(function(d) {
-              console.log("This email doesn't exist");
+              console.log("Error: Password reset");
               console.log(d);
-              scope.displayError("This email doesn't exist");
+              Notification.success("We can't temporarily reset your password")
               $('#account-forgotten-email').focus()
             });
           }, function(d){
-            console.log("This email doesn't exist");
+            console.log("Error: Password reset | This email doesn't exist");
             console.log(d);
-            scope.displayError("This email doesn't exist");
+            Notification.success("You misstyped your email")
             $('#account-forgotten-email').focus()
           });
         }
