@@ -41,8 +41,8 @@
           // $scope.profileForm.$setUntouched();
         })
         .catch(function(resp) {
-          Notification.error('Unable to update the profile');
-          console.log("Unable to update the profile")
+          Notification.error('You can\'t temporarily update your profile');
+          console.log("Error: Update profil")
           console.log(resp);
           $('updatedName').focus()
         });
@@ -256,10 +256,12 @@
       passwordSimilarity.init()
     };
 
-    $(document).on('ready page:load', function() {
-      mainLayout();
-    });
-
+    var tid=setInterval(function(){
+      if("complete"===document.readyState){
+        clearInterval(tid);
+        mainLayout();
+      }
+    },100);
 
   }]);
 })();
