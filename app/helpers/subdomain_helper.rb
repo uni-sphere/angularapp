@@ -17,7 +17,7 @@ module SubdomainHelper
   end
   
   def delete_pointer(subdomain, id)
-    unless ['api.unisphere.eu', 'home.unisphere.eu', 'sandbox.unisphere.eu', 'admin.unisphere.eu'].any? { |url| subdomain == url }
+    unless ['api.unisphere.eu', 'home.unisphere.eu', 'sandbox.unisphere.eu', 'admin.unisphere.eu', 'www.unisphere.eu'].any? { |url| subdomain == url }
       scalingo_resources[:subdomain]["/#{id}"].delete() { |response, request, result, &block|
         if response.code != 204
           return nil

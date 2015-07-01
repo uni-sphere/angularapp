@@ -13,10 +13,10 @@ class OrganizationsController < ApplicationController
     if organization.save
       node = organization.nodes.new(name: params[:name], parent_id: 0)
       node.save
-      firstchild = organization.nodes.new(name: 'First Level', parent_id: node.id)
-      secondchild = organization.nodes.new(name: 'Second Level', parent_id: node.id)
-      firstchild.save
-      secondchild.save
+      firstchild = organization.nodes.create(name: 'First Level', parent_id: node.id)
+      organization.nodes.last.chapters.create(title: 'main', parent_id: 0)
+      secondchild = organization.nodes.create(name: 'Second Level', parent_id: node.id)
+      organization.nodes.last.chapters.create(title: 'main', parent_id: 0)
       create_pointer(organization.subdomain)
       Rollbar.info("Organization created", organization: organization.name)
       render json: { organization: organization, url: "http://#{organization.subdomain}.unisphere.eu" }.to_json, status: 201, location: organization

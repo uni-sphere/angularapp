@@ -24,7 +24,6 @@ namespace :fill do
     # Create a user
     User.create!(email: "gab@mul.fr", name: "Gabriel", uid: "foo", provider: 'email', password: 'gabgabgab', organization_id: 1, help: false)
     User.create!(email: "teacher@university.com", name: "Teacher", uid: "foo", provider: 'email', password: 'gabgabgab', organization_id: 1, help: false)
-    # User.new({:email => "gab@mul.fr", :password => "gabgabgab", :password_confirmation => "gabgabgab", :organization_id => 1, :confirmed_at => Time.now}).save(:validate => false)
     # create first nodes
     organization.nodes.create(name: "Sandbox", parent_id: 0)
     # create nodes
