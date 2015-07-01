@@ -6,6 +6,7 @@ angular
 
     /*==========  Location variable  ==========*/
 
+    $scope.help = true
     if(window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu'){
       $scope.sandbox = true
       $scope.admin = true

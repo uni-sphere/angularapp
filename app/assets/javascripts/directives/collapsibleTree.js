@@ -10,7 +10,8 @@
           admin: '=',
           sidebarMinified: '=',
           home: '=',
-          sandbox: '='
+          sandbox: '=',
+          help: '='
         },
         link: function(scope, iElement, iAttrs) {
 
@@ -19,6 +20,14 @@
           // First we get the nodes
           Restangular.one('nodes').get().then(function (nodes) {
             scope.nodes = nodes.plain();
+
+            // If we are at the first co, we select a node.
+            if(scope.help){
+              scope.nodeEnd = [scope.nodes[scope.nodes.length - 1].num,scope.nodes[scope.nodes.length - 1].name]
+              scope.activeNodes = [[scope.nodes[scope.nodes.length - 1].num,scope.nodes[scope.nodes.length - 1].name],[scope.nodes[0].num,scope.nodes[0].name]]
+              console.log(scope.nodeEnd)
+            }
+
             scope.$watch('admin',function(newVals, oldVals){
               if(newVals != undefined){
                 render(makeNested(scope.nodes), iElement);
