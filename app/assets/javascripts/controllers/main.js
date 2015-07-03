@@ -7,14 +7,35 @@ angular
     /*==========  Location variable  ==========*/
 
     if(window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu'){
+      console.log("sandbox")
       $scope.sandbox = true
       $scope.admin = true
       $('#first-connection').fadeIn(2000)
+    } else if(window.location.host == 'www.unisphere.eu' || window.location.host == 'home.dev.unisphere.eu' || window.location.pathname == '/home'){
+      console.log("home")
+      $scope.home = true
     } else{
+      console.log("Normal app")
+
+      // We get the actual uni
+      Restangular.one('organization').get().then(function (university) {
+        $scope.university = university.organization.name;
+        $scope.universityId = university.organization.id;
+        console.log("Ok: Uni name")
+      }, function(d){
+        console.log("Error: Get uni name");
+        console.log(d)
+        Notification.error("Can you please refresh the page, there was an error");
+      });
+
+      // We authentificated the user
+      console.log("Validation attempt: main.js")
       $auth.validateUser().then(function(){
+        console.log("Ok: admin co")
         $scope.admin = true;
         $scope.getBasicInfo()
       }, function(){
+        console.log("Ok: Student co")
         $scope.admin = false
       })
     }
@@ -22,16 +43,6 @@ angular
     if(window.location.host == 'localhost:3000'){
       $scope.local = true
     }
-
-    checkLocation = function(){
-      var host = window.location.host;
-      var pathname = window.location.pathname
-      if(pathname == '/home' || host == 'www.unisphere.eu' || host == 'home.dev.unisphere.eu'){
-        $scope.home = true
-      } else{
-        $scope.home = false;
-      }
-    }();
 
     /*==========  Admin deco  ==========*/
 
@@ -81,17 +92,6 @@ angular
       console.log($translate.use());
     }
 
-    /*==========  Get organization  ==========*/
-
-    Restangular.one('organization').get().then(function (university) {
-      $scope.university = university.organization.name;
-      $scope.universityId = university.organization.id;
-    }, function(d){
-      console.log("Error: Get uni name");
-      console.log(d)
-      Notification.error("Can you please refresh the page, there was an error");
-    });
-
     /*==========  Spinner  ==========*/
 
     $scope.activateSpinner = function(){
@@ -102,32 +102,36 @@ angular
     $scope.desactivateSpinner = function(){
       usSpinnerService.stop('spinner-1');
       $scope.greyBackground = false
-      $scope.$apply()
     }
-
 
     /*==========  Function  ==========*/
 
     $scope.getBasicInfo = function(){
+
       // We get the user email and name to display them
       Restangular.one('user').get().then(function (d) {
-        $scope.accountEmail = d.user.email
-        $scope.accountName = d.user.name
-        $scope.help = d.user.help
+        $scope.accountEmail = d.email
+        $scope.accountName = d.name
+        $scope.help = d.help
+
+        console.log("Ok: User info")
         if($scope.help) {
           $('#first-connection').fadeIn(2000)
+
+
         }
 
         // We get the list of user in the organization
         Restangular.one('users').get().then(function (d) {
           $scope.listUser = d.users
+          console.log("Ok: Organization info")
         }, function(d){
-          console.log("Impossible to get the user infos");
+          console.log("Error: Organization info");
           console.log(d)
         });
 
       }, function(d){
-        console.log("Impossible to get the user infos");
+        console.log("Error: User info");
         console.log(d)
       });
     }

@@ -47,17 +47,14 @@
               name: node.name
             });
             google.maps.event.addListener(marker, 'click', function() {
+              console.log("Ok: Marker clicked")
 
               if(scope.selectedMarkerPerso){
                 scope.selectedMarkerPerso.setAnimation(null);
               }
-
               scope.selectedMarkerPerso = marker;
-              // marker.setAnimation(google.maps.Animation.BOUNCE);
-
               map.setCenter(marker.getPosition());
               zoomMap(9);
-
 
               scope.place = marker
               scope.showExistingSchool = "http://" + marker.subdomain + ".unisphere.eu";
@@ -83,7 +80,6 @@
         scope.placeChanged = function() {
           scope.place = this.getPlace();
           scope.showExistingSchool = findPlace(this.getPlace());
-          console.log(scope.showExistingSchool)
           scope.showNewSchoolUrl = false;
           scope.subdomainCreated = false;
           scope.signupShow = false;
@@ -122,14 +118,13 @@
 
             // Gestion of popup
             scope.showNewSchool = true;
-            // console.log(scope.place);
 
             // We add a marker on the map
             scope.selectedMarker = new google.maps.Marker({
               position: this.getPlace().geometry.location,
               map: map
             });
-            console.log("school doesnt use unisphere")
+            console.log("school does not use unisphere")
           }
 
         }
@@ -167,113 +162,71 @@
               Notification.error("You misstyped your email address")
             } else if(scope.homeSignup.$error.minlength){
               console.log("Error: signup | Password not long enough");
-              Notification.error("Your password needs to have at least 8 characters");
+              Notification.error("Your password needs to have at least 6 characters");
               scope.adminPassword = "";
+              $('#homeSignupPassword').focus()
             } else{
-              console.log("ERROR: unknown");
+              console.log("Error: unknown");
               Notification.error("We can't temporarily create you an account");
             }
           } else{
 
             scope.activateSpinner()
 
-            var newUni = {
-              name: scope.place.name,
-              latitude: scope.place.geometry.location.A,
-              longitude: scope.place.geometry.location.F,
-              place_id: scope.place.place_id,
-              website: scope.place.website
-            }
+            /*==========  Signup  ==========*/
+            var credentials = {
+              name: scope.adminName,
+              email: scope.adminEmail,
+              password: scope.adminPassword,
+              password_confirmation: scope.adminPassword
+            };
 
-            Restangular.all('organizations').post(newUni).then(function(d) {
+            $auth.submitRegistration(credentials).then(function(user) {
+              console.log("Ok: User signup");
+              var newUni = {
+                name: scope.place.name,
+                latitude: scope.place.geometry.location.A,
+                longitude: scope.place.geometry.location.F,
+                place_id: scope.place.place_id,
+                website: scope.place.website,
+                user_id: user.data.data.id
+              }
+              afterSignup(newUni, user.data.data.id)
 
-              var newOrga = d;
-              console.log("organization created");
+            })
+            .catch(function(d) {
+              scope.desactivateSpinner()
+              if(d.status == 403){
+                console.log("Warning: Sign up | email account is already bound to another organization");
+                console.log(d)
 
-              // We push the new uni to our local storage
-              scope.universities.push(d.organization);
+                Restangular.one('user').get().then(function (d) {
+                  console.log(d)
+                  user_id = d.id
+                  console.log("Ok: User info")
 
-              // Sign up
-              var credentials = {
-                name: scope.adminName,
-                email: scope.adminEmail,
-                password: scope.adminPassword,
-                password_confirmation: scope.adminPassword,
-                organization_id: newOrga.organization.id
-              };
+                  var newUni = {
+                    name: scope.place.name,
+                    latitude: scope.place.geometry.location.A,
+                    longitude: scope.place.geometry.location.F,
+                    place_id: scope.place.place_id,
+                    website: scope.place.website,
+                    user_id: user_id
+                  }
+                  afterSignup(newUni, user_id)
 
-              $auth.submitRegistration(credentials)
-              .then(function(resp) {
-                console.log("User signup");
-
-                // log in after sign in
-                var login = {
-                  email: scope.adminEmail,
-                  password: scope.adminPassword
-                };
-
-                $auth.submitLogin(login)
-                .then(function(d) {
-                  console.log("User login");
-
-                  // Send email
-                  Restangular.one('user/welcome').get({id: d.id, organization_id: newOrga.organization.id}).then(function () {
-                    scope.desactivateSpinner()
-
-                    console.log("email sent");
-                    scope.signupShow = false;
-                    Notification.success(scope.place.name + " is now using unisphere! We sent you a mail at " + scope.adminEmail)
-
-                    // We remove the previous marker if there was one
-                    if(scope.selectedMarker){
-                      scope.selectedMarker.setMap(null);
-                    }
-
-                    // We add the new marker on the map
-                    addMarkers([newOrga.organization])
-
-                  }, function(d){
-                    scope.desactivateSpinner()
-                    console.log("Error: Signup | Impossible to send a mail");
-                    console.log(d)
-                  });
-                })
-                .catch(function(d) {
-                  scope.desactivateSpinner()
-
-                  console.log(d);
-                  console.log("Error: Signup");
-                  Notification.error("We can't temporarily create you an account")
+                }, function(d){
+                  console.log("Error: User info");
+                  console.log(d)
                 });
 
-              })
-              .catch(function(d) {
+
+              } else{
                 console.log(d);
-                if(d.status == 403){
-                  console.log("Error: Sign up | email account is already bound to another organization");
-                  Notification.error("Currently we only allow a single organization per email addresses");
-                } else{
-                  console.log("Error: Sign up")
-                  Notification.error("We can't temporarily create you an account");
-                }
-
-                // We delete the organization we just created
-                Restangular.all('organizations/' + newOrga.organization.id).remove().then(function() {
-                  console.log("Ok: organization deleted");
-                  console.log(d);
-                }, function(d) {
-                  console.log("Error: Impossible to delete the organization");
-                  console.log(d);
-                });
-
-              });
-
-
-            }, function(d){
-              console.log("Error: Signup | Impossible to create a subdomain for " + scope.place.name + ", try again");
-              console.log(d);
-              Notification.error("We can't temporarily create you an account");
-              scope.adminPassword = "";
+                scope.desactivateSpinner()
+                console.log("Error: Sign up")
+                Notification.error("We can't temporarily create you an account");
+              }
             });
 
           }
@@ -307,6 +260,73 @@
               zoomMap(zoom)
             },1000);
           }
+        }
+
+        function afterSignup(newUni,user_id){
+          /*==========  Creation of the organization  ==========*/
+          Restangular.all('organizations').post(newUni).then(function(d) {
+
+            var newOrga = d;
+            console.log("Ok: Organization created");
+
+            // We push the new uni to our local storage
+            scope.universities.push(d.organization);
+
+            /*==========  Send Email  ==========*/
+            Restangular.one('user/welcome').get({id: user_id, organization_id: newOrga.organization.id}).then(function () {
+              console.log("Ok: Email sent");
+            }, function(d){
+              console.log("Error: Signup | email");
+              console.log(d);
+            });
+
+            /*==========  Sign-in the user  ==========*/
+
+            var credentials = {
+              email: scope.adminEmail,
+              password: scope.adminPassword
+            };
+
+            $auth.submitLogin(credentials)
+            .then(function(resp) {
+              console.log("Ok: Login")
+            })
+            .catch(function(resp) {
+              console.log(resp);
+              console.log("Error: Admin co");
+            });
+
+            /*==========  Return to normal state  ==========*/
+            scope.desactivateSpinner()
+            scope.signupShow = false;
+            Notification.success(scope.place.name + " is now using unisphere! We sent you a mail at " + scope.adminEmail)
+
+            // We remove the previous marker if there was one
+            if(scope.selectedMarker){
+              scope.selectedMarker.setMap(null);
+            }
+
+            // We add the new marker on the map
+            addMarkers([newOrga.organization])
+
+
+          }, function(d){
+            scope.desactivateSpinner()
+            console.log("Error: Signup | Organization creation");
+            console.log(d);
+            Notification.error("We can't temporarily create you an account");
+            scope.adminPassword = "";
+            $('#homeSignupPassword').focus()
+
+            // We delete the user we just created
+            Restangular.one('users').remove({id: user_id}).then(function() {
+              console.log("Ok: User deleted");
+            }, function(d) {
+              console.log("Error: Impossible to delete the organization");
+              console.log(d);
+            });
+
+          });
         }
 
       }

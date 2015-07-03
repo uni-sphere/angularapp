@@ -62,6 +62,7 @@
         templateUrl: 'dashboard/one.html',
         resolve: {
           auth: function($auth){
+            console.log("dashboard")
             return $auth.validateUser();
           }
         }
@@ -72,6 +73,7 @@
         templateUrl: 'account/account.html',
         resolve: {
           auth: function($auth){
+            console.log("account")
             return $auth.validateUser();
           }
         }
@@ -116,7 +118,9 @@
     });
 
     // Restangular
-    RestangularProvider.setBaseUrl(getEnvironment());
+    RestangularProvider
+    .setBaseUrl(getEnvironment());
+    .setDefaultHeaders({ 'Authorization': 'Token token=ce76e09ea8191a3b5410dbf033cf23ad' });
 
     $translateProvider
     .useSanitizeValueStrategy(null)
@@ -204,7 +208,6 @@
     .fallbackLanguage('en');
 
   });
-
 
   angular.module('mainApp.filters', []);
   angular.module('mainApp.controllers', []);

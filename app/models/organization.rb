@@ -3,13 +3,14 @@ class Organization < ActiveRecord::Base
   before_save :format_subdomain
   
   has_many :nodes, dependent: :delete_all
-  has_many :users
+  has_many :organizationsuserslinks
+  has_many :users, through: :organizationsuserslinks
   has_many :awsdocuments
   has_many :connexions
   
   validates :name, presence: true
   validates :subdomain, uniqueness: true
-  validates_exclusion_of :subdomain, :in => ["api", "www", "sandbox"]
+  validates_exclusion_of :subdomain, :in => ["api", "www", "sandbox", "admin"]
   
   def format_subdomain
     if self.website.include? 'www'

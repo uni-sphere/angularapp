@@ -41,35 +41,35 @@
         scope.adminCoAttempt = function(){
 
           Restangular.one('organization/is_signed_up').get({email: scope.admincoEmail}).then(function (signup) {
-              var credentials = {
-                email: scope.admincoEmail,
-                password: scope.admincoPassword
-              };
+            console.log("Ok: Email exist in the organization")
+            var credentials = {
+              email: scope.admincoEmail,
+              password: scope.admincoPassword
+            };
 
-              $auth.submitLogin(credentials)
-              .then(function(resp) {
-                scope.admin = true;
-                scope.getBasicInfo()
-                // console.log(resp);
-                console.log("You have been authentificated")
-              })
-              .catch(function(resp) {
-                console.log(resp);
-                if(resp.reason == "unauthorized"){
-                  console.log("Error: Admin co | misstyped your password");
-                  Notification.error("You misstyped your password");
-                  $('#admin-co-password').focus()
-                } else{
-                  console.log("Error: Admin co");
-                  Notification.error("We can't temporarily login you");
-                }
-                scope.admincoPassword = "";
-              });
+            $auth.submitLogin(credentials)
+            .then(function(resp) {
+              console.log("Ok: Login")
+              scope.admin = true;
+              scope.getBasicInfo()
+            })
+            .catch(function(resp) {
+              console.log(resp);
+              if(resp.reason == "unauthorized"){
+                console.log("Error: Admin co | misstyped your password");
+                Notification.error("You misstyped your password");
+                $('#admin-co-password').focus()
+              } else{
+                console.log("Error: Admin co");
+                Notification.error("We can't temporarily login you");
+              }
+              scope.admincoPassword = "";
+            });
 
           }, function(d){
             console.log("Error: Admin co | you misstyped your email");
             console.log(d);
-            scope.displayError("You misstyped your email");
+            Notification.error("You misstyped your email")
             scope.admincoPassword = "";
             $('#admin-co-email').focus()
           });

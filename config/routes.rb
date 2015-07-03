@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     post 'users/invite', to: 'users#invite'
     get 'user', to: 'users#show'
     get 'users', to: 'users#index'
+    delete 'users', to: 'users#destroy'
     get 'connected', to: 'connexions#index'
 
   end

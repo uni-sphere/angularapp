@@ -3,6 +3,9 @@ Rails.application.configure do
   
   config.secret_key_base = ENV["SECRET_KEY_BASE"]
   
+  ENV["TOKEN_BASED_AUTH"] = 'ce76e09ea8191a3b5410dbf033cf23ad'
+  ENV["SCALINGO_TOKEN_BASED_AUTH"] = 'txUZBy-dulhYhnnbn-8wUcEFrAbEePlSt71IcmEin5k'
+  
   config.sass.preferred_syntax = :scss
   config.sass.line_comments = true
   config.sass.cache = false

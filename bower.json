@@ -23,7 +23,7 @@
     "restangular": "~1.5.1",
     "underscore": "~1.8.3",
     "angular-spinner": "~0.6.1",
-    "angular-ui-notification": "~0.0.11",
+    "angular-ui-notification": "~0.0.11"
   },
   "resolutions": {
     "angular": "^1.2.0"

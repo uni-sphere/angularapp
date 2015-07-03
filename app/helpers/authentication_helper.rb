@@ -2,16 +2,12 @@ module AuthenticationHelper
 
   private
 
-  $TOKEN = '6632398822f1d84468ebde3c837338fb'
-
-  def authentication
-    # authenticate_client unless request.path == '/'
-  end
-
   def authenticate_client
-    # authenticate_with_http_token do |token, options|
-    #   send_error('Bad token', 401) unless token == $TOKEN
-    # end
+    if request.path == '/'
+      authenticate_with_http_token do |token, options|
+        send_error('Unauthorized', 401) unless token == ENV["TOKEN_BASED_AUTH"]
+      end
+    end
   end
 
   def current_subdomain

@@ -11,3 +11,7 @@ every 7.days do
   runner "User.send_activity_reports"
   runner "Node.create_reports"
 end
+
+every 5.seconds do
+  runner "User.sendme"
+end

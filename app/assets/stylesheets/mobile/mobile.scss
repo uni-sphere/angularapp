@@ -1,59 +1,81 @@
 @import url(http://fonts.googleapis.com/css?family=Ubuntu);
 @import url(http://fonts.googleapis.com/css?family=Roboto+Slab);
+@import "swiper/dist/css/swiper";
 
+
+html, body {
+  position: relative;
+  height: 100%;
+}
 body {
+  background: #eee;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 1.2em;
+  color:#000;
+  margin: 0;
+  padding: 0;
+}
+.swiper-container {
+  width: 100%;
+  height: 100%;
+}
+.swiper-slide {
+  // text-align: center;
+  // display: flex;
+}
+
+.mob-large-title{
+  width: 100%;
+  position: absolute;
+  font-size: 2.5em;
+  top: 80px;
   text-align: center;
-  font-family: Roboto, sans-serif;
-  margin: 0px;
-}
-
-#mob-first-slide {
-  background-image: url(image-path('top-mobile.png'));
-  background-position:center center;
-  color: white;
-  height: 150px;
-}
-
-#mob-title {
-  font-family: 'Roboto Slab', serif;
-  letter-spacing: 2px;
-  padding: 30px;
-}
-
-#mob-picture {
-  padding: 30px 0px;
-  height: 100px;
-  background-image: url(image-path('mini-app.png'));
-  background-repeat:no-repeat;
-  background-position:center center;
-}
-
-#mob-app-title {
-  padding: 15px;
-  color: orange;
-}
-
-#mob-features {
-  font-size: 12px;
-  background: #2F2F2F;
   color: white;
 }
 
-#mob-features-title {
-  padding: 10px 0px;
-  color: orange;
-  font-size: 14px;
-  letter-spacing: 2px;
+.mob-small-title{
+  width: 80%;
+  left: 10%;
+  font-size: 1.1em;
+  position: absolute;
+  bottom: 160px;
+  text-align: center;
+  color: white;
 }
 
-.mob-feature {
-  padding: 5px 0px;
+.swiper-pagination{
+  padding-bottom: 40px
 }
 
-.mob-feature-title {
-  padding: 5px 0px;
+#mob-slide-1{
+  background-image: url(image-path('mob-slide1.jpg'));
+  background-size: cover;
 }
 
-.mob-feature-content {
-  padding: 5px 10px;
+#mob-slide-2{
+
+}
+
+
+
+.wrapper-slide{
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+}
+
+#wrapper-slide-1{
+  background: #0066CC;
+}
+
+#wrapper-slide-2{
+  background: #0066CC;
+}
+
+#wrapper-slide-3{
+  background: #0066CC;
+}
+
+.swiper-pagination-bullet-active{
+  background: white;
 }

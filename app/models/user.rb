@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   require 'bcrypt'
 
   has_many :chapters
+  has_many :organizationsuserslinks
+  has_many :organizations, through: :organizationsuserslinks
 
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
@@ -21,4 +23,7 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.sendme
+    logger.info '+30s'
+  end
 end

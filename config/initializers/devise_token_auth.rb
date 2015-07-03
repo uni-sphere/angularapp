@@ -10,7 +10,7 @@ DeviseTokenAuth.setup do |config|
   # By default, users will need to re-authenticate after 2 weeks. This setting
   # determines how long tokens will remain valid after they are issued.
   config.token_lifespan = 2.years
-
+  
   # Sometimes it's necessary to make several requests to the API at the same
   # time. In this case, each request in the batch will need to share the same
   # auth token. This setting determines how far apart the requests can be while
@@ -26,4 +26,5 @@ end
 Devise.setup do |config|
   config.secret_key = '47393c590e48d45cd3e71d856a02ccd09f836ed324df66761974a9421bc87d04f75bea4b155f4c106633009702cb2fa312c54512c86d9fb928143c6308e4864c'
   config.mailer_sender = "hello@unisphere.eu"
+  config.password_length = 6..20
 end

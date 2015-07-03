@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   
   def show
     if current_user
-      render json: {user: {name: current_user.name, email: current_user.email, help: current_user.help}}.to_json, success: 200
+      render json: current_user, success: 200
     else
       send_error('Unauthorized', 401)
     end
@@ -19,6 +19,7 @@ class UsersController < ApplicationController
   def invite
     if params[:email]
       UserMailer.invite_user_email(params[:email], current_organization, params[:password]).deliver
+      Rollbar.info("User invited", email: params[:email], organization: current_organization)
       render json: {success: true}.to_json, success: 200
     else
       send_error('emails not received', 400)
@@ -33,6 +34,11 @@ class UsersController < ApplicationController
     else
       send_error('email not received', 400)
     end
+  end
+  
+  def destroy
+    User.find(params[:id]).destroy
+    head 204
   end
 
 end

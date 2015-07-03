@@ -19,23 +19,17 @@
 
           // First we get the nodes
           Restangular.one('nodes').get().then(function (nodes) {
-            scope.nodes = nodes.plain();
-
-            // If we are at the first co, we select a node.
-            if(scope.help){
-              scope.nodeEnd = [scope.nodes[scope.nodes.length - 1].num,scope.nodes[scope.nodes.length - 1].name]
-              scope.activeNodes = [[scope.nodes[scope.nodes.length - 1].num,scope.nodes[scope.nodes.length - 1].name],[scope.nodes[0].num,scope.nodes[0].name]]
-            }
+            scope.flatNode = nodes.plain();
+            scope.nodes = makeNested(scope.flatNode)
 
             scope.$watch('admin',function(newVals, oldVals){
               if(newVals != undefined){
-                render(makeNested(scope.nodes), iElement);
+                console.log("Ok: Admin changed. Render tree")
+                render(scope.nodes, iElement);
               }
             });
 
-            window.onresize = function() {
-              render(makeNested(scope.nodes), iElement);
-            };
+
           }, function(d){
             Notification.error("We temporarily can't display the nodes")
             console.log("Error: Get nodes");
@@ -89,6 +83,16 @@
               scope.nodeEnd = false;
             }
           }
+
+          scope.$watch('help', function(newVals, oldVals){
+            if(scope.help){
+              console.log("Ok: First co cookies")
+              scope.nodeEnd = [scope.flatNode[1].num,scope.flatNode[1].name]
+              scope.activeNodes = [[scope.flatNode[0].num,scope.flatNode[0].name],[scope.flatNode[1].num,scope.flatNode[1].name]]
+              ipCookie('activeNodes', scope.activeNodes);
+              ipCookie('nodeEnd', scope.nodeEnd);
+            }
+          });
 
           /*==========  Periodical get  ==========*/
 
@@ -523,9 +527,6 @@
                 }
 
                 nodeSelected.children.push(a);
-                // console.log(nodeSelected)
-                // console.log(scope.root)
-                // console.log(nodeSelected.children)
                 update(nodeSelected);
 
 
@@ -573,6 +574,12 @@
           =======================================*/
 
           function render(branch, iElement){
+
+            window.onresize = function() {
+              console.log("Ok: Window resize. Render tree")
+              render(scope.nodes, iElement);
+            };
+
             svg.selectAll("*").remove();
 
             scope.i = 0;

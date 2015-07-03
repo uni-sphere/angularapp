@@ -5,7 +5,7 @@ class Node < ActiveRecord::Base
   has_many :chapters, dependent: :delete_all
   has_many :reports
   
-  validates :name, :organization_id, presence: true
+  validates :name, :parent_id, presence: true
   
   def self.create_reports
     self.each do |node|

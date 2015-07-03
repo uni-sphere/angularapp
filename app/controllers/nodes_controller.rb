@@ -9,13 +9,17 @@ class NodesController < ApplicationController
         parent.chapters.each do |chapter|
           chapter.update(node_id: node.id)
         end
+        render json: node, status: 201, location: node
       else
         chapter = node.chapters.new(title: 'main', parent_id: 0, user_id: current_user.id)
-        chapter.save
+        if chapter.save
+          render json: node, status: 201, location: node
+        else
+          render json: chapter.errors, status: 422
+        end
       end
-      render json: node, status: 201, location: node
     else
-      render json: node.errors, status: 422
+      render json: {node_error: node.errors, report_error: report.errors}, status: 422
     end
   end
   

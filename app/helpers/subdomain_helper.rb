@@ -1,18 +1,19 @@
 module SubdomainHelper
   
-  $AUTH_TOKEN = '3sNjYej4nv8JFcSyOKqSDpO5ReoZSY3gEx2CQEILCs8'
-  
   def scalingo_resources
     {
-      subdomain: RestClient::Resource.new("https://api.scalingo.com/v1/apps/angularapp/domains", user:'', password: $AUTH_TOKEN, content_type: :json, accept: :json)                       
+      subdomain: RestClient::Resource.new("https://api.scalingo.com/v1/apps/angularapp/domains", user:'', password: ENV["SCALINGO_TOKEN_BASED_AUTH"], content_type: :json, accept: :json)                       
     }
   end
 
   def create_pointer(newsubdomain)
     if Rails.env.production?
       scalingo_resources[:subdomain].post({domain: {name: "#{newsubdomain.to_s}.unisphere.eu" }}) { |response, request, result, &block|
-        send_error('Problem occured while creating subdomain', '500') if response.code != 201
+        response.code == 201 ? @res = true : nil
       }
+      return @res
+    else
+      return true
     end
   end
   

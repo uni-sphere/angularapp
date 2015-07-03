@@ -7,21 +7,34 @@ class OrganizationsController < ApplicationController
       send_error('You are not signed up', '403')
     end
   end
-
+  
   def create
+    user = User.find params[:user_id]
     organization = Organization.new(name: params[:name], latitude: params[:latitude], longitude: params[:longitude], place_id: params[:place_id], website: params[:website])
+    organization.nodes.build(name: params[:name], parent_id: 0)
+    organization.organizationsuserslinks.build(user_id: user.id)
     if organization.save
-      node = organization.nodes.new(name: params[:name], parent_id: 0)
-      node.save
+      node = organization.nodes.first
       firstchild = organization.nodes.create(name: 'First Level', parent_id: node.id)
-      organization.nodes.last.chapters.create(title: 'main', parent_id: 0)
+      firstchild.chapters.build(title: 'main', parent_id: 0)
       secondchild = organization.nodes.create(name: 'Second Level', parent_id: node.id)
-      organization.nodes.last.chapters.create(title: 'main', parent_id: 0)
-      create_pointer(organization.subdomain)
-      Rollbar.info("Organization created", organization: organization.name)
-      render json: { organization: organization, url: "http://#{organization.subdomain}.unisphere.eu" }.to_json, status: 201, location: organization
+      secondchild.chapters.build(title: 'main', parent_id: 0)
+      if firstchild.save and secondchild.save
+        if create_pointer(organization.subdomain)
+          Rollbar.info("Organization created", organization: organization.name)
+          render json: { organization: organization, url: "http://#{organization.subdomain}.unisphere.eu" }.to_json, status: 201, location: organization
+        else
+          firstchild.destroy
+          secondchild.destroy
+          node.destroy
+          organization.destroy
+          send_error('Subdomain creation problem', '500')
+        end
+      else
+        send_error('Problem occured', '500')
+      end
     else
-      send_error('Problem occured while organization creation', '500')
+      render json: organization.errors, status: 422
       Rollbar.error('Organization creation', name: organization.name)
     end
   end

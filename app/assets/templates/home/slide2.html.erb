@@ -51,7 +51,7 @@
   </div>
 
   <!-- Popup for new school -->
-  <div class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="showNewSchool" ng-class="{'school-ready-to-disappear': !showNewSchool, 'school-ready-to-appear': showNewSchool}">
+  <div class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="showNewSchool" ng-class="{'school-ready-to-disappear': !showNewSchool, 'school-ready-to-appear': showNewSchool}" novalidate>
     <div class="school-header">Subscribe {{place.name}} to Unisphere
     <span class="fa fa-times" ng-click="closePopupMap()"></span></div>
 
@@ -64,7 +64,7 @@
   </div>
 
   <!-- Signup -->
-  <form name="homeSignup" class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="signupShow" ng-class="{'school-ready-to-disappear': !signupShow, 'school-ready-to-appear': signupShow}">
+  <form name="homeSignup" class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="signupShow" ng-class="{'school-ready-to-disappear': !signupShow, 'school-ready-to-appear': signupShow}" novalidate>
     <div class="school-header">Account for {{place.name}}<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
 
     <div class="school-display">
