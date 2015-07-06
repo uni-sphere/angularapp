@@ -1,5 +1,22 @@
 module AuthenticationHelper
 
+  def user_nodes_email(id)
+    if Chapter.exists?(user_id: id)
+      chapters = Chapter.where(user_id: id)
+      ids = []
+      chapters.each do |chapter|
+        ids << chapter.node_id if Chapter.where(node_id: chapter.node_id).count > 1 || chapter.awsdocuments.count > 0
+      end
+      if Node.exists?(id: ids)
+        return Node.where(id: ids)
+      else
+        return {}
+      end
+    else
+      return {}
+    end
+  end
+  
   private
 
   def authenticate_client
@@ -74,7 +91,7 @@ module AuthenticationHelper
       return {}
     end
   end
-
+  
   def current_chapter
     params[:chapter_id] = params[:id] if request.url.split('?').first.include? 'chapter'
     if params[:chapter_id]

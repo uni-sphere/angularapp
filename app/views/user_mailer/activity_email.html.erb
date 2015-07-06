@@ -286,13 +286,13 @@ a:hover {
 								<%= @nodes_activity.each do |node| %>
 									<tr>
 										<td class="content-block">
-											<%= node.parent > node.name %>
+											<%= node['name'] %>
 										</td>
 										<td class="content-block bold">
-											<%= node.downloads %>
+											<%= node['downloads'] %>
 										</td>
 									</tr>
-								<%= end %>
+								<% end %>
 							</table>
 						</td>
 					</tr>

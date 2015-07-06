@@ -28,7 +28,7 @@ gem 'aws-sdk'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rest-client'
 gem 'rails-i18n'
-gem 'whenever', require: false
+# gem 'whenever', require: false
 gem 'bcrypt'
 gem 'omniauth'
 gem 'devise'
@@ -36,6 +36,8 @@ gem 'devise_token_auth'
 gem 'ng-rails-csrf'
 gem 'rollbar'
 gem 'geokit-rails'
+gem 'daemons'
+gem 'clockwork', require: false
 
 group :development, :test do
   gem 'rspec-rails'

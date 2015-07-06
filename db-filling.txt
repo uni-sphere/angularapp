@@ -49,6 +49,7 @@ d = r.created_at-21.days
 r.update(created_at: d)
 end
 ====
+bundle exec clockwork lib/clock.rb
 
 scalingo -a angularapp run 
 rake db:drop db:create db:migrate
