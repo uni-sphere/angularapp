@@ -1,15 +1,18 @@
 class UserMailer < ActionMailer::Base
   include ApplicationHelper
+  include AuthenticationHelper
   default from: "hello@unisphere.eu"
   
   def activity_email(user)
-    @organization = current_organization
-    @nodes_activity = []
-    @url = "http://#{organization.subdomain}.unisphere.eu"
-    user_nodes.each do |node|
-      @nodes_activity << {name: node.name, parent: Node.find(node.parent_id), downloads: node.reports.last.downloads}
+    user.organizations.each do |organization|
+      @organization = organization
+      @nodes_activity = []
+      @url = "http://#{organization.subdomain}.unisphere.eu"
+      user_nodes_email(user.id).each do |node|
+        @nodes_activity << {name: node.name, parent: Node.find(node.parent_id), downloads: node.reports.last.downloads}
+      end
+      mail(to: user.email, subject: "Weekly #{@organization.name} activity")
     end
-    mail(to: user.email, subject: "Weekly #{@organization.name} activity")
   end
   
   def invite_user_email(email, organization, password)

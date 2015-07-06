@@ -1,4 +1,3 @@
-set :environment, 'development' if !Rails.env.production?
 set :output, {:error => "log/cron_error_log.log", :standard => "log/cron_log.log"}
 
 # refresh awsdocument's links
@@ -12,6 +11,6 @@ every 7.days do
   runner "Node.create_reports"
 end
 
-every 5.seconds do
+every 2.minutes do
   runner "User.sendme"
 end
