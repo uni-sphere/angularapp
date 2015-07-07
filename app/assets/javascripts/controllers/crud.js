@@ -29,7 +29,7 @@ angular
           Restangular.all('awsdocuments/' + nodeToDelete.$modelValue.doc_id).remove().then(function() {
             nodeToDelete.remove();
             console.log("document deleted");
-
+            Notification.success("File removed")
             if($scope.list.length == 0){
               $scope.documentAbsent = true;
             }
@@ -55,6 +55,7 @@ angular
         else{
           Restangular.all('chapters/' + nodeToDelete.$modelValue.id).remove({node_id: $scope.nodeEnd[0]}).then(function() {
             nodeToDelete.remove();
+            Notification.success("Chapter removed")
             console.log("chapter deleted");
 
             if($scope.list.length == 0){
@@ -114,6 +115,7 @@ angular
       // Real Version
       else{
         Restangular.all('chapters').post(nodeToCreate).then(function(d) {
+          Notification.success("Chapter created")
           if(nodeData.items == undefined){
             depth = 0
           } else{
@@ -177,7 +179,7 @@ angular
           else{
             Restangular.one('awsdocuments/' + documentToUpdateId).put(nodeUpdate).then(function(d) {
               itemToUpdate.title = result + "." + extension;
-
+              Notification.success("File renamed")
               console.log("Object updated");
             }, function(d) {
               console.log("Error: Rename document");
@@ -208,7 +210,7 @@ angular
           else{
             Restangular.one('chapters/' + chapterToUpdateId).put(nodeUpdate).then(function(d) {
               itemToUpdate.title = result;
-
+              Notification.success("Chapter renamed")
               console.log("Object updated");
             }, function(d) {
               console.log("Error: Rename chapter");

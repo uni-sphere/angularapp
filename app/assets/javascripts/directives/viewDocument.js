@@ -162,6 +162,7 @@
             else{
               console.log(scope.nodeEnd[0])
               Restangular.one('activity').put({node_id: scope.nodeEnd[0]}).then(function(d) {
+                Notification.success("File saved")
                 console.log("Download registered");
               },function(d){
                 console.log(d)
@@ -358,6 +359,7 @@
                   }
 
                   scope.progressionUpload --;
+                  Notification.success("Chapter created")
                   console.log("OK chapter created:" + folder.name);
 
                   // If there is no files to upload. We put dirUploaded to true
@@ -369,7 +371,7 @@
 
 
                 }, function(d) {
-                  Notification.error("We didn't manage to create the chapter: " + folder.name)
+                  Notification.error("Chapter creation problem")
                   console.log("Error: Failed to create chapter:" + folder.name);
                 });
               }
@@ -442,7 +444,7 @@
                     }
 
                   }, function(d) {
-                    Notification.error("We didn't manage to upload the document: " + file.name)
+                    Notification.error("File upload error")
                     console.log("Error: Upload document failed :" +  file.name);
                   });
                 }
