@@ -35,7 +35,7 @@
         }
 
         scope.signupRequest = function(){
-          Notification.success("This function is not yet available. Ask one of your colleage to invite you!");
+          Notification.info("This function is not yet available. Ask one of your colleage to invite you!");
         }
 
         scope.adminCoAttempt = function(){
@@ -57,11 +57,11 @@
               console.log(resp);
               if(resp.reason == "unauthorized"){
                 console.log("Error: Admin co | misstyped your password");
-                Notification.error("You misstyped your password");
+                Notification.error("Wrong password");
                 $('#admin-co-password').focus()
               } else{
                 console.log("Error: Admin co");
-                Notification.error("We can't temporarily login you");
+                Notification.error("Impossible to log in");
               }
               scope.admincoPassword = "";
             });
@@ -69,7 +69,7 @@
           }, function(d){
             console.log("Error: Admin co | you misstyped your email");
             console.log(d);
-            Notification.error("You misstyped your email")
+            Notification.error("Error in email")
             scope.admincoPassword = "";
             $('#admin-co-email').focus()
           });

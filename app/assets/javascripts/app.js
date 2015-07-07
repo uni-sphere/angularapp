@@ -19,7 +19,7 @@
     'ui.router',
     'ngMap',
     'angularSpinner',
-    'ui-notification',
+    'ui-notification'
   ])
   .config(function (
     $stateProvider,
@@ -119,7 +119,7 @@
 
     // Restangular
     RestangularProvider
-    .setBaseUrl(getEnvironment());
+    .setBaseUrl(getEnvironment())
     .setDefaultHeaders({ 'Authorization': 'Token token=ce76e09ea8191a3b5410dbf033cf23ad' });
 
     $translateProvider

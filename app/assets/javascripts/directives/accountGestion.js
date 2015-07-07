@@ -32,18 +32,18 @@
             $auth.requestPasswordReset(credentials).then(function(resp) {
               console.log("Ok: Password reset");
               scope.accountForgotten = false;
-              Notification.success("Your password has been reset. We sent you an email.")
+              Notification.success("Password reseted - we sent you an email")
             })
             .catch(function(d) {
               console.log("Error: Password reset");
               console.log(d);
-              Notification.success("We can't temporarily reset your password")
+              Notification.error("Impossible to reset password")
               $('#account-forgotten-email').focus()
             });
           }, function(d){
             console.log("Error: Password reset | This email doesn't exist");
             console.log(d);
-            Notification.success("You misstyped your email")
+            Notification.error("Error in email")
             $('#account-forgotten-email').focus()
           });
         }

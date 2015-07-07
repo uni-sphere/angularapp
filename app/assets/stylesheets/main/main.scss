@@ -13,6 +13,9 @@ input:-webkit-autofill:focus {
 .ui-notification{
   right: calc(50% - 250px) !important;
   width: 500px !important;
+  font-family: Roboto, sans-serif;
+  text-align: center;
+  padding: 0px 30px;
 }
 
 html, body, #application-container{

@@ -38,7 +38,7 @@
                 }, function(d){
                   console.log("Error: Get document");
                   console.log(d)
-                  Notification.error("We temporarly can't display the documents")
+                  Notification.error("We temporarly can not display the documents")
                 });
               }
             }
@@ -157,7 +157,7 @@
           // We save the number of download
           scope.downloadItem = function(scope){
             if(scope.home || scope.sandbox){
-              Notification.error("This is just a test version. You can't download files")
+              Notification.info("It is a trial version")
             }
             else{
               console.log(scope.nodeEnd[0])

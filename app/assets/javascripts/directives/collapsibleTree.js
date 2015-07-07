@@ -28,10 +28,8 @@
                 render(scope.nodes, iElement);
               }
             });
-
-
           }, function(d){
-            Notification.error("We temporarily can't display the nodes")
+            Notification.error("Can not display your tree")
             console.log("Error: Get nodes");
             console.log(d)
           });
@@ -455,6 +453,7 @@
                 var nodeToDelete = _.where(nodeSelected.parent.children, {id: nodeSelected.id});
                 if (nodeToDelete){
                   nodeSelected.parent.children = _.without(nodeSelected.parent.children, nodeToDelete[0]);
+                  Notification.warning("Node removed")
                 }
 
                 // We check if the node end was in the node deleted.
@@ -487,7 +486,7 @@
               }, function(d) {
                 console.log(d);
                 console.log("Error: Delete node");
-               Notification.error('You can\'t temporarily delete a node');
+               Notification.error('You can not delete a node');
               });
             }
 
@@ -518,7 +517,7 @@
             // Normal app
             else{
               Restangular.all('nodes').post(newBranch).then(function(d) {
-
+                Notification.success("Node created")
                 console.log("Object saved OK");
                 var a = {name: "new", num: d.id}
 
@@ -559,11 +558,12 @@
                 Restangular.one('nodes/'+ d.num).put(nodeUpdate).then(function(d) {
                   nodeSelected.name = result;
                   update(nodeSelected);
+                  Notification.success("Node renamed")
                   console.log("Object updated");
                 }, function(d) {
                   console.log("Error: Rename node");
                   console.log(d);
-                  Notification.error("We can't temporarily rename this node")
+                  Notification.error("Node renaming error")
                 });
               }
             }

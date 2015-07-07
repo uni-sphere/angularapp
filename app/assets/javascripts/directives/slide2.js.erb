@@ -73,7 +73,7 @@
               zoomMap(9);
             });
           } else {
-            Notification.error("Your browser doesn't support geolocation")
+            Notification.error("Your browser does not support geolocation")
           }
         }
 
@@ -159,7 +159,7 @@
           if(scope.homeSignup.$invalid){
             if(scope.homeSignup.$error.email){
               console.log("Error: signup | email invalid");
-              Notification.error("You misstyped your email address")
+              Notification.error("Invalid email")
             } else if(scope.homeSignup.$error.minlength){
               console.log("Error: signup | Password not long enough");
               Notification.error("Your password needs to have at least 6 characters");
@@ -167,7 +167,7 @@
               $('#homeSignupPassword').focus()
             } else{
               console.log("Error: unknown");
-              Notification.error("We can't temporarily create you an account");
+              Notification.error("Problem at account creation");
             }
           } else{
 
@@ -225,7 +225,7 @@
                 console.log(d);
                 scope.desactivateSpinner()
                 console.log("Error: Sign up")
-                Notification.error("We can't temporarily create you an account");
+                Notification.error("We can't temporarily create your account");
               }
             });
 
@@ -299,7 +299,7 @@
             /*==========  Return to normal state  ==========*/
             scope.desactivateSpinner()
             scope.signupShow = false;
-            Notification.success(scope.place.name + " is now using unisphere! We sent you a mail at " + scope.adminEmail)
+            Notification.success(scope.place.name + " is now using unisphere! We sent am email at " + scope.adminEmail)
 
             // We remove the previous marker if there was one
             if(scope.selectedMarker){
