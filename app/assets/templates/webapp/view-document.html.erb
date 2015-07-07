@@ -12,8 +12,6 @@
   <script type="text/ng-template" id="items_renderer.html">
     <div ui-tree-handle ng-class="{isdocument: item.document, 'collapsed': collapsed && this.$modelValue.items.length != 0, 'isNew' : this.$modelValue.title == 'new chapter', chapterSelected : this.$modelValue.activeItem, parentChapterSelected : this.$parentNodeScope.$modelValue.activeItem, depth2 : this.$modelValue.depth == 1 && !this.$modelValue.document, depth3 : this.$modelValue.depth == 2 && !this.$modelValue.document, borderBottom: item.document && item.$$nextSibling != null}">
 
-      <!-- <i ng-show="item.document" nodrag class="fa fa-minus caret"></i> -->
-
       <a class="btn-collapse" nodrag ng-if="!item.document" ng-click="toggleItems(this)" ng-controller="FoldCtrl" ng-init="collapseItems(this)"><span ng-class="{'fa fa-angle-right': collapsed && this.$modelValue.items.length != 0, 'fa fa-angle-down': !collapsed && this.$modelValue.items.length != 0}"></span></a>
 
       <div ng-init="printChapter(this)" class="chapter-number">{{item.chapter}}</div>
@@ -42,6 +40,20 @@
     </ol>
   </script>
 
+  <script type="text/ng-template" id="specific_renderer.html">
+    <div ui-tree-handle ng-click="selectDrop(this)" ng-if="!item.document">
+
+      <div ng-init="printChapter(this)" class="chapter-number" >{{item.chapter}}</div>
+
+      <div class="item-name">{{item.title}}</div>
+
+    </div>
+
+    <ol ui-tree-nodes="options" ng-model="item.items" ng-init="initCounter()">
+      <li ng-repeat="item in item.items" ui-tree-node ng-include="'specific_renderer.html'"  ng-init="initI()" ng-if="!item.document"></li>
+    </ol>
+  </script>
+
   <div id="document-tree" ng-class="{'no-docs' : documentAbsent}">
 
     <div id="document-absent-title" ng-show="documentAbsent && admin">{{ 'NEW_SUBJECT' | translate }}</div>
@@ -50,17 +62,13 @@
 
 
     <div id="button-row" ng-show="admin">
-      <button class="submit-button"  ng-multiple="true" ng-file-select ng-model="firstFiles" analytics-on="click" analytics-event="upload" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>" >{{ 'UPLOAD' | translate }} </button>
+      <button class="submit-button dual-submit"  ng-multiple="true" ng-file-select ng-model="firstFiles" analytics-on="click" analytics-event="upload" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>" >{{ 'UPLOAD' | translate }} </button>
 
-      <!-- <div class="bubble bubble-file" write="Upload files">s</div> -->
-
-      <!-- <div class="bubble bubble-chapter" write="Create chapters"></div> -->
-
-      <button ng-controller="CrudCtrl" class="submit-button"  ng-click="newSubItem()" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" >{{ 'CHAPTER' | translate }}</button>
+      <button ng-controller="CrudCtrl" class="submit-button dual-submit"  ng-click="newSubItem()" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" >{{ 'CHAPTER' | translate }}</button>
     </div>
 
     <div id="ui-tree-container" ng-if="!documentAbsent">
-      <div ui-tree="options" data-drag-enabled="false">
+      <div ui-tree="options" data-drag-enabled="false"  id="tree-root">
         <ol ui-tree-nodes ng-model="list" >
           <li ng-repeat="item in list" ui-tree-node ng-include="'items_renderer.html'"></li>
         </ol>
@@ -106,5 +114,20 @@
 
     </form>
   <div class="account-gestion-bg"></div>
+</div>
+
+<div id="fileDroppedBackground"></div>
+<div id="fileDropped">
+  <div class="popup-header">Import file</div>
+  <div class="popup-body">
+    <div id="file-dropped-position">Where do you want to drop your object ?</div>
+    <div id="root-object" ng-click="rootSelected()">0. Root</div>
+    <div id="small-ui-tree" ui-tree="options" data-drag-enabled="false">
+      <ol ui-tree-nodes ng-model="list" >
+        <li ng-repeat="item in list" ui-tree-node ng-include="'specific_renderer.html'"></li>
+      </ol>
+    </div>
+    <button class="submit-button default-submit" ng-click="cancelDrop()">Cancel</button>
+  </div>
 </div>
 

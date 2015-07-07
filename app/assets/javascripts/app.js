@@ -126,7 +126,7 @@
     .useSanitizeValueStrategy(null)
     .translations('en', {
       HELP: 'Help',
-      DROP: 'Drop a file',
+      DROP: 'Drop zone',
       ERROR: 'Error',
       ADMINISTRATOR: 'Administrator',
       VALIDATE: 'Validate',

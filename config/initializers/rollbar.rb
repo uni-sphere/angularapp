@@ -2,14 +2,16 @@ require 'rollbar/rails'
 Rollbar.configure do |config|
   # Without configuration, Rollbar is enabled in all environments.
   # To disable in specific environments, set config.enabled=false.
-  
+
   config.access_token = 'b514bd7a83964db89b30bd65a0826d9a'
 
   # Here we'll disable in 'test':
   if Rails.env.test?
     config.enabled = false
   end
-  
+
+  config.exception_level_filters.merge!('ActionController::RoutingError' => 'ignore')
+
 
   # By default, Rollbar will try to call the `current_user` controller method
   # to fetch the logged-in user object, and then call that object's `id`,

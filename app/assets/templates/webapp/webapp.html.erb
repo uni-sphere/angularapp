@@ -1,10 +1,12 @@
-<div ng-file-drop ng-model="files" drag-over-class="{accept:'dragoverAccept', reject:'dragoverReject', delay:100}"  ng-multiple="true" accept=".jpg,.png,.pdf" id="application-view">
+<div ng-file-drop ng-model="files" drag-over-class="{accept:'dragoverAccept', reject:'dragoverReject', delay:100}"  ng-multiple="true" accept=".jpg,.png,.pdf" id="application-view" >
 
   <div id="view-tree" >
     <collapsible-tree help = 'help' node-end = 'nodeEnd' display-error ='displayError' active-nodes = 'activeNodes' admin = 'admin' sidebar-minified = 'sidebarMinified' sandbox = 'sandbox' home='home'></collapsible-tree>
   </div>
 
-  <view-document active-nodes='activeNodes' node-end='nodeEnd' files = 'files' display-error = 'displayError' ng-show="nodeEnd" admin = 'admin' activate-spinner = 'activateSpinner' desactivate-spinner = 'desactivateSpinner' sandbox = 'sandbox' home='home' help='help'></view-document>
+  <view-document active-nodes='activeNodes' node-end='nodeEnd' files = 'files' display-error = 'displayError' ng-show="nodeEnd" admin = 'admin' activate-spinner = 'activateSpinner' desactivate-spinner = 'desactivateSpinner' sandbox = 'sandbox' home='home' help='help' chapterFolded = 'chapterFolded'></view-document>
+
+  <div ng-hide="nodeEnd" class="no-nodeEnd">Select a node leaf to see documents</div>
 
   <dragndrop-view ng-show="nodeEnd"></dragndrop-view>
 </div>

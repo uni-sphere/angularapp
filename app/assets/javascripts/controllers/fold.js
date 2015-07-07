@@ -3,66 +3,41 @@ angular
   .module('mainApp.controllers')
   .controller('FoldCtrl', ['$scope', 'Restangular', 'ipCookie', function ($scope, Restangular, ipCookie) {
 
-    // Find the chapter that are folded
-    // demo
-    if($scope.home || $scope.sandbox){
-      var chapterFolded = ["0", "19"];
-    }
-    // Normal mode
-    else{
-      var chapterFolded = ipCookie('chapterFolded');
-
-      if( chapterFolded != undefined ){
-        // chapterFolded = chapterFolded.split(',');
-        if(!isInArray(0,chapterFolded)){
-          chapterFolded.push("0");
-        }
-      }else{
-        chapterFolded =["0"];
-      }
-    }
 
     // At init collapse items in cookie
     $scope.collapseItems = function(scope) {
-      if(chapterFolded == undefined){
+      if($scope.chapterFolded == undefined){
         scope.toggle();
       } else{
-
-        if(!isInArray(scope.$modelValue.id,chapterFolded)){
+        if(!isInArray(scope.$modelValue.id,$scope.chapterFolded)){
           scope.toggle();
-        };
+        }
       }
     }
 
     $scope.toggleItems = function(scope) {
       if(scope.$childNodesScope.$modelValue != undefined){
         scope.toggle();
-        addToChapterFolded(scope.$modelValue.id);
+        addTochapterFolded(scope.$modelValue.id);
 
         if($scope.lastDeployedPosition != undefined){
           delete $scope.lastDeployedPosition.$modelValue.activeItem;
         }
         scope.$modelValue.activeItem = true;
-
-        // save latest collapse position in case of dropped file
-        if(scope.collapsed && scope.$parentNodeScope!= undefined){
-          $scope.lastDeployedPosition = scope.$parentNodeScope;
-        } else{
-          $scope.lastDeployedPosition = scope;
-        }
       }
     };
+
     // Add folded chapters to cookie
-    function addToChapterFolded(nb){
-      if(chapterFolded == undefined){
-        chapterFolded = [nb.toString()];
-      } else if(isInArray(nb,chapterFolded)){
-        var index = chapterFolded.indexOf(nb.toString());
-        chapterFolded.splice(index, 1);
+    function addTochapterFolded(nb){
+      if($scope.chapterFolded == undefined){
+        $scope.chapterFolded = [nb.toString()];
+      } else if(isInArray(nb,$scope.chapterFolded)){
+        var index = $scope.chapterFolded.indexOf(nb.toString());
+        $scope.chapterFolded.splice(index, 1);
       } else{
-        chapterFolded.push(nb.toString());
+        $scope.chapterFolded.push(nb.toString());
       };
-      ipCookie('chapterFolded', chapterFolded);
+      ipCookie('chapterFolded', $scope.chapterFolded);
     }
 
     function isInArray(value, array) {

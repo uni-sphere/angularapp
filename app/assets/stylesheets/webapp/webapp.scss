@@ -31,3 +31,11 @@
   height: calc(100%);
   width: calc(35%);
 }
+
+.no-nodeEnd{
+  color: $dark-gris;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+}

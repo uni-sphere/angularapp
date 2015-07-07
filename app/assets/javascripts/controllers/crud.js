@@ -1,7 +1,7 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('CrudCtrl', ['$scope', 'Restangular', 'Notification', function ($scope, Restangular, Notification) {
+  .controller('CrudCtrl', ['$scope', 'Restangular', 'Notification', 'ipCookie', function ($scope, Restangular, Notification, ipCookie) {
 
     /*========================================
     =            Delete Documents            =
@@ -105,6 +105,8 @@ angular
 
         // Expands the containing folder
         if(!$scope.documentAbsent && scope!= undefined){
+          $scope.chapterFolded.push(nodeData.id.toString());
+          // ipCookie('chapterFolded', $scope.chapterFolded);
           scope.expand();
         }
         // Don't do it if we upload at the root
@@ -131,6 +133,8 @@ angular
 
           // Expands the containing folder
           if(!$scope.documentAbsent && scope!= undefined){
+            $scope.chapterFolded.push(nodeData.id.toString());
+            ipCookie('chapterFolded', $scope.chapterFolded);
             scope.expand();
           }
           // Don't do it if we upload at the root

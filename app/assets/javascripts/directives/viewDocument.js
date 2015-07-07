@@ -1,7 +1,7 @@
 (function () {
 
   angular.module('mainApp.directives')
-    .directive('viewDocument', ['$translate' , 'Restangular', 'browser', '$upload', 'Notification', function($translate, Restangular, browser, $upload, Notification) {
+    .directive('viewDocument', ['$translate' , 'Restangular', 'browser', '$upload', 'Notification', 'ipCookie', function($translate, Restangular, browser, $upload, Notification, ipCookie) {
       return {
         restrict: 'E',
         templateUrl: 'webapp/view-document.html',
@@ -13,9 +13,29 @@
           activateSpinner: '=',
           desactivateSpinner: '=',
           sandbox: '=',
-          home: '='
+          home: '=',
+          chapterFolded: '=',
         },
         link: function(scope){
+
+          // Find the chapter that are folded
+          // demo
+          if(scope.home || scope.sandbox){
+            scope.chapterFolded = ["0", "19"];
+          }
+          // Normal mode
+          else{
+            scope.chapterFolded = ipCookie('chapterFolded');
+
+            if(scope.chapterFolded != undefined ){
+              if(!isInArray(0, scope.chapterFolded)){
+                $scope.chapterFolded.push("0");
+              }
+            }else{
+              scope.chapterFolded =["0"];
+            }
+          }
+
 
           // scope.home = true
           var dummyId = 50;
@@ -176,7 +196,6 @@
           // We watch when someone uploads files from the tree
           scope.$watch('fileStore.files', function (newVals, oldVals) {
             if(newVals){
-              console.log("fileStore.files")
               upload(scope.fileStore.files,false);
             }
           });
@@ -189,9 +208,28 @@
           // We watch when someone drag and drops a file / folder
           scope.$watch('files', function (newVals, oldVals) {
             if(newVals){
-              upload(scope.files, true);
+              $('#fileDroppedBackground').fadeIn();
+              $('#fileDropped').fadeIn();
             }
           });
+
+          scope.selectDrop = function(position){
+            scope.lastDeployedPosition = position;
+            upload(scope.files, true);
+            $('#fileDropped').fadeOut(300);
+            $('#fileDroppedBackground').fadeOut();
+          }
+
+          scope.rootSelected = function(){
+            upload(scope.files, true);
+            $('#fileDropped').fadeOut();
+            $('#fileDroppedBackground').fadeOut();
+          }
+
+          scope.cancelDrop = function(){
+            $('#fileDroppedBackground').fadeOut();
+            $('#fileDropped').fadeOut();
+          }
 
           // We watch when someone uploads a file at the root
           scope.$watch('firstFiles', function (newVals, oldVals) {
@@ -200,7 +238,6 @@
               upload(scope.firstFiles, false);
             }
           });
-
 
 
 
@@ -310,7 +347,7 @@
               var chapterToCreate ={
                 title: folder.name,
                 node_id: scope.nodeEnd[0],
-                parent_id: nodeData.id,
+                parent_id: nodeData.id
               }
 
               // Demo
@@ -330,6 +367,8 @@
                   nodeData.items.push(a);
                   nodeDocData = nodeData.items[nodeData.items.length -1];
                 }
+
+                scope.chapterFolded.push(d.id.toString());
 
                 scope.progressionUpload --;
                 console.log("OK fake chapter created:" + folder.name);
@@ -358,6 +397,10 @@
                     nodeDocData = nodeData.items[nodeData.items.length -1];
                   }
 
+                  // We add the chapter to chapter folded, so as to see it!
+                  scope.chapterFolded.push(d.id.toString());
+                  ipCookie('chapterFolded', $scope.chapterFolded);
+
                   scope.progressionUpload --;
                   Notification.success("Chapter created")
                   console.log("OK chapter created:" + folder.name);
@@ -379,7 +422,7 @@
 
             /*==========  Upload all files in a directory  ==========*/
 
-             function uploadFiles(files){
+            function uploadFiles(files){
               var numberItems = 0;
               for (var i = 0; i < files.length; i++) {
                 var file = files[i];
@@ -403,7 +446,10 @@
                   }
 
                   if(!dragAndDrop && !scope.documentAbsent && scope.lastClick != undefined){
+                    scope.chapterFolded.push(nodeDocData.id.toString());
+
                     scope.lastClick.expand();
+
                   } else if(scope.documentAbsent){
                     scope.documentAbsent = false;
                   }
@@ -438,7 +484,10 @@
                     }
 
                     if(!dragAndDrop && !scope.documentAbsent && scope.lastClick != undefined){
+                      console.log(scope.lastClick)
                       scope.lastClick.expand();
+                      scope.chapterFolded.push(nodeDocData.id.toString());
+                      ipCookie('chapterFolded', scope.chapterFolded);
                     } else if(scope.documentAbsent){
                       scope.documentAbsent = false;
                     }
@@ -475,6 +524,7 @@
                 }).then(function(){
                   if(scope.arrayFiles.length == 0){
                     scope.desactivateSpinner()
+                    scope.lastDeployedPosition = undefined;
                   } else{
                     console.log("|| MORE FOLDER TO UPLOAD");
                     console.log("---------");
@@ -495,7 +545,6 @@
               scope.arrayFiles = undefined;
 
               if(!dragAndDrop){
-                console.log(scope.lastClick);
                 // If we upload the first file
                 if(scope.lastClick == undefined){
                   var masternodeData = {id: 0};
@@ -509,6 +558,15 @@
                   var masternodeData = {id: 0};
                   var nextNodeData = 1;
                 } else{
+                  // scope.chapterFolded.push(scope.lastDeployedPosition.$parentNodeScope.$modelValue.id.toString());
+                  // ipCookie('chapterFolded', scope.chapterFolded);
+                  // console.log(scope.lastDeployedPosition.$parentNodeScope)
+                  // console.log(scope.lastDeployedPosition.$parentNodeScope.$modelValue.title)
+                  console.log(scope.lastDeployedPosition.$parentNodeScope)
+                  setTimeout(function(){
+                    scope.lastDeployedPosition.$parentNodeScope.expand()
+                  }, 500);
+                  // scope.lastDeployedPosition.$parentNodeScope.toggle()
                   var masternodeData = scope.lastDeployedPosition.$modelValue;
                   var nextNodeData = scope.lastDeployedPosition.$modelValue.items.length;
                 }

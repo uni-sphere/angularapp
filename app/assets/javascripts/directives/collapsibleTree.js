@@ -427,7 +427,7 @@
 
               function deleteProperly(node){
                 if(node.num == scope.nodeEnd[0]){
-                  scope.nodeEnd = [scope.root.num, scope.root.name]
+                  scope.nodeEnd = false
                   scope.activeNodes = [scope.nodeEnd]
                   findFoldedNodes(scope.root);
                   colornodePath(scope.root);
@@ -461,7 +461,7 @@
 
                 function deleteProperly(node){
                   if(node.num == scope.nodeEnd[0]){
-                    scope.nodeEnd = [scope.root.num, scope.root.name]
+                    scope.nodeEnd = false;
                     scope.activeNodes = [scope.nodeEnd]
                     findFoldedNodes(scope.root);
                     ipCookie('activeNodes', scope.activeNodes);
@@ -470,8 +470,15 @@
                     colornodePath(scope.root);
                   }
                   if(node.children){
-                    // console.log(node.children)
                     node.children.forEach(deleteProperly)
+                  } else{
+                    Restangular.one('chapters').remove({node_id: node.num}).then(function(chapters) {
+
+                      console.log("Ok: All related chapters deleted")
+                    }, function(d) {
+                      console.log(d);
+                      console.log("Error: Delete chapters");
+                    });
                   }
                   if(node._children){
                     node._children.forEach(deleteProperly)
@@ -482,7 +489,7 @@
 
 
                 update(nodeSelected);
-                console.log("Objects deleted");
+                console.log("Ok: Node deleted");
               }, function(d) {
                 console.log(d);
                 console.log("Error: Delete node");
@@ -503,13 +510,18 @@
 
             // Demo app
             if(scope.home || scope.sandbox){
-              var a = {name: "new", num: dummyId}
+              var a = {name: "new", num: dummyId, parent: nodeSelected}
               dummyId ++;
 
               if( nodeSelected.children === undefined || nodeSelected.children == null ){
                 nodeSelected.children = [];
               }
               nodeSelected.children.push(a);
+
+              // Select the node
+              findActiveNodes(nodeSelected.children[nodeSelected.children.length - 1]);
+              findNodeEnd(nodeSelected.children[nodeSelected.children.length - 1]);
+              colornodePath(scope.root);
 
               update(nodeSelected);
             }
@@ -519,13 +531,23 @@
               Restangular.all('nodes').post(newBranch).then(function(d) {
                 Notification.success("Node created")
                 console.log("Object saved OK");
-                var a = {name: "new", num: d.id}
+                var a = {name: "new", num: d.id, parent: nodeSelected}
 
                 if( nodeSelected.children == undefined || nodeSelected.children == null ){
                   nodeSelected.children = [];
                 }
 
                 nodeSelected.children.push(a);
+
+                // Select the node
+                scope.activeNodes = [];
+                findActiveNodes(nodeSelected.children[nodeSelected.children.length - 1]);
+                findNodeEnd(nodeSelected.children[nodeSelected.children.length - 1]);
+                colornodePath(scope.root);
+
+                ipCookie('activeNodes', scope.activeNodes);
+                ipCookie('nodeEnd', scope.nodeEnd);
+
                 update(nodeSelected);
 
 
@@ -536,6 +558,8 @@
 
               });
             }
+
+
 
           }
 

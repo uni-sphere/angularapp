@@ -30,11 +30,14 @@
               console.log("Impossible to connect");
               console.log(d);
               if(d.headers.status == 404){
-                scope.displayError("You misstyped your email")
+                console.log("Error: login | email")
+                Notification.error("You misstyped your email")
               } else if(d.headers.status == 403){
-                scope.displayError("You misstyped your password");
+                console.log("Error: login | password")
+                Notification.error("You misstyped your password");
               } else{
-                scope.displayError("Please try again!");
+                console.log("Error: login")
+                Notification.error("Please try again!");
               }
 
               scope.newUniPassword = "";
