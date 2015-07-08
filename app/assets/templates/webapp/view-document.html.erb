@@ -3,7 +3,7 @@
   <div id="breadcrumb" ng-class="{'breadcrumb-no-doc' : documentAbsent}">
     <div id="breadcrumb-container">
       <div id="breadcrumb-title">
-        <span ng-repeat="node in breadcrumb" ng-class="'breadcrumb-node'">{{node}} <span ng-class="'breadcrumb-separator'" ng-hide="$index == breadcrumb.length - 1"><i class="fa fa-angle-right"></i></span></span>
+        <span ng-repeat="node in breadcrumb track by $index" ng-class="'breadcrumb-node'">{{node}} <span ng-class="'breadcrumb-separator'" ng-hide="$index == breadcrumb.length - 1"><i class="fa fa-angle-right"></i></span></span>
       </div>
     </div>
   </div>

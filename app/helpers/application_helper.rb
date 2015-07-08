@@ -21,4 +21,22 @@ module ApplicationHelper
     render json: {error: error}.to_json, status: code
   end
   
+  def destroy_with_children(id)
+    @deleted = []
+    Node.find(id).chapters.all.each do |chapter|
+      @deleted << chapter.id
+    end
+    if Node.exists?(parent_id: id)
+      Node.where(parent_id: id).each do |node|
+        clear_logs node.id
+        node.chapters.all.each do |chapter|
+          @deleted << chapter.id
+        end
+        destroy_with_children(node.id)
+      end
+    end
+    Node.find(id).destroy
+    return @deleted
+  end
+  
 end

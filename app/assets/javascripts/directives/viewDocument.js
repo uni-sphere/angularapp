@@ -14,7 +14,7 @@
           desactivateSpinner: '=',
           sandbox: '=',
           home: '=',
-          chapterFolded: '=',
+          chapterFolded: '='
         },
         link: function(scope){
 
@@ -31,7 +31,7 @@
               if(!isInArray(0, scope.chapterFolded)){
                 $scope.chapterFolded.push("0");
               }
-            }else{
+            } else{
               scope.chapterFolded =["0"];
             }
           }

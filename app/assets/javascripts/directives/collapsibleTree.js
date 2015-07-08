@@ -11,9 +11,11 @@
           sidebarMinified: '=',
           home: '=',
           sandbox: '=',
-          help: '='
+          help: '=',
+          chapterFolded: '='
         },
         link: function(scope, iElement, iAttrs) {
+
 
           var dummyId = 50
 
@@ -449,7 +451,16 @@
             }
             // If we are the app
             else{
-              Restangular.all('nodes/' + d.num).remove().then(function() {
+              Restangular.all('nodes/' + d.num).remove().then(function(res) {
+                console.log(res.deleted)
+                console.log(scope.chapterFolded)
+
+                for( var i = 0; i < res.deleted.length; i ++){
+                  removeFromArray(scope.chapterFolded, res.deleted[i].toString())
+                }
+
+
+                console.log(scope.chapterFolded)
                 var nodeToDelete = _.where(nodeSelected.parent.children, {id: nodeSelected.id});
                 if (nodeToDelete){
                   nodeSelected.parent.children = _.without(nodeSelected.parent.children, nodeToDelete[0]);
@@ -471,14 +482,6 @@
                   }
                   if(node.children){
                     node.children.forEach(deleteProperly)
-                  } else{
-                    Restangular.one('chapters').remove({node_id: node.num}).then(function(chapters) {
-
-                      console.log("Ok: All related chapters deleted")
-                    }, function(d) {
-                      console.log(d);
-                      console.log("Error: Delete chapters");
-                    });
                   }
                   if(node._children){
                     node._children.forEach(deleteProperly)
@@ -762,6 +765,15 @@
             action(array);
 
             return doubleArray;
+          }
+
+          function removeFromArray(arr, what) {
+            var found = arr.indexOf(what);
+
+            while (found !== -1) {
+              arr.splice(found, 1);
+              found = arr.indexOf(what);
+            }
           }
 
           /*==========  Compares two arrays of objects  ==========*/
