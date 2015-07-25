@@ -166,7 +166,6 @@
                 node.depth = node.depth + 1;
                 (parent.items || (parent.items = [])).push(node);
               } else {
-                // console.log(node);
                 treeData.push(node);
               }
             });
@@ -191,19 +190,6 @@
             }
           }
 
-          scope.fileStore =  [];
-
-          // We watch when someone uploads files from the tree
-          scope.$watch('fileStore.files', function (newVals, oldVals) {
-            if(newVals){
-              upload(scope.fileStore.files,false);
-            }
-          });
-
-          // We store where the upload comes from
-          scope.storeClick = function(d){
-            scope.lastClick = d;
-          }
 
           // We watch when someone drag and drops a file / folder
           scope.$watch('files', function (newVals, oldVals) {
@@ -240,10 +226,52 @@
           });
 
 
+          scope.collapseItems = function(scope) {
+            if(scope.chapterFolded == undefined){
+              scope.collapse();
+            } else{
+              if(!isInArray(scope.$modelValue.id,scope.chapterFolded) && scope.$modelValue.items.length != 0){
+                scope.collapse();
+              }
+            }
+          }
 
+          scope.toggleItems = function(node) {
+            if(node.$childNodesScope.$modelValue != undefined){
+              node.toggle();
+              addTochapterFolded(node.$modelValue.id);
+            }
+          };
 
+          scope.activateChapter = function(node){
+            if(scope.previousActiveChapter != undefined){
+              scope.previousActiveChapter.$modelValue.activeItem = false;
+              scope.activeChapter = false
+            }
 
+            if(!node.collapsed){
+              node.$modelValue.activeItem = true;
+              scope.activeChapter = node;
+              scope.previousActiveChapter = node
+            }
+          }
 
+          // Add folded chapters to cookie
+          function addTochapterFolded(nb){
+            if(scope.chapterFolded == undefined){
+              scope.chapterFolded = [nb.toString()];
+            } else if(isInArray(nb,scope.chapterFolded)){
+              var index = scope.chapterFolded.indexOf(nb.toString());
+              scope.chapterFolded.splice(index, 1);
+            } else{
+              scope.chapterFolded.push(nb.toString());
+            };
+            ipCookie('chapterFolded', scope.chapterFolded);
+          }
+
+          function isInArray(value, array) {
+            return array.indexOf(value.toString()) > -1;
+          }
 
 
 
@@ -399,7 +427,7 @@
 
                   // We add the chapter to chapter folded, so as to see it!
                   scope.chapterFolded.push(d.id.toString());
-                  ipCookie('chapterFolded', $scope.chapterFolded);
+                  ipCookie('chapterFolded', scope.chapterFolded);
 
                   scope.progressionUpload --;
                   Notification.success("Chapter created")
@@ -545,13 +573,14 @@
               scope.arrayFiles = undefined;
 
               if(!dragAndDrop){
-                // If we upload the first file
-                if(scope.lastClick == undefined){
-                  var masternodeData = {id: 0};
-                }
+
                 // If we upload a normal file
+                if(scope.activeChapter){
+                  var masternodeData = scope.activeChapter.$modelValue;
+                }
+                // If we upload the first file
                 else{
-                  var masternodeData = scope.lastClick.$modelValue;
+                  var masternodeData = {id: 0};
                 }
               } else{
                 if(scope.lastDeployedPosition == undefined){

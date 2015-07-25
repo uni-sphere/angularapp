@@ -10,11 +10,11 @@
 
 
   <script type="text/ng-template" id="items_renderer.html">
-    <div ui-tree-handle ng-class="{isdocument: item.document, 'collapsed': collapsed && this.$modelValue.items.length != 0, 'isNew' : this.$modelValue.title == 'new chapter', chapterSelected : this.$modelValue.activeItem, parentChapterSelected : this.$parentNodeScope.$modelValue.activeItem, depth2 : this.$modelValue.depth == 1 && !this.$modelValue.document, depth3 : this.$modelValue.depth == 2 && !this.$modelValue.document, borderBottom: item.document && item.$$nextSibling != null}">
+    <div ui-tree-handle ng-class="{isdocument: item.document, chapterSelected : this.$modelValue.activeItem}" ng-click="activateChapter(this)" >
 
-      <a class="btn-collapse" nodrag ng-if="!item.document" ng-click="toggleItems(this)" ng-controller="FoldCtrl" ng-init="collapseItems(this)"><span ng-class="{'fa fa-angle-right': collapsed && this.$modelValue.items.length != 0, 'fa fa-angle-down': !collapsed && this.$modelValue.items.length != 0}"></span></a>
+      <a class="btn-collapse" nodrag ng-if="!item.document" ng-init="collapseItems(this)" ng-click="toggleItems(this)"><span ng-if="this.$modelValue.items.length != 0" class="fa fa-angle-right" ng-class="{'expanded': !collapsed }"></span></a>
 
-      <div ng-init="printChapter(this)" class="chapter-number">{{item.chapter}}</div>
+      <div ng-init="printChapter(this)" class="chapter-number" >{{item.chapter}} </div>
 
       <div class="item-name">{{item.title}}</div>
 
@@ -23,11 +23,6 @@
 
       <a class="btn btn-rename" ng-controller="CrudCtrl" nodrag ng-show="!item.document && admin" ng-click="renameItems(this)" analytics-on="click" analytics-event="rename" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-pencil"></span></a>
 			<a class="btn btn-rename" ng-controller="CrudCtrl" nodrag ng-show="item.document && admin" ng-click="renameItems(this)" analytics-on="click" analytics-event="rename" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-pencil"></span></a>
-
-      <a class="btn btn-add" nodrag ng-show="!item.document && admin" ng-click="newSubItem(this)" ng-controller="CrudCtrl" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-plus"></span></a>
-
-      <a class="btn btn-add-document" ng-multiple="true" ng-file-select ng-model="fileStore.files" ng-click="storeClick(this)" ng-show="!
-      item.document && admin" nodrag analytics-on="click" analytics-event="upload" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>" ><span class="fa fa-upload" ></span></a>
 
       <a ng-href={{item.preview_link}} download class="btn btn-download" ng-show="item.document && item.type != 'application/pdf'" nodrag analytics-on="click" analytics-event="download" ng-click="downloadItem(this)" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-arrow-circle-o-down"></span></a>
 
@@ -56,16 +51,15 @@
 
   <div id="document-tree" ng-class="{'no-docs' : documentAbsent}">
 
+    <div id="button-row" ng-show="admin">
+      <button class="submit-button dual-submit"  ng-multiple="true" ng-file-select ng-model="firstFiles" analytics-on="click" analytics-event="upload" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>" ><!-- <i class="fa fa-file"></i> -->{{ 'UPLOAD' | translate }} </button>
+
+      <button ng-controller="CrudCtrl" class="submit-button dual-submit"  ng-click="newSubItem()" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" ><!-- <i class="fa fa-plus"></i> -->{{ 'CHAPTER' | translate }}</button>
+    </div>
+
     <div id="document-absent-title" ng-show="documentAbsent && admin">{{ 'NEW_SUBJECT' | translate }}</div>
 
     <div id="document-absent-subtitle"  ng-show="documentAbsent && admin">{{ 'LEFT_TREE_EXPLANATION' | translate }}</div>
-
-
-    <div id="button-row" ng-show="admin">
-      <button class="submit-button dual-submit"  ng-multiple="true" ng-file-select ng-model="firstFiles" analytics-on="click" analytics-event="upload" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>" >{{ 'UPLOAD' | translate }} </button>
-
-      <button ng-controller="CrudCtrl" class="submit-button dual-submit"  ng-click="newSubItem()" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" >{{ 'CHAPTER' | translate }}</button>
-    </div>
 
     <div id="ui-tree-container" ng-if="!documentAbsent">
       <div ui-tree="options" data-drag-enabled="false"  id="tree-root">

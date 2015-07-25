@@ -19,6 +19,8 @@ angular
         // Demo mode
         if($scope.home || $scope.sandbox){
           nodeToDelete.remove();
+          console.log("Ok: Document deleted");
+          Notification.warning("File removed")
 
           if($scope.list.length == 0){
             $scope.documentAbsent = true;
@@ -28,8 +30,8 @@ angular
         else{
           Restangular.all('awsdocuments/' + nodeToDelete.$modelValue.doc_id).remove().then(function() {
             nodeToDelete.remove();
-            console.log("document deleted");
-            Notification.success("File removed")
+            console.log("Ok: Document deleted");
+            Notification.warning("File removed")
             if($scope.list.length == 0){
               $scope.documentAbsent = true;
             }
@@ -46,6 +48,8 @@ angular
         // Demo mode
         if($scope.home || $scope.sandbox){
           nodeToDelete.remove();
+          console.log("Ok: Document deleted");
+          Notification.warning("File removed")
 
           if($scope.list.length == 0){
             $scope.documentAbsent = true;
@@ -55,8 +59,8 @@ angular
         else{
           Restangular.all('chapters/' + nodeToDelete.$modelValue.id).remove({node_id: $scope.nodeEnd[0]}).then(function() {
             nodeToDelete.remove();
-            Notification.success("Chapter removed")
-            console.log("chapter deleted");
+            console.log("Ok: Chapter deleted");
+            Notification.warning("Chapter removed")
 
             if($scope.list.length == 0){
               $scope.documentAbsent = true;
@@ -74,12 +78,12 @@ angular
     =            Create new chapter             =
     ===========================================*/
 
-    $scope.newSubItem = function(scope) {
+    $scope.newSubItem = function() {
 
-      if(scope == undefined){
-        var nodeData = {id: 0};
+      if($scope.activeChapter){
+        var nodeData = $scope.activeChapter.$modelValue;
       } else{
-        var nodeData = scope.$modelValue;
+        var nodeData = {id: 0};
       }
 
       var nodeToCreate ={
@@ -103,16 +107,7 @@ angular
           nodeData.items.push(a);
         }
 
-        // Expands the containing folder
-        if(!$scope.documentAbsent && scope!= undefined){
-          $scope.chapterFolded.push(nodeData.id.toString());
-          // ipCookie('chapterFolded', $scope.chapterFolded);
-          scope.expand();
-        }
-        // Don't do it if we upload at the root
-        else{
-          $scope.documentAbsent = false;
-        }
+        $scope.documentAbsent = false;
       }
       // Real Version
       else{
@@ -131,16 +126,7 @@ angular
             nodeData.items.push(a);
           }
 
-          // Expands the containing folder
-          if(!$scope.documentAbsent && scope!= undefined){
-            $scope.chapterFolded.push(nodeData.id.toString());
-            ipCookie('chapterFolded', $scope.chapterFolded);
-            scope.expand();
-          }
-          // Don't do it if we upload at the root
-          else{
-            $scope.documentAbsent = false;
-          }
+          $scope.documentAbsent = false;
 
         }, function(d) {
           console.log("Error: Create a chapter");

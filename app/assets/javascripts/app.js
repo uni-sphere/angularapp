@@ -133,7 +133,7 @@
       ADMIN_LOGIN: 'Log in as administrator',
       NEW_SUBJECT: 'New subject',
       LEFT_TREE_EXPLANATION: 'You can directy upload your files and organise them into chapters.',
-      UPLOAD: 'New file',
+      UPLOAD: 'Upload a file',
       CHAPTER: 'New chapter',
       DROP_ZONE: 'DROP ZONE',
       DROP_EXPLANATION: 'You can even drop folders containing folders containing folders.. ',
