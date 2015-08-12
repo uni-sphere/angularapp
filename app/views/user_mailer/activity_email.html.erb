@@ -77,7 +77,7 @@ body {
 }
 
 .content-block {
-  padding: 0 0 20px;
+  padding: 0 20px 30px 60px;
 }
 
 .header {
@@ -283,13 +283,13 @@ a:hover {
 							<div class="content-block aligncenter bold"><%= @organization.name %> activity report <%= (Date.today-1.week).to_formatted_s(:short) %> - <%= Date.today.to_formatted_s(:short) %></div>
 							<div class="content-block aligncenter">Downloads by nodes</div>
 							<table width="100%" cellpadding="0" cellspacing="0">
-								<%= @nodes_activity.each do |node| %>
+								<% @nodes_activity.each do |node| %>
 									<tr>
-										<td class="content-block">
-											<%= node['name'] %>
+										<td class="content-block bold">
+											<%= node[:name] %> in <%= node[:parent] %>
 										</td>
 										<td class="content-block bold">
-											<%= node['downloads'] %>
+											<%= node[:downloads] %>
 										</td>
 									</tr>
 								<% end %>

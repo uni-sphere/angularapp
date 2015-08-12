@@ -1,16 +1,16 @@
 <error-display list-error = 'listError' show-error = 'showError' ></error-display>
 <success-display success= 'success'></success-display>
 
-<div id="grey-background" ng-show="greyBackground"></div>
+<div id="grey-background"></div>
 
 <first-co help = 'help' sandbox = 'sandbox' id="first-connection"></first-co>
 
-<span us-spinner="{radius:50, width:12, length: 16, color: 'white', position: 'fixed'}" spinner-key="spinner-1"></span>
+<span us-spinner="{radius:50, width:12, length: 16, color: 'white', position: 'fixed', 'z-index': 999}" spinner-key="spinner-1"></span>
 
 <div ng-if="home" id="home-container">
   <slide1></slide1>
-  <slide3 desactivate-spinner = 'desactivateSpinner' activate-spinner = 'activateSpinner' home ='home' sandbox='sandbox'></slide3>
-  <slide2 desactivate-spinner = 'desactivateSpinner' activate-spinner = 'activateSpinner' display-error = 'displayError' display-success = 'displaySuccess'></slide2>
+  <slide3 home ='home' sandbox='sandbox'></slide3>
+  <slide2></slide2>
   <slide4></slide4>
   <slide5></slide5>
 </div>
@@ -26,11 +26,12 @@
   <sidebar ng-show="admin" admin-deco = 'adminDeco' sidebar-minified = 'sidebarMinified'></sidebar>
 
 
-  <div id="main-view-container" class="wrapper wrapper__minify">
+  <div id="main-view-container">
     <div ui-view id="ui-view-main-wrapper"></div>
   </div>
 
 </div>
+<!-- <div id="pretty-bg"></div> -->
 
 
 

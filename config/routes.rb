@@ -25,6 +25,8 @@ Rails.application.routes.draw do
     get 'users', to: 'users#index'
     delete 'users', to: 'users#destroy'
     get 'connected', to: 'connexions#index'
+    
+    post 'users', to: 'organizationsuserslinks#create'
 
   end
 

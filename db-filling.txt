@@ -67,6 +67,7 @@ helper.download
 ActionController::Base::AwsdocumentsController.new.download
 
 ActionController::Base::OrganizationsController.new.create
+ActiveRecord::Base::Awsdocument.new.refresh_links
 
 app.post('http://api.unisphere-dev.eu/organizations', {"name" => "organization_name", "email" => "clement@muller.uk.net", "password" => "organization_password"})
 
@@ -78,7 +79,7 @@ UserMailer.activity_email(User.last).deliver
 
 UserMailer.password_forgoten_email(User.last.email, Organization.last).deliver
 
-ActionController::Base::ReportssController.new.update
+ActionController::Base::ReportsController.new.update
 
 user = User.new(email: 'clement@muller.uk.net', organization_id: Organization.first.id)
 user.password = 'password'

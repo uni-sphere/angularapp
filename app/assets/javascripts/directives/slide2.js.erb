@@ -1,12 +1,10 @@
 (function () {
 
-  angular.module('mainApp.directives').directive('slide2', ['Restangular', '$auth', 'Notification', function(Restangular, $auth, Notification) {
+  angular.module('mainApp.directives').directive('slide2', ['Restangular', '$auth', 'Notification', 'activateSpinner', 'stopSpinner', function(Restangular, $auth, Notification, activateSpinner, stopSpinner) {
     return {
       restrict: 'E',
       templateUrl: 'home/slide2.html',
       scope: {
-        activateSpinner: '=',
-        desactivateSpinner: '='
       },
       link: function(scope) {
 
@@ -35,34 +33,36 @@
         });
 
         function addMarkers(list){
-          list.forEach(function(node) {
-            var pos = new google.maps.LatLng(node.latitude,node.longitude);
-            var marker = new google.maps.Marker({
-              position: pos,
-              map: map,
-              title: node.name,
-              icon: '<%= asset_path "pin-colleg.png" %>',
-              place_id: node.place_id,
-              subdomain: node.subdomain,
-              name: node.name
+          if(list != undefined){
+            list.forEach(function(node) {
+              var pos = new google.maps.LatLng(node.latitude,node.longitude);
+              var marker = new google.maps.Marker({
+                position: pos,
+                map: map,
+                title: node.name,
+                icon: '<%= asset_path "pin-colleg.png" %>',
+                place_id: node.place_id,
+                subdomain: node.subdomain,
+                name: node.name
+              });
+              google.maps.event.addListener(marker, 'click', function() {
+                console.log("Ok: Marker clicked")
+
+                if(scope.selectedMarkerPerso){
+                  scope.selectedMarkerPerso.setAnimation(null);
+                }
+                scope.selectedMarkerPerso = marker;
+                map.setCenter(marker.getPosition());
+                zoomMap(9);
+
+                scope.place = marker
+                scope.showExistingSchool = "http://" + marker.subdomain + ".unisphere.eu";
+                scope.$apply()
+              });
+
+              scope.markerPerso.push(marker);
             });
-            google.maps.event.addListener(marker, 'click', function() {
-              console.log("Ok: Marker clicked")
-
-              if(scope.selectedMarkerPerso){
-                scope.selectedMarkerPerso.setAnimation(null);
-              }
-              scope.selectedMarkerPerso = marker;
-              map.setCenter(marker.getPosition());
-              zoomMap(9);
-
-              scope.place = marker
-              scope.showExistingSchool = "http://" + marker.subdomain + ".unisphere.eu";
-              scope.$apply()
-            });
-
-            scope.markerPerso.push(marker);
-          });
+          }
         }
 
         scope.centerMap = function(){
@@ -155,7 +155,6 @@
 
         //Step 2 - Creation. Send info to backend
         scope.signup = function(){
-
           if(scope.homeSignup.$invalid){
             if(scope.homeSignup.$error.email){
               console.log("Error: signup | email invalid");
@@ -169,10 +168,8 @@
               console.log("Error: unknown");
               Notification.error("Problem at account creation");
             }
-          } else{
-
-            scope.activateSpinner()
-
+          } else {
+            activateSpinner()
             /*==========  Signup  ==========*/
             var credentials = {
               name: scope.adminName,
@@ -181,52 +178,40 @@
               password_confirmation: scope.adminPassword
             };
 
-            $auth.submitRegistration(credentials).then(function(user) {
-              console.log("Ok: User signup");
-              var newUni = {
-                name: scope.place.name,
-                latitude: scope.place.geometry.location.A,
-                longitude: scope.place.geometry.location.F,
-                place_id: scope.place.place_id,
-                website: scope.place.website,
-                user_id: user.data.data.id
+            Restangular.one('organization/is_signed_up').get({email: scope.adminEmail}).then(function (signup) {
+              if(signup.response == true){
+                stopSpinner()
+                console.log("Warning: Sign up | email account already exist.");
+                Notification.error("This email address is already bound to an account");
+              } else {
+                var newUni = {
+                  name: scope.place.name,
+                  latitude: scope.place.geometry.location.G,
+                  longitude: scope.place.geometry.location.K,
+                  place_id: scope.place.place_id,
+                  website: scope.place.website,
+                }
+                if(signup.response == false) {
+                  $auth.submitRegistration(credentials).then(function(user) {
+                    console.log("Ok: User signup");
+                    newUni.user_id = user.data.data.id
+                    uniCreation(newUni, user.data.data.id, true)
+                  }, function(d){
+                    console.log(d);
+                    stopSpinner()
+                    console.log("Error: Sign up")
+                    Notification.error("We can't temporarily create your account");
+                  });
+                } else {
+                  console.log("Warning: User already exists, we use the same email");
+                  newUni.user_id = signup.response
+                  uniCreation(newUni, signup.response, false)
+                }
               }
-              afterSignup(newUni, user.data.data.id)
-
-            })
-            .catch(function(d) {
-              scope.desactivateSpinner()
-              if(d.status == 403){
-                console.log("Warning: Sign up | email account is already bound to another organization");
-                console.log(d)
-
-                Restangular.one('user').get().then(function (d) {
-                  console.log(d)
-                  user_id = d.id
-                  console.log("Ok: User info")
-
-                  var newUni = {
-                    name: scope.place.name,
-                    latitude: scope.place.geometry.location.A,
-                    longitude: scope.place.geometry.location.F,
-                    place_id: scope.place.place_id,
-                    website: scope.place.website,
-                    user_id: user_id
-                  }
-                  afterSignup(newUni, user_id)
-
-                }, function(d){
-                  console.log("Error: User info");
-                  console.log(d)
-                });
-
-
-              } else{
-                console.log(d);
-                scope.desactivateSpinner()
-                console.log("Error: Sign up")
-                Notification.error("We can't temporarily create your account");
-              }
+            }, function(d){
+              stopSpinner()
+              console.log("Warning: Sign up | get existing email");
+              Notification.error("There was an error during the account creation");
             });
 
           }
@@ -262,7 +247,7 @@
           }
         }
 
-        function afterSignup(newUni,user_id){
+        function uniCreation(newUni, user_id, newUser){
           /*==========  Creation of the organization  ==========*/
           Restangular.all('organizations').post(newUni).then(function(d) {
 
@@ -297,9 +282,13 @@
             });
 
             /*==========  Return to normal state  ==========*/
-            scope.desactivateSpinner()
+            stopSpinner()
             scope.signupShow = false;
-            Notification.success(scope.place.name + " is now using unisphere! We sent am email at " + scope.adminEmail)
+            if(newUser){
+              Notification.success(scope.place.name + " is now using unisphere!")
+            } else{
+              Notification.success("You have already an account! We fusionned them.")
+            }
 
             // We remove the previous marker if there was one
             if(scope.selectedMarker){
@@ -311,7 +300,7 @@
 
 
           }, function(d){
-            scope.desactivateSpinner()
+            stopSpinner()
             console.log("Error: Signup | Organization creation");
             console.log(d);
             Notification.error("We can't temporarily create you an account");

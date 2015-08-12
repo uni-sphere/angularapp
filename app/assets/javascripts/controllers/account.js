@@ -1,13 +1,11 @@
 (function(){
   angular
   .module('mainApp.controllers')
-  .controller('AccountCtrl', ['$scope', 'Restangular', '$auth', 'Notification', function ($scope, Restangular, $auth, Notification) {
+  .controller('AccountCtrl', ['$scope', 'Restangular', '$auth', 'Notification', 'activateSpinner', 'stopSpinner', function ($scope, Restangular, $auth, Notification, activateSpinner, stopSpinner) {
 
     /*======================================
     =            Update profile            =
     ======================================*/
-
-
     $scope.updateAccount = function() {
 
       if($scope.updatedName == ""){
@@ -55,45 +53,68 @@
 
     $scope.inviteUsers = function(){
       if($scope.organizationForm.$valid){
+        activateSpinner();
         var newPassword = makePassword(8);
 
         // Sign up
         var credentials = {
           email: $scope.newUser,
           password: newPassword,
-          password_confirmation: newPassword,
-          organization_id: $scope.universityId
+          password_confirmation: newPassword
         };
 
-        $auth.submitRegistration(credentials)
-        .then(function(userInfo) {
-          Restangular.all('user/invite').post({email: $scope.newUser, password: newPassword}).then(function (d) {
-            $scope.listUser.push(userInfo.data.data);
-            $scope.newUser = "";
-            console.log("New user added");
-            Notification.success('Your colleague has been invited');
-          }, function(d){
-            console.log("Error: Invite colleague");
-            console.log(d);
-            Notification.error('We didn\'t manage to invite your colleague. We will fix this soon');
-            $scope.newUser = "";
-            $scope.organizationForm.$setUntouched();
-          });
-        })
-        .catch(function(d) {
-          if(d.status = 403){
+        // We check if the email is already used
+        Restangular.one('organization/is_signed_up').get({email: $scope.newUser}).then(function (signup) {
+          // If the email is already taken
+          console.log(signup.response)
+          if(signup.response == true){
             console.log("Error: Invite colleague | he already uses unisphere");
-            console.log(d);
-            Notification.error(d.data.data.email + " already uses Unisphere. We didn't invite him again")
+            Notification.error($scope.newUser + " already uses Unisphere")
             $scope.newUser = "";
             $scope.organizationForm.$setUntouched();
-          } else{
-            console.log("Error: Invite colleague");
-            console.log(d);
-            Notification.error('We didn\'t manage to invite your colleague. We will fix this soon')
-            $('#addAdmin').focus()
+          } else if (signup.response == false) {
+            console.log("Ok:Invite colleague | Email free")
+            // We signup the guy
+            $auth.submitRegistration(credentials).then(function(userInfo) {
+              Restangular.all('user/invite').post({email: $scope.newUser, password: newPassword, organization_id: $scope.universityId}).then(function (d) {
+                $scope.listUser.push(userInfo.data.data);
+                $scope.newUser = "";
+                stopSpinner()
+                console.log("New user added");
+                Notification.success('Your colleague has been invited');
+                $scope.newUser = "";
+                $scope.organizationForm.$setUntouched();
+              }, function(d){
+                stopSpinner()
+                console.log("Error: Invite colleague");
+                console.log(d);
+                Notification.error('We didn\'t manage to invite your colleague. We will fix this soon');
+              });
+            }, function(d){
+              stopSpinner()
+              console.log("Error: Invite colleague");
+              console.log(d);
+              Notification.error('We didn\'t manage to invite your colleague. We will fix this soon')
+            });
+          } else {
+            Restangular.all('users').post({user_id: signup.response, organization_id: $scope.universityId}).then(function (d) {
+              stopSpinner()
+              console.log("link created")
+              Notification.success('Your colleague has been invited');
+            }, function(d) {
+              stopSpinner()
+              console.log("Error: link not created")
+              console.log(d)
+              Notification.error('We didn\'t manage to invite your colleague. We will fix this soon')
+            });
           }
+        }, function(d){
+          stopSpinner()
+          console.log("Error: Invite colleague");
+          console.log(d);
+          Notification.error("We didn't manage to invite your colleague. We will fix it soon.")
         });
+
 
       } else{
         console.log("Error: Invite colleague | Email invalid");

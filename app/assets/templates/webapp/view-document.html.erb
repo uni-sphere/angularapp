@@ -10,13 +10,16 @@
 
 
   <script type="text/ng-template" id="items_renderer.html">
-    <div ui-tree-handle ng-class="{isdocument: item.document, chapterSelected : this.$modelValue.activeItem}" ng-click="activateChapter(this)" >
+    <div ui-tree-handle ng-class="{isdocument: item.document, chapterSelected : this.$modelValue.activeItem}" ng-click="activateChapter(this); $event.stopPropagation()" >
 
-      <a class="btn-collapse" nodrag ng-if="!item.document" ng-init="collapseItems(this)" ng-click="toggleItems(this)"><span ng-if="this.$modelValue.items.length != 0" class="fa fa-angle-right" ng-class="{'expanded': !collapsed }"></span></a>
+      <a class="btn-collapse" nodrag ng-if="!item.document" ng-init="collapseItems(this)"><span ng-if="this.$modelValue.items.length != 0" class="fa fa-angle-right" ng-class="{'expanded': !collapsed }"></span></a>
 
-      <div ng-init="printChapter(this)" class="chapter-number" >{{item.chapter}} </div>
+      <div ng-init="printChapter(this)" class="chapter-number">{{item.chapter}} </div>
 
       <div class="item-name">{{item.title}}</div>
+      <div class="fa fa-file-pdf-o file-icon" ng-if="this.$modelValue.document && this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1) == 'pdf'"></div>
+      <div class="fa fa-file-picture-o file-icon" ng-if="this.$modelValue.document && ['png','jpg'].indexOf(this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1)) >= 0"></div>
+      <div class="fa fa-file-o file-icon" ng-hide="!this.$modelValue.document || this.$modelValue.document && ['png','jpg','pdf'].indexOf(this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1)) >= 0"></div>
 
       <a class="btn btn-delete" nodrag ng-show="!item.document && admin" ng-click="removeItem(this)"  ng-controller="CrudCtrl" analytics-on="click" analytics-event="delete" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" ><span class="fa fa-times"></span></a>
 			<a class="btn btn-delete" nodrag ng-show="item.document && admin" ng-click="removeItem(this)" ng-controller="CrudCtrl" analytics-on="click" analytics-event="delete" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-times"></span></a>
@@ -49,17 +52,17 @@
     </ol>
   </script>
 
-  <div id="document-tree" ng-class="{'no-docs' : documentAbsent}">
+  <div id="document-tree" ng-class="{'no-docs' : documentAbsent}" ng-click="documentLooseFocus()">
 
-    <div id="button-row" ng-show="admin">
+    <div id="button-row" ng-show="admin" ng-click="$event.stopPropagation()">
       <button class="submit-button dual-submit"  ng-multiple="true" ng-file-select ng-model="firstFiles" analytics-on="click" analytics-event="upload" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>" ><!-- <i class="fa fa-file"></i> -->{{ 'UPLOAD' | translate }} </button>
 
       <button ng-controller="CrudCtrl" class="submit-button dual-submit"  ng-click="newSubItem()" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" ><!-- <i class="fa fa-plus"></i> -->{{ 'CHAPTER' | translate }}</button>
     </div>
 
-    <div id="document-absent-title" ng-show="documentAbsent && admin">{{ 'NEW_SUBJECT' | translate }}</div>
+    <!-- <div id="document-absent-title" ng-show="documentAbsent && admin">{{ 'NEW_SUBJECT' | translate }}</div> -->
 
-    <div id="document-absent-subtitle"  ng-show="documentAbsent && admin">{{ 'LEFT_TREE_EXPLANATION' | translate }}</div>
+    <!-- <div id="document-absent-subtitle"  ng-show="documentAbsent && admin">{{ 'LEFT_TREE_EXPLANATION' | translate }}</div> -->
 
     <div id="ui-tree-container" ng-if="!documentAbsent">
       <div ui-tree="options" data-drag-enabled="false"  id="tree-root">
@@ -69,10 +72,15 @@
       </div>
     </div>
 
+    <div id="no-docs-student" ng-if="documentAbsent && !admin">
+      <div id="no-docs-student-pic"><%#= image_tag("dragndrop.png")%></div>
+      <div id="no-docs-student-text">This is a new subject, there is no document yet</div>
+    </div>
+
     <div id="tip" ng-hide="documentAbsent || home || !admin">
       <i class="fa fa-lightbulb-o"></i>
-      <span id="tip-chrome" ng-show="isChrome">Tip: You can drag and drop folders!</span>
-      <span id="tip-chrome" ng-hide="isChrome">Tip: You can drag and drop files (folder only for chrome)!</span>
+      <span id="tip-chrome" ng-show="isChrome">Tip: You can drag & drop folders!</span>
+      <span id="tip-chrome" ng-hide="isChrome">Tip: You can drag & drop files (folders only on Google Chrome!)</span>
     </div>
 
     <div id="document-absent-dropzone-container" ng-show="documentAbsent && admin && !home">

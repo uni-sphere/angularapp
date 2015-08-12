@@ -3,8 +3,11 @@ class OrganizationsController < ApplicationController
   def is_signed_up?
     if current_organization.users.where(email: params[:email]).exists?
       render json: {response: true}.to_json, status: 200
+    elsif User.where(email: params[:email]).exists?
+      user = User.where(email: params[:email]).first
+      render json: {response: user.id}.to_json, status: 200
     else
-      send_error('You are not signed up', '403')
+      render json: {response: false}.to_json, status: 200
     end
   end
   

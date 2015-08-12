@@ -1,10 +1,8 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('MainCtrl', ['$scope', 'browser','$timeout', 'Restangular', '$translate', '$auth', '$state', 'usSpinnerService', 'Notification', function ($scope, browser, $timeout, Restangular, $translate, $auth, $state, usSpinnerService, Notification) {
+  .controller('MainCtrl', ['$scope','$timeout', 'Restangular', '$translate', '$auth', '$state', 'usSpinnerService', 'Notification', function ($scope, $timeout, Restangular, $translate, $auth, $state, usSpinnerService, Notification) {
     $scope.sidebarMinified = true;
-
-
 
     /*==========  Location variable  ==========*/
 
@@ -96,15 +94,15 @@ angular
 
     /*==========  Spinner  ==========*/
 
-    $scope.activateSpinner = function(){
-      usSpinnerService.spin('spinner-1');
-      $scope.greyBackground = true
-    }
+    // $scope.activateSpinner = function(){
+    //   usSpinnerService.spin('spinner-1');
+    //   $scope.greyBackground = true
+    // }
 
-    $scope.desactivateSpinner = function(){
-      usSpinnerService.stop('spinner-1');
-      $scope.greyBackground = false
-    }
+    // $scope.desactivateSpinner = function(){
+    //   usSpinnerService.stop('spinner-1');
+    //   $scope.greyBackground = false
+    // }
 
     /*==========  Function  ==========*/
 

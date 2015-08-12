@@ -1,4 +1,4 @@
-namespace :awsdocuments_links do
+namespace :awsdocuments do
   desc "send"
   task refresh: :environment do
     Awsdocument.refresh_links

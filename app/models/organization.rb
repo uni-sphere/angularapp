@@ -10,7 +10,7 @@ class Organization < ActiveRecord::Base
   
   validates :name, presence: true
   validates :subdomain, uniqueness: true
-  validates_exclusion_of :subdomain, :in => ["api", "www", "sandbox", "admin"]
+  validates_exclusion_of :subdomain, :in => ["api", "www", "sandbox", "admin", "doc"]
   
   def format_subdomain
     if self.website.include? 'www'

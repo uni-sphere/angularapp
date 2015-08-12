@@ -4,7 +4,6 @@
   padding-left: 5%;
   padding-right: 5%;
   height: calc(100% - 40px);
-  background: white;
 }
 
 /*==================================
@@ -13,13 +12,13 @@
 
 #breadcrumb{
   position: relative;
-  height: 40px;
+  height: 36px;
   width: 100%;
+  font-size: 18px;
   line-height: 40px;
-  background: white;
   text-align: center;
-  color: #828282;
-	font-style: italic;
+  color: rgb(74, 74, 88);
+  font-family: 'Open Sans', sans-serif;
 }
 
 #breadcrumb-container{
@@ -55,21 +54,40 @@
   display: table;
   margin: 0px auto;
   text-align: center;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
 .dual-submit{
+  // border: 2px solid $document-color;
+  // color: $document-color;
+  // background: white;
+
   border: 1px solid #d4d4d4;
   color: #EEEEEE;
-  background: #0087E0;
+  cursor: pointer;
+  background: $blue;
+
   border-radius: 5px;
 
   margin: 0px 30px;
+  padding: 10px 20px;
   cursor: pointer;
 
-  padding: 10px 20px;
+  @media (max-width: 1500px) {
+    margin: 0px 18px;
+  }
 
-  font-family: Arial;
+  @media (max-width: 1200px) {
+    margin: 0px 10px;
+    padding: 10px 10px;
+    font-size: 1em;
+  }
+
+  font-family: 'Open Sans', sans-serif;
 
   font-size: 18px;
   text-decoration: none;
@@ -82,17 +100,17 @@
     margin-right: 5px;
   }
 
-  &:hover{
+   &:hover{
     border-color: #008EEC;
     border-bottom-color: #0084DC;
-    background: #008DEB;
+    background: #66A4FA;
   }
 
   &:active {
     border-color: #2a65a0;
     border-bottom-color: #3884cd;
-    background-color: #3072b3;
-    background-image: linear-gradient(#3072b3, #599bdc);
+    background-color: #6F9EF2;
+    background-image: linear-gradient(#4991F5, #66A4FA);
   }
 
 }
@@ -115,7 +133,7 @@
 
   padding: 10px 0px;
 
-  font-family: Arial;
+  font-family: 'Open Sans', sans-serif;
 
   font-size: 20px;
   text-decoration: none;
@@ -159,7 +177,7 @@
 #ui-tree-container{
 	font-size: 16px;
   position: absolute;
-  top: 100px;
+  top: 120px;
   bottom: 60px;
   width: 90%;
   z-index: 10;
@@ -169,15 +187,26 @@
 
 
 .item-name, .chapter-number{
+  line-height: 48px;
+  padding-top: 2px;
   display: inline-block;
 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 1200px) {
+    font-size: .9em;
+    line-height: 38px;
+  }
 }
 
 .item-name{
   margin-left: 4px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .angular-ui-tree-node{
@@ -188,11 +217,16 @@
 }
 
 .angular-ui-tree-handle {
+  margin: 1px 0px;
   opacity: 1;
   font-weight: 500;
-  border: 1px solid white;
-  padding: 9px 9px;
+  height: 50px;
+  padding: 0px 9px;
   cursor: default;
+
+  @media (max-width: 1200px) {
+    height: 40px;
+  }
 
   &:hover{
     background: $document-hover;
@@ -200,7 +234,6 @@
 }
 
 #root-object{
-  // margin-left: 10px;
   color: $document-color;
   cursor: pointer;
   padding: 9px 9px;
@@ -210,15 +243,17 @@
 }
 
 .isdocument{
-  padding-left: 35px;
 
   &:hover{
     background: $document-hover;
   }
 
   .item-name{
-    // width: calc(100% - 120px);
     margin-left: 4px;
+  }
+
+  .item-name, .file-icon{
+    color: #0054AD;
   }
 }
 
@@ -235,39 +270,29 @@
 }
 
 /*==========  Buttons  ==========*/
+.btn, .btn-collapse{
+  float: left;
 
-.btn {
-  width: 24px;
+  width: 24px !important;
+  line-height: 50px;
 
-  margin-right: 8px;
-
-  @media (max-width: 1500px) {
-    margin-right: 2px;
-    font-size: .8em;
-    width: 18px;
+  @media (max-width: 1200px) {
+    line-height: 40px;
   }
+
 
   display: inline-block;
-  text-align: center;
-  line-height: 24px;
   cursor: pointer;
-
-  &:hover, &:focus,{
-    color: #0065A8 !important;
-    text-decoration: none;
-  }
 }
 
 .btn-collapse{
   font-size: 1.5em;
-
-  width: 24px !important;
-  height: 24px !important;
   padding-right: 8px;
-  display: inline-block;
-  text-align: center;
-  cursor: pointer;
   color: #007CCE;
+
+  @media (max-width: 1200px) {
+    font-size: 1.3em;
+  }
 
   &:hover,&:focus {
     color: #0065A8;
@@ -278,12 +303,29 @@
   }
 }
 
-.expanded{
-  transform: rotate(90deg)
+.btn {
+  font-size: 1.1em;
+  margin-right: 8px;
+
+  @media (max-width: 1200px) {
+    margin-right: 2px;
+    font-size: .8em;
+    width: 18px;
+  }
+
+  &:hover, &:focus,{
+    color: #0065A8 !important;
+    text-decoration: none;
+  }
 }
 
 
-.btn-add, .btn-delete, .btn-rename, .btn-add-document, .btn-preview, .btn-download{
+.expanded{
+  transform: translate(0, 3px) rotate(90deg) ;
+}
+
+
+.btn-delete, .btn-rename, .btn-preview, .btn-download{
   display: none;
   float: right;
 }
@@ -292,8 +334,18 @@
   font-size: .8em;
 }
 
+.file-icon{
+  float: left;
+  color: $fa-color;
+  line-height: 50px;
+
+   @media (max-width: 1200px) {
+    line-height: 40px;
+  }
+}
+
 .angular-ui-tree-handle:hover {
-  .btn-add, .btn-delete, .btn-rename, .btn-add-document, .btn-preview, .btn-download{
+  .btn-delete, .btn-rename, .btn-preview, .btn-download{
     display: inline-block;
     color: $fa-color;
     &:hover{
@@ -422,6 +474,27 @@
 }
 
 
+/*=========================================
+=            Student - no docs            =
+=========================================*/
+
+#no-docs-student{
+  position: absolute;
+  top: 35%;
+  width: 90%;
+}
+
+#no-docs-student-text{
+  color: $dark-gris;
+  width: 100%;
+  text-align: center;
+}
+
+#no-docs-student-pic{
+  width: 100%;
+  text-align: center;
+}
+
 
 /*===================================
 =            Rename Node            =
@@ -435,102 +508,6 @@
   width: 500px;
   display: none;
 }
-
-// .account-gestion{
-//   position: relative;
-//   display: table;
-//   margin: 0 auto;
-// }
-
-// .popup-header{
-//   position: relative;
-//   line-height: 40px;
-//   padding: 0px 20px;
-//   background: black;
-//   color: white;
-//   border-top-left-radius: 5px;
-//   border-top-right-radius: 5px;
-//   text-align: center;
-//   font-size: 1.2em;
-
-//   .fa-times{
-//     position: relative;
-//     float: right;
-//     padding-left: 80px;
-//     line-height: 40px;
-//     cursor: pointer;
-//     font-size: .8em;
-//     color: $gris;
-//     &:hover{
-//       color: white;
-//     }
-//   }
-// }
-
-// .account-gestion-row-center{
-//   display: block;
-//   text-align: center;
-//   font-size: 1.1em;
-//   z-index: 10 !important;
-//   color: white;
-// }
-
-// .account-gestion-bg{
-//   position: absolute;
-//   background: black;
-//   top: 40px;
-//   left: 0;
-
-//   height: calc(100% - 40px);
-//   width: 100%;
-//   opacity: 0.7;
-//   z-index: 1;
-
-//   border-bottom-left-radius: 5px;
-//   border-bottom-right-radius: 5px;
-// }
-
-// .formPopup{
-//   position: relative;
-//   padding: 40px 20px;
-//   z-index: 10;
-// }
-
-// #accountSignupButton, #accountForgottenButton{
-//   margin-top: 40px;
-// }
-
-// @keyframes account-gestion-flyout {
-//   0% {
-//     opacity: 1;
-//     transform: translateY(0px);
-//   }
-
-//   100% {
-//     opacity: 0;
-//     transform: translateY(-700px);
-//   }
-// }
-
-// @keyframes account-gestion-flyin {
-//   0% {
-//     opacity: 0;
-//     transform: translateY(-700px);
-//   }
-
-//   100% {
-//     opacity: 1;
-//     transform: translateY(0);
-//   }
-// }
-
-// .viewDocument-rename-ready-to-disappear{
-//   animation: account-gestion-flyout 1s;
-// }
-
-// .viewDocument-rename-ready-to-appear{
-//   animation: account-gestion-flyin 1s;
-// }
 
 #small-ui-tree{
   overflow-y: auto;
@@ -600,3 +577,5 @@
 .school-ready-to-disappear{
   animation: fileDropped-flyin 1s;
 }
+
+

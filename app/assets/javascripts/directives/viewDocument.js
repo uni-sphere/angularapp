@@ -1,7 +1,7 @@
 (function () {
 
   angular.module('mainApp.directives')
-    .directive('viewDocument', ['$translate' , 'Restangular', 'browser', '$upload', 'Notification', 'ipCookie', function($translate, Restangular, browser, $upload, Notification, ipCookie) {
+    .directive('viewDocument', ['$translate' , 'Restangular', 'browser', '$upload', 'Notification', 'ipCookie', 'activateSpinner', 'stopSpinner', function($translate, Restangular, browser, $upload, Notification, ipCookie, activateSpinner, stopSpinner) {
       return {
         restrict: 'E',
         templateUrl: 'webapp/view-document.html',
@@ -10,13 +10,14 @@
           nodeEnd: '=',
           files: '=',
           admin: '=',
-          activateSpinner: '=',
-          desactivateSpinner: '=',
           sandbox: '=',
           home: '=',
           chapterFolded: '='
         },
         link: function(scope){
+
+          var fileName = "hello.text"
+          console.log(ext = fileName.substr(fileName.lastIndexOf('.') + 1))
 
           // Find the chapter that are folded
           // demo
@@ -174,12 +175,12 @@
           }
 
           // We save the number of download
-          scope.downloadItem = function(scope){
+          scope.downloadItem = function(node){
             if(scope.home || scope.sandbox){
               Notification.info("It is a trial version")
             }
             else{
-              console.log(scope.nodeEnd[0])
+              // console.log(scope.nodeEnd[0])
               Restangular.one('activity').put({node_id: scope.nodeEnd[0]}).then(function(d) {
                 Notification.success("File saved")
                 console.log("Download registered");
@@ -236,24 +237,33 @@
             }
           }
 
-          scope.toggleItems = function(node) {
-            if(node.$childNodesScope.$modelValue != undefined){
-              node.toggle();
-              addTochapterFolded(node.$modelValue.id);
-            }
-          };
-
           scope.activateChapter = function(node){
-            if(scope.previousActiveChapter != undefined){
-              scope.previousActiveChapter.$modelValue.activeItem = false;
-              scope.activeChapter = false
-            }
+            // activate the chapter
+            if(!node.$modelValue.document){
+              if(scope.previousActiveChapter != undefined){
+                scope.previousActiveChapter.$modelValue.activeItem = false;
+              }
 
-            if(!node.collapsed){
               node.$modelValue.activeItem = true;
               scope.activeChapter = node;
               scope.previousActiveChapter = node
             }
+
+            // toggle the node
+            if(node.$childNodesScope.$modelValue != undefined){
+              node.toggle();
+              addTochapterFolded(node.$modelValue.id);
+            }
+          }
+
+          scope.documentLooseFocus = function(){
+
+            if(scope.previousActiveChapter != undefined){
+              scope.previousActiveChapter.$modelValue.activeItem = false;
+              scope.activeChapter = undefined
+            }
+
+
           }
 
           // Add folded chapters to cookie
@@ -551,7 +561,7 @@
                   }
                 }).then(function(){
                   if(scope.arrayFiles.length == 0){
-                    scope.desactivateSpinner()
+                    stopSpinner()
                     scope.lastDeployedPosition = undefined;
                   } else{
                     console.log("|| MORE FOLDER TO UPLOAD");
@@ -604,14 +614,14 @@
               var nodeDocData = masternodeData;
 
               if(scope.isChrome){
-                scope.activateSpinner()
+                activateSpinner()
                 orderFiles(files);
                 uploadItems();
               } else{
                 if(files[0].type == "directory" || files[0].size == 0){
                   Notification.error("You can only upload folder on Chrome")
                 } else{
-                  scope.activateSpinner()
+                  activateSpinner()
                   orderFiles(files);
                   uploadItems();
                 }

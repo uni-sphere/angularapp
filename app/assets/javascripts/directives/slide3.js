@@ -5,8 +5,6 @@
       restrict: 'E',
       templateUrl: 'home/slide3.html',
       scope: {
-        desactivateSpinner: '=',
-        activateSpinner: '=',
         sandbox: '=',
         home: '='
       },

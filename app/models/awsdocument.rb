@@ -29,7 +29,6 @@ class Awsdocument < ActiveRecord::Base
   def self.refresh_links
     self.where(archived: false).each do |document|
       document.update(url: document.content.file.authenticated_url)
-      logger.info document.title
     end
   end
   

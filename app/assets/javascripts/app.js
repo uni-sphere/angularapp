@@ -136,7 +136,7 @@
       UPLOAD: 'Upload a file',
       CHAPTER: 'New chapter',
       DROP_ZONE: 'DROP ZONE',
-      DROP_EXPLANATION: 'You can even drop folders containing folders containing folders.. ',
+      DROP_EXPLANATION: 'You can even drop folders containing folders containing folders ',
       DROP_COMMENT: "You can drag & drop files ",
       COLLAPSE: 'Collapse',
       DASHBOARD: 'Dashboard',
@@ -149,7 +149,7 @@
       NO_DOWNLOADS: 'There is no downloads yet',
       NEW_ORGA: ' is a new organization',
       WAIT: 'Wait one week for statistics',
-      PROFIL: 'Profil',
+      PROFIL: 'Profile',
       NAME: 'Name',
       EMAIL: 'Email',
       UPDATE_PROFIL: 'Update profil',
@@ -161,7 +161,7 @@
       NEW_PSW: 'New Password',
       CONFIRM_PSW: 'Confirm password',
       UPDATE_PSW: 'Update password',
-      USERS_INVITED: 'List of lecturers to add'
+      USERS_INVITED: 'Lecturers to add'
     })
     .translations('fr', {
       HELP: 'Aide',
@@ -184,7 +184,7 @@
       SIGNOUT: 'Déconnexion',
       LEFT_STATISTICS: 'Vos statistiques: consultations dans',
       RIGHT_STATISTICS: 'statistiques:',
-      NEW_NODE: "C'est un nouveau new",
+      NEW_NODE: "C'est un nouveau noeud",
       NO_DOWNLOADS: "Il n'y a pas encore de documents",
       NEW_ORGA: ' est une nouvelle organisation',
       WAIT: 'Attendez une semaine pour visualiser des données',
@@ -212,6 +212,7 @@
   angular.module('mainApp.filters', []);
   angular.module('mainApp.controllers', []);
   angular.module('mainApp.directives', []);
+  angular.module('mainApp.services', []);
 
 })();
 

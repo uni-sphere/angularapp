@@ -9,9 +9,9 @@ class UserMailer < ActionMailer::Base
       @nodes_activity = []
       @url = "http://#{organization.subdomain}.unisphere.eu"
       user_nodes_email(user.id).each do |node|
-        @nodes_activity << {name: node.name, parent: Node.find(node.parent_id), downloads: node.reports.last.downloads}
+        @nodes_activity << {name: node.name, parent: Node.find(node.parent_id).name, downloads: node.reports.last.downloads} if node.reports.exists?
       end
-      mail(to: user.email, subject: "Weekly #{@organization.name} activity")
+      mail(to: user.email, subject: "Weekly activity #{@organization.name}")
     end
   end
   

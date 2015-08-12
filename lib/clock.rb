@@ -9,8 +9,8 @@ module Clockwork
     `rake activity_reports:send`
   }
   
-  every(6.days, 'awsdocument links') {
-    `rake awsdocuments_links:refresh`
+  every(6.days, 'awsdocuments links') {
+    `rake awsdocuments:refresh`
   }
 
 end

@@ -5,8 +5,36 @@
   height: 100%;
   width: 100%;
   overflow-y: hidden;
+  // z-index: 10;
+
 }
 
+// #pretty-bg{
+//   position: fixed;
+//   left: 25%;
+//   top: 70%;
+//   width: 40%;
+//   height: 50%;
+//   background-image: url(image-path('wallpaper.png'));
+//   // background-image: url(image-path('shattered.png')) !important;
+
+
+//   // background-image: url(image-path('wallpaper.png')) !important;
+//   background-size: cover;
+//   // background-position: center;
+//   // background-repeat: no-repeat;
+//   // opacity: 0.7;
+// }
+
+#funny-bg{
+  position: fixed;
+  left: 30%;
+  top: 70%;
+  width: 40%;
+  height: 50%;
+  background-image: url(image-path('wallpaper.png'));
+  background-size: cover;
+}
 
 #view-tree{
   position: relative;
@@ -16,8 +44,7 @@
   height: 100%;
   width: calc(65% - 3px);
 
-  background: white;
-  border-right: 3px solid grey;
+  // border-right: 3px solid grey;
 
   // box-shadow: 2px 0px 2px 1px rgba(0, 0, 0, 0.4);
 }
@@ -26,9 +53,8 @@
 #view-document{
   position: relative;
   float: left;
-  background: $document-bg;
-
-  height: calc(100%);
+  margin-top: 40px;
+  height: calc(100% - 40px);
   width: calc(35%);
 }
 
