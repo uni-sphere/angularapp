@@ -16,9 +16,6 @@
         },
         link: function(scope){
 
-          var fileName = "hello.text"
-          console.log(ext = fileName.substr(fileName.lastIndexOf('.') + 1))
-
           // Find the chapter that are folded
           // demo
           if(scope.home || scope.sandbox){
@@ -44,7 +41,7 @@
 
           scope.$watch('activeNodes', function(newVals, oldVals){
             if(newVals){
-
+              console.log(newVals);
               //breadcrumb
               scope.breadcrumb = []
               for(var i = scope.activeNodes.length - 2; i >= 0; i--){
@@ -195,6 +192,7 @@
           // We watch when someone drag and drops a file / folder
           scope.$watch('files', function (newVals, oldVals) {
             if(newVals){
+              console.log("Ok: File Dropped")
               $('#fileDroppedBackground').fadeIn();
               $('#fileDropped').fadeIn();
             }
@@ -220,8 +218,8 @@
 
           // We watch when someone uploads a file at the root
           scope.$watch('firstFiles', function (newVals, oldVals) {
-            if(newVals){
-              console.log("firstFiles")
+            if(newVals && newVals.length != 0){
+              console.log("Ok: file choosen")
               upload(scope.firstFiles, false);
             }
           });
@@ -238,6 +236,7 @@
           }
 
           scope.activateChapter = function(node){
+            console.log("Ok: Chapter selected")
             // activate the chapter
             if(!node.$modelValue.document){
               if(scope.previousActiveChapter != undefined){

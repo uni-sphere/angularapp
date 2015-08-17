@@ -365,13 +365,19 @@
 =            Tip            =
 ===========================*/
 
-#tip{
+.tip{
+  display: flex;
+  justify-content: center;
+  width: calc(100% - 40px);
   position: absolute;
   bottom: 20px;
-  margin-left: 20px;
   font-size: .9em;
   color: $dark-gris;
-  z-index: 0
+  z-index: 0;
+  .fa{
+    line-height: 22px;
+    margin-right: 5px;
+  }
 }
 
 
@@ -416,7 +422,9 @@
 #document-absent-dropzone-container{
   position: absolute;
   bottom: 0px;
-  height: calc(75% - 80px);
+  // height: 100%;
+  top: 200px;
+  // height: calc(75% - 80px);
   width: 90%;
 }
 
@@ -424,33 +432,39 @@
   position: relative;
   float: left;
   width: 80%;
-  height: 80%;
+  height: 100%;
   margin-left: 10%;
-  margin-top: 10%;
+  // margin-top: 10%;
 
-  border-radius: 60px;
-  border: 2px solid $dropzone-color;
+  // border-radius: 60px;
+  // border: 2px solid $dropzone-color;
 }
 
 // Pic
 #document-absent-dropzone-image{
   position: relative;
-  height: 60%;
+  height: 70%;
+  margin-bottom: 20px;
 
-
+  background-image: url(image-path('dropzone.png'));
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.4;
 }
-#dropzone-image-container{
-  position: absolute;
-  top: calc(50% - 35px);
-  width: 100%;
 
-  .fa-download{
-    margin: 0px auto;
-    display: table;
-    font-size: 4em;
-    color: $dark-gris;
-  }
-}
+// #dropzone-image-container{
+//   position: absolute;
+//   top: calc(50% - 35px);
+//   width: 100%;
+
+//   .fa-download{
+//     margin: 0px auto;
+//     display: table;
+//     font-size: 4em;
+//     color: $dark-gris;
+//   }
+// }
 
 
 // Text under the pic
@@ -469,29 +483,42 @@
 }
 
 
-#document-absent-type-item-droppable{
-  font-size: .8em;
-}
+
 
 
 /*=========================================
 =            Student - no docs            =
 =========================================*/
 
-#no-docs-student{
-  position: absolute;
-  top: 35%;
+#select-leaf{
+  position: relative;
+  // top: 35%;
   width: 90%;
+  height: 100%;
+  margin-left: 5%;
 }
 
-#no-docs-student-text{
+#select-leaf-text{
+  font-family: 'Open Sans', sans-serif;
   color: $dark-gris;
   width: 100%;
   text-align: center;
+  // color: cornflowerblue;
 }
 
-#no-docs-student-pic{
-  width: 100%;
+#select-leaf-pic{
+  position: relative;
+  width: 80%;
+  height: 35%;
+  margin-left: 10%;
+  margin-top: 30%;
+  margin-bottom: 30px;
+
+  background-image: url(image-path('no-doc.png'));
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.6;
   text-align: center;
 }
 

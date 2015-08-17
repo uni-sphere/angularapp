@@ -23,6 +23,7 @@
           Restangular.one('nodes').get().then(function (nodes) {
             scope.flatNode = nodes.plain();
             scope.nodes = makeNested(scope.flatNode)
+            console.log(scope.nodes)
 
             scope.$watch('admin',function(newVals, oldVals){
               if(newVals != undefined){
@@ -353,6 +354,8 @@
             findFoldedNodes(scope.root);
             colornodePath(scope.root);
 
+            console.log(scope.nodeEnd);
+
             if(!scope.home && !scope.sandbox){
               ipCookie('activeNodes', scope.activeNodes);
               ipCookie('foldedNodes', scope.foldedNodes);
@@ -377,11 +380,20 @@
 
           /*==========  Find the node path and add it to active nodes ( in ordrer to color nodes)  ==========*/
 
-          function findActiveNodes(d){
-            scope.activeNodes.push([d.num, d.name]);
-            if(d.parent){
-              findActiveNodes(d.parent)
+          function findActiveNodes(node){
+            console.log("active nodes")
+            scope.activeNodes = [];
+
+
+            function addToActiveNodes(node){
+              scope.activeNodes.push([node.num, node.name]);
+              if(node.parent){
+                addToActiveNodes(node.parent)
+              }
             }
+
+            addToActiveNodes(node)
+
 
           }
 
@@ -430,14 +442,13 @@
               function deleteProperly(node){
                 if(node.num == scope.nodeEnd[0]){
                   scope.nodeEnd = false
-                  scope.activeNodes = [scope.nodeEnd]
-                  findFoldedNodes(scope.root);
-                  colornodePath(scope.root);
 
-                  scope.$apply()
+                  findFoldedNodes(scope.root);
+                  findActiveNodes(node.parent)
+
+                  colornodePath(scope.root);
                 }
                 if(node.children){
-                  // console.log(node.children)
                   node.children.forEach(deleteProperly)
                 }
                 if(node._children){
@@ -452,15 +463,12 @@
             // If we are the app
             else{
               Restangular.all('nodes/' + d.num).remove().then(function(res) {
-                console.log(res.deleted)
-                console.log(scope.chapterFolded)
 
                 for( var i = 0; i < res.deleted.length; i ++){
                   removeFromArray(scope.chapterFolded, res.deleted[i].toString())
                 }
 
 
-                console.log(scope.chapterFolded)
                 var nodeToDelete = _.where(nodeSelected.parent.children, {id: nodeSelected.id});
                 if (nodeToDelete){
                   nodeSelected.parent.children = _.without(nodeSelected.parent.children, nodeToDelete[0]);
@@ -473,8 +481,9 @@
                 function deleteProperly(node){
                   if(node.num == scope.nodeEnd[0]){
                     scope.nodeEnd = false;
-                    scope.activeNodes = [scope.nodeEnd]
+
                     findFoldedNodes(scope.root);
+                    findActiveNodes(node.parent)
                     ipCookie('activeNodes', scope.activeNodes);
                     ipCookie('nodeEnd', scope.nodeEnd);
                     ipCookie('foldedNodes', scope.foldedNodes);
@@ -496,7 +505,7 @@
               }, function(d) {
                 console.log(d);
                 console.log("Error: Delete node");
-               Notification.error('You can not delete a node');
+               Notification.error('This node is not yours');
               });
             }
 

@@ -90,12 +90,16 @@
 
 /*==========  Graph empty  ==========*/
 
-.chart-empty{
+.chart-empty-1, .chart-empty-2{
   margin-top: 80px;
   display: inline-block;
   width: 50%;
   text-align: center;
   color: $no-chart-color
+}
+
+.chart-empty-2{
+  float: right;
 }
 
 .chart-empty-title{

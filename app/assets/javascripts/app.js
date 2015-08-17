@@ -57,17 +57,6 @@
         templateUrl: 'webapp/webapp.html'
       })
 
-      .state('main.dashboard', {
-        url: 'dashboard',
-        templateUrl: 'dashboard/one.html',
-        resolve: {
-          auth: function($auth){
-            console.log("dashboard")
-            return $auth.validateUser();
-          }
-        }
-      })
-
       .state('main.account', {
         url: 'account',
         templateUrl: 'account/account.html',
@@ -78,6 +67,27 @@
           }
         }
       })
+
+
+      if(window.location.host == "sandbox.unisphere.eu"){
+        $stateProvider.state('main.dashboard', {
+          url: 'dashboard',
+          templateUrl: 'dashboard/one.html',
+        })
+      } else{
+        $stateProvider.state('main.dashboard', {
+          url: 'dashboard',
+          templateUrl: 'dashboard/one.html',
+          resolve: {
+            auth: function($auth){
+              console.log("dashboard")
+              return $auth.validateUser();
+            }
+          }
+        })
+      }
+
+
     }
 
 
@@ -131,12 +141,12 @@
       ADMINISTRATOR: 'Administrator',
       VALIDATE: 'Validate',
       ADMIN_LOGIN: 'Log in as administrator',
-      NEW_SUBJECT: 'New subject',
+      NEW_SUBJECT: 'No document has been uploaded',
       LEFT_TREE_EXPLANATION: 'You can directy upload your files and organise them into chapters.',
       UPLOAD: 'Upload a file',
       CHAPTER: 'New chapter',
       DROP_ZONE: 'DROP ZONE',
-      DROP_EXPLANATION: 'You can even drop folders containing folders containing folders ',
+      DROP_EXPLANATION: 'Tip:  You can even drop folders containing folders',
       DROP_COMMENT: "You can drag & drop files ",
       COLLAPSE: 'Collapse',
       DASHBOARD: 'Dashboard',
@@ -145,7 +155,7 @@
       SIGNOUT: 'Sign out',
       LEFT_STATISTICS: 'Your statistics: downloads in',
       RIGHT_STATISTICS: 'statistics:',
-      NEW_NODE: 'This is a new node',
+      NEW_NODE: ' is a new node',
       NO_DOWNLOADS: 'There is no downloads yet',
       NEW_ORGA: ' is a new organization',
       WAIT: 'Wait one week for statistics',
@@ -161,7 +171,13 @@
       NEW_PSW: 'New Password',
       CONFIRM_PSW: 'Confirm password',
       UPDATE_PSW: 'Update password',
-      USERS_INVITED: 'Lecturers to add'
+      USERS_INVITED: 'Lecturers to add',
+      TIP: 'Tip: You can drag & drop folders!',
+      TIP_CHROME: 'Tip: You can drag & drop files (folders only on Google Chrome!)',
+      LENGTH: 'At least 6 characters',
+      SECURITY: 'Security',
+      SHORT: 'too short',
+      LECTURERS: 'Enseignants'
     })
     .translations('fr', {
       HELP: 'Aide',
@@ -170,7 +186,7 @@
       ADMINISTRATOR: 'Administrateur',
       VALIDATE: 'Valider',
       ADMIN_LOGIN: 'Connection administrateur',
-      NEW_SUBJECT: "Nouvelle matière",
+      NEW_SUBJECT: "Ajouter des dossiers et des documents",
       LEFT_TREE_EXPLANATION: 'Vous pouvez importer directement vos fichiers et les organiser dans des chapitres.',
       UPLOAD: 'Nouveau fichier',
       CHAPTER: 'Nouveau chapitre',
@@ -184,7 +200,7 @@
       SIGNOUT: 'Déconnexion',
       LEFT_STATISTICS: 'Vos statistiques: consultations dans',
       RIGHT_STATISTICS: 'statistiques:',
-      NEW_NODE: "C'est un nouveau noeud",
+      NEW_NODE: " est un nouveau noeud",
       NO_DOWNLOADS: "Il n'y a pas encore de documents",
       NEW_ORGA: ' est une nouvelle organisation',
       WAIT: 'Attendez une semaine pour visualiser des données',
@@ -200,7 +216,13 @@
       NEW_PSW: 'Nouveau mot de passe',
       CONFIRM_PSW: 'Confirmation du mot de passe',
       UPDATE_PSW: 'Modifier mot de passe',
-      USERS_INVITED: 'Utilisateurs ajoutés'
+      USERS_INVITED: 'Utilisateurs ajoutés',
+      TIP: 'Astuce: Vous pouvez clicker glisser des documents',
+      TIP_CHROME: 'Astuce: Vous pouvez clicker glisser des documents (et des dossiers avec Google Chrome!)',
+      LENGTH: 'Au minimum 6 charactères',
+      SECURITY: 'Sécurité',
+      SHORT: 'trop court',
+      LECTURERS: 'Lecturers'
     })
     .preferredLanguage('en')
     .registerAvailableLanguageKeys(['fr'])

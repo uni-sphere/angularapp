@@ -1,7 +1,7 @@
 class NodesController < ApplicationController
 
   def create
-    node = current_organization.nodes.new(name: params[:name], parent_id: params[:parent_id])
+    node = current_organization.nodes.new(name: params[:name], parent_id: params[:parent_id], user_id: current_user.id)
     parent = current_organization.nodes.find params[:parent_id]
     report = node.reports.new
     if node.save and report.save
@@ -32,11 +32,15 @@ class NodesController < ApplicationController
   end
 
   def destroy
-    if current_node.parent_id != 0
-      deleted = destroy_with_children(current_node.id)
-      render json: {deleted: deleted}.to_json, status: 200
+    if can_delete(current_node.id)
+      if current_node.parent_id != 0
+        deleted = destroy_with_children(current_node.id)
+        render json: {deleted: deleted}.to_json, status: 200
+      else
+        send_error('You can not destroy the root of your tree', 400)
+      end
     else
-      send_error('You can not destroy the root of your tree', 400)
+      send_error('Forbidden', 403)
     end
   end
 

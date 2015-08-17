@@ -1,11 +1,11 @@
 #slide1{
-  height: 100vh;
+  // height: 100vh;
 }
 
 .welcome-wrapper{
   position: relative;
   float: left;
-  height: 70vh;
+  height: 90vh;
   margin-bottom: 40px;
 
   width: 100%;
@@ -23,7 +23,7 @@
   position: relative;
   font-size: 6em;
   font-family: "um Web", sans-serif;
-  font-weight: 600; 
+  font-weight: 600;
   text-align: center;
 }
 
@@ -35,7 +35,7 @@
   font-size: 2.3em;
   margin-top: 20px;
   font-family: "um Web", sans-serif;
-  font-weight: 500; 
+  font-weight: 500;
   text-align: center;
 }
 
@@ -72,52 +72,20 @@
   position: absolute;
   left: calc(50% - 50px);
   bottom: 0;
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-right: 50px solid transparent;
   border-bottom: 50px solid white;
-  // &:before{
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0px;
-  //   border-right: 50px solid transparent;
-  //   border-bottom: 50px solid #393939;
-  //   content: "";
-  // }
-  //  &:after{
-  //   position: absolute;
-  //   top: 0;
-  //   left: -1px;
-  //   border-right: 50px solid transparent;
-  //   border-bottom: 50px solid white;
-  //   content: "";
-  // }
 }
 
 #triangle-right{
   position: absolute;
   left: 50%;
   bottom: 0;
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 50px solid transparent;
   border-bottom: 50px solid white;
-  // &:before{
-  //   position: absolute;
-  //   top: 0;
-  //   left: -50px;
-  //   border-left: 50px solid transparent;
-  //   border-bottom: 50px solid #393939;
-  //   content: "";
-  // }
-  //  &:after{
-  //   position: absolute;
-  //   top: 0;
-  //   left: -49px;
-  //   border-left: 50px solid transparent;
-  //   border-bottom: 50px solid white;
-  //   content: "";
-  // }
 }
 
 #rectangle-right{
@@ -127,7 +95,6 @@
   height: 50px;
   width: calc(50% - 50px);
   background: white;
-  // border-top: 1px solid #393939;
 }
 
 

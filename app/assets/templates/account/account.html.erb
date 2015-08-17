@@ -16,7 +16,7 @@
   <form name="organizationForm" class="panel" id="panel-organization" ng-hide="sandbox" novalidate>
     <div class="panel-header">{{ 'ORGANIZATION' | translate }}</div>
     <div class="panel-body">
-      <div class="panel-row-title">List of lecturers</div>
+      <div class="panel-row-title">{{ 'LECTURERS' | translate }}</div>
       <div id="listUser">
         <div ng-repeat="user in listUser" class="element-user">
           <i class="fa fa-user"></i>{{user.email}}
@@ -39,11 +39,11 @@
       <input type="password" id="new-password" class="panel-input" ng-model="newPsw" ng-minlength=8 required>
       <div class="fa fa-check password-notif"></div>
 
-      <div class="password-tip"><i class="fa fa-lightbulb-o"></i>Use at least 8 characters</div>
+      <div class="password-tip"><i class="fa fa-lightbulb-o"></i>{{ 'LENGTH' | translate }}</div>
 
       <div id="password-strength" class="short">
-        <span class="strength-fixed-text">Password strength:</span>
-        <span class="strength-text">Too short</span>
+        <span class="strength-fixed-text">{{ 'SECURITY' | translate }}</span>
+        <span class="strength-text">{{ 'SHORT' | translate }}</span>
 
         <div class="visual-indicator-container">
           <div class="visual-indicator"></div>

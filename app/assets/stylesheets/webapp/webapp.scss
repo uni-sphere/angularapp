@@ -26,15 +26,15 @@
 //   // opacity: 0.7;
 // }
 
-#funny-bg{
-  position: fixed;
-  left: 30%;
-  top: 70%;
-  width: 40%;
-  height: 50%;
-  background-image: url(image-path('wallpaper.png'));
-  background-size: cover;
-}
+// #funny-bg{
+//   position: fixed;
+//   left: 30%;
+//   top: 70%;
+//   width: 40%;
+//   height: 50%;
+//   background-image: url(image-path('wallpaper.png'));
+//   background-size: cover;
+// }
 
 #view-tree{
   position: relative;
@@ -50,7 +50,7 @@
 }
 
 
-#view-document{
+#view-document, .no-nodeEnd{
   position: relative;
   float: left;
   margin-top: 40px;
@@ -58,10 +58,37 @@
   width: calc(35%);
 }
 
-.no-nodeEnd{
+// .no-nodeEnd{
+//   margin-top: 36px;
+// }
+// .no-nodeEnd{
+//   position: relative;
+//   color: $dark-gris;
+//   height: 100%;
+//   width: 100%;
+//   background: red;
+// }
+
+#no-nodeEnd-text{
+  display: block;
+  font-family: 'Open Sans', sans-serif;
   color: $dark-gris;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 90%;
+  width: 100%;
+  text-align: center;
+}
+
+#no-nodeEnd-pic{
+  position: relative;
+  width: 80%;
+  height: 35%;
+  margin-left: 10%;
+  margin-top: 30%;
+  margin-bottom: 30px;
+
+  background-image: url(image-path('no-doc.png'));
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.6;
+  text-align: center;
 }

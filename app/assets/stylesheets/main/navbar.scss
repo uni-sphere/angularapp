@@ -2,7 +2,7 @@
   position: fixed;
   opacity: 0.9;
 //  color: $navbar-color;
-  color: rgb(74, 74, 88);;
+  color: rgb(74, 74, 88);
   top: 0px;
   left: 0px;
   font-family: 'Open Sans', sans-serif;
@@ -25,9 +25,9 @@
   position: relative;
   float: left;
 
-  padding-left: 20px;
+  // padding-left: 20px;
 
-  width: calc(20% - 20px);
+  width: calc(20%);
 
   height: 50px;
   line-height: 50px;
@@ -35,10 +35,17 @@
   #brand-logo{
     position: relative;
     float: left;
-    margin-top: 6px;
-    margin-right: 15px;
+    margin-top: 7px;
+    margin-right: 10px;
+    margin-left: 15px;
 
-    height: 32px;
+    height: 42px;
+    width: 42px;
+
+    background-image: url(image-path('logo-pirate.png'));
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 }
 

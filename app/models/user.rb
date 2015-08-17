@@ -7,7 +7,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   require 'bcrypt'
-
+  
+  has_many :nodes
   has_many :chapters
   has_many :organizationsuserslinks
   has_many :organizations, through: :organizationsuserslinks

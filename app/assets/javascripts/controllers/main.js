@@ -10,7 +10,8 @@ angular
       console.log("sandbox")
       $scope.sandbox = true
       $scope.admin = true
-      $('#first-connection').fadeIn(2000)
+      // $('#first-connection').fadeIn(2000)
+      $scope.university = "My university"
     } else if(window.location.host == 'www.unisphere.eu' || window.location.host == 'home.dev.unisphere.eu' || window.location.pathname == '/home'){
       console.log("home")
       $scope.home = true

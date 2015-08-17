@@ -9,20 +9,20 @@
 <div class="chart-control">
   <div class="chart-title">{{university}} {{ 'RIGHT_STATISTICS' | translate }} {{activeStat.name}}</div>
   <div class="chart-button-wrapper">
-  <div ng-repeat="stat in generalStats" ng-click="selectStat(this)" class="button-group" ng-class="{'button-group-first' : $index == 0, 'button-group-last' : $index == generalStats.length - 1, 'button-group-middle' : $index != 0 && $index != generalStats.length - 1, 'active' : stat == activeStat}">{{stat.name}}</div>
+  <div ng-repeat="stat in generalStats" ng-click="selectStat(this)" class="button-group" ng-class="{'button-group-first' : $index == 0, 'button-group-last' : $index == generalStats.length - 1, 'button-group-middle' : $index != 0 && $index != generalStats.length - 1, 'active' : stat.name == activeStat}">{{stat.name}}</div>
   </div>
 </div>
 
 
 
-<div id="chart-1" ng-hide="graph1Empty"></div>
-<div class="chart-empty" ng-show="graph1Empty">
-  <div class="chart-empty-text chart-empty-title">{{ 'NEW_NODE' | translate }}</div>
+<div id="chart-1"></div>
+<div class="chart-empty-1" ng-show="graph1Empty">
+  <div class="chart-empty-text chart-empty-title">{{userActiveNode.name}}{{ 'NEW_NODE' | translate }}</div>
   <div class="chart-empty-text chart-empty-subtitle">{{ 'NO_DOWNLOADS' | translate }}</div>
 </div>
-<div id="chart-2" ng-hide="graph2Empty"></div>
-<div class="chart-empty" ng-show="graph2Empty">
-  <div class="chart-empty-text">{{university}}{{ 'NEW_ORGA' | translate }}</div>
-  <div class="chart-empty-text">{{ 'WAIT' | translate }}</div>
+<div id="chart-2"></div>
+<div class="chart-empty-2" ng-show="graph2Empty">
+  <div class="chart-empty-text chart-empty-title">{{university}}{{ 'NEW_ORGA' | translate }}</div>
+  <div class="chart-empty-text chart-empty-subtitle">{{ 'WAIT' | translate }}</div>
 </div>
 

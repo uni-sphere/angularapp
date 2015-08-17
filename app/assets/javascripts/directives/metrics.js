@@ -1,7 +1,7 @@
 (function () {
   angular.module('mainApp.directives')
   .directive('metrics', [ 'Restangular', function(Restangular) {
-    
+
     return {
       restrict: 'E',
       templateUrl: 'dashboard/metric.html',
@@ -14,35 +14,35 @@
 
         scope.containerWidth = $('#main-view-container').width();
 
-        // We change the size of the graphs when the sidebar is oppened
-        scope.$watch('sidebarMinified', function(newVals, oldVals){
-          if(scope.chart2rdy && scope.chart1rdy){
-            if (scope.sidebarMinified) {
-              options1.width = $('#chart-1').width();
-              options2.width = $('#chart-2').width();
-            } else {
-              options1.width = $('#chart-1').width() - 150;
-              options2.width = $('#chart-2').width() - 150;
-            }
+        // // We change the size of the graphs when the sidebar is oppened
+        // scope.$watch('sidebarMinified', function(newVals, oldVals){
+        //   if(scope.chart2rdy && scope.chart1rdy){
+        //     if (scope.sidebarMinified) {
+        //       options1.width = $('#chart-1').width();
+        //       options2.width = $('#chart-2').width();
+        //     } else {
+        //       options1.width = $('#chart-1').width() - 150;
+        //       options2.width = $('#chart-2').width() - 150;
+        //     }
 
-            options1.height =  $('#ui-view-main-wrapper').height() * 50 / 100;
-            MG.data_graphic(options1);
+        //     options1.height =  $('#ui-view-main-wrapper').height() * 50 / 100;
+        //     MG.data_graphic(options1);
 
-            options2.height =  $('#ui-view-main-wrapper').height() * 50 / 100;
-            MG.data_graphic(options2);
-          }
-        });
+        //     options2.height =  $('#ui-view-main-wrapper').height() * 50 / 100;
+        //     MG.data_graphic(options2);
+        //   }
+        // });
 
         // when the window is resized the graphs are changing
-        window.onresize = function() {
-          options1.width = $('#chart-1').width(),
-          options1.height =  $('#ui-view-main-wrapper').height() * 50 / 100,
-          MG.data_graphic(options1);
+        // window.onresize = function() {
+        //   options1.width = $('#ui-view-main-wrapper').width() / 2 - 120,
+        //   options1.height =  $('#ui-view-main-wrapper').height() * 50 / 100,
+        //   MG.data_graphic(options1);
 
-          options2.width = $('#chart-2').width(),
-          options2.height =  $('#ui-view-main-wrapper').height() * 50 / 100,
-          MG.data_graphic(options2);
-        };
+        //   options2.width =  $('#ui-view-main-wrapper').width() / 2 - 120,
+        //   options2.height =  $('#ui-view-main-wrapper').height() * 50 / 100,
+        //   MG.data_graphic(options2);
+        // };
 
         // We save the node of the user, so we can propose to display them in the first chart
         Restangular.one('report/nodes').get().then(function(data) {
@@ -51,14 +51,14 @@
         });
 
         /*==========  First chart download on different node  ==========*/
-        
+
         scope.userNodes = "";
         scope.userActiveNode = "";
-        var current_time = Date.now() + 200000;
+        // var current_time = Date.now() + 200000;
 
         // Options of the first chart
         var options1 = {
-          width: $('#chart-1').width(),
+          width: $('#ui-view-main-wrapper').width() / 2 - 120,
           height: $('#ui-view-main-wrapper').height() * 50 / 100,
           target: '#chart-1',
           x_accessor: 'date',
@@ -66,6 +66,7 @@
           xax_start_at_min: 'true',
           inflator: 15/10,
           interpolate: 'linear',
+          x_extended_ticks: 'true',
           // max_x: current_time,
 
           mouseover: function(d, i) {
@@ -83,31 +84,33 @@
         scope.$watch('userActiveNode', function(newVals, oldVals){
           if(newVals){
             Restangular.one('reports/firstchart').get({node_id: newVals.id}).then(function(rawData) {
-              if (!rawData.empty) {
-                scope.chart1rdy = true;
+              if (rawData.empty) {
+                $('#chart-1').css('display', 'none');
+                scope.graph1Empty = true;
+              } else{
                 if(rawData.plain().length != 1 && rawData.plain()[0] != 0){
+                  $('#chart-1').css('display', 'inline-block');
+                  scope.graph1Empty = false;
                   var data = MG.convert.date(rawData.plain(), 'date');
                   options1.data = data;
                   MG.data_graphic(options1);
-                  scope.graph1Empty = false;
                 } else {
+                  $('#chart-1').css('display', 'none');
                   scope.graph1Empty = true;
                 }
-              } else {
-                scope.graph1Empty = true;
               }
             });
           }
         });
 
         /*==========  Second chart general stats  ==========*/
-        
+
         // We define the stats we want to display
         scope.generalStats = [{name: "downloads"}, {name: "uploads"}, {name: "lecturers"}]
 
         // Options of the second chart
         var options2 = {
-          width: $('#chart-2').width(),
+          width: $('#ui-view-main-wrapper').width() / 2 - 120,
           height: $('#ui-view-main-wrapper').height() * 50 / 100,
           target: '#chart-2',
           // animate_on_load: 'true',
@@ -117,39 +120,38 @@
           inflator: 15/10,
           interpolate: 'linear',
           y_accessor: 'downloads',
-          max_x: current_time,
+          x_extended_ticks: 'true',
         };
 
         // We save the data of the second chart
         Restangular.one('reports/secondchart').get().then(function(rawData) {
-          scope.chart2rdy = true;
           var data = MG.convert.date(rawData.plain(), 'date');
           options2.data = data;
-          scope.activeStat =  scope.generalStats[0];
+          scope.activeStat = "downloads"
+
+          if (options2.data.length == undefined || options2.data.length == 1) {
+            $('#chart-2').css('display', 'none');
+            scope.graph2Empty = true;
+
+          } else {
+            MG.data_graphic(options2);
+            scope.$watch('activeStat', function(newVals, oldVals){
+              if(newVals){
+                options2.y_accessor = newVals;
+                MG.data_graphic(options2);
+              }
+            });
+          }
+
         });
 
         // Function to change the chart
         scope.selectStat = function(button){
-          scope.activeStat = button.stat;
+          scope.activeStat = button.stat.name;
         }
 
-        scope.$watch('activeStat', function(newVals, oldVals){
-          if(newVals){
-            options2.y_accessor = newVals.name;
-            if (options2.data[0].length == undefined || options2.data[0].length == 1) {
-              scope.graph2Empty = true;
-            } else {
-              options2.mouseover = function(d, i) {
-                var date = $('.mg-active-datapoint tspan').text().split(',')[0];
-                $('.mg-active-datapoint tspan').text(date + " " +  ": " + d[newVals.name] + " " + newVals.name)
-              }
-              MG.data_graphic(options2);
-              scope.graph2Empty = false;
-            }
-          }
-        });
 
       }
-    };
+    }
   }]);
 }());
