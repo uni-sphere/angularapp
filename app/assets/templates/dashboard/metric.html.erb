@@ -1,5 +1,6 @@
 <div class="chart-control">
-  <div class="chart-title">{{ 'LEFT_STATISTICS' | translate }} {{userActiveNode.name}}</div>
+  <div class="chart-title" ng-if="userNodes">{{ 'LEFT_STATISTICS' | translate }} {{userActiveNode.name}}</div>
+  <div class="chart-title" ng-if="!userNodes">Your statistics</div>
   <div class="chart-button-wrapper">
   <div ng-repeat="node in userNodes" ng-click="selectOtherNode(this)" class="button-group" ng-class="{'button-group-first' : $index == 0, 'button-group-last' : $index == userNodes.length - 1, 'button-group-middle' : $index != 0 && $index != userNodes.length - 1, 'active' : node == userActiveNode}">{{node.name}}</div>
   <!-- <i class="fa fa-angle-right"></i> -->
@@ -7,7 +8,7 @@
 </div>
 
 <div class="chart-control">
-  <div class="chart-title">{{university}} {{ 'RIGHT_STATISTICS' | translate }} {{activeStat.name}}</div>
+  <div class="chart-title" >{{university}} {{ 'RIGHT_STATISTICS' | translate }} {{activeStat.name}}</div>
   <div class="chart-button-wrapper">
   <div ng-repeat="stat in generalStats" ng-click="selectStat(this)" class="button-group" ng-class="{'button-group-first' : $index == 0, 'button-group-last' : $index == generalStats.length - 1, 'button-group-middle' : $index != 0 && $index != generalStats.length - 1, 'active' : stat.name == activeStat}">{{stat.name}}</div>
   </div>
@@ -15,11 +16,15 @@
 
 
 
-<div id="chart-1"></div>
-<div class="chart-empty-1" ng-show="graph1Empty">
-  <div class="chart-empty-text chart-empty-title">{{userActiveNode.name}}{{ 'NEW_NODE' | translate }}</div>
-  <div class="chart-empty-text chart-empty-subtitle">{{ 'NO_DOWNLOADS' | translate }}</div>
+<div id="chart-1" ng-if="!graph1Empty && userNodes[0]"></div>
+<div class="chart-empty-1" ng-show="graph1Empty || !userNodes [0]">
+  <div class="chart-empty-title" ng-if="graph1Empty">{{userActiveNode.name}}{{ 'NEW_NODE' | translate }}</div>
+  <div class="chart-empty-title" ng-if="!userNodes[0]">You don't have any nodes</div>
+
+
+  <div class="chart-empty-subtitle" ng-if="graph1Empty">{{ 'NO_DOWNLOADS' | translate }}</div>
 </div>
+
 <div id="chart-2"></div>
 <div class="chart-empty-2" ng-show="graph2Empty">
   <div class="chart-empty-text chart-empty-title">{{university}}{{ 'NEW_ORGA' | translate }}</div>

@@ -11,6 +11,10 @@
   text-align: center;
 }
 
+// .align-left{
+//   float: left;
+// }
+
 // Chart title
 .chart-title{
   margin-bottom: 20px;
@@ -91,6 +95,8 @@
 /*==========  Graph empty  ==========*/
 
 .chart-empty-1, .chart-empty-2{
+  // position: relative;
+  // float: left;
   margin-top: 80px;
   display: inline-block;
   width: 50%;
@@ -110,3 +116,5 @@
 .chart-empty-subtitle{
   font-size: 1.3em;
 }
+
+

@@ -6,6 +6,7 @@ angular
 
     /*==========  Location variable  ==========*/
 
+
     if(window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu'){
       console.log("sandbox")
       $scope.sandbox = true
@@ -34,12 +35,26 @@ angular
       $auth.validateUser().then(function(){
         console.log("Ok: admin co")
         $scope.admin = true;
+
+        // Help Center
+        if(window.location.host != 'localhost:3000'){
+          FHChat = {product_id: "6227bca7722d"};
+          // FHChat.properties={};
+          // FHChat.set=function(key,data){this.properties[key]=data};
+          !function(){
+            var a,b;
+            return b=document.createElement("script"),a=document.getElementsByTagName("script")[0],b.src="https://chat-client-js.firehoseapp.com/chat-min.js",b.async=!0,a.parentNode.insertBefore(b,a)
+          }();
+        }
+
         $scope.getBasicInfo()
       }, function(){
         console.log("Ok: Student co")
         $scope.admin = false
       })
     }
+
+
 
     if(window.location.host == 'localhost:3000'){
       $scope.local = true
@@ -56,6 +71,13 @@ angular
         .then(function(resp) {
           $scope.admin = false;
           $state.transitionTo('main.application');
+
+          $scope.accountEmail = undefined;
+          $scope.accountName = undefined;
+
+          if(window.location.host != 'localhost:3000'){
+            FHChat.transitionTo('closed');
+          }
         })
         .catch(function(resp) {
           console.log(resp)
@@ -117,9 +139,7 @@ angular
 
         console.log("Ok: User info")
         if($scope.help) {
-          $('#first-connection').fadeIn(2000)
-
-
+          // $('#first-connection').fadeIn(2000)
         }
 
         // We get the list of user in the organization
@@ -136,6 +156,8 @@ angular
         console.log(d)
       });
     }
+
+
 
 
   }]);

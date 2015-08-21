@@ -18,6 +18,16 @@ module AuthenticationHelper
   end
   
   private
+  
+  def user_documents
+    ids = []
+    current_user.chapters.each do |chapter|
+      chapter.awsdocuments.each do |awsdocument|
+        ids << awsdocument.id
+      end
+    end
+    return Awsdocument.where(id: ids) 
+  end
 
   def authenticate_client
     if request.path == '/'
@@ -77,7 +87,7 @@ module AuthenticationHelper
 
   def user_nodes
     if Chapter.exists?(user_id: current_user.id)
-      chapters = Chapter.where(user_id: current_user.id)
+      chapters = current_user.chapters
       ids = []
       chapters.each do |chapter|
         ids << chapter.node_id if Chapter.where(node_id: chapter.node_id).count > 1 || chapter.awsdocuments.count > 0

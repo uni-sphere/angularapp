@@ -1,5 +1,8 @@
 class NodesController < ApplicationController
-
+  
+  before_action :is_allowed_destroy?, only: [:destroy]
+  before_action :is_allowed_update?, only: [:update]
+  
   def create
     node = current_organization.nodes.new(name: params[:name], parent_id: params[:parent_id], user_id: current_user.id)
     parent = current_organization.nodes.find params[:parent_id]
@@ -32,15 +35,11 @@ class NodesController < ApplicationController
   end
 
   def destroy
-    if can_delete(current_node.id)
-      if current_node.parent_id != 0
-        deleted = destroy_with_children(current_node.id)
-        render json: {deleted: deleted}.to_json, status: 200
-      else
-        send_error('You can not destroy the root of your tree', 400)
-      end
+    if current_node.parent_id != 0 and current_organization.nodes.count > 2
+      deleted = destroy_with_children(current_node.id)
+      render json: {deleted: deleted}.to_json, status: 200
     else
-      send_error('Forbidden', 403)
+      send_error('You can not destroy the root of your tree', 400)
     end
   end
 
@@ -50,6 +49,23 @@ class NodesController < ApplicationController
       nodes << {name: node.name, num: node.id, parent: node.parent_id}
     end
     render json: nodes, status: 200
+  end
+  
+  private
+  
+  def is_allowed_update?
+    send_error('Forbidden', '403') unless current_user.nodes.exists?(id: current_node.id)
+  end
+  
+  def is_allowed_destroy?
+    queue = [current_node]
+    while queue != []
+      node = queue.pop
+      send_error('Forbidden', '403') if node.user_id != current_user.id
+      Node.where(parent_id: node.id).each do |node|
+        queue << node
+      end
+    end
   end
   
 end

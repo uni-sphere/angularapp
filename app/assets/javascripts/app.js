@@ -62,7 +62,6 @@
         templateUrl: 'account/account.html',
         resolve: {
           auth: function($auth){
-            console.log("account")
             return $auth.validateUser();
           }
         }
@@ -80,7 +79,6 @@
           templateUrl: 'dashboard/one.html',
           resolve: {
             auth: function($auth){
-              console.log("dashboard")
               return $auth.validateUser();
             }
           }
@@ -104,7 +102,7 @@
     $locationProvider.html5Mode(true);
 
     NotificationProvider.setOptions({
-      delay: 5000,
+      delay: 1000,
       startTop: 100,
       startRight: 40,
       verticalSpacing: 20,
@@ -154,7 +152,7 @@
       ACCOUNT: 'Account',
       SIGNOUT: 'Sign out',
       LEFT_STATISTICS: 'Your statistics: downloads in',
-      RIGHT_STATISTICS: 'statistics:',
+      RIGHT_STATISTICS: 'statistics',
       NEW_NODE: ' is a new node',
       NO_DOWNLOADS: 'There is no downloads yet',
       NEW_ORGA: ' is a new organization',
@@ -177,7 +175,12 @@
       LENGTH: 'At least 6 characters',
       SECURITY: 'Security',
       SHORT: 'too short',
-      LECTURERS: 'Enseignants'
+      LECTURERS: 'Lecturers',
+      NO_DOC: 'Select a leaf node',
+      DROP_FILE: "Upload data",
+      WHERE_DROP: "Where do you want to drop your data?",
+      ROOT: "0. Root",
+      CANCEL: "Cancel"
     })
     .translations('fr', {
       HELP: 'Aide',
@@ -199,7 +202,7 @@
       ACCOUNT: 'Compte',
       SIGNOUT: 'Déconnexion',
       LEFT_STATISTICS: 'Vos statistiques: consultations dans',
-      RIGHT_STATISTICS: 'statistiques:',
+      RIGHT_STATISTICS: 'statistiques',
       NEW_NODE: " est un nouveau noeud",
       NO_DOWNLOADS: "Il n'y a pas encore de documents",
       NEW_ORGA: ' est une nouvelle organisation',
@@ -222,7 +225,13 @@
       LENGTH: 'Au minimum 6 charactères',
       SECURITY: 'Sécurité',
       SHORT: 'trop court',
-      LECTURERS: 'Lecturers'
+      LECTURERS: 'Enseignants',
+      NO_DOC: "Sélectionnez une extrémité de l'arbre",
+      DROP_FILE: "Importez vos données",
+      WHERE_DROP: "Où souhaitez vous les importer?",
+      ROOT: "0. Racine",
+      CANCEL: "Annuler"
+
     })
     .preferredLanguage('en')
     .registerAvailableLanguageKeys(['fr'])

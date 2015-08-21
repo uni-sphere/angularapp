@@ -1,5 +1,7 @@
 class AwsdocumentsController < ApplicationController
-
+  
+  before_action :is_allowed?, only: [:update, :destroy, :archives]
+  
   def create
     awsdocument = current_chapter.awsdocuments.new(title: params[:title], content: params[:file], organization_id: current_organization.id)
     if awsdocument.save
@@ -37,6 +39,12 @@ class AwsdocumentsController < ApplicationController
   def destroy
     current_awsdocument.archive
     head 204
+  end
+  
+  private
+  
+  def is_allowed?
+    send_error('Forbidden', '403') unless user_documents.exists? current_awsdocument.id
   end
   
 end

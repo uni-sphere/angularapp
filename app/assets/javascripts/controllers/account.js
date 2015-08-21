@@ -36,6 +36,9 @@
           $scope.accountName = resp.data.data.name
           $scope.updatedName = ""
           $scope.updatedEmail = ""
+          console.log($scope.accountEmail)
+          $('#user-name').css('display', 'none')
+          $('#user-name').css('display', '')
           // $scope.profileForm.$setUntouched();
         })
         .catch(function(resp) {

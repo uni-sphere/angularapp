@@ -1,83 +1,14 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('CrudCtrl', ['$scope', 'Restangular', 'Notification', 'ipCookie', function ($scope, Restangular, Notification, ipCookie) {
+  .controller('CrudCtrl', ['$scope', 'Restangular', 'Notification', 'ipCookie', 'ActiveChapter', function ($scope, Restangular, Notification, ipCookie, ActiveChapter) {
 
-    /*========================================
-    =            Delete Documents            =
-    ========================================*/
 
-    var dummyId = 30;
-
-    $scope.removeItem = function(scope) {
-      var nodeToDelete = scope;
-      var parent = nodeToDelete.$parentNodeScope;
-
-      // Delete the documents
-      if(nodeToDelete.$modelValue.document){
-
-        // Demo mode
-        if($scope.home || $scope.sandbox){
-          nodeToDelete.remove();
-          console.log("Ok: Document deleted");
-          Notification.warning("File removed")
-
-          if($scope.list.length == 0){
-            $scope.documentAbsent = true;
-          }
-        }
-        // Normal mode
-        else{
-          Restangular.all('awsdocuments/' + nodeToDelete.$modelValue.doc_id).remove().then(function() {
-            nodeToDelete.remove();
-            console.log("Ok: Document deleted");
-            Notification.warning("File removed")
-            if($scope.list.length == 0){
-              $scope.documentAbsent = true;
-            }
-          }, function(d) {
-            console.log("Error: Delete file");
-            console.log(d);
-            Notification.error("We can't temporarily delete the file " + nodeToDelete.$modelValue.title);
-          });
-        }
-      }
-
-      //delete the chapters
-      else{
-        // Demo mode
-        if($scope.home || $scope.sandbox){
-          nodeToDelete.remove();
-          console.log("Ok: Document deleted");
-          Notification.warning("File removed")
-
-          if($scope.list.length == 0){
-            $scope.documentAbsent = true;
-          }
-        }
-        // Normal mode
-        else{
-          Restangular.all('chapters/' + nodeToDelete.$modelValue.id).remove({node_id: $scope.nodeEnd[0]}).then(function() {
-            nodeToDelete.remove();
-            console.log("Ok: Chapter deleted");
-            Notification.warning("Chapter removed")
-
-            if($scope.list.length == 0){
-              $scope.documentAbsent = true;
-            }
-          }, function(d) {
-            console.log("Error: Delete a chapter");
-            console.log(d);
-            Notification.error("We can't temporarily delete the chapter: " + nodeToDelete.$modelValue.title);
-          });
-        }
-      }
-    };
 
     /*===========================================
     =            Create new chapter             =
     ===========================================*/
-
+    $scope.dummyId = 100;
     $scope.newSubItem = function() {
 
       if($scope.activeChapter){
@@ -93,13 +24,14 @@ angular
       }
 
       if($scope.home || $scope.sandbox){
-        dummyId ++;
+        Notification.success("Chapter created")
+        $scope.dummyId ++;
         if(nodeData.items == undefined){
           depth = 0
         } else{
           depth = nodeData.depth + 1;
         }
-        var a = {title: "New chapter", id: dummyId, items: [], depth: depth }
+        var a = {title: "New chapter", id: $scope.dummyId, items: [], depth: depth }
 
         if(nodeData.items == undefined){
           $scope.list.push(a);
@@ -129,10 +61,14 @@ angular
           $scope.documentAbsent = false;
 
         }, function(d) {
-          console.log("Error: Create a chapter");
-          console.log(d);
-          Notification.error("We can't temporarily create a chapter");
-
+          if (d.status == 403) {
+            console.log('Ok: Chapter creation not allowed');
+            Notification.warning("This node is not yours");
+          } else {
+            console.log("Error: Create a chapter");
+            console.log(d);
+            Notification.error("We can't temporarily create a chapter");
+          }
         });
       }
 

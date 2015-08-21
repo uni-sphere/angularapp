@@ -50,6 +50,18 @@
 
               $auth.submitLogin(credentials).then(function(resp) {
                 console.log("Ok: Login")
+
+                if(window.location.host != 'localhost:3000'){
+                  FHChat = {product_id: "6227bca7722d"};
+                  // FHChat.properties={};
+                  // FHChat.set=function(key,data){this.properties[key]=data};
+                  !function(){
+                    var a,b;
+                    return b=document.createElement("script"),a=document.getElementsByTagName("script")[0],b.src="https://chat-client-js.firehoseapp.com/chat-min.js",b.async=!0,a.parentNode.insertBefore(b,a)
+                  }();
+                }
+
+
                 scope.admin = true;
                 scope.getBasicInfo()
               }, function(resp){

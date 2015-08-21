@@ -1,7 +1,11 @@
 (function () {
 
   angular.module('mainApp.directives')
-    .directive('viewDocument', ['$translate' , 'Restangular', 'browser', '$upload', 'Notification', 'ipCookie', 'activateSpinner', 'stopSpinner', function($translate, Restangular, browser, $upload, Notification, ipCookie, activateSpinner, stopSpinner) {
+    .directive('viewDocument', ['$translate' , 'Restangular', 'browser', '$upload',
+                'Notification', 'ipCookie', 'activateSpinner', 'stopSpinner',
+                'ActiveChapter', '$window', function($translate, Restangular, browser,
+                $upload, Notification, ipCookie, activateSpinner, stopSpinner,
+                ActiveChapter, $window) {
       return {
         restrict: 'E',
         templateUrl: 'webapp/view-document.html',
@@ -12,9 +16,11 @@
           admin: '=',
           sandbox: '=',
           home: '=',
-          chapterFolded: '='
+          chapterFolded: '=',
+          activeChapter: '=',
         },
         link: function(scope){
+
 
           // Find the chapter that are folded
           // demo
@@ -27,7 +33,7 @@
 
             if(scope.chapterFolded != undefined ){
               if(!isInArray(0, scope.chapterFolded)){
-                $scope.chapterFolded.push("0");
+                scope.chapterFolded.push("0");
               }
             } else{
               scope.chapterFolded =["0"];
@@ -39,9 +45,10 @@
           var dummyId = 50;
           // scope.viewDocumentRename = true;
 
+
+
           scope.$watch('activeNodes', function(newVals, oldVals){
             if(newVals){
-              console.log(newVals);
               //breadcrumb
               scope.breadcrumb = []
               for(var i = scope.activeNodes.length - 2; i >= 0; i--){
@@ -192,9 +199,14 @@
           // We watch when someone drag and drops a file / folder
           scope.$watch('files', function (newVals, oldVals) {
             if(newVals){
-              console.log("Ok: File Dropped")
-              $('#fileDroppedBackground').fadeIn();
-              $('#fileDropped').fadeIn();
+              console.log(scope.nodeEnd)
+              if(!scope.nodeEnd){
+                Notification.error("Select a lead node to upload files")
+              } else{
+                 console.log("Ok: File Dropped")
+                $('#fileDroppedBackground').fadeIn();
+                $('#fileDropped').fadeIn();
+              }
             }
           });
 
@@ -239,30 +251,32 @@
             console.log("Ok: Chapter selected")
             // activate the chapter
             if(!node.$modelValue.document){
-              if(scope.previousActiveChapter != undefined){
-                scope.previousActiveChapter.$modelValue.activeItem = false;
+              if(scope.activeChapter != undefined){
+                scope.activeChapter.$modelValue.activeItem = false;
               }
 
-              node.$modelValue.activeItem = true;
-              scope.activeChapter = node;
-              scope.previousActiveChapter = node
+              if(node.collapsed || node.$modelValue.items.length == 0){
+                node.$modelValue.activeItem = true;
+                scope.activeChapter = node;
+              } else{
+                scope.activeChapter = undefined;
+              }
+
             }
 
             // toggle the node
-            if(node.$childNodesScope.$modelValue != undefined){
+            if(node.$modelValue.items.length != 0){
               node.toggle();
               addTochapterFolded(node.$modelValue.id);
             }
           }
 
           scope.documentLooseFocus = function(){
-
-            if(scope.previousActiveChapter != undefined){
-              scope.previousActiveChapter.$modelValue.activeItem = false;
+            console.log(scope.activeChapter)
+            if(scope.activeChapter != undefined){
+              scope.activeChapter.$modelValue.activeItem = false;
               scope.activeChapter = undefined
             }
-
-
           }
 
           // Add folded chapters to cookie
@@ -284,6 +298,89 @@
 
 
 
+          /*========================================
+          =            Delete Documents            =
+          ========================================*/
+
+          var dummyId = 30;
+
+          scope.removeItem = function(node) {
+            var parent = node.$parentNodeScope;
+
+            // Delete the documents
+            if(node.$modelValue.document){
+
+              // Demo mode
+              if(scope.home || scope.sandbox){
+                node.remove();
+                console.log("Ok: Document deleted");
+                Notification.warning("File removed")
+
+                if(scope.list.length == 0){
+                  scope.documentAbsent = true;
+                }
+              }
+              // Normal mode
+              else{
+                Restangular.all('awsdocuments/' + node.$modelValue.doc_id).remove().then(function() {
+                  node.remove();
+                  console.log("Ok: Document deleted");
+                  Notification.warning("File removed")
+                  if(scope.list.length == 0){
+                    scope.documentAbsent = true;
+                  }
+                }, function(d) {
+                  if (d.status == 403){
+                    console.log("Ok: Delete a file forbidden");
+                    Notification.warning("This file is not yours");
+                  } else {
+                    console.log("Error: Delete file");
+                    console.log(d);
+                    Notification.error("We can't temporarily delete the file " + node.$modelValue.title);
+                  }
+                });
+              }
+            }
+
+            //delete the chapters
+            else{
+              // Demo mode
+              if(scope.home || scope.sandbox){
+                node.remove();
+                console.log("Ok: Document deleted");
+                Notification.warning("File removed")
+
+                if(scope.list.length == 0){
+                  scope.documentAbsent = true;
+                }
+              }
+              // Normal mode
+              else{
+                Restangular.all('chapters/' + node.$modelValue.id).remove({node_id: scope.nodeEnd[0]}).then(function() {
+                  node.remove();
+                  if(scope.activeChapter != undefined && scope.activeChapter.$modelValue.id == node.$modelValue.id){
+                    scope.activeChapter = undefined;
+                  }
+                  // console.log(scope.activeChapter.id)
+                  console.log("Ok: Chapter deleted");
+                  Notification.warning("Chapter removed")
+
+                  if(scope.list.length == 0){
+                    scope.documentAbsent = true;
+                  }
+                }, function(d) {
+                  if (d.status == 403){
+                    console.log("Ok: Delete a chapter forbidden");
+                    Notification.warning("This chapter is not yours");
+                  } else {
+                    console.log("Error: Delete a chapter");
+                    console.log(d);
+                    Notification.error("We can't temporarily delete this chapter");
+                  }
+                });
+              }
+            }
+          };
 
 
 
@@ -405,7 +502,7 @@
                   nodeDocData = nodeData.items[nodeData.items.length -1];
                 }
 
-                scope.chapterFolded.push(d.id.toString());
+                scope.chapterFolded.push(dummyId.toString());
 
                 scope.progressionUpload --;
                 console.log("OK fake chapter created:" + folder.name);
@@ -451,8 +548,14 @@
 
 
                 }, function(d) {
-                  Notification.error("Chapter creation problem")
-                  console.log("Error: Failed to create chapter:" + folder.name);
+                  stopSpinner()
+                  if (d.status == 403) {
+                    console.log("Ok: Chapter creation forbidden");
+                    Notification.warning("This node is not yours")
+                  } else {
+                    Notification.error("Chapter creation problem")
+                    console.log("Error: Failed to create chapter:" + folder.name);
+                  }
                 });
               }
             }
@@ -460,6 +563,7 @@
             /*==========  Upload all files in a directory  ==========*/
 
             function uploadFiles(files){
+              console.log(nodeDocData)
               var numberItems = 0;
               for (var i = 0; i < files.length; i++) {
                 var file = files[i];
@@ -482,14 +586,14 @@
                     nodeDocData.items.unshift(a);
                   }
 
-                  if(!dragAndDrop && !scope.documentAbsent && scope.lastClick != undefined){
-                    scope.chapterFolded.push(nodeDocData.id.toString());
+                  // if(!dragAndDrop && !scope.documentAbsent && scope.lastClick != undefined){
+                  //   scope.chapterFolded.push(nodeDocData.id.toString());
 
-                    scope.lastClick.expand();
+                  //   scope.lastClick.expand();
 
-                  } else if(scope.documentAbsent){
-                    scope.documentAbsent = false;
-                  }
+                  // } else if(scope.documentAbsent){
+                  //   scope.documentAbsent = false;
+                  // }
                 }
                 // Normal mode
                 else{
@@ -508,30 +612,44 @@
                     numberItems ++;
                     console.log("OK document uploaded:" + d.data.title);
                     if(numberItems == files.length){
+
+                      // console.log(scope.activeChapter.$nodeScope.collapsed)
+                      // console.log(scope.activeChapter.$modelValue.collapsed)
+                      if(!dragAndDrop && scope.activeChapter != undefined && scope.activeChapter.$nodeScope.collapsed){
+
+                        scope.activeChapter.toggle()
+                        scope.chapterFolded.push(scope.activeChapter.$modelValue.id.toString());
+                        ipCookie('chapterFolded', scope.activeChapter.$modelValue.id);
+                      }
                       console.log("OK upload of this level finished")
 
                       scope.dirUploaded = true;
                     }
 
-                    // console.log(nodeDocData.items);
                     if(nodeDocData.items == undefined){
                       scope.list.unshift(a);
                     } else{
                       nodeDocData.items.unshift(a);
                     }
 
-                    if(!dragAndDrop && !scope.documentAbsent && scope.lastClick != undefined){
-                      console.log(scope.lastClick)
-                      scope.lastClick.expand();
-                      scope.chapterFolded.push(nodeDocData.id.toString());
-                      ipCookie('chapterFolded', scope.chapterFolded);
-                    } else if(scope.documentAbsent){
-                      scope.documentAbsent = false;
-                    }
+                    // if(!dragAndDrop && !scope.documentAbsent && scope.lastClick != undefined){
+                    //   console.log("hello")
+                    //   scope.lastClick.expand();
+                    //   scope.chapterFolded.push(nodeDocData.id.toString());
+                    //   ipCookie('chapterFolded', scope.chapterFolded);
+                    // } else if(scope.documentAbsent){
+                    //   scope.documentAbsent = false;
+                    // }
 
                   }, function(d) {
-                    Notification.error("File upload error")
-                    console.log("Error: Upload document failed :" +  file.name);
+                    stopSpinner()
+                    if (d.status == 403) {
+                      console.log("Ok: Upload documents forbidden");
+                      Notification.warning("This node is not yours")
+                    } else {
+                      Notification.error("File upload error")
+                      console.log("Error: Upload document failed :" +  file.name);
+                    }
                   });
                 }
               }
@@ -582,7 +700,7 @@
               scope.arrayFiles = undefined;
 
               if(!dragAndDrop){
-
+                // console.log(scope.activeChapter.value)
                 // If we upload a normal file
                 if(scope.activeChapter){
                   var masternodeData = scope.activeChapter.$modelValue;
@@ -596,15 +714,9 @@
                   var masternodeData = {id: 0};
                   var nextNodeData = 1;
                 } else{
-                  // scope.chapterFolded.push(scope.lastDeployedPosition.$parentNodeScope.$modelValue.id.toString());
-                  // ipCookie('chapterFolded', scope.chapterFolded);
-                  // console.log(scope.lastDeployedPosition.$parentNodeScope)
-                  // console.log(scope.lastDeployedPosition.$parentNodeScope.$modelValue.title)
-                  console.log(scope.lastDeployedPosition.$parentNodeScope)
-                  setTimeout(function(){
-                    scope.lastDeployedPosition.$parentNodeScope.expand()
-                  }, 500);
-                  // scope.lastDeployedPosition.$parentNodeScope.toggle()
+                  // setTimeout(function(){
+                  //   scope.lastDeployedPosition.$parentNodeScope.expand()
+                  // }, 500);
                   var masternodeData = scope.lastDeployedPosition.$modelValue;
                   var nextNodeData = scope.lastDeployedPosition.$modelValue.items.length;
                 }
@@ -618,7 +730,7 @@
                 uploadItems();
               } else{
                 if(files[0].type == "directory" || files[0].size == 0){
-                  Notification.error("You can only upload folder on Chrome")
+                  Notification.error("You can only upload folders on Chrome")
                 } else{
                   activateSpinner()
                   orderFiles(files);

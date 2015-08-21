@@ -34,15 +34,15 @@
         // });
 
         // when the window is resized the graphs are changing
-        // window.onresize = function() {
-        //   options1.width = $('#ui-view-main-wrapper').width() / 2 - 120,
-        //   options1.height =  $('#ui-view-main-wrapper').height() * 50 / 100,
-        //   MG.data_graphic(options1);
+        window.onresize = function() {
+          options1.width = $('#ui-view-main-wrapper').width() / 2 - 120,
+          options1.height =  $('#ui-view-main-wrapper').height() * 50 / 100,
+          MG.data_graphic(options1);
 
-        //   options2.width =  $('#ui-view-main-wrapper').width() / 2 - 120,
-        //   options2.height =  $('#ui-view-main-wrapper').height() * 50 / 100,
-        //   MG.data_graphic(options2);
-        // };
+          options2.width =  $('#ui-view-main-wrapper').width() / 2 - 120,
+          options2.height =  $('#ui-view-main-wrapper').height() * 50 / 100,
+          MG.data_graphic(options2);
+        };
 
         // We save the node of the user, so we can propose to display them in the first chart
         Restangular.one('report/nodes').get().then(function(data) {
@@ -52,8 +52,6 @@
 
         /*==========  First chart download on different node  ==========*/
 
-        scope.userNodes = "";
-        scope.userActiveNode = "";
         // var current_time = Date.now() + 200000;
 
         // Options of the first chart
@@ -64,7 +62,6 @@
           x_accessor: 'date',
           y_accessor: 'downloads',
           xax_start_at_min: 'true',
-          inflator: 15/10,
           interpolate: 'linear',
           x_extended_ticks: 'true',
           // max_x: current_time,
@@ -113,15 +110,14 @@
           width: $('#ui-view-main-wrapper').width() / 2 - 120,
           height: $('#ui-view-main-wrapper').height() * 50 / 100,
           target: '#chart-2',
-          // animate_on_load: 'true',
           x_accessor: 'date',
-          xax_count: 10,
           xax_start_at_min: 'true',
-          inflator: 15/10,
           interpolate: 'linear',
           y_accessor: 'downloads',
           x_extended_ticks: 'true',
+          xax_count: 5,
         };
+
 
         // We save the data of the second chart
         Restangular.one('reports/secondchart').get().then(function(rawData) {
@@ -140,6 +136,12 @@
                 options2.y_accessor = newVals;
                 MG.data_graphic(options2);
               }
+
+              options2.mouseover = function(d, i) {
+                var date = $('.mg-active-datapoint tspan').text().split(',')[0];
+                $('.mg-active-datapoint tspan').text(date + " " +  ": " + d[newVals] + " " + newVals)
+              }
+
             });
           }
 

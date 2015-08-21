@@ -1,10 +1,11 @@
 .sidebar{
   position: fixed;
-  top: 50px;
+  top: 40px;
   bottom: 0;
   width: 200px;
-  z-index: 100;
+  z-index: 1;
   width: 70px;
+  // background: rgb(239,239,239);
 }
 
 .sidebar-container{
@@ -14,6 +15,7 @@
   margin: 50px 0 0 0;
   padding: 0;
   list-style-type: none;
+  // background: rgb(239,239,239);
 }
 
 .siderbar-item{
@@ -57,9 +59,14 @@
   .fa{
     color: white;
     background: $blue;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 5px 1px;
+    // box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px 1px;
   }
 }
 
+.fa {
+  margin-bottom: 5px;
+}
 
 // .home-item:hover .fa, .home-item .menu-link-active .fa{
 //   background: #0080FF;

@@ -11,6 +11,8 @@
         scope.deconnection = function(){
           scope.adminDeco();
         }
+
+
       }
     }
   }]);

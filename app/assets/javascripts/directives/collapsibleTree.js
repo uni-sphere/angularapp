@@ -8,11 +8,11 @@
           nodeEnd: '=',
           activeNodes: '=',
           admin: '=',
-          sidebarMinified: '=',
           home: '=',
           sandbox: '=',
           help: '=',
-          chapterFolded: '='
+          chapterFolded: '=',
+          activeChapter: '='
         },
         link: function(scope, iElement, iAttrs) {
 
@@ -23,7 +23,6 @@
           Restangular.one('nodes').get().then(function (nodes) {
             scope.flatNode = nodes.plain();
             scope.nodes = makeNested(scope.flatNode)
-            console.log(scope.nodes)
 
             scope.$watch('admin',function(newVals, oldVals){
               if(newVals != undefined){
@@ -347,14 +346,12 @@
             }
 
             scope.foldedNodes = [];
-            scope.activeNodes = [];
 
             findActiveNodes(d);
             findNodeEnd(d);
             findFoldedNodes(scope.root);
             colornodePath(scope.root);
-
-            console.log(scope.nodeEnd);
+            scope.activeChapter = undefined;
 
             if(!scope.home && !scope.sandbox){
               ipCookie('activeNodes', scope.activeNodes);
@@ -380,21 +377,18 @@
 
           /*==========  Find the node path and add it to active nodes ( in ordrer to color nodes)  ==========*/
 
-          function findActiveNodes(node){
-            console.log("active nodes")
-            scope.activeNodes = [];
-
-
-            function addToActiveNodes(node){
-              scope.activeNodes.push([node.num, node.name]);
-              if(node.parent){
-                addToActiveNodes(node.parent)
-              }
+          function addToActiveNodes(node){
+            scope.storageTemp.push([node.num, node.name]);
+            if(node.parent){
+              addToActiveNodes(node.parent)
+            } else{
+              scope.activeNodes = scope.storageTemp
             }
-
+          }
+          function findActiveNodes(node){
+            scope.storageTemp = [];
             addToActiveNodes(node)
-
-
+            console.log(scope.activeNodes)
           }
 
           /*==========  Use activeNodes to color the nodes  ==========*/
@@ -484,6 +478,7 @@
 
                     findFoldedNodes(scope.root);
                     findActiveNodes(node.parent)
+
                     ipCookie('activeNodes', scope.activeNodes);
                     ipCookie('nodeEnd', scope.nodeEnd);
                     ipCookie('foldedNodes', scope.foldedNodes);
@@ -503,9 +498,14 @@
                 update(nodeSelected);
                 console.log("Ok: Node deleted");
               }, function(d) {
-                console.log(d);
-                console.log("Error: Delete node");
-               Notification.error('This node is not yours');
+                if(d.status == 403){
+                  console.log("Ok: Deletion forbidden")
+                  Notification.warning('This node is not yours');
+                } else {
+                  console.log(d)
+                  console.log("Error: Delete node");
+                  Notification.error("You can't temporarily delete this node");
+                }
               });
             }
 
@@ -552,7 +552,6 @@
                 nodeSelected.children.push(a);
 
                 // Select the node
-                scope.activeNodes = [];
                 findActiveNodes(nodeSelected.children[nodeSelected.children.length - 1]);
                 findNodeEnd(nodeSelected.children[nodeSelected.children.length - 1]);
                 colornodePath(scope.root);
@@ -597,19 +596,28 @@
                   Notification.success("Node renamed")
                   console.log("Object updated");
                 }, function(d) {
-                  console.log("Error: Rename node");
-                  console.log(d);
-                  Notification.error("Node renaming error")
+                  if (d.status == 403){
+                    console.log("Ok: Rename a node forbidden");
+                    Notification.warning("This node is not yours");
+                  } else {
+                    console.log("Error: Rename node");
+                    console.log(d);
+                    Notification.error("Node renaming error")
+                  }
                 });
               }
             }
           }
+
+
 
           /*=======================================
           =            Render function            =
           =======================================*/
 
           function render(branch, iElement){
+
+
 
             window.onresize = function() {
               console.log("Ok: Window resize. Render tree")

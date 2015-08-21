@@ -1,8 +1,6 @@
 #document-tree{
   position: relative;
-  width: 90%;
-  padding-left: 5%;
-  padding-right: 5%;
+  width: 100%;
   height: calc(100% - 40px);
 }
 
@@ -13,7 +11,6 @@
 #breadcrumb{
   position: relative;
   height: 36px;
-  width: 100%;
   font-size: 18px;
   line-height: 40px;
   text-align: center;
@@ -60,22 +57,27 @@
   text-overflow: ellipsis;
 }
 
+.button-hidden{
+  visibility: hidden;
+}
+
 
 .dual-submit{
   // border: 2px solid $document-color;
   // color: $document-color;
   // background: white;
 
-  border: 1px solid #d4d4d4;
+  border: 1px solid $blue;
   color: #EEEEEE;
   cursor: pointer;
   background: $blue;
 
-  border-radius: 5px;
+  border-radius: 1px;
 
   margin: 0px 30px;
   padding: 10px 20px;
   cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px 1px;
 
   @media (max-width: 1500px) {
     margin: 0px 18px;
@@ -101,16 +103,17 @@
   }
 
    &:hover{
-    border-color: #008EEC;
-    border-bottom-color: #0084DC;
+    border-color: #66A4FA;
+    // border-bottom-color: #0084DC;
     background: #66A4FA;
   }
 
   &:active {
     border-color: #2a65a0;
     border-bottom-color: #3884cd;
-    background-color: #6F9EF2;
+    // background-color: #6F9EF2;
     background-image: linear-gradient(#4991F5, #66A4FA);
+    box-shadow: rgba(0, 0, 0, 0.258824) 0px 1px 2px 1px;
   }
 
 }
@@ -174,12 +177,21 @@
 =            UI Tree            =
 ===============================*/
 
+// #tree-root{
+//   width: calc(100% - 4px);
+//   margin-left: 2px;
+//   margin-top: 2px;
+//   // box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px 1px;
+//   background: #ff5722;
+// }
+
 #ui-tree-container{
 	font-size: 16px;
   position: absolute;
   top: 120px;
-  bottom: 60px;
+  bottom: 80px;
   width: 90%;
+  margin-left: 5%;
   z-index: 10;
 
   overflow-y: auto;
@@ -210,19 +222,22 @@
 }
 
 .angular-ui-tree-node{
-  margin-left: 10px;
+  // margin-left: 10px;
 }
 .angular-ui-tree-nodes{
   color: $document-color;
 }
 
 .angular-ui-tree-handle {
-  margin: 1px 0px;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 1px;
   opacity: 1;
   font-weight: 500;
   height: 50px;
   padding: 0px 9px;
   cursor: default;
+  // float: left;
 
   @media (max-width: 1200px) {
     height: 40px;
@@ -285,9 +300,13 @@
   cursor: pointer;
 }
 
+.angle-right-hidden{
+  visibility: hidden;
+}
+
 .btn-collapse{
   font-size: 1.5em;
-  padding-right: 8px;
+  // padding-right: 8px;
   color: #007CCE;
 
   @media (max-width: 1200px) {
@@ -338,6 +357,7 @@
   float: left;
   color: $fa-color;
   line-height: 50px;
+  margin-left: 27px;
 
    @media (max-width: 1200px) {
     line-height: 40px;
@@ -370,7 +390,7 @@
   justify-content: center;
   width: calc(100% - 40px);
   position: absolute;
-  bottom: 20px;
+  bottom: 40px;
   font-size: .9em;
   color: $dark-gris;
   z-index: 0;
@@ -419,109 +439,124 @@
 =            Dropzone            =
 ================================*/
 
-#document-absent-dropzone-container{
-  position: absolute;
-  bottom: 0px;
-  // height: 100%;
-  top: 200px;
-  // height: calc(75% - 80px);
-  width: 90%;
-}
-
-#document-absent-dropzone{
-  position: relative;
-  float: left;
-  width: 80%;
-  height: 100%;
-  margin-left: 10%;
-  // margin-top: 10%;
-
-  // border-radius: 60px;
-  // border: 2px solid $dropzone-color;
-}
-
-// Pic
-#document-absent-dropzone-image{
-  position: relative;
-  height: 70%;
-  margin-bottom: 20px;
-
-  background-image: url(image-path('dropzone.png'));
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.4;
-}
-
-// #dropzone-image-container{
+// #document-absent-dropzone-container{
 //   position: absolute;
-//   top: calc(50% - 35px);
-//   width: 100%;
-
-//   .fa-download{
-//     margin: 0px auto;
-//     display: table;
-//     font-size: 4em;
-//     color: $dark-gris;
-//   }
+//   bottom: 0px;
+//   // height: 100%;
+//   top: 200px;
+//   // height: calc(75% - 80px);
+//   width: 90%;
 // }
 
+// #document-absent-dropzone{
+//   position: relative;
+//   float: left;
+//   width: 80%;
+//   height: 100%;
+//   margin-left: 10%;
+//   // margin-top: 10%;
 
-// Text under the pic
-#document-absent-text-under-pic{
-  position: relative;
-  height: 40%;
-  width: 80%;
-  left: 10%;
-  text-align: center;
-  color: $dark-gris;
-}
+//   // border-radius: 60px;
+//   // border: 2px solid $dropzone-color;
+// }
 
-#document-absent-text-drop{
-  font-size: 1.5em;
-  margin-bottom: 20px;
-}
+// // Pic
+// #document-absent-dropzone-image{
+//   position: relative;
+//   height: 300px;
+//   width: 300px;
+//   margin-bottom: 20px;
+
+//   //background-image: url(image-path('dropzone.png'));
+// //  background-size: contain;
+// //  background-position: center;
+// //  background-repeat: no-repeat;
+// //  opacity: 0.4;
+//   background: grey;
+//   border-radius: 150px;
+//   box-shadow: rgba(0, 0, 0, 0.258824) 0px 5px 8px 2px;
+//   text-align: center;
+//   color: rgb(239,239,239);
+// }
+
+// // #dropzone-image-container{
+// //   position: absolute;
+// //   top: calc(50% - 35px);
+// //   width: 100%;
+
+// //   .fa-download{
+// //     margin: 0px auto;
+// //     display: table;
+// //     font-size: 4em;
+// //     color: $dark-gris;
+// //   }
+// // }
+
+
+// // Text under the pic
+// #document-absent-text-under-pic{
+//   position: relative;
+//   height: 40%;
+//   width: 80%;
+//   left: 10%;
+//   text-align: center;
+//   color: $dark-gris;
+// }
+
+// #document-absent-text-drop{
+//   font-size: 1.5em;
+//   margin-bottom: 20px;
+// }
 
 
 
 
 
 /*=========================================
-=            Student - no docs            =
+=            select leaf                  =
 =========================================*/
 
-#select-leaf{
-  position: relative;
-  // top: 35%;
-  width: 90%;
-  height: 100%;
-  margin-left: 5%;
-}
+// .full-size-circle-container{
+//   position: relative;
+//   // top: 35%;
+//   width: 90%;
+//   height: calc(100% - 40px);
+//   margin-left: 5%;
+// }
 
 #select-leaf-text{
   font-family: 'Open Sans', sans-serif;
-  color: $dark-gris;
+  color: grey;
   width: 100%;
   text-align: center;
-  // color: cornflowerblue;
 }
 
-#select-leaf-pic{
-  position: relative;
-  width: 80%;
-  height: 35%;
-  margin-left: 10%;
-  margin-top: 30%;
-  margin-bottom: 30px;
+.full-size-circle{
+  height: 300px;
+  width: 300px;
+  margin-left: calc(50% - 150px);
+  border-radius: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #E5E5E5;
 
-  background-image: url(image-path('no-doc.png'));
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.6;
+  box-shadow: rgba(0, 0, 0, 0.258824) 0px 5px 5px 2px;
   text-align: center;
+  color: white;
+  margin-top: 40px;
+  margin-bottom: 40px;
 }
 
+#select-leaf .full-size-circle{
+  font-size: 14em;
+}
+
+#dropzone-circle .full-size-circle{
+  font-size: 2em;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
 
 /*===================================
 =            Rename Node            =

@@ -14,13 +14,13 @@ class OrganizationsController < ApplicationController
   def create
     user = User.find params[:user_id]
     organization = Organization.new(name: params[:name], latitude: params[:latitude], longitude: params[:longitude], place_id: params[:place_id], website: params[:website])
-    organization.nodes.build(name: params[:name], parent_id: 0)
+    organization.nodes.build(name: params[:name], parent_id: 0, user_id: 0)
     organization.organizationsuserslinks.build(user_id: user.id)
     if organization.save
       node = organization.nodes.first
-      firstchild = organization.nodes.create(name: 'First Level', parent_id: node.id)
+      firstchild = organization.nodes.create(name: 'First Level', parent_id: node.id, user_id: user.id)
       firstchild.chapters.build(title: 'main', parent_id: 0)
-      secondchild = organization.nodes.create(name: 'Second Level', parent_id: node.id)
+      secondchild = organization.nodes.create(name: 'Second Level', parent_id: node.id, user_id: user.id)
       secondchild.chapters.build(title: 'main', parent_id: 0)
       if firstchild.save and secondchild.save
         if create_pointer(organization.subdomain)

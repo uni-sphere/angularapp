@@ -15,18 +15,6 @@ module ApplicationHelper
     return password
   end
   
-  def can_delete(id)
-    queue = [current_node]
-    while queue != []
-      node = queue.pop
-      return false if node.user_id != current_user.id
-      Node.where(parent_id: node.id).each do |node|
-        queue << node
-      end
-    end
-    return true
-  end
-  
   private
   
   def send_error(error, code)
