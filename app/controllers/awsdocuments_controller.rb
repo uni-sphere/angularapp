@@ -3,7 +3,7 @@ class AwsdocumentsController < ApplicationController
   before_action :is_allowed?, only: [:update, :destroy, :archives]
   
   def create
-    awsdocument = current_chapter.awsdocuments.new(title: params[:title], content: params[:file], organization_id: current_organization.id)
+    awsdocument = current_chapter.awsdocuments.new(title: params[:title], content: params[:file], organization_id: current_organization.id, user_id: current_user.id)
     if awsdocument.save
       render json: awsdocument, status: 201, location: awsdocument
     else
@@ -44,7 +44,9 @@ class AwsdocumentsController < ApplicationController
   private
   
   def is_allowed?
-    send_error('Forbidden', '403') unless user_documents.exists? current_awsdocument.id
+    chapter = Chapter.find current_awsdocument.chapter_id
+    node = Node.find chapter.node_id
+    send_error('Forbidden', '403') unless current_user.awsdocuments.exists?(current_awsdocument.id) or current_user.nodes.exists?(node.id)
   end
   
 end

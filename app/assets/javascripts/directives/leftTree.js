@@ -1,7 +1,7 @@
 (function () {
 
   angular.module('mainApp.directives')
-    .directive('collapsibleTree', ['ipCookie', '$timeout', 'Restangular', 'Notification', function(ipCookie, $timeout, Restangular, Notification) {
+    .directive('leftTree', ['ipCookie', '$timeout', 'Restangular', 'Notification', function(ipCookie, $timeout, Restangular, Notification) {
       return {
         restrict: 'EA',
         scope: {
@@ -12,33 +12,14 @@
           sandbox: '=',
           help: '=',
           chapterFolded: '=',
-          activeChapter: '='
+          activeChapter: '=',
+          breadcrumb: '=',
+          nodes: '=',
+          foldedNodes: '='
         },
         link: function(scope, iElement, iAttrs) {
 
-
           var dummyId = 50
-
-          // First we get the nodes
-          Restangular.one('nodes').get().then(function (nodes) {
-            scope.flatNode = nodes.plain();
-            scope.nodes = makeNested(scope.flatNode)
-
-            scope.$watch('admin',function(newVals, oldVals){
-              if(newVals != undefined){
-                console.log("Ok: Admin changed. Render tree")
-                render(scope.nodes, iElement);
-              }
-            });
-          }, function(d){
-            Notification.error("Can not display your tree")
-            console.log("Error: Get nodes");
-            console.log(d)
-          });
-
-
-          // scope.dataChanged = false;
-
           /*==========  Svg creation  ==========*/
           var margin = {top: 0, right: 20, bottom: 0, left: 30};
 
@@ -49,131 +30,16 @@
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-          /*==========  Cookie gestion  ==========*/
-
-          // Folded nodes
-          // Demo
-          if(scope.home || scope.sandbox){
-            scope.foldedNodes = [4]
-          }
-          // Normal version
-          else{
-            scope.foldedNodes = ipCookie('foldedNodes');
-          }
-
-          // Active nodes
-          // Demo
-          if(scope.home || scope.sandbox){
-            scope.activeNodes = [[17,"Histoire"],[9,"S"],[3,"Premiere"],[1,"Sandbox"]]
-          }
-          // Normal version
-          else{
-            scope.activeNodes = ipCookie('activeNodes');
-          }
-
-          //Node end
-          // Demo
-          if(scope.home || scope.sandbox){
-            scope.nodeEnd = [17,"Histoire"]
-          }
-          // Normal version
-          else{
-            scope.nodeEnd = ipCookie('nodeEnd');
-            if(scope.nodeEnd == "false"){
-              scope.nodeEnd = false;
-            }
-          }
-
-          scope.$watch('help', function(newVals, oldVals){
-            if(scope.help){
-              console.log("Ok: First co cookies")
-              scope.nodeEnd = [scope.flatNode[1].num,scope.flatNode[1].name]
-              scope.activeNodes = [[scope.flatNode[0].num,scope.flatNode[0].name],[scope.flatNode[1].num,scope.flatNode[1].name]]
-              ipCookie('activeNodes', scope.activeNodes);
-              ipCookie('nodeEnd', scope.nodeEnd);
+          scope.$watch('nodes',function(newVals, oldVals){
+            if(newVals){
+              scope.$watch('admin',function(newVals, oldVals){
+                if(newVals != undefined){
+                  console.log("Ok: Admin changed. Render tree")
+                  render(scope.nodes, iElement);
+                }
+              });
             }
           });
-
-          /*==========  Periodical get  ==========*/
-
-          // function retrieveNodes() {
-          //   Restangular.one('nodes').get().then(function(response) {
-
-          //     // console.log(scope.copyFlatData.plain())
-          //     // console.log(response.plain())
-          //     var comparaison = compareObjectsArray(response.plain(),scope.copyFlatData.plain());
-          //     console.log(comparaison);
-          //     // scope.copyFlatData = response;
-          //     // console.log(response);
-
-          //     $timeout(retrieveNodes, 5000);
-          //   }, function() {
-          //     console.log("There was an error getting");
-          //   });
-          // }
-
-          // $timeout(retrieveNodes, 5000);
-
-
-          /*==========  Renders Tree  ==========*/
-
-          // // We change the size of the graphs when the sidebar is oppened
-          // scope.$watch('sidebarMinified', function(newVals, oldVals){
-          //   if(scope.nodes){
-          //     render(makeNested(scope.nodes), iElement)
-          //   }
-          // });
-
-          // We re-render when the size of the window changes
-
-
-          // The problem is the nodes might not be here when we look
-          // So we keep looking until they are
-
-          // We re-render when we switch admin on/off
-          // setTimeout(function(){
-          //   scope.$watch('admin',function(newVals, oldVals){
-          //     if(newVals){
-          //       console.log("admin")
-          //       render(makeNested(scope.nodes), iElement);
-          //     }
-          //   });
-          // },1000);
-
-          // // We resize when the data changes
-          // scope.$watch('nodes', function(newVals, oldVals) {
-          //   if(newVals){
-          //     render(makeNested(scope.nodes), iElement);
-          //   }
-          // });
-
-
-          // watch for data changes and re-render
-          // scope.$watch('copyFlatData', function(newVals, oldVals) {
-          //   render(createTreeData(Restangular.copy(newVals)), iElement, getCookieArray);
-          //   // scope.dataChanged = true;
-          // },true);
-
-          // scope.$watch('dataChanged',function(newVals, oldVals){
-          //   if(newVals){
-          //     console.log(scope.dataChanged)
-          //     render(createTreeData(scope.copyFlatData), iElement, getCookieArray);
-          //     // scope.dataChanged = false;
-          //   }
-          // })
-
-          // scope.changeData = function(data){
-          //   // scope.root = data;
-
-          //   // scope.root.x0 = 0;
-          //   // scope.root.y0 = scope.height / 2;
-
-          //   update(scope.root);
-          // }
-
-          /*=======================================
-          =            Update function            =
-          =======================================*/
 
           function update(source) {
             var duration = 750;
@@ -204,7 +70,6 @@
               .on("click", openNode)
 
             if(!scope.admin){
-
               // Label of the node. When clicked it opens the node
               nodeEnter.append("text")
               .attr("class", function(d){return typeof d.parent === 'object' ? "nameNode" : ""})
@@ -326,32 +191,25 @@
               d.x0 = d.x;
               d.y0 = d.y;
             });
-
           }
 
-
-          /*======================================
-          =            Open and Close            =
-          ======================================*/
-
-          function openNode(d) {
-            var clickedNode = d;
-
-            if (d.children) {
-              d._children = d.children;
-              d.children = null;
+          function openNode(node) {
+            if (node.children) {
+              node._children = node.children;
+              node.children = null;
             } else {
-              d.children = d._children;
-              d._children = null;
+              node.children = node._children;
+              node._children = null;
             }
 
             scope.foldedNodes = [];
 
-            findActiveNodes(d);
-            findNodeEnd(d);
+            findActiveNodes(node);
+            findNodeEnd(node);
             findFoldedNodes(scope.root);
             colornodePath(scope.root);
             scope.activeChapter = undefined;
+            scope.lastSelectedNode = node;
 
             if(!scope.home && !scope.sandbox){
               ipCookie('activeNodes', scope.activeNodes);
@@ -359,23 +217,18 @@
             }
 
             scope.$apply();
-            update(d);
+            update(node);
           }
 
-
-          /*==========  Find the node that are collapsed and add them to cookies  ==========*/
-
-          function findFoldedNodes(d){
-            if(d.children){
-              d.children.forEach(findFoldedNodes);
+          function findFoldedNodes(node){
+            if(node.children){
+              node.children.forEach(findFoldedNodes);
             }
-            if(d._children){
-              d._children.forEach(findFoldedNodes);
-              scope.foldedNodes.push(d.num);
+            if(node._children){
+              node._children.forEach(findFoldedNodes);
+              scope.foldedNodes.push(node.num);
             }
           }
-
-          /*==========  Find the node path and add it to active nodes ( in ordrer to color nodes)  ==========*/
 
           function addToActiveNodes(node){
             scope.storageTemp.push([node.num, node.name]);
@@ -385,99 +238,122 @@
               scope.activeNodes = scope.storageTemp
             }
           }
+
+          function changeBreadcrumb(){
+            scope.breadcrumb = []
+            for(var i = scope.activeNodes.length - 2; i >= 0; i--){
+              scope.breadcrumb.push(scope.activeNodes[i][1]);
+            }
+            if(scope.sandbox){
+              setTimeout(function(){
+                scope.$apply()
+              });
+            }
+          }
+
+          function renameBreadCrumb(nodeChanged){
+            scope.breadcrumb = []
+            for(var i = scope.activeNodes.length - 2; i >= 0; i--){
+              if(scope.activeNodes[i][0] == nodeChanged.num){
+                scope.breadcrumb.push(nodeChanged.name);
+                scope.activeNodes[i][1] = nodeChanged.name;
+                if(!scope.home && !scope.sandbox){
+                  console.log(scope.activeNodes)
+                  ipCookie('activeNodes', scope.activeNodes);
+                }
+              } else{
+                scope.breadcrumb.push(scope.activeNodes[i][1]);
+              }
+            }
+          }
+
           function findActiveNodes(node){
             scope.storageTemp = [];
             addToActiveNodes(node)
-            console.log(scope.activeNodes)
+            changeBreadcrumb();
           }
 
-          /*==========  Use activeNodes to color the nodes  ==========*/
-
-          function colornodePath(d) {
-            d.active = false;
-            if(intInDoubleArray(d.num,scope.activeNodes)){
-              d.active = true;
+          function colornodePath(node) {
+            node.active = false;
+            if(intInDoubleArray(node.num,scope.activeNodes)){
+              node.active = true;
             }
-            if (d.children){
-              d.children.forEach(colornodePath);
+            if (node.children){
+              node.children.forEach(colornodePath);
             }
           }
 
-          /*==========  Save in cookies if the current node is an end node  ==========*/
-
-          function findNodeEnd(d){
-            if(!d.children && !d._children){
-              scope.nodeEnd = [d.num, d.name];
+          function findNodeEnd(node){
+            if(!node.children && !node._children){
+              scope.nodeEnd = [node.num, node.name];
               // Demo mode
               if(!scope.home && !scope.sandbox){
-                ipCookie('nodeEnd', [d.num, d.name]);
+                ipCookie('nodeEnd', [node.num, node.name]);
               }
             } else{
               scope.nodeEnd = false;
               ipCookie('nodeEnd', false);
             }
-          };
+          }
 
-          /*=============================================
-          =            Suppression of a node            =
-          =============================================*/
-
-          function deleteNode(d){
-            var nodeSelected = d;
+          function deleteNode(node){
 
             // Demo app
             if(scope.home || scope.sandbox){
-              var nodeToDelete = _.where(nodeSelected.parent.children, {id: nodeSelected.id});
+              var nodeToDelete = _.where(node.parent.children, {id: node.id});
               if (nodeToDelete){
-                nodeSelected.parent.children = _.without(nodeSelected.parent.children, nodeToDelete[0]);
+                node.parent.children = _.without(node.parent.children, nodeToDelete[0]);
               }
 
 
-              function deleteProperly(node){
+              function deleteProperly(node, nodeInitial){
                 if(node.num == scope.nodeEnd[0]){
                   scope.nodeEnd = false
 
                   findFoldedNodes(scope.root);
-                  findActiveNodes(node.parent)
+                  findActiveNodes(nodeInitial.parent)
 
                   colornodePath(scope.root);
                 }
                 if(node.children){
-                  node.children.forEach(deleteProperly)
+                  angular.forEach(node.children, function(value, key){
+                    deleteProperly(value, nodeInitial)
+                  })
                 }
                 if(node._children){
-                  node._children.forEach(deleteProperly)
+                  angular.forEach(node._children, function(value, key){
+                    deleteProperly(value, nodeInitial)
+                  })
                 }
               }
 
-              deleteProperly(nodeSelected)
-              update(nodeSelected);
+              deleteProperly(node, node)
+              update(node);
 
             }
             // If we are the app
             else{
-              Restangular.all('nodes/' + d.num).remove().then(function(res) {
+              Restangular.all('nodes/' + node.num).remove().then(function(res) {
 
                 for( var i = 0; i < res.deleted.length; i ++){
                   removeFromArray(scope.chapterFolded, res.deleted[i].toString())
                 }
 
-
-                var nodeToDelete = _.where(nodeSelected.parent.children, {id: nodeSelected.id});
+                var nodeToDelete = _.where(node.parent.children, {id: node.id});
                 if (nodeToDelete){
-                  nodeSelected.parent.children = _.without(nodeSelected.parent.children, nodeToDelete[0]);
+                  node.parent.children = _.without(node.parent.children, nodeToDelete[0]);
                   Notification.warning("Node removed")
                 }
 
                 // We check if the node end was in the node deleted.
                 // than we need to change the cookies
 
-                function deleteProperly(node){
+                function deleteProperly(node, nodeInitial){
                   if(node.num == scope.nodeEnd[0]){
                     scope.nodeEnd = false;
 
                     findFoldedNodes(scope.root);
-                    findActiveNodes(node.parent)
+                    findActiveNodes(nodeInitial.parent)
 
                     ipCookie('activeNodes', scope.activeNodes);
                     ipCookie('nodeEnd', scope.nodeEnd);
@@ -485,17 +361,19 @@
                     colornodePath(scope.root);
                   }
                   if(node.children){
-                    node.children.forEach(deleteProperly)
+                    angular.forEach(node.children, function(value, key){
+                      deleteProperly(value, nodeInitial)
+                    })
                   }
                   if(node._children){
-                    node._children.forEach(deleteProperly)
+                    angular.forEach(node._children, function(value, key){
+                      deleteProperly(value, nodeInitial)
+                    })
                   }
                 }
 
-                deleteProperly(nodeSelected)
-
-
-                update(nodeSelected);
+                deleteProperly(node, node)
+                update(node);
                 console.log("Ok: Node deleted");
               }, function(d) {
                 if(d.status == 403){
@@ -508,58 +386,52 @@
                 }
               });
             }
-
           }
 
-          /*==========================================
-          =            Creation of a node            =
-          ==========================================*/
-
-          function addNode(d){
-
-            var nodeSelected = d
-            var newBranch = {parent_id: d.num, name: "new"}
+          function addNode(node){
+            var newBranch = {parent_id: node.num, name: "new"}
 
             // Demo app
             if(scope.home || scope.sandbox){
-              var a = {name: "new", num: dummyId, parent: nodeSelected}
+              var a = {name: "new", num: dummyId, parent: node}
               dummyId ++;
 
-              if( nodeSelected.children === undefined || nodeSelected.children == null ){
-                nodeSelected.children = [];
+              if( node.children === undefined || node.children == null ){
+                node.children = [];
               }
-              nodeSelected.children.push(a);
+              node.children.push(a);
 
               // Select the node
-              findActiveNodes(nodeSelected.children[nodeSelected.children.length - 1]);
-              findNodeEnd(nodeSelected.children[nodeSelected.children.length - 1]);
+              findActiveNodes(node.children[node.children.length - 1]);
+              findNodeEnd(node.children[node.children.length - 1]);
               colornodePath(scope.root);
 
-              update(nodeSelected);
+              update(node);
             }
 
             // Normal app
             else{
               Restangular.all('nodes').post(newBranch).then(function(d) {
                 Notification.success("Node created")
-                console.log("Object saved OK");
-                var a = {name: "new", num: d.id, parent: nodeSelected}
+                console.log("Ok: node added");
+                var a = {name: "new", num: d.id, parent: node}
 
-                if( nodeSelected.children == undefined || nodeSelected.children == null ){
-                  nodeSelected.children = [];
+                if( node.children == undefined || node.children == null ){
+                  node.children = [];
                 }
 
-                nodeSelected.children.push(a);
+                node.children.push(a);
 
                 // Select the node
-                findActiveNodes(nodeSelected.children[nodeSelected.children.length - 1]);
-                findNodeEnd(nodeSelected.children[nodeSelected.children.length - 1]);
+                findActiveNodes(node.children[node.children.length - 1]);
+                findNodeEnd(node.children[node.children.length - 1]);
                 colornodePath(scope.root);
 
+                console.log(scope.activeNodes)
                 ipCookie('activeNodes', scope.activeNodes);
                 ipCookie('nodeEnd', scope.nodeEnd);
 
-                update(nodeSelected);
+                update(node);
 
 
               }, function(d) {
@@ -569,32 +441,35 @@
 
               });
             }
-
-
-
           }
 
+          function renameNode(node){
 
-          /*========================================
-          =            Rename of a node            =
-          ========================================*/
-
-          function renameNode(d){
-            var nodeSelected = d;
-
-            var result = prompt('Change the name of the node',d.name);
+            var result = prompt('Change the name of the node',node.name);
             if(result) {
               var nodeUpdate = {name: result}
+              node.name = result;
+              function renameProperly(node){
+                activeIDs = []
+                angular.forEach(scope.activeNodes, function(value,key){
+                  activeIDs.push(value[0])
+                });
+                if(activeIDs.indexOf(node.num) > -1){
+                  renameBreadCrumb(node)
+                }
+              }
 
               if(scope.home || scope.sandbox){
-                nodeSelected.name = result;
-                update(nodeSelected);
+                renameProperly(node)
+                update(node);
+                Notification.success("Node renamed")
+                console.log("OK: Node renamed");
               } else{
-                Restangular.one('nodes/'+ d.num).put(nodeUpdate).then(function(d) {
-                  nodeSelected.name = result;
-                  update(nodeSelected);
+                Restangular.one('nodes/'+ node.num).put(nodeUpdate).then(function(d) {
+                  renameProperly(node)
+                  update(node);
                   Notification.success("Node renamed")
-                  console.log("Object updated");
+                  console.log("Ok: Node renamed");
                 }, function(d) {
                   if (d.status == 403){
                     console.log("Ok: Rename a node forbidden");
@@ -609,16 +484,7 @@
             }
           }
 
-
-
-          /*=======================================
-          =            Render function            =
-          =======================================*/
-
           function render(branch, iElement){
-
-
-
             window.onresize = function() {
               console.log("Ok: Window resize. Render tree")
               render(scope.nodes, iElement);
@@ -650,61 +516,53 @@
 
             if(scope.activeNodes != undefined){
               branch.children.forEach(colorActiveNodes)
+              changeBreadcrumb()
             }
 
             update(scope.root);
           }
 
-          /*==========================================
-          =            Collapse functions            =
-          ==========================================*/
+          function collapseSelectively(node) {
+            if (node.children){
+              node.children.forEach(collapseSelectively);
 
-          function collapseSelectively(d) {
-            if (d.children){
-              d.children.forEach(collapseSelectively);
-
-              if(isInArray(d.num,scope.foldedNodes)){
-                d._children = d.children;
-                d.children = null;
+              if(isInArray(node.num,scope.foldedNodes)){
+                node._children = node.children;
+                node.children = null;
               }
             }
           }
 
-          function collapseAll(d) {
-            if (d.children) {
-              d._children = d.children;
-              d._children.forEach(collapseAll);
-              d.children = null;
+          function collapseAll(node) {
+            if (node.children) {
+              node._children = node.children;
+              node._children.forEach(collapseAll);
+              node.children = null;
             }
           }
 
-          function unCollapse(d){
-            if(d._children){
-              d.children = d._children;
-              d._children = null;
+          function unCollapse(node){
+            if(node._children){
+              node.children = node._children;
+              node._children = null;
             }
-            if(d.children){
-              d.children.forEach(unCollapse);
+            if(node.children){
+              node.children.forEach(unCollapse);
             }
           }
 
-          /*===================================
-          =            Color nodes            =
-          ===================================*/
-          function colorActiveNodes(d) {
-            if(isInDoubleArray(d.num,scope.activeNodes)){
-              d.active = true;
+          function colorActiveNodes(node) {
+            if(isInDoubleArray(node.num,scope.activeNodes)){
+              node.active = true;
             }
-            if (d.children){
-              d.children.forEach(colorActiveNodes);
+            if(node.children){
+              node.children.forEach(colorActiveNodes);
             }
           }
 
           /*========================================
           =            Utility function            =
           ========================================*/
-
-          /*==========  flat data to nested data  ==========*/
 
           function makeNested(flatData){
             var dataMap = flatData.reduce(function(map, node) {
@@ -724,9 +582,6 @@
             });
             return treeData[0];
           }
-
-
-          /*==========  Compare objects  ==========*/
 
           function compareObjects(x, y) {
             var objectId = false;
@@ -767,7 +622,6 @@
             return isInArray(value, array);
           }
 
-
           function transformArrayInDouble(array){
             var doubleArray = [];
 
@@ -792,8 +646,6 @@
               found = arr.indexOf(what);
             }
           }
-
-          /*==========  Compares two arrays of objects  ==========*/
 
           function compareObjectsArray(a,b){
             var objectId = false;
@@ -844,6 +696,84 @@
               return listObjectsId;
             }
           }
+
+          /*==========  Periodical get  ==========*/
+
+          // function retrieveNodes() {
+          //   Restangular.one('nodes').get().then(function(response) {
+
+          //     // console.log(scope.copyFlatData.plain())
+          //     // console.log(response.plain())
+          //     var comparaison = compareObjectsArray(response.plain(),scope.copyFlatData.plain());
+          //     console.log(comparaison);
+          //     // scope.copyFlatData = response;
+          //     // console.log(response);
+
+          //     $timeout(retrieveNodes, 5000);
+          //   }, function() {
+          //     console.log("There was an error getting");
+          //   });
+          // }
+
+          // $timeout(retrieveNodes, 5000);
+
+
+          /*==========  Renders Tree  ==========*/
+
+          // // We change the size of the graphs when the sidebar is oppened
+          // scope.$watch('sidebarMinified', function(newVals, oldVals){
+          //   if(scope.nodes){
+          //     render(makeNested(scope.nodes), iElement)
+          //   }
+          // });
+
+          // We re-render when the size of the window changes
+
+
+          // The problem is the nodes might not be here when we look
+          // So we keep looking until they are
+
+          // We re-render when we switch admin on/off
+          // setTimeout(function(){
+          //   scope.$watch('admin',function(newVals, oldVals){
+          //     if(newVals){
+          //       console.log("admin")
+          //       render(makeNested(scope.nodes), iElement);
+          //     }
+          //   });
+          // },1000);
+
+          // // We resize when the data changes
+          // scope.$watch('nodes', function(newVals, oldVals) {
+          //   if(newVals){
+          //     render(makeNested(scope.nodes), iElement);
+          //   }
+          // });
+
+
+          // watch for data changes and re-render
+          // scope.$watch('copyFlatData', function(newVals, oldVals) {
+          //   render(createTreeData(Restangular.copy(newVals)), iElement, getCookieArray);
+          //   // scope.dataChanged = true;
+          // },true);
+
+          // scope.$watch('dataChanged',function(newVals, oldVals){
+          //   if(newVals){
+          //     console.log(scope.dataChanged)
+          //     render(createTreeData(scope.copyFlatData), iElement, getCookieArray);
+          //     // scope.dataChanged = false;
+          //   }
+          // })
+
+          // scope.changeData = function(data){
+          //   // scope.root = data;
+
+          //   // scope.root.x0 = 0;
+          //   // scope.root.y0 = scope.height / 2;
+
+          //   update(scope.root);
+          // }
+
 
         }
       };

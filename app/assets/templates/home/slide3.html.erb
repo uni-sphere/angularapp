@@ -5,10 +5,10 @@
     <div id="fake-camera-2"></div>
 
     <div id="view-tree">
-      <collapsible-tree  node-end = 'nodeEnd' display-error ='displayError' active-nodes = 'activeNodes' admin = "true" sidebar-minified = 'sidebarMinified' sandbox = 'sandbox' home='home'></collapsible-tree>
+      <left-tree  node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = "true" sandbox = 'sandbox' home='home'></left-tree>
     </div>
 
-    <view-document active-nodes='activeNodes' node-end='nodeEnd' files = 'files' display-error = 'displayError' ng-show="nodeEnd" admin = "true" desactivate-spinner = 'desactivateSpinner' activate-spinner = 'activateSpinner' sandbox = 'sandbox' home='home'></view-document>
+    <right-tree active-nodes='activeNodes' node-end='nodeEnd' files = 'files' ng-show="nodeEnd" admin = "true" sandbox = 'sandbox' home='home'></right-tree>
   </div>
 
   <div id="fake-liasion">

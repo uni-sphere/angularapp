@@ -6,6 +6,5 @@ $(document).ready(function(){
   console.log(myHeight)
   $('.mobile-image').css('height', myHeight)
   $('.share-image').css('height', myHeight * 5 / 10)
-
 })
 

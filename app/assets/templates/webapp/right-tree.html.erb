@@ -66,8 +66,8 @@
 
     <div id="ui-tree-container" ng-if="!documentAbsent && nodeEnd">
       <div ui-tree="options" data-drag-enabled="false"  id="tree-root">
-        <ol ui-tree-nodes ng-model="list" >
-          <li ng-repeat="item in list" ui-tree-node ng-include="'items_renderer.html'"></li>
+        <ol ui-tree-nodes ng-model="listItems" >
+          <li ng-repeat="item in listItems" ui-tree-node ng-include="'items_renderer.html'"></li>
         </ol>
       </div>
     </div>
@@ -123,8 +123,8 @@
     <div id="file-dropped-position">{{ 'WHERE_DROP' | translate }}</div>
     <div id="root-object" ng-click="rootSelected()">{{ 'ROOT' | translate }}</div>
     <div id="small-ui-tree" ui-tree="options" data-drag-enabled="false">
-      <ol ui-tree-nodes ng-model="list" >
-        <li ng-repeat="item in list" ui-tree-node ng-include="'specific_renderer.html'"></li>
+      <ol ui-tree-nodes ng-model="listItems" >
+        <li ng-repeat="item in listItems" ui-tree-node ng-include="'specific_renderer.html'"></li>
       </ol>
     </div>
     <button class="submit-button default-submit" ng-click="cancelDrop()">{{ 'CANCEL' | translate }}</button>

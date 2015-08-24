@@ -1,14 +1,13 @@
 (function () {
 
   angular.module('mainApp.directives')
-    .directive('viewDocument', ['$translate' , 'Restangular', 'browser', '$upload',
+    .directive('rightTree', ['$translate' , 'Restangular', 'browser', '$upload',
                 'Notification', 'ipCookie', 'activateSpinner', 'stopSpinner',
-                'ActiveChapter', '$window', function($translate, Restangular, browser,
-                $upload, Notification, ipCookie, activateSpinner, stopSpinner,
-                ActiveChapter, $window) {
+                '$window', function($translate, Restangular, browser,
+                $upload, Notification, ipCookie, activateSpinner, stopSpinner, $window) {
       return {
         restrict: 'E',
-        templateUrl: 'webapp/view-document.html',
+        templateUrl: 'webapp/right-tree.html',
         scope:{
           activeNodes: '=',
           nodeEnd: '=',
@@ -18,62 +17,61 @@
           home: '=',
           chapterFolded: '=',
           activeChapter: '=',
+          breadcrumb: '='
         },
         link: function(scope){
 
-
-          // Find the chapter that are folded
-          // demo
-          if(scope.home || scope.sandbox){
-            scope.chapterFolded = ["0", "19"];
-          }
-          // Normal mode
-          else{
-            scope.chapterFolded = ipCookie('chapterFolded');
-
-            if(scope.chapterFolded != undefined ){
-              if(!isInArray(0, scope.chapterFolded)){
-                scope.chapterFolded.push("0");
-              }
-            } else{
-              scope.chapterFolded =["0"];
-            }
-          }
-
-
-          // scope.home = true
           var dummyId = 50;
-          // scope.viewDocumentRename = true;
 
+          (function findFoldedChapter(){
+            // demo
+            if(scope.home || scope.sandbox){
+              scope.chapterFolded = ["0", "19"];
+            }
+            // Normal mode
+            else{
+              scope.chapterFolded = ipCookie('chapterFolded');
 
-
-          scope.$watch('activeNodes', function(newVals, oldVals){
-            if(newVals){
-              //breadcrumb
-              scope.breadcrumb = []
-              for(var i = scope.activeNodes.length - 2; i >= 0; i--){
-                scope.breadcrumb.push(scope.activeNodes[i][1]);
+              if(scope.chapterFolded != undefined ){
+                if(!isInArray(0, scope.chapterFolded)){
+                  scope.chapterFolded.push("0");
+                }
+              } else{
+                scope.chapterFolded =["0"];
               }
+            }
+          })();
 
+          scope.$watch('nodeEnd', function(newVals, oldVals){
+            if(newVals){
               //Loads docs
               if(scope.nodeEnd){
-                Restangular.one('chapters').get({node_id: scope.nodeEnd[0]}).then(function (document) {
-                  document.shift();
-                  scope.list = makeNested(document);
-                }, function(d){
-                  console.log("Error: Get document");
-                  console.log(d)
-                  Notification.error("We temporarly can not display the documents")
-                });
+                console.log(scope.nodeEnd)
+                if(scope.sandbox && scope.nodeEnd[0] > 49 || scope.home && scope.nodeEnd[0] > 49){
+                  console.log("Ok: fake nodes")
+                   scope.listItems = [];
+                } else{
+                  Restangular.one('chapters').get({node_id: scope.nodeEnd[0]}).then(function (document) {
+                    document.shift();
+                    scope.listItems = makeNested(document);
+                  }, function(d){
+                    console.log("Error: Get document");
+                    console.log(d)
+                    Notification.error("We temporarly can not display the documents")
+                    ipCookie.remove('activeNodes')
+                    ipCookie.remove('nodeEnd')
+                    ipCookie.remove('foldedNodes')
+                    ipCookie.remove('chapterFolded')
+                  });
+                }
               }
             }
           });
 
-
-          scope.$watch('list', function(newVals, oldVals) {
+          scope.$watch('listItems', function(newVals, oldVals) {
             if(newVals){
 
-              if(scope.list.length == 0){
+              if(scope.listItems.length == 0){
                 scope.documentAbsent = true;
               } else{
                 scope.documentAbsent = false;
@@ -132,13 +130,10 @@
 
               newVals.forEach(iterate);
             }
-
           }, true);
-
 
           // Take flat data and make them nested
           function makeNested(flatData){
-
             var dataMap = flatData.reduce(function(map, node) {
               map[node.id] = node;
               return map;
@@ -195,11 +190,9 @@
             }
           }
 
-
           // We watch when someone drag and drops a file / folder
           scope.$watch('files', function (newVals, oldVals) {
             if(newVals){
-              console.log(scope.nodeEnd)
               if(!scope.nodeEnd){
                 Notification.error("Select a lead node to upload files")
               } else{
@@ -228,14 +221,12 @@
             $('#fileDropped').fadeOut();
           }
 
-          // We watch when someone uploads a file at the root
           scope.$watch('firstFiles', function (newVals, oldVals) {
             if(newVals && newVals.length != 0){
               console.log("Ok: file choosen")
               upload(scope.firstFiles, false);
             }
           });
-
 
           scope.collapseItems = function(scope) {
             if(scope.chapterFolded == undefined){
@@ -248,38 +239,37 @@
           }
 
           scope.activateChapter = function(node){
-            console.log("Ok: Chapter selected")
-            // activate the chapter
-            if(!node.$modelValue.document){
-              if(scope.activeChapter != undefined){
-                scope.activeChapter.$modelValue.activeItem = false;
+            if(!node.document){
+              // activate the chapter
+              if(!node.$modelValue.document){
+                if(scope.activeChapter != undefined){
+                  scope.activeChapter.$modelValue.activeItem = false;
+                }
+
+                if(node.collapsed || node.$modelValue.items.length == 0){
+                  node.$modelValue.activeItem = true;
+                  scope.activeChapter = node;
+                } else{
+                  scope.activeChapter = undefined;
+                }
+
               }
 
-              if(node.collapsed || node.$modelValue.items.length == 0){
-                node.$modelValue.activeItem = true;
-                scope.activeChapter = node;
-              } else{
-                scope.activeChapter = undefined;
+              // toggle the node
+              if(node.$modelValue.items.length != 0){
+                node.toggle();
+                addTochapterFolded(node.$modelValue.id);
               }
-
-            }
-
-            // toggle the node
-            if(node.$modelValue.items.length != 0){
-              node.toggle();
-              addTochapterFolded(node.$modelValue.id);
             }
           }
 
           scope.documentLooseFocus = function(){
-            console.log(scope.activeChapter)
             if(scope.activeChapter != undefined){
               scope.activeChapter.$modelValue.activeItem = false;
               scope.activeChapter = undefined
             }
           }
 
-          // Add folded chapters to cookie
           function addTochapterFolded(nb){
             if(scope.chapterFolded == undefined){
               scope.chapterFolded = [nb.toString()];
@@ -290,13 +280,12 @@
               scope.chapterFolded.push(nb.toString());
             };
             ipCookie('chapterFolded', scope.chapterFolded);
+            console.log(scope.chapterFolded)
           }
 
           function isInArray(value, array) {
             return array.indexOf(value.toString()) > -1;
           }
-
-
 
           /*========================================
           =            Delete Documents            =
@@ -316,7 +305,7 @@
                 console.log("Ok: Document deleted");
                 Notification.warning("File removed")
 
-                if(scope.list.length == 0){
+                if(scope.listItems.length == 0){
                   scope.documentAbsent = true;
                 }
               }
@@ -326,7 +315,7 @@
                   node.remove();
                   console.log("Ok: Document deleted");
                   Notification.warning("File removed")
-                  if(scope.list.length == 0){
+                  if(scope.listItems.length == 0){
                     scope.documentAbsent = true;
                   }
                 }, function(d) {
@@ -350,22 +339,33 @@
                 console.log("Ok: Document deleted");
                 Notification.warning("File removed")
 
-                if(scope.list.length == 0){
+                if(scope.listItems.length == 0){
                   scope.documentAbsent = true;
                 }
               }
               // Normal mode
               else{
                 Restangular.all('chapters/' + node.$modelValue.id).remove({node_id: scope.nodeEnd[0]}).then(function() {
-                  node.remove();
+
                   if(scope.activeChapter != undefined && scope.activeChapter.$modelValue.id == node.$modelValue.id){
                     scope.activeChapter = undefined;
                   }
-                  // console.log(scope.activeChapter.id)
+
+                  // Remove from cookies the chapter folded deleted
+                  if(scope.chapterFolded && scope.chapterFolded.indexOf(node.$modelValue.id.toString()) > -1){
+                    scope.chapterFolded.splice(scope.chapterFolded.indexOf(node.$modelValue.id.toString()), 1);
+                  }
+                  angular.forEach(node.$modelValue.items, function(value,key){
+                    if(!value.document && scope.chapterFolded && scope.chapterFolded.indexOf(value.id.toString()) > -1){
+                      scope.chapterFolded.splice(scope.chapterFolded.indexOf(value.id.toString()), 1);
+                    }
+                  });
+
+                  node.remove();
                   console.log("Ok: Chapter deleted");
                   Notification.warning("Chapter removed")
 
-                  if(scope.list.length == 0){
+                  if(scope.listItems.length == 0){
                     scope.documentAbsent = true;
                   }
                 }, function(d) {
@@ -380,21 +380,9 @@
                 });
               }
             }
-          };
-
-
-
-
-
-
-
-
-
-
+          }
 
           function upload(files, dragAndDrop) {
-
-            /*==========  Order the files (one folder and than all files inside)  ==========*/
 
             function orderFiles(files){
               for (var i = 0; i < files.length; i++){
@@ -445,10 +433,7 @@
               }
             }
 
-            /*==========  Upload the dir first  ==========*/
-
             function uploadDir(files){
-
               var folder = files.shift();
 
               var path = folder.way;
@@ -461,7 +446,7 @@
                 if(path.length > 1){
                   var num_doc = 0;
                   if(nodeData.items == undefined){
-                    nodeData = scope.list[scope.list.length - 1];
+                    nodeData = scope.listItems[scope.listItems.length - 1];
                   } else{
                     for (var i = 0; i < nodeData.items.length; i++) {
                       if(nodeData.items[i].document){
@@ -495,8 +480,8 @@
                 dummyId ++;
 
                 if(nodeData.items == undefined){
-                  scope.list.push(a);
-                  nodeDocData = scope.list[scope.list.length - 1];
+                  scope.listItems.push(a);
+                  nodeDocData = scope.listItems[scope.listItems.length - 1];
                 } else{
                   nodeData.items.push(a);
                   nodeDocData = nodeData.items[nodeData.items.length -1];
@@ -524,8 +509,8 @@
                   var a = {title: folder.name, id: d.id, items: [], depth: depth}
 
                   if(nodeData.items == undefined){
-                    scope.list.push(a);
-                    nodeDocData = scope.list[scope.list.length - 1];
+                    scope.listItems.push(a);
+                    nodeDocData = scope.listItems[scope.listItems.length - 1];
                   } else{
                     nodeData.items.push(a);
                     nodeDocData = nodeData.items[nodeData.items.length -1];
@@ -560,10 +545,7 @@
               }
             }
 
-            /*==========  Upload all files in a directory  ==========*/
-
             function uploadFiles(files){
-              console.log(nodeDocData)
               var numberItems = 0;
               for (var i = 0; i < files.length; i++) {
                 var file = files[i];
@@ -581,19 +563,10 @@
                   }
 
                   if(nodeDocData.items == undefined){
-                    scope.list.unshift(a);
+                    scope.listItems.unshift(a);
                   } else{
                     nodeDocData.items.unshift(a);
                   }
-
-                  // if(!dragAndDrop && !scope.documentAbsent && scope.lastClick != undefined){
-                  //   scope.chapterFolded.push(nodeDocData.id.toString());
-
-                  //   scope.lastClick.expand();
-
-                  // } else if(scope.documentAbsent){
-                  //   scope.documentAbsent = false;
-                  // }
                 }
                 // Normal mode
                 else{
@@ -611,35 +584,25 @@
                     var a = {title: d.data.title, doc_id: d.data.id, document: true, type: file.type, preview_link: d.data.url}
                     numberItems ++;
                     console.log("OK document uploaded:" + d.data.title);
+                    Notification.success("OK document uploaded: " + d.data.title)
                     if(numberItems == files.length){
-
-                      // console.log(scope.activeChapter.$nodeScope.collapsed)
-                      // console.log(scope.activeChapter.$modelValue.collapsed)
-                      if(!dragAndDrop && scope.activeChapter != undefined && scope.activeChapter.$nodeScope.collapsed){
-
-                        scope.activeChapter.toggle()
-                        scope.chapterFolded.push(scope.activeChapter.$modelValue.id.toString());
-                        ipCookie('chapterFolded', scope.activeChapter.$modelValue.id);
+                      if(nodeDocData.id != 0){
+                        if(dragAndDrop || !scope.activeChapter.$nodeScope.collapsed ){
+                          console.log("hello")
+                          scope.chapterFolded.push(nodeDocData.id.toString());
+                          ipCookie('chapterFolded', scope.chapterFolded);
+                        }
                       }
-                      console.log("OK upload of this level finished")
 
+                      console.log("OK upload of this level finished")
                       scope.dirUploaded = true;
                     }
 
                     if(nodeDocData.items == undefined){
-                      scope.list.unshift(a);
+                      scope.listItems.unshift(a);
                     } else{
                       nodeDocData.items.unshift(a);
                     }
-
-                    // if(!dragAndDrop && !scope.documentAbsent && scope.lastClick != undefined){
-                    //   console.log("hello")
-                    //   scope.lastClick.expand();
-                    //   scope.chapterFolded.push(nodeDocData.id.toString());
-                    //   ipCookie('chapterFolded', scope.chapterFolded);
-                    // } else if(scope.documentAbsent){
-                    //   scope.documentAbsent = false;
-                    // }
 
                   }, function(d) {
                     stopSpinner()
@@ -654,8 +617,6 @@
                 }
               }
             }
-
-            /*==========  Upload function  ==========*/
 
             function uploadItems(){
               //IF the first element of the array is a directory we upload the dir
@@ -691,7 +652,6 @@
               });
             }
 
-
             if (files && files.length) {
               scope.progressionUpload = files.length
               // console.log(files);
@@ -700,7 +660,6 @@
               scope.arrayFiles = undefined;
 
               if(!dragAndDrop){
-                // console.log(scope.activeChapter.value)
                 // If we upload a normal file
                 if(scope.activeChapter){
                   var masternodeData = scope.activeChapter.$modelValue;
@@ -714,9 +673,6 @@
                   var masternodeData = {id: 0};
                   var nextNodeData = 1;
                 } else{
-                  // setTimeout(function(){
-                  //   scope.lastDeployedPosition.$parentNodeScope.expand()
-                  // }, 500);
                   var masternodeData = scope.lastDeployedPosition.$modelValue;
                   var nextNodeData = scope.lastDeployedPosition.$modelValue.items.length;
                 }
@@ -738,7 +694,7 @@
                 }
               }
             }
-          };
+          }
 
           function getApiUrl(){
             var host = window.location.host;
@@ -753,19 +709,17 @@
             return array.indexOf(value.toString()) > -1;
           }
 
-          function checkIfChrome(){
+          (function checkIfChrome(){
             if(browser() == "chrome"){
               scope.isChrome = true;
             } else{
               scope.isChrome = false;
             }
-          };
-
-          checkIfChrome();
+          })();
 
         }
-      };
-    }]);
+      }
+    }])
 }());
 
 

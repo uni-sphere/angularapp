@@ -54,18 +54,20 @@ class NodesController < ApplicationController
   private
   
   def is_allowed_update?
-    send_error('Forbidden', '403') unless current_user.nodes.exists?(id: current_node.id)
+    send_error('Forbidden', '403') unless current_user.nodes.exists? current_node.id
   end
   
   def is_allowed_destroy?
+    @forbidden = false 
     queue = [current_node]
     while queue != []
       node = queue.pop
-      send_error('Forbidden', '403') if node.user_id != current_user.id
+      @forbidden = true if node.user_id != current_user.id
       Node.where(parent_id: node.id).each do |node|
         queue << node
       end
     end
+    send_error('Forbidden', '403') if @forbidden 
   end
   
 end

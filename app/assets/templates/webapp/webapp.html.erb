@@ -1,17 +1,10 @@
 <div ng-file-drop ng-model="files"  drag-over-class="{accept:'dragoverAccept', reject:'dragoverReject', delay:100}"  ng-multiple="true" accept=".jpg,.png,.pdf" id="application-view">
 
   <div id="view-tree" >
-    <collapsible-tree  node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = 'admin'  home='home' sandbox = 'sandbox' help = 'help' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter'></collapsible-tree>
+    <left-tree  node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = 'admin'  home='home' sandbox = 'sandbox' help = 'help' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' nodes = 'nodes' folded-nodes= 'foldedNodes'></left-tree>
   </div>
 
-  <view-document active-nodes='activeNodes' node-end='nodeEnd' files = 'files' admin = 'admin' sandbox = 'sandbox' home='home' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter'></view-document>
+  <right-tree active-nodes='activeNodes' node-end='nodeEnd' files = 'files' admin = 'admin' sandbox = 'sandbox' home='home' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' ></right-tree>
 
   <dragndrop-view ng-if="nodeEnd"></dragndrop-view>
 </div>
-
-<div id="funny-bg"></div>
-
-
-
-
-

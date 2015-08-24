@@ -16,9 +16,9 @@ module AuthenticationHelper
       return {}
     end
   end
-  
+
   private
-  
+
   def user_documents
     ids = []
     current_user.chapters.each do |chapter|
@@ -26,7 +26,7 @@ module AuthenticationHelper
         ids << awsdocument.id
       end
     end
-    return Awsdocument.where(id: ids) 
+    return Awsdocument.where(id: ids)
   end
 
   def authenticate_client
@@ -101,7 +101,7 @@ module AuthenticationHelper
       return {}
     end
   end
-  
+
   def current_chapter
     params[:chapter_id] = params[:id] if request.url.split('?').first.include? 'chapter'
     if params[:chapter_id]

@@ -19,9 +19,9 @@ class OrganizationsController < ApplicationController
     if organization.save
       node = organization.nodes.first
       firstchild = organization.nodes.create(name: 'First Level', parent_id: node.id, user_id: user.id)
-      firstchild.chapters.build(title: 'main', parent_id: 0)
+      firstchild.chapters.build(title: 'main', parent_id: 0, user_id: user.id)
       secondchild = organization.nodes.create(name: 'Second Level', parent_id: node.id, user_id: user.id)
-      secondchild.chapters.build(title: 'main', parent_id: 0)
+      secondchild.chapters.build(title: 'main', parent_id: 0, user_id: user.id)
       if firstchild.save and secondchild.save
         if create_pointer(organization.subdomain)
           Rollbar.info("Organization created", organization: organization.name)

@@ -11,7 +11,7 @@ class UserMailer < ActionMailer::Base
       user_nodes_email(user.id).each do |node|
         @nodes_activity << {name: node.name, parent: Node.find(node.parent_id).name, downloads: node.reports.last.downloads} if node.reports.exists?
       end
-      mail(to: user.email, subject: "Weekly activity #{@organization.name}")
+      mail(to: user.email, subject: "Weekly activity #{@organization.name}") if (Time.now - organization.created_at).abs > 6.days
     end
   end
   

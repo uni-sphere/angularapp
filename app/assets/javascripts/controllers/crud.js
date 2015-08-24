@@ -34,7 +34,7 @@ angular
         var a = {title: "New chapter", id: $scope.dummyId, items: [], depth: depth }
 
         if(nodeData.items == undefined){
-          $scope.list.push(a);
+          $scope.listItems.push(a);
         } else{
           nodeData.items.push(a);
         }
@@ -53,10 +53,16 @@ angular
           var a = {title: "New chapter", id: d.id, items: [], depth: depth }
 
           if(nodeData.items == undefined){
-            $scope.list.push(a);
+            $scope.listItems.push(a);
           } else{
             nodeData.items.push(a);
           }
+
+          if(nodeData.id != 0 && $scope.chapterFolded.indexOf(nodeData.id.toString()) == -1){
+            $scope.chapterFolded.push(nodeData.id.toString());
+            ipCookie('chapterFolded', $scope.chapterFolded);
+          }
+
 
           $scope.documentAbsent = false;
 
@@ -108,9 +114,15 @@ angular
               Notification.success("File renamed")
               console.log("Object updated");
             }, function(d) {
-              console.log("Error: Rename document");
-              console.log(d);
-              Notification.error("We can't temporarily rename this document");
+              if (d.status == 403) {
+                console.log("Ok: Rename document forbidden");
+                console.log(d);
+                Notification.warning("This file is not yours");
+              } else {
+                console.log("Error: Rename document");
+                console.log(d);
+                Notification.error("We can't temporarily rename this file");
+              }
             });
           }
         }
@@ -139,9 +151,15 @@ angular
               Notification.success("Chapter renamed")
               console.log("Object updated");
             }, function(d) {
-              console.log("Error: Rename chapter");
-              console.log(d);
-              Notification.error("We can't temporarily rename the chapter");
+              if (d.status == 403) {
+                console.log("Ok: Rename chapter forbidden");
+                console.log(d);
+                Notification.warning("This chapter is not yours");
+              } else {
+                console.log("Error: Rename chapter");
+                console.log(d);
+                Notification.error("We can't temporarily rename the chapter");
+              }
             });
           }
         }

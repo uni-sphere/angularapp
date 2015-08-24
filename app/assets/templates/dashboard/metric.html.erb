@@ -1,6 +1,11 @@
 <div class="chart-control">
   <div class="chart-title" ng-if="userNodes">{{ 'LEFT_STATISTICS' | translate }} {{userActiveNode.name}}</div>
   <div class="chart-title" ng-if="!userNodes">Your statistics</div>
+
+  <div class="metrics-breadcrumb">
+     <span ng-repeat="node in breadcrumb track by $index" ng-class="'breadcrumb-node'">{{node}} <span ng-class="'breadcrumb-separator'"><i class="fa fa-angle-right" ng-if="$index != breadcrumb.length - 1"></i></span></span>
+  </div>
+
   <div class="chart-button-wrapper">
   <div ng-repeat="node in userNodes" ng-click="selectOtherNode(this)" class="button-group" ng-class="{'button-group-first' : $index == 0, 'button-group-last' : $index == userNodes.length - 1, 'button-group-middle' : $index != 0 && $index != userNodes.length - 1, 'active' : node == userActiveNode}">{{node.name}}</div>
   <!-- <i class="fa fa-angle-right"></i> -->

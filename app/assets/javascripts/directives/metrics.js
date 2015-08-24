@@ -7,31 +7,12 @@
       templateUrl: 'dashboard/metric.html',
       scope: {
         university: '=',
-        sidebarMinified: '='
+        lookForNode: '='
       },
       link: function(scope, element) {
         var globals = {};
 
         scope.containerWidth = $('#main-view-container').width();
-
-        // // We change the size of the graphs when the sidebar is oppened
-        // scope.$watch('sidebarMinified', function(newVals, oldVals){
-        //   if(scope.chart2rdy && scope.chart1rdy){
-        //     if (scope.sidebarMinified) {
-        //       options1.width = $('#chart-1').width();
-        //       options2.width = $('#chart-2').width();
-        //     } else {
-        //       options1.width = $('#chart-1').width() - 150;
-        //       options2.width = $('#chart-2').width() - 150;
-        //     }
-
-        //     options1.height =  $('#ui-view-main-wrapper').height() * 50 / 100;
-        //     MG.data_graphic(options1);
-
-        //     options2.height =  $('#ui-view-main-wrapper').height() * 50 / 100;
-        //     MG.data_graphic(options2);
-        //   }
-        // });
 
         // when the window is resized the graphs are changing
         window.onresize = function() {
@@ -48,8 +29,23 @@
         Restangular.one('report/nodes').get().then(function(data) {
           scope.userNodes = data.plain();
           scope.userActiveNode = scope.userNodes[0];
+          // console.log(scope.userNodes)
         });
 
+        function getMetricBreadcrumb(node){
+          scope.metricBreadcrumb = []
+          addToMetricBreadcrumb(node)
+          console.log(scope.metricBreadcrumb)
+        }
+
+        function addToMetricBreadcrumb(node){
+          scope.metricBreadcrumb.push(node.name)
+          console.log(node)
+          console.log(node.parent)
+          if(node.parent && node.parent){
+            plop(node.parent)
+          }
+        }
         /*==========  First chart download on different node  ==========*/
 
         // var current_time = Date.now() + 200000;
@@ -75,6 +71,7 @@
         // Function to change Node
         scope.selectOtherNode = function(button) {
           scope.userActiveNode = button.node;
+          getMetricBreadcrumb(button.node)
         }
 
         // When the node change we fetch the new data
@@ -144,14 +141,12 @@
 
             });
           }
-
         });
 
         // Function to change the chart
         scope.selectStat = function(button){
           scope.activeStat = button.stat.name;
         }
-
 
       }
     }

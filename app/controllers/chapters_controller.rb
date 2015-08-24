@@ -1,9 +1,9 @@
 class ChaptersController < ApplicationController
 
-  before_action :is_allowed?, only: [:update, :destroy, :create]
+  before_action :is_allowed?, only: [:update, :destroy]
 
   def create
-    chapter = current_node.chapters.new(title: params[:title], parent_id: params[:parent_id])
+    chapter = current_node.chapters.new(title: params[:title], parent_id: params[:parent_id], user_id: current_user.id)
     chapter.parent_id = current_node.chapters.first.id if chapter.parent_id == 0
     chapter.user_id = current_user.id if current_organization.subdomain != 'sandbox'
     if chapter.save
@@ -44,7 +44,7 @@ class ChaptersController < ApplicationController
   private
   
   def is_allowed?
-    send_error('Forbidden', '403') unless current_user.nodes.exists?(current_node.id)
+    send_error('Forbidden', '403') unless current_user.chapters.exists?(current_chapter.id) or current_user.nodes.exists?(current_chapter.node_id)
   end
   
   def destroy_with_children(id)

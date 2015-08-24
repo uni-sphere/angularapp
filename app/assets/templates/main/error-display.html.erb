@@ -1,7 +1,0 @@
-<div class="prompt-wrapper" id="error-prompt" ng-show="showError" ng-class="{'ready-to-disappear': !showError, 'ready-to-appear': showError}">
-  <div id="close-error-prompt" ng-click="hideError()" class="fa fa-close"></div>
-  <div class="prompt-title" id="error-prompt-title">{{ 'ERROR' | translate }}</div>
-  <div  id="error-prompt-text">
-    <div ng-repeat="error in listError track by $index" ng-class="{'singleError' : listError.length == 1}"><i ng-show="listError.length > 1" class="fa fa-caret-right"></i><span class="error">{{error}}</span></div>
-  </div>
-</div>
