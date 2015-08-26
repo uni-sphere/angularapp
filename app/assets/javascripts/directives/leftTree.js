@@ -14,9 +14,24 @@
           activeChapter: '=',
           breadcrumb: '=',
           nodes: '=',
-          foldedNodes: '='
+          foldedNodes: '=',
+          makeNested: '='
         },
         link: function(scope, iElement, iAttrs) {
+
+          scope.reloadNodes = function(){
+            Restangular.one('nodes').get().then(function (nodes) {
+              console.log("Ok: node retrieved")
+              scope.flatNode = nodes.plain();
+              scope.nodes = scope.makeNested(scope.flatNode)
+              render(scope.nodes, iElement);
+            },
+              function(d){
+              Notification.error("Can not display your tree")
+              console.log("Error: Get nodes");
+              console.log(d)
+            });
+          }
 
           var dummyId = 50
           /*==========  Svg creation  ==========*/
@@ -31,14 +46,18 @@
 
           scope.$watch('nodes',function(newVals, oldVals){
             if(newVals){
+              render(scope.nodes, iElement);
+              console.log("Ok: Tree rendered")
               scope.$watch('admin',function(newVals, oldVals){
-                if(newVals){
-                  console.log("Ok: tree rendered")
+                if(oldVals != undefined && newVals != oldVals){
+                  console.log("Ok: Tree rendered")
                   render(scope.nodes, iElement);
                 }
               });
             }
           });
+
+
 
           function update(source) {
             var duration = 750;
@@ -377,10 +396,14 @@
                 if(d.status == 403){
                   console.log("Ok: Deletion forbidden")
                   Notification.warning('This node is not yours');
-                } else {
+                } else if(d.status == 402) {
+                  console.log("Ok: Deletion cancelled node doesn't exist anymore")
+                  Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                  scope.reloadNodes()
+                } else{
                   console.log(d)
                   console.log("Error: Delete node");
-                  Notification.error("You can't temporarily delete this node");
+                  Notification.error("An error occured while deleting. Please refresh.");
                 }
               });
             }
@@ -433,10 +456,16 @@
 
 
               }, function(d) {
-                console.log("Error: New node");
-                console.log(d);
-                Notification.error("You can't temporarily create a new node");
 
+                if(d.status == 402) {
+                  console.log("Ok: Node creation cancelled. Node doesn't exist anymore")
+                  Notification.warning('This action has been cancelled. One of you colleague deleted this node.')
+                  scope.reloadNodes()
+                } else{
+                  console.log("Error: New node");
+                  console.log(d);
+                  Notification.error("An error occured while creating the node. Please refresh");
+                }
               });
             }
           }
@@ -472,10 +501,14 @@
                   if (d.status == 403){
                     console.log("Ok: Rename a node forbidden");
                     Notification.warning("This node is not yours");
-                  } else {
+                  } else if(d.status == 402) {
+                    console.log("Ok: Rename cancelled. Node doesn't exist anymore")
+                    Notification.warning('This action has been cancelled. One of you colleague deleted this node.')
+                    scope.reloadNodes()
+                  } else{
                     console.log("Error: Rename node");
                     console.log(d);
-                    Notification.error("Node renaming error")
+                    Notification.error("An error occcured while renaming. Please refresh.")
                   }
                 });
               }

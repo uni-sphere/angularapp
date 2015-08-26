@@ -1,8 +1,8 @@
 <div ng-file-drop ng-model="files"  drag-over-class="{accept:'dragoverAccept', reject:'dragoverReject', delay:100}"  ng-multiple="true" accept=".jpg,.png,.pdf" id="application-view" ng-controller="WebappCtrl">
 
-  <left-tree id="view-tree" node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = 'admin'  home='home' sandbox = 'sandbox' help = 'help' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' nodes = 'nodes' folded-nodes= 'foldedNodes'></left-tree>
+  <left-tree id="view-tree" node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = 'admin'  home='home' sandbox = 'sandbox' help = 'help' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' nodes = 'nodes' folded-nodes= 'foldedNodes' make-nested = 'makeNested'></left-tree>
 
-  <right-tree active-nodes='activeNodes' node-end='nodeEnd' files = 'files' admin = 'admin' sandbox = 'sandbox' home='home' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' ></right-tree>
+  <right-tree active-nodes='activeNodes' node-end='nodeEnd' files = 'files' admin = 'admin' sandbox = 'sandbox' home='home' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' reload-nodes ='reloadNodes'></right-tree>
 
   <dragndrop-view ng-if="nodeEnd"></dragndrop-view>
 </div>

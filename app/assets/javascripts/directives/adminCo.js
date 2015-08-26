@@ -9,10 +9,43 @@
         accountForgotten: '=',
         accountForgottenEmail: '=',
         sandbox: '=',
-        getBasicInfo: '='
+        getBasicInfo: '=',
+        accountEmail: '=',
+        accountName: '=',
+        help: '=',
+        listUser: '='
       },
       link: function(scope) {
 
+        function getBasicInfo(){
+          // We get the user email and name to display them
+          Restangular.one('user').get().then(function (d) {
+            scope.accountEmail = d.email
+            scope.accountName = d.name
+            scope.help = d.help
+
+            console.log("Ok: User info")
+            if(scope.help) {
+              // $('#first-connection').fadeIn(2000)
+            }
+
+
+            // We get the list of user in the organization
+            Restangular.one('users').get().then(function (d) {
+              scope.listUser = d.users
+              console.log("Ok: List of all user")
+            }, function(d){
+              console.log("Error: List of all user");
+              Notification.error('Error while getting institution infos. Please refresh')
+              console.log(d)
+            });
+
+          }, function(d){
+            console.log("Error: User info");
+            Notification.error('Error while getting user infos. Please refresh')
+            console.log(d)
+          });
+        }
 
         scope.toggleAdmin = function(){
           if(scope.open == true){
@@ -63,7 +96,7 @@
 
 
                 scope.admin = true;
-                scope.getBasicInfo()
+                getBasicInfo()
               }, function(resp){
                 console.log(resp);
                 if(resp.reason == "unauthorized"){

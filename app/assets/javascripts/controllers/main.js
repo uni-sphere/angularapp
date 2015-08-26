@@ -6,20 +6,20 @@ angular
     $auth, $state, usSpinnerService, Notification, ipCookie) {
 
     if(window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
-      console.log("sandbox")
+      console.log("SANDBOX")
       $scope.sandbox = true
       $scope.admin = true
-      Notification.warning({message: 'This is test version. Your actions will not be saved', delay: 20000})
+      Notification.warning({message: 'This is a test version. Your actions will not be saved.', delay: 20000})
       // $('#first-connection').fadeIn(2000)
       $scope.university = "My university"
     } else if(window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home'){
-      console.log("home")
+      console.log("HOME")
       $scope.home = true
       if(window.location.host == 'dev.unisphere.eu'){
         $scope.dev = true;
       }
     } else{
-      console.log("Normal app")
+      console.log("NORMAL APP")
 
       // We get the actual uni
       Restangular.one('organization').get().then(function (university) {
@@ -35,7 +35,7 @@ angular
       // We authentificated the user
       // console.log("Validation attempt: main.js")
       $auth.validateUser().then(function(){
-        console.log("Ok: admin co")
+        console.log("Ok: admin connected")
         $scope.admin = true;
 
         // Help Center
@@ -56,68 +56,8 @@ angular
       })
     }
 
-    $scope.printNodeEnds = function(){
-      console.log($scope.nodeEnd)
-    }
-
-
     if(window.location.host == 'localhost:3000'){
       $scope.local = true
-    }
-
-    /*==========  Admin deco  ==========*/
-
-    $scope.adminDeco = function(){
-      if($scope.sandbox){
-        $scope.admin = false;
-        $state.transitionTo('main.application');
-      } else{
-        $auth.signOut()
-        .then(function(resp) {
-          $scope.admin = false;
-          $state.transitionTo('main.application');
-
-          $scope.accountEmail = undefined;
-          $scope.accountName = undefined;
-
-          if(window.location.host != 'localhost:3000'){
-            FHChat.transitionTo('closed');
-          }
-        })
-        .catch(function(resp) {
-          console.log(resp)
-        });
-      }
-    }
-
-    /*==========  Languages stuff  ==========*/
-
-    // Languages options
-    $scope.ddSelectOptions = [
-      {
-        text: 'Français',
-        value: 'fr'
-      },
-      {
-        text: 'English',
-        value: 'en'
-      }
-    ];
-
-    // Set the default language
-    if($translate.use().indexOf("fr") > -1){
-      $scope.ddSelectSelected = {text: 'French', value: 'fr'};
-    } else{
-      $scope.ddSelectSelected = {text: 'English', value: 'en'};
-    }
-
-    $scope.changeLanguage = function() {
-      if ($scope.ddSelectSelected.value == 'fr') {
-        $translate.use('fr');
-      } else {
-        $translate.use('en');
-      }
-      console.log($translate.use());
     }
 
     /*==========  Function  ==========*/
@@ -129,23 +69,25 @@ angular
         $scope.accountEmail = d.email
         $scope.accountName = d.name
         $scope.help = d.help
-
         console.log("Ok: User info")
         if($scope.help) {
           // $('#first-connection').fadeIn(2000)
         }
 
+
         // We get the list of user in the organization
         Restangular.one('users').get().then(function (d) {
           $scope.listUser = d.users
-          console.log("Ok: Organization info")
+          console.log("Ok: List of all user")
         }, function(d){
-          console.log("Error: Organization info");
+          console.log("Error: List of all user");
+          Notification.error('Error while getting institution infos. Please refresh')
           console.log(d)
         });
 
       }, function(d){
         console.log("Error: User info");
+        Notification.error('Error while getting user infos. Please refresh')
         console.log(d)
       });
     }

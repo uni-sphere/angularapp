@@ -99,7 +99,7 @@
     })();
 
     NotificationProvider.setOptions({
-      delay: 1000,
+      delay: 5000,
       startTop: 100,
       startRight: 40,
       verticalSpacing: 20,

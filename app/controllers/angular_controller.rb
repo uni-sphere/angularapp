@@ -6,7 +6,7 @@ class AngularController < ApplicationController
     elsif request.original_fullpath == "/home" || request.subdomain == "www" || request.subdomain == "dev"
       render :layout => 'home'
     else
-      render :layout => 'webapp'
+      render :layout => 'normalApp'
     end
   end
 

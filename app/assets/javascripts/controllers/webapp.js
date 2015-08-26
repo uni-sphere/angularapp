@@ -3,7 +3,7 @@
   .module('mainApp.controllers')
   .controller('WebappCtrl', ['$scope', 'Restangular', 'Notification', 'ipCookie', function ($scope, Restangular, Notification, ipCookie) {
 
-    function makeNested(flatData){
+    $scope.makeNested = function(flatData){
       var dataMap = flatData.reduce(function(map, node) {
         map[node.num] = node;
         return map;
@@ -35,7 +35,7 @@
         nodeIDs.push(value.num)
       });
 
-      $scope.nodes = makeNested($scope.flatNode)
+      $scope.nodes = $scope.makeNested($scope.flatNode)
       // Cookies gestion
       if($scope.home || $scope.sandbox){
         $scope.foldedNodes = [4];
@@ -61,8 +61,6 @@
             $scope.foldedNodes.push(value)
           }
         });
-
-
       }
 
       // $scope.$watch('help', function(newVals, oldVals){
@@ -78,7 +76,7 @@
 
     },
       function(d){
-      Notification.error("Can not display your tree")
+      Notification.error("Error while getting classes and documents informations. Refresh the page please.")
       console.log("Error: Get nodes");
       console.log(d)
     });

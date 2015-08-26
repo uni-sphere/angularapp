@@ -1,7 +1,7 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('CrudCtrl', ['$scope', 'Restangular', 'Notification', 'ipCookie', 'ActiveChapter', function ($scope, Restangular, Notification, ipCookie, ActiveChapter) {
+  .controller('CrudCtrl', ['$scope', 'Restangular', 'Notification', 'ipCookie', function ($scope, Restangular, Notification, ipCookie) {
 
 
 
@@ -70,7 +70,11 @@ angular
           if (d.status == 403) {
             console.log('Ok: Chapter creation not allowed');
             Notification.warning("This node is not yours");
-          } else {
+          } else if(d.status == 402) {
+            console.log("Ok: Chapter creation cancelled. Node doesn't exist anymore")
+            Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+            $scope.reloadNodes()
+          } else{
             console.log("Error: Create a chapter");
             console.log(d);
             Notification.error("We can't temporarily create a chapter");
@@ -118,7 +122,11 @@ angular
                 console.log("Ok: Rename document forbidden");
                 console.log(d);
                 Notification.warning("This file is not yours");
-              } else {
+              } else if(d.status == 402) {
+                console.log("Ok: Rename file cancelled. Node doesn't exist anymore")
+                Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                $scope.reloadNodes()
+              } else{
                 console.log("Error: Rename document");
                 console.log(d);
                 Notification.error("We can't temporarily rename this file");
@@ -155,7 +163,11 @@ angular
                 console.log("Ok: Rename chapter forbidden");
                 console.log(d);
                 Notification.warning("This chapter is not yours");
-              } else {
+              } else if(d.status == 402) {
+                console.log("Ok: Rename file cancelled. Node doesn't exist anymore")
+                Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                $scope.reloadNodes()
+              } else{
                 console.log("Error: Rename chapter");
                 console.log(d);
                 Notification.error("We can't temporarily rename the chapter");

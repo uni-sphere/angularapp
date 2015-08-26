@@ -17,7 +17,8 @@
           home: '=',
           chapterFolded: '=',
           activeChapter: '=',
-          breadcrumb: '='
+          breadcrumb: '=',
+          reloadNodes: '='
         },
         link: function(scope){
 
@@ -320,7 +321,11 @@
                   if (d.status == 403){
                     console.log("Ok: Delete a file forbidden");
                     Notification.warning("This file is not yours");
-                  } else {
+                  } else if(d.status == 402) {
+                    console.log("Ok: Deletion cancelled node doesn't exist anymore")
+                    Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                    scope.reloadNodes()
+                  } else{
                     console.log("Error: Delete file");
                     console.log(d);
                     Notification.error("We can't temporarily delete the file " + node.$modelValue.title);
@@ -370,7 +375,11 @@
                   if (d.status == 403){
                     console.log("Ok: Delete a chapter forbidden");
                     Notification.warning("This chapter is not yours");
-                  } else {
+                  } else if(d.status == 402) {
+                    console.log("Ok: Deletion cancelled node doesn't exist anymore")
+                    Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                    scope.reloadNodes()
+                  } else{
                     console.log("Error: Delete a chapter");
                     console.log(d);
                     Notification.error("We can't temporarily delete this chapter");
@@ -534,10 +543,14 @@
                   stopSpinner()
                   if (d.status == 403) {
                     console.log("Ok: Chapter creation forbidden");
-                    Notification.warning("This node is not yours")
-                  } else {
+                    Notification.warning("This node is not yours. " +folder.name +" was not created.")
+                  } else if(d.status == 402) {
+                    console.log("Ok: chapter creation cancelled. Node doesn't exist anymore")
+                    Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                    scope.reloadNodes()
+                  } else{
                     Notification.error("Chapter creation problem")
-                    console.log("Error: Failed to create chapter:" + folder.name);
+                    console.log("Error: Failed to create chapter:" + folder.name +". Please refresh.");
                   }
                 });
               }
@@ -607,9 +620,13 @@
                     if (d.status == 403) {
                       console.log("Ok: Upload documents forbidden");
                       Notification.warning("This node is not yours")
-                    } else {
+                    } else if(d.status == 402) {
+                      console.log("Ok: File upload cancelled. Node doesn't exist anymore")
+                      Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                      scope.reloadNodes()
+                    } else{
                       Notification.error("File upload error")
-                      console.log("Error: Upload document failed :" +  file.name);
+                      console.log("Error: Upload document failed :" +  file.name + ". Please refresh.");
                     }
                   });
                 }

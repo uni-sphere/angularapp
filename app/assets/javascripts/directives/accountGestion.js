@@ -25,25 +25,31 @@
         // Account forgotten
         scope.resetAccount = function(){
           Restangular.one('organization/is_signed_up').get({email: scope.accountForgottenEmail}).then(function (signup) {
-            var credentials = {
-              email: scope.accountForgottenEmail
-            };
-
-            $auth.requestPasswordReset(credentials).then(function(resp) {
-              console.log("Ok: Password reset");
-              scope.accountForgotten = false;
-              Notification.success("Password reseted - we sent you an email")
-            })
-            .catch(function(d) {
-              console.log("Error: Password reset");
-              console.log(d);
-              Notification.error("Impossible to reset password")
+            if(signup.response){
+              var credentials = {
+                email: scope.accountForgottenEmail
+              };
+              $auth.requestPasswordReset(credentials).then(function(resp) {
+                console.log("Ok: Password reset");
+                scope.accountForgotten = false;
+                Notification.success("Password reseted - we sent you an email")
+              })
+              .catch(function(d) {
+                console.log("Error: Password reset");
+                console.log(d);
+                Notification.error("Error while reseting your password. Please refresh")
+                $('#account-forgotten-email').focus()
+              });
+            } else{
+              console.log("Error: Password reset | wrong email");
+              console.log(signup);
+              Notification.error("This email doesn't have a Unisphere account")
               $('#account-forgotten-email').focus()
-            });
+            }
           }, function(d){
-            console.log("Error: Password reset | This email doesn't exist");
+            console.log("Error: Password reset");
             console.log(d);
-            Notification.error("Error in email")
+            Notification.error("Error while reseting your password. Please refresh")
             $('#account-forgotten-email').focus()
           });
         }
