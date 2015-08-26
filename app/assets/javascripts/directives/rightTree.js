@@ -1,9 +1,9 @@
 (function () {
 
   angular.module('mainApp.directives')
-    .directive('rightTree', ['$translate' , 'Restangular', 'browser', '$upload',
+    .directive('rightTree', ['Restangular', 'browser', '$upload',
                 'Notification', 'ipCookie', 'activateSpinner', 'stopSpinner',
-                '$window', function($translate, Restangular, browser,
+                '$window', function(Restangular, browser,
                 $upload, Notification, ipCookie, activateSpinner, stopSpinner, $window) {
       return {
         restrict: 'E',
@@ -31,7 +31,6 @@
             // Normal mode
             else{
               scope.chapterFolded = ipCookie('chapterFolded');
-
               if(scope.chapterFolded != undefined ){
                 if(!isInArray(0, scope.chapterFolded)){
                   scope.chapterFolded.push("0");
@@ -46,7 +45,6 @@
             if(newVals){
               //Loads docs
               if(scope.nodeEnd){
-                console.log(scope.nodeEnd)
                 if(scope.sandbox && scope.nodeEnd[0] > 49 || scope.home && scope.nodeEnd[0] > 49){
                   console.log("Ok: fake nodes")
                    scope.listItems = [];
@@ -280,7 +278,7 @@
               scope.chapterFolded.push(nb.toString());
             };
             ipCookie('chapterFolded', scope.chapterFolded);
-            console.log(scope.chapterFolded)
+            // console.log(scope.chapterFolded)
           }
 
           function isInArray(value, array) {

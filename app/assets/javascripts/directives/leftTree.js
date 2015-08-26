@@ -3,7 +3,6 @@
   angular.module('mainApp.directives')
     .directive('leftTree', ['ipCookie', '$timeout', 'Restangular', 'Notification', function(ipCookie, $timeout, Restangular, Notification) {
       return {
-        restrict: 'EA',
         scope: {
           nodeEnd: '=',
           activeNodes: '=',
@@ -33,8 +32,8 @@
           scope.$watch('nodes',function(newVals, oldVals){
             if(newVals){
               scope.$watch('admin',function(newVals, oldVals){
-                if(newVals != undefined){
-                  console.log("Ok: Admin changed. Render tree")
+                if(newVals){
+                  console.log("Ok: tree rendered")
                   render(scope.nodes, iElement);
                 }
               });
@@ -205,18 +204,20 @@
             scope.foldedNodes = [];
 
             findActiveNodes(node);
-            findNodeEnd(node);
+            scope.$apply(findNodeEnd(node));
             findFoldedNodes(scope.root);
             colornodePath(scope.root);
             scope.activeChapter = undefined;
             scope.lastSelectedNode = node;
+
 
             if(!scope.home && !scope.sandbox){
               ipCookie('activeNodes', scope.activeNodes);
               ipCookie('foldedNodes', scope.foldedNodes);
             }
 
-            scope.$apply();
+            // scope.$apply();
+            // console.log(scope.nodeEnd)
             update(node);
           }
 
@@ -240,15 +241,11 @@
           }
 
           function changeBreadcrumb(){
-            scope.breadcrumb = []
+            tempBreadcrumb = [];
             for(var i = scope.activeNodes.length - 2; i >= 0; i--){
-              scope.breadcrumb.push(scope.activeNodes[i][1]);
+              tempBreadcrumb.push(scope.activeNodes[i][1]);
             }
-            if(scope.sandbox){
-              setTimeout(function(){
-                scope.$apply()
-              });
-            }
+            scope.breadcrumb = tempBreadcrumb;
           }
 
           function renameBreadCrumb(nodeChanged){
@@ -274,6 +271,7 @@
           }
 
           function colornodePath(node) {
+            // console.log(scope.activeNodes)
             node.active = false;
             if(intInDoubleArray(node.num,scope.activeNodes)){
               node.active = true;

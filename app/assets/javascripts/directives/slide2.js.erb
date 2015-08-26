@@ -21,7 +21,7 @@
         Restangular.one('organizations').get().then(function (universities) {
           scope.universities = universities.plain();
         }, function(){
-          console.log("There getting the universities");
+          console.log("Error: get univeristies marker");
         });
 
         var map;

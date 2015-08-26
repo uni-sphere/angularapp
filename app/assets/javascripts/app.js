@@ -112,6 +112,8 @@
       var host = window.location.host;
       if(host == 'localhost:3000'){
         return "http://api.unisphere-dev.com:3000"
+      } else if(host.indexOf('dev.') > -1){
+        return "http://apidev.unisphere.eu"
       } else{
         return "http://api.unisphere.eu"
       }

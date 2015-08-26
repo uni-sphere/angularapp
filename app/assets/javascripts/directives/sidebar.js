@@ -5,13 +5,12 @@
       restrict: 'E',
       templateUrl: 'main/sidebar.html',
       scope: {
-        adminDeco: '=',
+        adminDeco: '='
       },
       link: function(scope) {
         scope.deconnection = function(){
           scope.adminDeco();
         }
-
 
       }
     }

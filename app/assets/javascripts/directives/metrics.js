@@ -16,12 +16,12 @@
 
         // when the window is resized the graphs are changing
         window.onresize = function() {
-          options1.width = $('#ui-view-main-wrapper').width() / 2 - 120,
-          options1.height =  $('#ui-view-main-wrapper').height() * 50 / 100,
+          options1.width = $('#main-view-container').width() / 2 - 120,
+          options1.height =  $('#main-view-container').height() * 50 / 100,
           MG.data_graphic(options1);
 
-          options2.width =  $('#ui-view-main-wrapper').width() / 2 - 120,
-          options2.height =  $('#ui-view-main-wrapper').height() * 50 / 100,
+          options2.width =  $('#main-view-container').width() / 2 - 120,
+          options2.height =  $('#main-view-container').height() * 50 / 100,
           MG.data_graphic(options2);
         };
 
@@ -52,8 +52,8 @@
 
         // Options of the first chart
         var options1 = {
-          width: $('#ui-view-main-wrapper').width() / 2 - 120,
-          height: $('#ui-view-main-wrapper').height() * 50 / 100,
+          width: $('#main-view-container').width() / 2 - 120,
+          height: $('#main-view-container').height() * 50 / 100,
           target: '#chart-1',
           x_accessor: 'date',
           y_accessor: 'downloads',
@@ -104,8 +104,8 @@
 
         // Options of the second chart
         var options2 = {
-          width: $('#ui-view-main-wrapper').width() / 2 - 120,
-          height: $('#ui-view-main-wrapper').height() * 50 / 100,
+          width: $('#main-view-container').width() / 2 - 120,
+          height: $('#main-view-container').height() * 50 / 100,
           target: '#chart-2',
           x_accessor: 'date',
           xax_start_at_min: 'true',
