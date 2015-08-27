@@ -1,0 +1,58 @@
+#superadmin{
+  position: relative;
+  height: 100%;
+  width: 100%;
+
+  // Table style
+  table, th , td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 0px 10px;
+    line-height: 40px;
+  }
+  table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+  }
+  table tr:nth-child(even) {
+    background-color: #ffffff;
+  }
+  .superadmin-table-td{
+    &:hover{
+      background: #5ECFFF !important;
+    }
+    span{
+      cursor: pointer;
+      overflow-y: hidden;
+    }
+  }
+}
+
+.superadmin-title{
+  position: relative;
+  width: 100%;
+  padding: 40px 0px;
+  text-align: center;
+  font-size: 2em;
+}
+
+#superadmin-table{
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 20px;
+  // table-layout: fixed;
+}
+
+.superadmin-icon-container{
+  text-align: center;
+  width: 100px;
+}
+
+.superadmin-icon{
+  display: inline-block;
+  position: relative;
+  padding: 0px 10px;
+  margin-bottom: 0px !important;
+  // line-height: 40px;
+  margin: none !important;
+}
+

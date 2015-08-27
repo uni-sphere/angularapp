@@ -1,0 +1,17 @@
+<div id="superadmin" ng-if="superadmin" ng-controller="SuperadminCtrl">
+  <div class="superadmin-title">List of users</div>
+  <table id="superadmin-table">
+    <tr>
+      <th>Email</th>
+      <th>Name</th>
+      <th>Delete</th>
+      <th>Password</th>
+    </tr>
+    <tr ng-repeat="user in listUser" class="superadmin-table-td">
+      <td><span ng-click="superadminEmailRename($index)" ng-model="user.email">{{ user.email }}</span></td>
+      <td><span ng-click="superadminNameRename($index)">{{ user.name }}</span></td>
+      <td class="superadmin-icon-container"> <span ng-click="superadminUserDelete($index)" class="fa fa-times superadmin-icon"></span></td>
+      <td class="superadmin-icon-container" width="50px"> <span ng-click="superadminReset($index)" class="fa fa-rocket superadmin-icon"></span></td>
+    </tr>
+  </table>
+</div>

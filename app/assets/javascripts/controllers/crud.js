@@ -70,7 +70,7 @@ angular
           if (d.status == 403) {
             console.log('Ok: Chapter creation not allowed');
             Notification.warning("This node is not yours");
-          } else if(d.status == 402) {
+          } else if(d.status == 404) {
             console.log("Ok: Chapter creation cancelled. Node doesn't exist anymore")
             Notification.warning('This action has been cancelled. One of you colleague deleted this node')
             $scope.reloadNodes()
@@ -122,7 +122,7 @@ angular
                 console.log("Ok: Rename document forbidden");
                 console.log(d);
                 Notification.warning("This file is not yours");
-              } else if(d.status == 402) {
+              } else if(d.status == 404) {
                 console.log("Ok: Rename file cancelled. Node doesn't exist anymore")
                 Notification.warning('This action has been cancelled. One of you colleague deleted this node')
                 $scope.reloadNodes()
@@ -163,7 +163,7 @@ angular
                 console.log("Ok: Rename chapter forbidden");
                 console.log(d);
                 Notification.warning("This chapter is not yours");
-              } else if(d.status == 402) {
+              } else if(d.status == 404) {
                 console.log("Ok: Rename file cancelled. Node doesn't exist anymore")
                 Notification.warning('This action has been cancelled. One of you colleague deleted this node')
                 $scope.reloadNodes()

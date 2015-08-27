@@ -54,7 +54,7 @@
 
   <div id="document-tree" ng-class="{'no-docs' : documentAbsent}" >
 
-    <div id="button-row" ng-show="admin" ng-click="$event.stopPropagation()" ng-class="{'button-hidden' : !nodeEnd}">
+    <div id="button-row" ng-click="$event.stopPropagation()" ng-class="{'button-hidden' : !nodeEnd || !admin}">
       <button class="submit-button dual-submit"  ng-multiple="true" ng-file-select ng-model="firstFiles" analytics-on="click" analytics-event="upload" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>" ><!-- <i class="fa fa-file"></i> -->{{ 'UPLOAD' | translate }} </button>
 
       <button ng-controller="CrudCtrl" class="submit-button dual-submit"  ng-click="newSubItem()" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" ><!-- <i class="fa fa-plus"></i> -->{{ 'CHAPTER' | translate }}</button>
@@ -72,32 +72,23 @@
       </div>
     </div>
 
-    <div id="select-leaf" class="full-size-circle-container" ng-if="!nodeEnd || documentAbsent && !admin">
-
+    <div id="select-leaf" class="full-size-circle-container" ng-show="!nodeEnd || documentAbsent && !admin">
       <div class="full-size-circle">!</div>
-
-      <div id="select-leaf-text" ng-show="documentAbsent && nodeEnd">{{ 'NEW_SUBJECT' | translate }}</div>
-      <div id="select-leaf-text" ng-hide="nodeEnd">{{ 'NO_DOC' | translate }}</div>
-
     </div>
-
-
 
     <div id="dropzone-circle" class="full-size-circle-container" ng-show="nodeEnd && documentAbsent && admin && !home">
       <div class="full-size-circle" >
         <div id="dropzone-text">DROP ZONE</div>
       </div>
-      <!-- <div class="tip">
-        <i class="fa fa-lightbulb-o"></i>
-        <div ng-show="isChrome" class="tip-text">{{ 'DROP_EXPLANATION' | translate }}</div>
-        <div ng-hide="isChrome">{{ 'DROP_COMMENT' | translate }}</div>
-      </div> -->
     </div>
 
-    <div class="tip" ng-hide="home || !admin || !nodeEnd">
-      <i class="fa fa-lightbulb-o"></i>
-      <span id="tip-chrome" ng-show="isChrome">{{ 'TIP' | translate }}</span>
-      <span id="tip-chrome" ng-hide="isChrome">{{ 'TIP_CHROME' | translate }}</span>
+    <div class="tip" >
+      <i class="fa fa-lightbulb-o" ng-show="admin && nodeEnd"></i>
+      <span id="tip-chrome" ng-show="admin && nodeEnd && !isChrome " >{{ 'TIP' | translate }}</span>
+      <span id="tip-chrome" ng-show="admin && nodeEnd && isChrome">{{ 'TIP_CHROME' | translate }}</span>
+
+      <div ng-show="documentAbsent && nodeEnd && !admin">{{ 'NEW_SUBJECT' | translate }}</div>
+      <div ng-show="!nodeEnd">{{ 'SELECT_LEAF' | translate }}</div>
     </div>
 
 

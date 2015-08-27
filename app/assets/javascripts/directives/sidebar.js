@@ -7,7 +7,8 @@
       scope: {
         admin: '=',
         accountEmail: '=',
-        accountName: '='
+        accountName: '=',
+        superadmin: '='
       },
       link: function(scope) {
         scope.deconnection = function(){

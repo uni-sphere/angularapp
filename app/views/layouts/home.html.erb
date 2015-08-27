@@ -6,8 +6,8 @@
     <base href="/">
     <title>Unisphere</title>
     <%= favicon_link_tag 'favicon.ico' %>
-    <%= stylesheet_link_tag 'webapp', media: 'all'%>
-    <%= javascript_include_tag 'webapp' %>
+    <%= stylesheet_link_tag 'normalApp', media: 'all'%>
+    <%= javascript_include_tag 'normalApp' %>
     <%= csrf_meta_tags %>
 
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
@@ -18,7 +18,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
       ga('create', 'UA-62034618-1', 'auto');
-    </script> 
+    </script>
 
   </head>
   <body>

@@ -1,11 +1,11 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  
+
   config.secret_key_base = ENV["SECRET_KEY_BASE"]
-  
+
   ENV["TOKEN_BASED_AUTH"] = 'ce76e09ea8191a3b5410dbf033cf23ad'
   ENV["SCALINGO_TOKEN_BASED_AUTH"] = 'txUZBy-dulhYhnnbn-8wUcEFrAbEePlSt71IcmEin5k'
-  
+
   config.sass.preferred_syntax = :scss
   config.sass.line_comments = true
   config.sass.cache = false
@@ -14,7 +14,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: 'http://api.unisphere.eu' }
-  
+
   config.action_mailer.smtp_settings = {
     address: "smtp.mandrillapp.com",
     port: 587,
@@ -25,7 +25,7 @@ Rails.application.configure do
     domain: 'unisphere.eu'
   }
 
-  
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 
@@ -102,5 +102,5 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  
+
 end

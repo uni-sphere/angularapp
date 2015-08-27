@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   include AuthenticationHelper
   include ApplicationHelper
   include SubdomainHelper
+  include SubdomaindevHelper
   
   protect_from_forgery with: :null_session
   before_action :track_connexion

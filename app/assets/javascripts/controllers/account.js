@@ -78,26 +78,20 @@
           } else if (signup.response == false) {
             console.log("Ok:Invite colleague | Email free")
             // We signup the guy
-            $auth.submitRegistration(credentials).then(function(userInfo) {
-              Restangular.all('user/invite').post({email: $scope.newUser, password: newPassword, organization_id: $scope.universityId}).then(function (d) {
-                $scope.listUser.push(userInfo.data.data);
-                $scope.newUser = "";
-                stopSpinner()
-                console.log("New user added");
-                Notification.success('Your colleague has been invited');
-                $scope.newUser = "";
-                $scope.organizationForm.$setUntouched();
-              }, function(d){
-                stopSpinner()
-                console.log("Error: Invite colleague");
-                console.log(d);
-                Notification.error('We didn\'t manage to invite your colleague. We will fix this soon');
-              });
+            Restangular.all('user/invite').post({email: $scope.newUser, password: newPassword}).then(function (response) {
+              $scope.listUser.push(response.user);
+              $scope.newUser = "";
+              stopSpinner()
+              console.log(response.plain());
+              console.log("New user added");
+              Notification.success('Your colleague has been invited');
+              $scope.newUser = "";
+              $scope.organizationForm.$setUntouched();
             }, function(d){
               stopSpinner()
               console.log("Error: Invite colleague");
               console.log(d);
-              Notification.error('We didn\'t manage to invite your colleague. We will fix this soon')
+              Notification.error('We didn\'t manage to invite your colleague. We will fix this soon');
             });
           } else {
             Restangular.all('users').post({user_id: signup.response, organization_id: $scope.universityId}).then(function (d) {

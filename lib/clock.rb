@@ -5,7 +5,7 @@ module Clockwork
     puts "Running #{job}"
   end
   
-  every(7.days, 'activity reports') {
+  every(28.days, 'activity reports') {
     `rake activity_reports:send`
   }
   

@@ -1,8 +1,11 @@
 class UsersController < ApplicationController
-
+  
+  before_action :current_subdomain
+  before_action :current_organization
+  
   def index
     if current_user
-      render json: {users: current_organization.users}.to_json, success: 200
+      render json: {users: @current_organization.users}.to_json, success: 200
     else
       send_error('Unauthorized', 401)
     end
@@ -17,13 +20,18 @@ class UsersController < ApplicationController
   end
 
   def invite
-    link = Organizationsuserslink.new(user_id: User.find_by_email(params[:email]).id, organization_id: params[:organization_id])
-    if params[:email] and link.save
-      Rollbar.info("User invited", email: params[:email], organization: current_organization)
-      UserMailer.invite_user_email(params[:email], current_organization, params[:password]).deliver
-      render json: {success: true}.to_json, success: 200
+    user = User.new(email: params[:email], name: params[:email], uid: "foo", provider: 'email', password: params[:password], help: false)
+    if user.save
+      link = Organizationsuserslink.new(user_id: User.find_by_email(params[:email]).id, organization_id: @current_organization.id)
+      if link.save
+        Rollbar.info("User invited", email: params[:email], organization: @current_organization)
+        UserMailer.invite_user_email(current_user, params[:email], @current_organization, params[:password]).deliver
+        render json: {success: true, user: user}.to_json, success: 200
+      else
+        render json: user.errors, status: 422
+      end
     else
-      send_error('Can not invite user', 400)
+      render json: user.errors, status: 422
     end
   end
 

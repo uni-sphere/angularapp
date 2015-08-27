@@ -66,6 +66,16 @@
           }
         })
 
+        .state('main.superadmin', {
+          url: 'superadmin',
+          templateUrl: 'superadmin/superadmin.html',
+          resolve: {
+            auth: function($auth){
+              return $auth.validateUser();
+            }
+          }
+        })
+
 
         if(window.location.host == "sandbox.unisphere.eu"){
           $stateProvider.state('main.dashboard', {
@@ -168,13 +178,13 @@
         CONFIRM_PSW: 'Confirm password',
         UPDATE_PSW: 'Update password',
         USERS_INVITED: 'Lecturers to add',
-        TIP: 'Tip: You can drag & drop folders!',
-        TIP_CHROME: 'Tip: You can drag & drop files (folders only on Google Chrome!)',
+        TIP_CHROME: 'Tip: You can drag & drop folders!',
+        TIP: 'Tip: You can drag & drop files (folders only on Google Chrome!)',
         LENGTH: 'At least 6 characters',
         SECURITY: 'Security',
         SHORT: 'too short',
         LECTURERS: 'Lecturers',
-        NO_DOC: 'Select a leaf node',
+        SELECT_LEAF: 'Select a leaf node',
         DROP_FILE: "Upload data",
         WHERE_DROP: "Where do you want to drop your data?",
         ROOT: "0. Root",
@@ -218,8 +228,8 @@
         CONFIRM_PSW: 'Confirmation du mot de passe',
         UPDATE_PSW: 'Modifier mot de passe',
         USERS_INVITED: 'Utilisateurs ajoutés',
-        TIP: 'Astuce: Vous pouvez clicker glisser des documents',
-        TIP_CHROME: 'Astuce: Vous pouvez clicker glisser des documents (et des dossiers avec Google Chrome!)',
+        TIP_CHROME: 'Astuce: Vous pouvez clicker glisser des documents',
+        TIP: 'Astuce: Vous pouvez clicker glisser des documents (et des dossiers avec Google Chrome!)',
         LENGTH: 'Au minimum 6 charactères',
         SECURITY: 'Sécurité',
         SHORT: 'trop court',

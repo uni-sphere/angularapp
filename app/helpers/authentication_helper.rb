@@ -18,6 +18,14 @@ module AuthenticationHelper
   end
 
   private
+  
+  def dev?
+    if URI.parse(request.env['HTTP_ORIGIN']).host.include? 'dev.'
+      return true
+    else
+      return false
+    end
+  end
 
   def user_documents
     ids = []
@@ -39,36 +47,36 @@ module AuthenticationHelper
 
   def current_subdomain
     if Rails.env.production?
-      if URI.parse(request.env['HTTP_ORIGIN']).host == 'www.unisphere.eu'
-        return 'sandbox'
-      elsif URI.parse(request.env['HTTP_ORIGIN']).host == 'dev.unisphere.eu'
-        return 'sandbox.dev'
+      if URI.parse(request.env['HTTP_ORIGIN']).host == 'www.unisphere.eu'|| URI.parse(request.env['HTTP_ORIGIN']).host == 'dev.unisphere.eu'
+        @current_subdomain = 'sandbox'
       else
         uri = URI.parse(request.env['HTTP_ORIGIN']).host
-        return uri.split('.unisphere.').first
+        @current_subdomain = uri.split('.').first
       end
     else
-      return 'sandbox'
+      @current_subdomain = 'sandbox'
     end
   end
 
   def current_organization
     if Rails.env.production?
-      subdomain = current_subdomain
-      if Organization.exists?(subdomain: subdomain)
-        organization = Organization.find_by(subdomain: subdomain)
-        return organization
+      logger.info '----------------------------------------'
+      logger.info @current_subdomain
+      logger.info Organization.exists?(subdomain: @current_subdomain)
+      logger.info '----------------------------------------'
+      if Organization.exists?(subdomain: @current_subdomain)
+        @current_organization = Organization.where(subdomain: @current_subdomain).first
       else
         send_error('organization not found', 404)
       end
     else
-      return Organization.first
+      @current_organization = Organization.find_by_subdomain 'sandbox'
     end
   end
-
+  
   def current_awsdocument
     if Awsdocument.exists? params[:id]
-      @awsdocument = Awsdocument.find_unarchived params[:id]
+      @current_awsdocument = Awsdocument.find_unarchived params[:id]
     else
       send_error('resource not found', 404)
     end
@@ -77,8 +85,8 @@ module AuthenticationHelper
   def current_node
     params[:node_id] = params[:id] if request.url.split('?').first.include? 'node'
     if params[:node_id]
-      if current_organization.nodes.exists? params[:node_id]
-        return current_organization.nodes.find params[:node_id]
+      if @current_organization.nodes.exists? params[:node_id]
+        @current_node = @current_organization.nodes.find params[:node_id]
       else
         send_error('node not found', 404)
       end
@@ -107,11 +115,10 @@ module AuthenticationHelper
   def current_chapter
     params[:chapter_id] = params[:id] if request.url.split('?').first.include? 'chapter'
     if params[:chapter_id]
-      if current_node.chapters.exists? params[:chapter_id]
-        return current_node.chapters.find params[:chapter_id]
+      if @current_node.chapters.exists? params[:chapter_id]
+        @current_chapter = @current_node.chapters.find params[:chapter_id]
       elsif params[:chapter_id] == '0'
-        clear_logs current_node.chapters.first
-        return current_node.chapters.first
+        @current_chapter = @current_node.chapters.first
       else
         send_error('chapter not found', 404)
       end
@@ -121,20 +128,22 @@ module AuthenticationHelper
   end
 
   def track_connexion
-    ip = request.remote_ip
-    if request.path != '/' and ip != '127.0.0.1' and ip != '88.169.99.128' and current_subdomain != 'admin'
-      place_att = Geokit::Geocoders::MultiGeocoder.geocode(request.remote_ip)
-      place = "#{place_att.city}::#{place_att.country_code}"
-      Rollbar.info("User active", place: place)
-      if current_organization.connexions.find_by_ip(ip)
-        connexion = current_organization.connexions.find_by_ip(ip)
-        if Time.now - connexion.updated_at > 30.minutes
-          connexion.increase_count()
-        elsif Time.now - connexion.updated_at > 15.seconds
-          connexion.activity()
+    if !@current_organization.nil?
+      ip = request.remote_ip
+      if request.path != '/' and ip != '127.0.0.1' and ip != '88.169.99.128' and current_subdomain != 'admin'
+        place_att = Geokit::Geocoders::MultiGeocoder.geocode(request.remote_ip)
+        place = "#{place_att.city}::#{place_att.country_code}"
+        Rollbar.info("User active", place: place)
+        if @current_organization.connexions.find_by_ip(ip)
+          connexion = @current_organization.connexions.find_by_ip(ip)
+          if Time.now - connexion.updated_at > 30.minutes
+            connexion.increase_count()
+          elsif Time.now - connexion.updated_at > 15.seconds
+            connexion.activity()
+          end
+        else
+          @current_organization.connexions.create(ip: ip, place: place)
         end
-      else
-        current_organization.connexions.create(ip: ip, place: place)
       end
     end
   end

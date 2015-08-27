@@ -4,19 +4,25 @@
 
     <li class="sidebar-item home-item">
       <a ui-sref="main.application"  ui-sref-active="menu-link-active" class="menu-link" title="Home">
-        <i class="menu-icon  fa fa-fw fa-home"></i>
+        <i class="menu-icon fa fa-fw fa-home"></i>
       </a>
     </li>
 
     <li class="sidebar-item dashboard-item">
       <a ui-sref="main.dashboard" ui-sref-active="menu-link-active" class="menu-link" title="Dashboard">
-        <i class="menu-icon  fa fa-fw fa-bar-chart-o"></i>
+        <i class="menu-icon fa fa-fw fa-bar-chart-o"></i>
       </a>
     </li>
 
     <li class="sidebar-item account-item">
       <a ui-sref="main.account" class="menu-link" ui-sref-active="menu-link-active" title="Account">
-        <i class="menu-icon  fa fa-fw fa-user"></i>
+        <i class="menu-icon fa fa-fw fa-user"></i>
+      </a>
+    </li>
+
+    <li class="sidebar-item account-item" ng-if="superadmin">
+      <a ui-sref="main.superadmin" class="menu-link" ui-sref-active="menu-link-active" title="Super admin">
+        <i class="menu-icon fa fa-fw fa-rocket"></i>
       </a>
     </li>
 
@@ -25,6 +31,8 @@
         <i class="menu-icon  fa fa-fw fa-sign-out" ></i>
       </a>
     </li>
+
+
 
   </ul>
 

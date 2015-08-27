@@ -20,7 +20,7 @@ angular
       }
     } else{
       console.log("NORMAL APP")
-
+      // $('#first-connection').fadeIn()
       // We get the actual uni
       Restangular.one('organization').get().then(function (university) {
         $scope.university = university.organization.name;
@@ -39,15 +39,15 @@ angular
         $scope.admin = true;
 
         // Help Center
-        if(window.location.host != 'localhost:3000'){
-          FHChat = {product_id: "6227bca7722d"};
-          // FHChat.properties={};
-          // FHChat.set=function(key,data){this.properties[key]=data};
-          !function(){
-            var a,b;
-            return b=document.createElement("script"),a=document.getElementsByTagName("script")[0],b.src="https://chat-client-js.firehoseapp.com/chat-min.js",b.async=!0,a.parentNode.insertBefore(b,a)
-          }();
-        }
+        // if(window.location.host != 'localhost:3000'){
+        //   FHChat = {product_id: "6227bca7722d"};
+        //   FHChat.properties={};
+        //   FHChat.set=function(key,data){this.properties[key]=data};
+        //   !function(){
+        //     var a,b;
+        //     return b=document.createElement("script"),a=document.getElementsByTagName("script")[0],b.src="https://chat-client-js.firehoseapp.com/chat-min.js",b.async=!0,a.parentNode.insertBefore(b,a)
+        //   }();
+        // }
 
         $scope.getBasicInfo()
       }, function(){

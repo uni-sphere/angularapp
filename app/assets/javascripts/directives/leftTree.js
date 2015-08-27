@@ -15,15 +15,64 @@
           breadcrumb: '=',
           nodes: '=',
           foldedNodes: '=',
-          makeNested: '='
+          makeNested: '=',
+          reloadNodes: '=',
+          cookieGestion: '=',
         },
         link: function(scope, iElement, iAttrs) {
+
+          scope.cookieGestion = function(flatNode, nodes){
+            var nodeIDs = []
+            angular.forEach(flatNode, function(value,key){
+              nodeIDs.push(value.num)
+            });
+
+            // Cookies gestion
+            if(scope.home || scope.sandbox){
+              scope.foldedNodes = [4];
+              scope.activeNodes = [[17,"Histoire"],[9,"S"],[3,"Premiere"],[1,"Sandbox"]];
+              scope.nodeEnd = [17,"Histoire"];
+            } else{
+
+              // We look if the node in the cookies still exist
+              if(!ipCookie('nodeEnd') || nodeIDs.indexOf(ipCookie('nodeEnd')[0]) > -1){
+                console.log('Ok: No problem in cookies')
+                scope.activeNodes = ipCookie('activeNodes');
+                scope.nodeEnd = ipCookie('nodeEnd');
+              } else{
+                console.log('Ok: problems in the cookies')
+                if(nodes.children[0].children || nodes.children[0]._children){
+                  scope.nodeEnd = false
+                } else{
+                  scope.nodeEnd = [flatNode[1].num,flatNode[1].name]
+                }
+                scope.activeNodes = [[flatNode[1].num,flatNode[1].name],[flatNode[0].num,flatNode[0].name]]
+                changeBreadcrumb()
+              }
+
+              scope.foldedNodes = [];
+              angular.forEach(ipCookie('foldedNodes'), function(value,key){
+                if(nodeIDs.indexOf(value) > -1){
+                  scope.foldedNodes.push(value)
+                }
+              });
+
+              // console.log(scope.nodeEnd)
+              // console.log(scope.breadcrumb)
+              ipCookie('activeNodes', scope.activeNodes);
+              ipCookie('foldedNodes', scope.foldedNodes);
+              ipCookie('nodeEnd', scope.nodeEnd);
+              console.log("Ok: Cookie")
+            }
+          }
 
           scope.reloadNodes = function(){
             Restangular.one('nodes').get().then(function (nodes) {
               console.log("Ok: node retrieved")
               scope.flatNode = nodes.plain();
+              // console.log(scope.flatNode)
               scope.nodes = scope.makeNested(scope.flatNode)
+              scope.cookieGestion(nodes.plain(),scope.nodes);
               render(scope.nodes, iElement);
             },
               function(d){
@@ -46,18 +95,14 @@
 
           scope.$watch('nodes',function(newVals, oldVals){
             if(newVals){
-              render(scope.nodes, iElement);
-              console.log("Ok: Tree rendered")
               scope.$watch('admin',function(newVals, oldVals){
-                if(oldVals != undefined && newVals != oldVals){
+                if(newVals != undefined){
                   console.log("Ok: Tree rendered")
                   render(scope.nodes, iElement);
                 }
               });
             }
           });
-
-
 
           function update(source) {
             var duration = 750;
@@ -86,18 +131,6 @@
               .style("stroke", "cornflowerblue")
               .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff" })
               .on("click", openNode)
-
-            if(!scope.admin){
-              // Label of the node. When clicked it opens the node
-              nodeEnter.append("text")
-              .attr("class", function(d){return typeof d.parent === 'object' ? "nameNode" : ""})
-              .attr("x", function(d) { return d.children || d._children ? -15 : 10; })
-              .attr("dy", ".275em")
-              .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-              .text(function(d) { return d.name; })
-              .style("fill-opacity", 1e-6)
-              .on("click", openNode)
-            }
 
             if(scope.admin){
               // Label of the node. When clicked it opens the rename
@@ -131,6 +164,16 @@
                 .style("fill-opacity", 1e-6)
                 .style("fill", "#F76565")
                 .on("click", deleteNode)
+            } else{
+               // Label of the node. When clicked it opens the node
+              nodeEnter.append("text")
+              .attr("class", function(d){return typeof d.parent === 'object' ? "nameNode" : ""})
+              .attr("x", function(d) { return d.children || d._children ? -15 : 10; })
+              .attr("dy", ".275em")
+              .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+              .text(function(d) { return d.name; })
+              .style("fill-opacity", 1e-6)
+              .on("click", openNode)
             }
 
             // Transition nodes to their new position.
@@ -396,7 +439,7 @@
                 if(d.status == 403){
                   console.log("Ok: Deletion forbidden")
                   Notification.warning('This node is not yours');
-                } else if(d.status == 402) {
+                } else if(d.status == 404) {
                   console.log("Ok: Deletion cancelled node doesn't exist anymore")
                   Notification.warning('This action has been cancelled. One of you colleague deleted this node')
                   scope.reloadNodes()
@@ -457,7 +500,7 @@
 
               }, function(d) {
 
-                if(d.status == 402) {
+                if(d.status == 404) {
                   console.log("Ok: Node creation cancelled. Node doesn't exist anymore")
                   Notification.warning('This action has been cancelled. One of you colleague deleted this node.')
                   scope.reloadNodes()
@@ -501,7 +544,7 @@
                   if (d.status == 403){
                     console.log("Ok: Rename a node forbidden");
                     Notification.warning("This node is not yours");
-                  } else if(d.status == 402) {
+                  } else if(d.status == 404) {
                     console.log("Ok: Rename cancelled. Node doesn't exist anymore")
                     Notification.warning('This action has been cancelled. One of you colleague deleted this node.')
                     scope.reloadNodes()

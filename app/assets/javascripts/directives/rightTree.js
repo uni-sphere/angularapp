@@ -54,13 +54,15 @@
                     document.shift();
                     scope.listItems = makeNested(document);
                   }, function(d){
-                    console.log("Error: Get document");
-                    console.log(d)
-                    Notification.error("We temporarly can not display the documents")
-                    ipCookie.remove('activeNodes')
-                    ipCookie.remove('nodeEnd')
-                    ipCookie.remove('foldedNodes')
-                    ipCookie.remove('chapterFolded')
+                    if(d.status == 404) {
+                      console.log("Ok: Node opening cancelled. Node doesn't exist anymore")
+                      Notification.warning('This action has been cancelled. One of your colleague deleted this node')
+                    } else{
+                      console.log("Error: Get document");
+                      console.log(d)
+                      Notification.error("We temporarly can not display the documents")
+                    }
+                    scope.reloadNodes()
                   });
                 }
               }
@@ -321,9 +323,9 @@
                   if (d.status == 403){
                     console.log("Ok: Delete a file forbidden");
                     Notification.warning("This file is not yours");
-                  } else if(d.status == 402) {
+                  } else if(d.status == 404) {
                     console.log("Ok: Deletion cancelled node doesn't exist anymore")
-                    Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                    Notification.warning('This action has been cancelled. One of your colleague deleted this node')
                     scope.reloadNodes()
                   } else{
                     console.log("Error: Delete file");
@@ -375,9 +377,9 @@
                   if (d.status == 403){
                     console.log("Ok: Delete a chapter forbidden");
                     Notification.warning("This chapter is not yours");
-                  } else if(d.status == 402) {
+                  } else if(d.status == 404) {
                     console.log("Ok: Deletion cancelled node doesn't exist anymore")
-                    Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                    Notification.warning('This action has been cancelled. One of your colleague deleted this node')
                     scope.reloadNodes()
                   } else{
                     console.log("Error: Delete a chapter");
@@ -544,9 +546,9 @@
                   if (d.status == 403) {
                     console.log("Ok: Chapter creation forbidden");
                     Notification.warning("This node is not yours. " +folder.name +" was not created.")
-                  } else if(d.status == 402) {
+                  } else if(d.status == 404) {
                     console.log("Ok: chapter creation cancelled. Node doesn't exist anymore")
-                    Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                    Notification.warning('This action has been cancelled. One of your colleague deleted this node')
                     scope.reloadNodes()
                   } else{
                     Notification.error("Chapter creation problem")
@@ -590,12 +592,12 @@
                       chapter_id: nodeDocData.id,
                       content: file
                     }
-                  }).then(function(d) {
+                  }).then(function(fileUploaded) {
                     scope.progressionUpload --;
-                    var a = {title: d.data.title, doc_id: d.data.id, document: true, type: file.type, preview_link: d.data.url}
+                    var a = {title: fileUploaded.data.title, doc_id: fileUploaded.data.id, document: true, type: file.type, preview_link: fileUploaded.data.url}
                     numberItems ++;
-                    console.log("OK document uploaded:" + d.data.title);
-                    Notification.success("OK document uploaded: " + d.data.title)
+                    console.log("OK document uploaded:" + fileUploaded.data.title);
+                    Notification.success(fileUploaded.data.title + " uploaded")
                     if(numberItems == files.length){
                       if(nodeDocData.id != 0){
                         if(dragAndDrop || !scope.activeChapter.$nodeScope.collapsed ){
@@ -604,7 +606,6 @@
                           ipCookie('chapterFolded', scope.chapterFolded);
                         }
                       }
-
                       console.log("OK upload of this level finished")
                       scope.dirUploaded = true;
                     }
@@ -620,9 +621,10 @@
                     if (d.status == 403) {
                       console.log("Ok: Upload documents forbidden");
                       Notification.warning("This node is not yours")
-                    } else if(d.status == 402) {
+                    } else if(d.status == 404) {
+                      console.log(d)
                       console.log("Ok: File upload cancelled. Node doesn't exist anymore")
-                      Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                      Notification.warning('This action has been cancelled. One of your colleague deleted this node')
                       scope.reloadNodes()
                     } else{
                       Notification.error("File upload error")

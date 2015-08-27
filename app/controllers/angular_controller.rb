@@ -1,5 +1,5 @@
 class AngularController < ApplicationController
-
+  
   def index
     if is_mobile?
       render :layout => 'mobile'

@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     get 'users', to: 'users#index'
     delete 'users', to: 'users#destroy'
     get 'connected', to: 'connexions#index'
-    
+
     post 'users', to: 'organizationsuserslinks#create'
 
   end
@@ -35,7 +35,9 @@ Rails.application.routes.draw do
   get '/home', to: 'angular#index'
   get '/dashboard', to: 'angular#index'
   get '/account', to: 'angular#index'
-  get '/admin', to: 'angular#index'
+  get '/superadmin', to: 'angular#index'
+
+  get '/mailer', to: 'mail#index'
 
   post '/user/invite', to: 'users#invite'
   get '/user/welcome', to: 'users#welcome'

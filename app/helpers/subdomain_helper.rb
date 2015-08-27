@@ -9,7 +9,7 @@ module SubdomainHelper
   def create_pointer(newsubdomain)
     if Rails.env.production?
       scalingo_resources[:subdomain].post({domain: {name: "#{newsubdomain.to_s}.unisphere.eu" }}) { |response, request, result, &block|
-        response.code == 201 ? @res = true : nil
+        response.code == 201 ? @res = true : false
       }
       return @res
     else
