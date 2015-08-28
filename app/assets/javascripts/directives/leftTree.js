@@ -21,6 +21,49 @@
         },
         link: function(scope, iElement, iAttrs) {
 
+          scope.cookieGestion = function(flatNode, nodes){
+            var nodeIDs = []
+            angular.forEach(flatNode, function(value,key){
+              nodeIDs.push(value.num)
+            });
+
+            // Cookies gestion
+            if(scope.home || scope.sandbox){
+              scope.foldedNodes = [4];
+              scope.activeNodes = [[17,"Histoire"],[9,"S"],[3,"Premiere"],[1,"Sandbox"]];
+              scope.nodeEnd = [17,"Histoire"];
+            } else{
+
+              // We look if the node in the cookies still exist
+              if(!ipCookie('nodeEnd') || nodeIDs.indexOf(ipCookie('nodeEnd')[0]) > -1){
+                console.log('Ok: No problem in cookies')
+                scope.activeNodes = ipCookie('activeNodes');
+                scope.nodeEnd = ipCookie('nodeEnd');
+              } else{
+                console.log('Ok: problems in the cookies')
+                if(nodes.children[0].children || nodes.children[0]._children){
+                  scope.nodeEnd = false
+                } else{
+                  scope.nodeEnd = [flatNode[1].num,flatNode[1].name]
+                }
+                scope.activeNodes = [[flatNode[1].num,flatNode[1].name],[flatNode[0].num,flatNode[0].name]]
+                changeBreadcrumb()
+              }
+
+              scope.foldedNodes = [];
+              angular.forEach(ipCookie('foldedNodes'), function(value,key){
+                if(nodeIDs.indexOf(value) > -1){
+                  scope.foldedNodes.push(value)
+                }
+              });
+
+              ipCookie('activeNodes', scope.activeNodes);
+              ipCookie('foldedNodes', scope.foldedNodes);
+              ipCookie('nodeEnd', scope.nodeEnd);
+              console.log("Ok: Cookie")
+            }
+          }
+
           if(scope.home || scope.sandbox){
             console.log("Ok: node retrieved")
             flatNode = [
@@ -70,48 +113,7 @@
             });
           }
 
-          scope.cookieGestion = function(flatNode, nodes){
-            var nodeIDs = []
-            angular.forEach(flatNode, function(value,key){
-              nodeIDs.push(value.num)
-            });
 
-            // Cookies gestion
-            if(scope.home || scope.sandbox){
-              scope.foldedNodes = [4];
-              scope.activeNodes = [[17,"Histoire"],[9,"S"],[3,"Premiere"],[1,"Sandbox"]];
-              scope.nodeEnd = [17,"Histoire"];
-            } else{
-
-              // We look if the node in the cookies still exist
-              if(!ipCookie('nodeEnd') || nodeIDs.indexOf(ipCookie('nodeEnd')[0]) > -1){
-                console.log('Ok: No problem in cookies')
-                scope.activeNodes = ipCookie('activeNodes');
-                scope.nodeEnd = ipCookie('nodeEnd');
-              } else{
-                console.log('Ok: problems in the cookies')
-                if(nodes.children[0].children || nodes.children[0]._children){
-                  scope.nodeEnd = false
-                } else{
-                  scope.nodeEnd = [flatNode[1].num,flatNode[1].name]
-                }
-                scope.activeNodes = [[flatNode[1].num,flatNode[1].name],[flatNode[0].num,flatNode[0].name]]
-                changeBreadcrumb()
-              }
-
-              scope.foldedNodes = [];
-              angular.forEach(ipCookie('foldedNodes'), function(value,key){
-                if(nodeIDs.indexOf(value) > -1){
-                  scope.foldedNodes.push(value)
-                }
-              });
-
-              ipCookie('activeNodes', scope.activeNodes);
-              ipCookie('foldedNodes', scope.foldedNodes);
-              ipCookie('nodeEnd', scope.nodeEnd);
-              console.log("Ok: Cookie")
-            }
-          }
 
           scope.reloadNodes = function(){
             if(scope.home || scope.sandbox){
