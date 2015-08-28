@@ -67,12 +67,14 @@
                         {title: "Annales", id: 24, parent_id: 22, node_id: 17},
                       ]
                       scope.listItems = makeNested(sandboxListItems);
+                    } else{
+                      scope.listItems = []
                     }
                   } else{
                     Restangular.one('chapters').get({node_id: scope.nodeEnd[0]}).then(function (document) {
                       document.shift();
                       console.log(document.plain())
-                      // scope.listItems = makeNested(document);
+                      scope.listItems = makeNested(document);
                     }, function(d){
                       if(d.status == 404) {
                         console.log("Ok: Node opening cancelled. Node doesn't exist anymore")
