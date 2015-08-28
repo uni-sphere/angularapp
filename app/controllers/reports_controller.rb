@@ -2,6 +2,7 @@ class ReportsController < ApplicationController
 
   before_action :current_subdomain
   before_action :current_organization
+  before_action :track_connexion
   before_action :current_node, only: [:first_chart, :current_node]
 
   def update

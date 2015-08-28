@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   
   before_action :current_subdomain
   before_action :current_organization
+  before_action :track_connexion
   
   def index
     if current_user
