@@ -9,11 +9,11 @@ class NodesController < ApplicationController
 
   def create
     node = @current_organization.nodes.new(name: params[:name], parent_id: params[:parent_id], user_id: current_user.id)
-    parent = @current_organization.nodes.find params[:parent_id]
+    parent = @current_organization.nodes.where(archived: false).find params[:parent_id]
     report = node.reports.new
     if node.save and report.save
-      if parent.chapters.count > 1
-        parent.chapters.each do |chapter|
+      if parent.chapters.where(archived: false).count > 1
+        parent.chapters.where(archived: false).each do |chapter|
           chapter.update(node_id: node.id)
         end
         render json: node, status: 201, location: node
@@ -39,7 +39,7 @@ class NodesController < ApplicationController
   end
 
   def destroy
-    if @current_node.parent_id != 0 and @current_organization.nodes.count > 2
+    if @current_node.parent_id != 0 and @current_organization.nodes.where(archived: false).count > 2
       deleted = destroy_with_children(@current_node.id)
       render json: {deleted: deleted}.to_json, status: 200
     else
@@ -49,7 +49,7 @@ class NodesController < ApplicationController
 
   def index
     nodes = []
-    @current_organization.nodes.each do |node|
+    @current_organization.nodes.where(archived: false).each do |node|
       nodes << {name: node.name, num: node.id, parent: node.parent_id}
     end
     render json: nodes, status: 200
@@ -58,7 +58,7 @@ class NodesController < ApplicationController
   private
 
   def is_allowed_update?
-    send_error('Forbidden', '403') unless current_user.nodes.exists?(@current_node.id) or current_user.email == 'hello@unisphere.eu'
+    send_error('Forbidden', '403') unless current_user.nodes.where(archived: false).exists?(@current_node.id) or current_user.email == 'hello@unisphere.eu'
   end
 
   def is_allowed_destroy?
@@ -67,7 +67,7 @@ class NodesController < ApplicationController
     while queue != []
       node = queue.pop
       @forbidden = true if node.user_id != current_user.id
-      Node.where(parent_id: node.id).each do |node|
+      Node.where(parent_id: node.id, archived: false).each do |node|
         queue << node
       end
     end

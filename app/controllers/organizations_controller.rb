@@ -22,7 +22,7 @@ class OrganizationsController < ApplicationController
     organization.organizationsuserslinks.build(user_id: user.id)
     organization.organizationsuserslinks.build(user_id: User.find_by_email('hello@unisphere.eu').id)
     if organization.save  
-      node = organization.nodes.first
+      node = organization.nodes.where(archived: false).first
       firstchild = organization.nodes.create(name: 'First Level', parent_id: node.id, user_id: user.id)
       firstchild.chapters.build(title: 'main', parent_id: 0, user_id: user.id)
       secondchild = organization.nodes.create(name: 'Second Level', parent_id: node.id, user_id: user.id)
