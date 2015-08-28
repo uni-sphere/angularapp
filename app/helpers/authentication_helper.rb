@@ -60,10 +60,6 @@ module AuthenticationHelper
 
   def current_organization
     if Rails.env.production?
-      logger.info '----------------------------------------'
-      logger.info @current_subdomain
-      logger.info Organization.exists?(subdomain: @current_subdomain)
-      logger.info '----------------------------------------'
       if Organization.exists?(subdomain: @current_subdomain)
         @current_organization = Organization.where(subdomain: @current_subdomain).first
       else
