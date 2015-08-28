@@ -2,6 +2,7 @@ class ChaptersController < ApplicationController
   
   before_action :current_subdomain
   before_action :current_organization
+  before_action :track_connexion
   before_action :current_node, only: [:create, :index, :show, :update, :destroy, :is_allowed?]
   before_action :current_chapter, only: [:show, :update, :destroy, :is_allowed?]
   before_action :is_allowed?, only: [:update, :destroy]

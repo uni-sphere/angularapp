@@ -17,9 +17,9 @@
       <div ng-init="printChapter(this)" class="chapter-number">{{item.chapter}} </div>
 
       <div class="item-name">{{item.title}}</div>
-      <div class="fa fa-file-pdf-o file-icon" ng-if="this.$modelValue.document && this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1) == 'pdf'"></div>
-      <div class="fa fa-file-picture-o file-icon" ng-if="this.$modelValue.document && ['png','jpg'].indexOf(this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1)) >= 0"></div>
-      <div class="fa fa-file-o file-icon" ng-hide="!this.$modelValue.document || this.$modelValue.document && ['png','jpg','pdf'].indexOf(this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1)) >= 0"></div>
+      <div class="fa fa-file-pdf-o file-icon" ng-if="this.$modelValue.document && this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1).toLowerCase() == 'pdf'"></div>
+      <div class="fa fa-file-picture-o file-icon" ng-if="this.$modelValue.document && ['png','jpg'].indexOf(this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1).toLowerCase()) >= 0"></div>
+      <div class="fa fa-file-o file-icon" ng-hide="!this.$modelValue.document || this.$modelValue.document && ['png','jpg','pdf'].indexOf(this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1).toLowerCase()) >= 0"></div>
 
       <a class="btn btn-delete" nodrag ng-show="!item.document && admin" ng-click="removeItem(this); $event.stopPropagation()"  analytics-on="click" analytics-event="delete" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" ><span class="fa fa-times"></span></a>
 			<a class="btn btn-delete" nodrag ng-show="item.document && admin" ng-click="removeItem(this); $event.stopPropagation()" analytics-on="click" analytics-event="delete" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-times"></span></a>

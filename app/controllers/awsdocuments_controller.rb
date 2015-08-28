@@ -2,6 +2,7 @@ class AwsdocumentsController < ApplicationController
   
   before_action :current_subdomain
   before_action :current_organization
+  before_action :track_connexion
   before_action :current_node, only: [:archives, :create]
   before_action :current_chapter, only: [:create]
   before_action :current_awsdocument, except: [:create]

@@ -2,6 +2,7 @@ class OrganizationsuserslinksController < ApplicationController
   
   before_action :current_subdomain
   before_action :current_organization
+  before_action :track_connexion
 
   def create
     if params[:user_id] and params[:organization_id]

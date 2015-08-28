@@ -2,6 +2,7 @@ class NodesController < ApplicationController
   
   before_action :current_subdomain
   before_action :current_organization
+  before_action :track_connexion
   before_action :current_node, only: [:update, :destroy, :is_allowed_destroy?, :is_allowed_update?]
   before_action :is_allowed_destroy?, only: [:destroy]
   before_action :is_allowed_update?, only: [:update]
