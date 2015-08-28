@@ -124,22 +124,22 @@ module AuthenticationHelper
   end
 
   def track_connexion
-    # ip = request.remote_ip
-    # if request.path != '/' and ip != '127.0.0.1' and ip != '88.169.99.128' and current_subdomain != 'admin'
-    #   place_att = Geokit::Geocoders::MultiGeocoder.geocode(request.remote_ip)
-    #   place = "#{place_att.city}::#{place_att.country_code}"
-    #   Rollbar.info("User active", place: place)
-    #   if @current_organization.connexions.find_by_ip(ip)
-    #     connexion = @current_organization.connexions.find_by_ip(ip)
-    #     if Time.now - connexion.updated_at > 30.minutes
-    #       connexion.increase_count()
-    #     elsif Time.now - connexion.updated_at > 15.seconds
-    #       connexion.activity()
-    #     end
-    #   else
-    #     @current_organization.connexions.create(ip: ip, place: place)
-    #   end
-    # end
+    ip = request.remote_ip
+    if request.path != '/' and ip != '127.0.0.1' and ip != '88.169.99.128' and current_subdomain != 'admin'
+      place_att = Geokit::Geocoders::MultiGeocoder.geocode(request.remote_ip)
+      place = "#{place_att.city}::#{place_att.country_code}"
+      # Rollbar.info("User active", place: place)
+      if @current_organization.connexions.find_by_ip(ip)
+        connexion = @current_organization.connexions.find_by_ip(ip)
+        if Time.now - connexion.updated_at > 30.minutes
+          connexion.increase_count()
+        elsif Time.now - connexion.updated_at > 15.seconds
+          connexion.activity()
+        end
+      else
+        @current_organization.connexions.create(ip: ip, place: place)
+      end
+    end
   end
 
 end
