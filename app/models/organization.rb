@@ -2,7 +2,7 @@ class Organization < ActiveRecord::Base
   
   before_save :format_subdomain
   
-  has_many :nodes, dependent: :delete_all
+  has_many :nodes
   has_many :organizationsuserslinks
   has_many :users, through: :organizationsuserslinks
   has_many :awsdocuments
