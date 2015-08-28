@@ -104,7 +104,6 @@
                 console.log(d)
               });
             }
-
           }
 
           var dummyId = 50

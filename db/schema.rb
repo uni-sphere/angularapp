@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150701082038) do
+ActiveRecord::Schema.define(version: 20150828081213) do
 
   create_table "awsdocuments", force: :cascade do |t|
     t.string   "content"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20150701082038) do
     t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "archived",   default: false
   end
 
   create_table "connexions", force: :cascade do |t|
@@ -50,6 +51,7 @@ ActiveRecord::Schema.define(version: 20150701082038) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "archived",        default: false
   end
 
   create_table "organizations", force: :cascade do |t|
