@@ -41,7 +41,7 @@ class NodesController < ApplicationController
   def destroy
     if @current_node.parent_id != 0 and @current_organization.nodes.where(archived: false).count > 2
       parent = Node.where(archived: false).find @current_node.parent_id
-      parent.chapters.create(title: 'main', parent_id: 0, user_id: current_user.id)
+      parent.chapters.create(title: 'main', parent_id: 0, user_id: current_user.id) if parent.chapters.where(archived: false, parent_id: parent.id).count < 2
       deleted = destroy_with_children(@current_node.id)
       render json: {deleted: deleted}.to_json, status: 200
     else
