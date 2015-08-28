@@ -35,7 +35,7 @@ module ApplicationHelper
         destroy_with_children(node.id)
       end
     end
-    Node.find(id).destroy
+    Node.find(id).archive
     return @deleted
   end
   

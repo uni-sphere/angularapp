@@ -58,7 +58,7 @@ class ChaptersController < ApplicationController
         destroy_with_children(chapter.id)
       end
     end
-    Chapter.find(id).destroy
+    Chapter.find(id).archive
   end
 
 end
