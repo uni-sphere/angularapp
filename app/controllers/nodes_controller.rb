@@ -40,9 +40,9 @@ class NodesController < ApplicationController
 
   def destroy
     if @current_node.parent_id != 0 and @current_organization.nodes.where(archived: false).count > 2
-      parent = Node.where(archived: false).find @current_node.parent_id
+      # parent = Node.where(archived: false).find @current_node.parent_id
+      # parent.chapters.create(title: 'main', parent_id: 0, user_id: current_user.id)
       deleted = destroy_with_children(@current_node.id)
-      parent.chapters.create(title: 'main', parent_id: 0, user_id: current_user.id)
       render json: {deleted: deleted}.to_json, status: 200
     else
       send_error('You can not destroy the root of your tree', 400)

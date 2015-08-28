@@ -27,8 +27,7 @@ module ApplicationHelper
       @deleted << chapter.id
     end
     if Node.exists?(parent_id: id)
-      Node.where(parent_id: id).each do |node|
-        clear_logs node.id
+      Node.where(parent_id: id, archived: false).each do |node|
         node.chapters.all.each do |chapter|
           @deleted << chapter.id
         end
