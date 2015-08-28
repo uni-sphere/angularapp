@@ -10,7 +10,6 @@ class ChaptersController < ApplicationController
   def create
     chapter = @current_node.chapters.new(title: params[:title], parent_id: params[:parent_id], user_id: current_user.id)
     chapter.parent_id = @current_node.chapters.first.id if chapter.parent_id == 0
-    chapter.user_id = current_user.id if @current_organization.subdomain != 'sandbox'
     if chapter.save
       render json: chapter, status: 201, location: chapter
     else
