@@ -21,6 +21,25 @@
         },
         link: function(scope, iElement, iAttrs) {
 
+          sandboxFlatNode = [
+              {name: "Sandbox", num: 1, parent: 0},
+              {name: "Seconde", num: 2, parent: 1},
+              {name: "Première", num: 3, parent: 1},
+              {name: "Terminale", num: 4, parent: 1},
+              {name: "1", num: 6, parent: 2},
+              {name: "2", num: 7, parent: 2},
+              {name: "3", num: 8, parent: 2},
+              {name: "S", num: 9, parent: 3},
+              {name: "ES", num: 10, parent: 3},
+              {name: "L", num: 11, parent: 3},
+              {name: "S", num: 12, parent: 4},
+              {name: "ES", num: 13, parent: 4},
+              {name: "L", num: 14, parent: 4},
+              {name: "Maths", num: 15, parent: 9},
+              {name: "Anglais", num: 16, parent: 9},
+              {name: "Histoire", num: 17, parent: 9}
+            ]
+
           scope.cookieGestion = function(flatNode, nodes){
             var nodeIDs = []
             angular.forEach(flatNode, function(value,key){
@@ -66,26 +85,8 @@
 
           if(scope.home || scope.sandbox){
             console.log("Ok: node retrieved")
-            flatNode = [
-              {name: "Sandbox", num: 1, parent: 0},
-              {name: "Seconde", num: 2, parent: 1},
-              {name: "Première", num: 3, parent: 1},
-              {name: "Terminale", num: 4, parent: 1},
-              {name: "1", num: 6, parent: 2},
-              {name: "2", num: 7, parent: 2},
-              {name: "3", num: 8, parent: 2},
-              {name: "S", num: 9, parent: 3},
-              {name: "ES", num: 10, parent: 3},
-              {name: "L", num: 11, parent: 3},
-              {name: "S", num: 12, parent: 4},
-              {name: "ES", num: 13, parent: 4},
-              {name: "L", num: 14, parent: 4},
-              {name: "Maths", num: 15, parent: 9},
-              {name: "Anglais", num: 16, parent: 9},
-              {name: "Histoire", num: 17, parent: 9}
-            ]
-            scope.nodes = scope.makeNested(flatNode)
-            scope.cookieGestion(flatNode, scope.nodes);
+            scope.nodes = scope.makeNested(sandboxFlatNode)
+            scope.cookieGestion(sandboxFlatNode, scope.nodes);
           } else{
             // First we get the nodes
             Restangular.one('nodes').get().then(function (nodes) {
@@ -113,31 +114,11 @@
             });
           }
 
-
-
           scope.reloadNodes = function(){
             if(scope.home || scope.sandbox){
-              flatNode = [
-                {name: "Sandbox", num: 1, parent: 0},
-                {name: "Seconde", num: 2, parent: 1},
-                {name: "Première", num: 3, parent: 1},
-                {name: "Terminale", num: 4, parent: 1},
-                {name: "1", num: 6, parent: 2},
-                {name: "2", num: 7, parent: 2},
-                {name: "3", num: 8, parent: 2},
-                {name: "S", num: 9, parent: 3},
-                {name: "ES", num: 10, parent: 3},
-                {name: "L", num: 11, parent: 3},
-                {name: "S", num: 12, parent: 4},
-                {name: "ES", num: 13, parent: 4},
-                {name: "L", num: 14, parent: 4},
-                {name: "Maths", num: 15, parent: 9},
-                {name: "Anglais", num: 16, parent: 9},
-                {name: "Histoire", num: 17, parent: 9}
-              ]
               console.log("Ok: node retrieved");
-              scope.nodes = scope.makeNested(flatNode)
-              scope.cookieGestion(flatNode, scope.nodes);
+              scope.nodes = scope.makeNested(sandboxFlatNode)
+              scope.cookieGestion(sandboxFlatNode, scope.nodes);
               render(scope.nodes, iElement);
             } else{
                 Restangular.one('nodes').get().then(function (nodes) {
