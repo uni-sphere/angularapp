@@ -51,6 +51,7 @@
                    scope.listItems = [];
                 } else{
                   if(scope.sandbox || scope.home){
+                    // pas parfait je vérifie pas les enfant de 17..
                     if(newVals[0] == 17){
                       sandboxListItems = [
                         {title: "Les rois de France", id: 13, parent_id: 11, node_id: 17},
