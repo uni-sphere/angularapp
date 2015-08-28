@@ -50,20 +50,44 @@
                   console.log("Ok: fake nodes")
                    scope.listItems = [];
                 } else{
-                  Restangular.one('chapters').get({node_id: scope.nodeEnd[0]}).then(function (document) {
-                    document.shift();
-                    scope.listItems = makeNested(document);
-                  }, function(d){
-                    if(d.status == 404) {
-                      console.log("Ok: Node opening cancelled. Node doesn't exist anymore")
-                      Notification.warning('This action has been cancelled. One of your colleague deleted this node')
+                  if(scope.sandbox || scope.home){
+                    // pas parfait je vérifie pas les enfant de 17..
+                    if(newVals[0] == 17){
+                      sandboxListItems = [
+                        {title: "Les rois de France", id: 13, parent_id: 11, node_id: 17},
+                        {title: "Cours", id: 14, parent_id: 13, node_id: 17},
+                        {title: "Images", id: 15, parent_id: 13, node_id: 17},
+                        {title: "Le continent Africain", id: 16, parent_id: 1, node_id: 17},
+                        {title: "Cours", id: 17, parent_id: 16, node_id: 17},
+                        {title: "Exercices", id: 18, parent_id: 16, node_id: 17},
+                        {title: "La guerre de 100 ans", id: 19, parent_id: 11, node_id: 17},
+                        {title: "Cours", id: 20, parent_id: 19, node_id: 17},
+                        {title: "Vidéo", id: 21, parent_id: 19, node_id: 17},
+                        {title: "Préparation du BAC", id: 22, parent_id: 11, node_id: 17},
+                        {title: "Exercices", id: 23, parent_id: 22, node_id: 17},
+                        {title: "Annales", id: 24, parent_id: 22, node_id: 17},
+                      ]
+                      scope.listItems = makeNested(sandboxListItems);
                     } else{
-                      console.log("Error: Get document");
-                      console.log(d)
-                      Notification.error("We temporarly can not display the documents")
+                      scope.listItems = []
                     }
-                    scope.reloadNodes()
-                  });
+                  } else{
+                    Restangular.one('chapters').get({node_id: scope.nodeEnd[0]}).then(function (document) {
+                      document.shift();
+                      console.log(document.plain())
+                      scope.listItems = makeNested(document);
+                    }, function(d){
+                      if(d.status == 404) {
+                        console.log("Ok: Node opening cancelled. Node doesn't exist anymore")
+                        Notification.warning('This action has been cancelled. One of your colleague deleted this node')
+                      } else{
+                        console.log("Error: Get document");
+                        console.log(d)
+                        Notification.error("We temporarly can not display the documents")
+                      }
+                      scope.reloadNodes()
+                    });
+                  }
                 }
               }
             }

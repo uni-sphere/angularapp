@@ -228,7 +228,7 @@
         CONFIRM_PSW: 'Confirmation du mot de passe',
         UPDATE_PSW: 'Modifier mot de passe',
         USERS_INVITED: 'Utilisateurs ajoutés',
-        TIP_CHROME: 'Astuce: Vous pouvez clicker glisser des documents',
+        TIP_CHROME: 'Astuce: Vous pouvez cliquer glisser des documents',
         TIP: 'Astuce: Vous pouvez clicker glisser des documents (et des dossiers avec Google Chrome!)',
         LENGTH: 'Au minimum 6 charactères',
         SECURITY: 'Sécurité',
