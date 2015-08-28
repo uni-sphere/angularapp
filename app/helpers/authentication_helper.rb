@@ -18,7 +18,7 @@ module AuthenticationHelper
   end
 
   private
-  
+
   def dev?
     if URI.parse(request.env['HTTP_ORIGIN']).host.include? 'dev.'
       return true
@@ -60,10 +60,6 @@ module AuthenticationHelper
 
   def current_organization
     if Rails.env.production?
-      logger.info '----------------------------------------'
-      logger.info @current_subdomain
-      logger.info Organization.exists?(subdomain: @current_subdomain)
-      logger.info '----------------------------------------'
       if Organization.exists?(subdomain: @current_subdomain)
         @current_organization = Organization.where(subdomain: @current_subdomain).first
       else
@@ -73,7 +69,7 @@ module AuthenticationHelper
       @current_organization = Organization.find_by_subdomain 'sandbox'
     end
   end
-  
+
   def current_awsdocument
     if Awsdocument.exists? params[:id]
       @current_awsdocument = Awsdocument.find_unarchived params[:id]
@@ -132,7 +128,7 @@ module AuthenticationHelper
     if request.path != '/' and ip != '127.0.0.1' and ip != '88.169.99.128' and current_subdomain != 'admin'
       place_att = Geokit::Geocoders::MultiGeocoder.geocode(request.remote_ip)
       place = "#{place_att.city}::#{place_att.country_code}"
-      Rollbar.info("User active", place: place)
+      # Rollbar.info("User active", place: place)
       if @current_organization.connexions.find_by_ip(ip)
         connexion = @current_organization.connexions.find_by_ip(ip)
         if Time.now - connexion.updated_at > 30.minutes

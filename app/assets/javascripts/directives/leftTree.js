@@ -67,19 +67,31 @@
           }
 
           scope.reloadNodes = function(){
-            Restangular.one('nodes').get().then(function (nodes) {
-              console.log("Ok: node retrieved")
-              scope.flatNode = nodes.plain();
-              // console.log(scope.flatNode)
-              scope.nodes = scope.makeNested(scope.flatNode)
-              scope.cookieGestion(nodes.plain(),scope.nodes);
+            if(scope.home || scope.sandbox){
+               flatNode = [
+                {name: "Sandbox", num: 1, parent: 0},
+                {name: "Seconde", num: 2, parent: 1},
+                {name: "Première", num: 3, parent: 1}
+              ]
+              console.log("Ok: node retrieved");
+              scope.nodes = scope.makeNested(flatNode)
+              scope.cookieGestion(scope.nodes,scope.nodes);
               render(scope.nodes, iElement);
-            },
-              function(d){
-              Notification.error("Can not display your tree")
-              console.log("Error: Get nodes");
-              console.log(d)
-            });
+            } else{
+                Restangular.one('nodes').get().then(function (nodes) {
+                console.log("Ok: node retrieved")
+                scope.flatNode = nodes.plain();
+                scope.nodes = scope.makeNested(scope.flatNode)
+                scope.cookieGestion(scope.nodes,scope.nodes);
+                render(scope.nodes, iElement);
+              },
+                function(d){
+                Notification.error("Can not display your tree")
+                console.log("Error: Get nodes");
+                console.log(d)
+              });
+            }
+
           }
 
           var dummyId = 50
