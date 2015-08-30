@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   require 'bcrypt'
   
   has_many :awsdocuments
+  has_many :actions
   has_many :nodes
   has_many :chapters
   has_many :organizationsuserslinks

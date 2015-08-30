@@ -27,6 +27,10 @@ Rails.application.routes.draw do
     get 'connected', to: 'connexions#index'
 
     post 'users', to: 'organizationsuserslinks#create'
+    
+    get 'user/actions', to: 'actions#index_by_user'
+    get 'organization/actions', to: 'actions#index_by_organization'
+    get 'actions', to: 'actions#index'
 
   end
 

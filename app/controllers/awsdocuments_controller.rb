@@ -12,8 +12,10 @@ class AwsdocumentsController < ApplicationController
   def create
     awsdocument = @current_chapter.awsdocuments.new(title: params[:title], content: params[:file], organization_id: @current_organization.id, user_id: current_user.id)
     if awsdocument.save
+      Action.create(type: 'created', object_id: @current_chapter.awsdocuments.last.id, object_type: 'document', object: @current_chapter.awsdocuments.last.title)
       render json: awsdocument, status: 201, location: awsdocument
     else
+      Action.create(type: 'created', error: true, object_type: 'document')
       render json: awsdocument.errors, status: 422
     end
   end
@@ -37,13 +39,16 @@ class AwsdocumentsController < ApplicationController
 
   def update
     if @current_awsdocument.update(title: params[:title])
+      Action.create(type: 'renamed', object_id: @current_awsdocument.id, object_type: 'document', object: @current_awsdocument.title)
       render json: @current_awsdocument, status: 200
     else
+      Action.create(type: 'renamed', error: true, object_type: 'document')
       render json: @current_awsdocument.errors, status: 422
     end
   end
 
   def destroy
+    Action.create(type: 'archived', object_id: @current_awsdocument.id, object_type: 'document', object: @current_awsdocument.title)
     @current_awsdocument.archive
     head 204
   end

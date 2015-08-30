@@ -27,11 +27,14 @@ class UsersController < ApplicationController
       if link.save
         Rollbar.info("User invited", email: params[:email], organization: @current_organization)
         UserMailer.invite_user_email(current_user, params[:email], @current_organization, params[:password]).deliver
+        Action.create(type: 'created', object_id: @current_organization.users.last.id, object_type: 'user', object: params[:email])
         render json: {success: true, user: user}.to_json, success: 200
       else
+        Action.create(type: 'created', error: true, object_type: 'user')
         render json: user.errors, status: 422
       end
     else
+      Action.create(type: 'created', error: true, object_type: 'user')
       render json: user.errors, status: 422
     end
   end
