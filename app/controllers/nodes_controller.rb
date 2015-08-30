@@ -16,43 +16,43 @@ class NodesController < ApplicationController
         parent.chapters.where(archived: false).each do |chapter|
           chapter.update(node_id: node.id)
         end
-        Action.create(name: 'created', object_id: node.id, object_type: 'node', object: node.name)
+        Action.create(name: 'created', object_id: node.id, object_type: 'node', object: node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
         render json: node, status: 201, location: node
       else
         chapter = node.chapters.new(title: 'main', parent_id: 0, user_id: current_user.id)
         if chapter.save
-          Action.create(name: 'created', object_id: node.id, object_type: 'node', object: node.name)
+          Action.create(name: 'created', object_id: node.id, object_type: 'node', object: node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
           render json: node, status: 201, location: node
         else
-          Action.create(name: 'created', error: true, object_type: 'node')
+          Action.create(name: 'created', error: true, object_type: 'node', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
           render json: chapter.errors, status: 422
         end
       end
     else
-      Action.create(name: 'created', error: true, object_type: 'node')
+      Action.create(name: 'created', error: true, object_type: 'node', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       render json: {node_error: node.errors, report_error: report.errors}, status: 422
     end
   end
 
   def update
     if @current_node.update(name: params[:name])
-      Action.create(name: 'renamed', object_id: @current_node.id, object_type: 'node', object: @current_node.name)
+      Action.create(name: 'renamed', object_id: @current_node.id, object_type: 'node', object: @current_node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       render json: @current_node, status: 200
     else
-      Action.create(name: 'renamed', error: true, object_type: 'node')
+      Action.create(name: 'renamed', error: true, object_type: 'node', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       render json: @current_node.errors, status: 422
     end
   end
 
   def destroy
     if @current_node.parent_id != 0 and @current_organization.nodes.where(archived: false).count > 2
-      Action.create(name: 'archived', object_id: @current_node.id, object_type: 'node', object: @current_node.name)
+      Action.create(name: 'archived', object_id: @current_node.id, object_type: 'node', object: @current_node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       parent = Node.where(archived: false).find @current_node.parent_id
       parent.chapters.create(title: 'main', parent_id: 0, user_id: current_user.id) if parent.chapters.where(archived: false, parent_id: parent.id).count < 2
       deleted = destroy_with_children(@current_node.id)
       render json: {deleted: deleted}.to_json, status: 200
     else
-      Action.create(name: 'destroyed', error: true, object_type: 'node')
+      Action.create(name: 'destroyed', error: true, object_type: 'node', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       send_error('You can not destroy the root of your tree', 400)
     end
   end

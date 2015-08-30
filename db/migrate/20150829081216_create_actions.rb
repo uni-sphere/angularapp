@@ -14,3 +14,6 @@ class CreateActions < ActiveRecord::Migration
     end
   end
 end
+
+name: 'created', object_id: @current_node.chapters.last.id, object_type: 'chapter',
+ object: @current_node.chapters.last.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email

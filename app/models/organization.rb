@@ -3,7 +3,6 @@ class Organization < ActiveRecord::Base
   before_save :format_subdomain
   
   has_many :nodes
-  has_many :actions
   has_many :organizationsuserslinks
   has_many :users, through: :organizationsuserslinks
   has_many :awsdocuments

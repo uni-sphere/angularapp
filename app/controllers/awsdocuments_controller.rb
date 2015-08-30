@@ -12,10 +12,10 @@ class AwsdocumentsController < ApplicationController
   def create
     awsdocument = @current_chapter.awsdocuments.new(title: params[:title], content: params[:file], organization_id: @current_organization.id, user_id: current_user.id)
     if awsdocument.save
-      Action.create(name: 'created', object_id: @current_chapter.awsdocuments.last.id, object_type: 'document', object: @current_chapter.awsdocuments.last.title)
+      Action.create(name: 'created', object_id: @current_chapter.awsdocuments.last.id, object_type: 'document', object: @current_chapter.awsdocuments.last.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       render json: awsdocument, status: 201, location: awsdocument
     else
-      Action.create(name: 'created', error: true, object_type: 'document')
+      Action.create(name: 'created', error: true, object_type: 'document', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       render json: awsdocument.errors, status: 422
     end
   end
@@ -39,16 +39,16 @@ class AwsdocumentsController < ApplicationController
 
   def update
     if @current_awsdocument.update(title: params[:title])
-      Action.create(name: 'renamed', object_id: @current_awsdocument.id, object_type: 'document', object: @current_awsdocument.title)
+      Action.create(name: 'renamed', object_id: @current_awsdocument.id, object_type: 'document', object: @current_awsdocument.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       render json: @current_awsdocument, status: 200
     else
-      Action.create(name: 'renamed', error: true, object_type: 'document')
+      Action.create(name: 'renamed', error: true, object_type: 'document', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       render json: @current_awsdocument.errors, status: 422
     end
   end
 
   def destroy
-    Action.create(name: 'archived', object_id: @current_awsdocument.id, object_type: 'document', object: @current_awsdocument.title)
+    Action.create(name: 'archived', object_id: @current_awsdocument.id, object_type: 'document', object: @current_awsdocument.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
     @current_awsdocument.archive
     head 204
   end
