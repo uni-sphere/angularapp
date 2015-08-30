@@ -7,7 +7,7 @@ class CreateActions < ActiveRecord::Migration
       t.boolean :error, default: false
       t.string :user
       t.string :object
-      t.string :type
+      t.string :name
       t.string :object_type
       
       t.timestamps

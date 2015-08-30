@@ -11,10 +11,10 @@ class ChaptersController < ApplicationController
     chapter = @current_node.chapters.new(title: params[:title], parent_id: params[:parent_id], user_id: current_user.id)
     chapter.parent_id = @current_node.chapters.where(archived: false).first.id if chapter.parent_id == 0
     if chapter.save
-      Action.create(type: 'created', object_id: @current_node.chapters.last.id, object_type: 'chapter', object: @current_node.chapters.last.title)
+      Action.create(name: 'created', object_id: @current_node.chapters.last.id, object_type: 'chapter', object: @current_node.chapters.last.title)
       render json: chapter, status: 201, location: chapter
     else
-      Action.create(type: 'created', error: true, object_type: 'chapter')
+      Action.create(name: 'created', error: true, object_type: 'chapter')
       render json: chapter.errors, status: 422
     end
   end
@@ -25,16 +25,16 @@ class ChaptersController < ApplicationController
 
   def update
     if @current_chapter.update(title: params[:title])
-      Action.create(type: 'renamed', object_id: @current_chapter.id, object_type: 'chapter', object: @current_chapter.title)
+      Action.create(name: 'renamed', object_id: @current_chapter.id, object_type: 'chapter', object: @current_chapter.title)
       render json: @current_chapter, status: 200
     else
-      Action.create(type: 'renamed', error: true, object_type: 'chapter')
+      Action.create(name: 'renamed', error: true, object_type: 'chapter')
       render json: @current_chapter.errors, status: 422
     end
   end
 
   def destroy
-    Action.create(type: 'destroyed', object_id: @current_chapter.id, object_type: 'chapter', object: @current_chapter.title)
+    Action.create(name: 'destroyed', object_id: @current_chapter.id, object_type: 'chapter', object: @current_chapter.title)
     destroy_with_children(@current_chapter.id)
     head 204
   end
