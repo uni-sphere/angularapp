@@ -36,7 +36,7 @@ class NodesController < ApplicationController
 
   def update
     if @current_node.update(name: params[:name])
-      Action.create(type: 'renamed', object_id: @current_node.id, object_type: 'node', @current_node node.name)
+      Action.create(type: 'renamed', object_id: @current_node.id, object_type: 'node', object: @current_node.name)
       render json: @current_node, status: 200
     else
       Action.create(type: 'renamed', error: true, object_type: 'node')
