@@ -1,12 +1,14 @@
 class ReportsController < ApplicationController
-  
+
   before_action :current_subdomain
   before_action :current_organization
-  before_action :current_node, only: [:first_chart]
-  
+  before_action :track_connexion
+  before_action :current_node, only: [:first_chart, :current_node, :update]
+
   def update
     report = @current_node.reports.last
     report.increase_downloads
+    render json: {res: true}.to_json, status: 200
   end
 
   def first_chart
@@ -64,7 +66,7 @@ class ReportsController < ApplicationController
 
         #downloads
         downloads = 0
-        organization.nodes.each do |node|
+        organization.nodes.where(archived: false).each do |node|
           report = node.reports.where("created_at >= ? AND created_at <= ?", date-7.days, date).first
           downloads = report.downloads if report
         end
@@ -85,7 +87,7 @@ class ReportsController < ApplicationController
 
   def nodes
     if @current_subdomain == 'sandbox'
-      nodes = @current_organization.nodes.where(name: ['Maths', 'Anglais'])
+      nodes = @current_organization.nodes.where(name: ['Maths', 'Anglais'], archived: false)
       render json: nodes, status: 200
     else
       render json: user_nodes, status: 200

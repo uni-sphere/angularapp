@@ -18,7 +18,7 @@ namespace :filldev do
     Rake::Task["db:create"].invoke
     Rake::Task["db:migrate"].invoke
     # reset domains
-    dev_reset_pointers
+    # dev_reset_pointers
     # create sandbox
     organization = Organization.create(name: 'Sandbox', website: 'http://sandbox.unisphere.eu', created_at: Time.now-12*7.days)
     # Create a user

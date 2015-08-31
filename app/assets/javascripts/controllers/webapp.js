@@ -22,36 +22,9 @@
       return treeData[0];
     }
 
-    // $scope.$watch('nodeEnd',function(newVals, oldVals){
-    //   console.log(newVals)
-    // });
 
 
 
-    // First we get the nodes
-    Restangular.one('nodes').get().then(function (nodes) {
-      console.log("Ok: node retrieved")
-      $scope.flatNode = nodes.plain();
-      $scope.nodes = $scope.makeNested(nodes.plain())
-      $scope.cookieGestion(nodes.plain(), $scope.nodes);
-
-      // $scope.$watch('help', function(newVals, oldVals){
-      //   if($scope.help){
-      //     console.log("Ok: First co cookies")
-      //     $scope.nodeEnd = [$scope.flatNode[1].num,$scope.flatNode[1].name]
-      //     $scope.activeNodes = [[$scope.flatNode[0].num,$scope.flatNode[0].name],[$scope.flatNode[1].num,$scope.flatNode[1].name]]
-      //     $scope.breadcrumb = [$scope.flatNode[1].name]
-      //     ipCookie('activeNodes', $scope.activeNodes);
-      //     ipCookie('nodeEnd', $scope.nodeEnd);
-      //   }
-      // });
-
-    },
-      function(d){
-      Notification.error("Error while getting classes and documents informations. Refresh the page please.")
-      console.log("Error: Get nodes");
-      console.log(d)
-    });
 
     /*==========  Location variable  ==========*/
 

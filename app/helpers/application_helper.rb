@@ -27,16 +27,30 @@ module ApplicationHelper
       @deleted << chapter.id
     end
     if Node.exists?(parent_id: id)
-      Node.where(parent_id: id).each do |node|
-        clear_logs node.id
+      Node.where(parent_id: id, archived: false).each do |node|
         node.chapters.all.each do |chapter|
           @deleted << chapter.id
         end
         destroy_with_children(node.id)
       end
     end
-    Node.find(id).destroy
+    Node.find(id).archive
     return @deleted
+  end
+  
+  def archive_children(id)
+    if Node.exists?(parent_id: id)
+      Node.where(parent_id: id, archived: false).each do |node|
+        node.chapters.where(archived: false).each do |chapter|
+          chapter.awsdocuments.where(archived: false).each do |document|
+            document.archive
+          end
+          chapter.archive
+        end
+        destroy_with_children(node.id)
+      end
+    end
+    Node.find(id).archive
   end
   
 end

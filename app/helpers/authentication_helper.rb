@@ -1,14 +1,14 @@
 module AuthenticationHelper
 
   def user_nodes_email(id)
-    if Chapter.exists?(user_id: id)
-      chapters = Chapter.where(user_id: id)
+    if Chapter.where(archived: false).exists?(user_id: id)
+      chapters = Chapter.where(user_id: id, archived: false)
       ids = []
       chapters.each do |chapter|
-        ids << chapter.node_id if Chapter.where(node_id: chapter.node_id).count > 1 || chapter.awsdocuments.count > 0
+        ids << chapter.node_id if Chapter.where(node_id: chapter.node_id, archived: false).count > 1 || chapter.awsdocuments.count > 0
       end
-      if Node.exists?(id: ids)
-        return Node.where(id: ids)
+      if Node.where(archived: false).exists?(id: ids)
+        return Node.where(id: ids, archived: false)
       else
         return {}
       end
@@ -18,7 +18,7 @@ module AuthenticationHelper
   end
 
   private
-  
+
   def dev?
     if URI.parse(request.env['HTTP_ORIGIN']).host.include? 'dev.'
       return true
@@ -29,12 +29,12 @@ module AuthenticationHelper
 
   def user_documents
     ids = []
-    current_user.chapters.each do |chapter|
+    current_user.chapters.where(archived: false).each do |chapter|
       chapter.awsdocuments.each do |awsdocument|
         ids << awsdocument.id
       end
     end
-    return Awsdocument.where(id: ids)
+    return Awsdocument.where(id: ids, archived: false)
   end
 
   def authenticate_client
@@ -60,10 +60,6 @@ module AuthenticationHelper
 
   def current_organization
     if Rails.env.production?
-      logger.info '----------------------------------------'
-      logger.info @current_subdomain
-      logger.info Organization.exists?(subdomain: @current_subdomain)
-      logger.info '----------------------------------------'
       if Organization.exists?(subdomain: @current_subdomain)
         @current_organization = Organization.where(subdomain: @current_subdomain).first
       else
@@ -73,7 +69,7 @@ module AuthenticationHelper
       @current_organization = Organization.find_by_subdomain 'sandbox'
     end
   end
-  
+
   def current_awsdocument
     if Awsdocument.exists? params[:id]
       @current_awsdocument = Awsdocument.find_unarchived params[:id]
@@ -85,7 +81,7 @@ module AuthenticationHelper
   def current_node
     params[:node_id] = params[:id] if request.url.split('?').first.include? 'node'
     if params[:node_id]
-      if @current_organization.nodes.exists? params[:node_id]
+      if @current_organization.nodes.where(archived: false).exists? params[:node_id]
         @current_node = @current_organization.nodes.find params[:node_id]
       else
         send_error('node not found', 404)
@@ -96,13 +92,13 @@ module AuthenticationHelper
   end
 
   def user_nodes
-    if Chapter.exists?(user_id: current_user.id)
-      chapters = current_user.chapters
+    if Chapter.exists?(user_id: current_user.id, archived: false)
+      chapters = current_user.chapters.where(archived: false)
       ids = []
       chapters.each do |chapter|
-        ids << chapter.node_id if Chapter.where(node_id: chapter.node_id).count > 1 || chapter.awsdocuments.count > 0
+        ids << chapter.node_id if Chapter.where(node_id: chapter.node_id, archived: false).count > 1 || chapter.awsdocuments.count > 0
       end
-      if Node.exists?(id: ids)
+      if Node.exists?(id: ids, archived: false)
         return Node.where(id: ids)
       else
         return {}
@@ -115,10 +111,10 @@ module AuthenticationHelper
   def current_chapter
     params[:chapter_id] = params[:id] if request.url.split('?').first.include? 'chapter'
     if params[:chapter_id]
-      if @current_node.chapters.exists? params[:chapter_id]
-        @current_chapter = @current_node.chapters.find params[:chapter_id]
+      if @current_node.chapters.where(archived: false).exists? params[:chapter_id]
+        @current_chapter = @current_node.chapters.where(archived: false).find params[:chapter_id]
       elsif params[:chapter_id] == '0'
-        @current_chapter = @current_node.chapters.first
+        @current_chapter = @current_node.chapters.where(archived: false).first
       else
         send_error('chapter not found', 404)
       end
@@ -128,22 +124,20 @@ module AuthenticationHelper
   end
 
   def track_connexion
-    if !@current_organization.nil?
-      ip = request.remote_ip
-      if request.path != '/' and ip != '127.0.0.1' and ip != '88.169.99.128' and current_subdomain != 'admin'
-        place_att = Geokit::Geocoders::MultiGeocoder.geocode(request.remote_ip)
-        place = "#{place_att.city}::#{place_att.country_code}"
-        Rollbar.info("User active", place: place)
-        if @current_organization.connexions.find_by_ip(ip)
-          connexion = @current_organization.connexions.find_by_ip(ip)
-          if Time.now - connexion.updated_at > 30.minutes
-            connexion.increase_count()
-          elsif Time.now - connexion.updated_at > 15.seconds
-            connexion.activity()
-          end
-        else
-          @current_organization.connexions.create(ip: ip, place: place)
+    ip = request.remote_ip
+    if request.path != '/' and ip != '127.0.0.1' and ip != '88.169.99.128' and current_subdomain != 'admin'
+      place_att = Geokit::Geocoders::MultiGeocoder.geocode(request.remote_ip)
+      place = "#{place_att.city}::#{place_att.country_code}"
+      if @current_organization.connexions.find_by_ip(ip)
+        connexion = @current_organization.connexions.find_by_ip(ip)
+        if Time.now - connexion.updated_at > 30.minutes
+          Rollbar.info("User active", place: place)
+          connexion.increase_count()
+        elsif Time.now - connexion.updated_at > 15.seconds
+          connexion.activity()
         end
+      else
+        @current_organization.connexions.create(ip: ip, place: place)
       end
     end
   end

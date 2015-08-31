@@ -1,17 +1,31 @@
 <div id="superadmin" ng-if="superadmin" ng-controller="SuperadminCtrl">
   <div class="superadmin-title">List of users</div>
-  <table id="superadmin-table">
+  <table id="listUser-table">
     <tr>
       <th>Email</th>
       <th>Name</th>
       <th>Delete</th>
       <th>Password</th>
     </tr>
-    <tr ng-repeat="user in listUser" class="superadmin-table-td">
+    <tr ng-repeat="user in listUser" class="listUser-table-td">
       <td><span ng-click="superadminEmailRename($index)" ng-model="user.email">{{ user.email }}</span></td>
       <td><span ng-click="superadminNameRename($index)">{{ user.name }}</span></td>
       <td class="superadmin-icon-container"> <span ng-click="superadminUserDelete($index)" class="fa fa-times superadmin-icon"></span></td>
       <td class="superadmin-icon-container" width="50px"> <span ng-click="superadminReset($index)" class="fa fa-rocket superadmin-icon"></span></td>
+    </tr>
+  </table>
+
+  <div class="superadmin-title">Timeline</div>
+  <table id="timeline-table">
+    <tr>
+      <th>Events</th>
+      <th>Id</th>
+      <th>Time</th>
+    </tr>
+    <tr ng-repeat="action in timeline" class="superadmin-table-td" class="timeline-line" ng-class="{timelineError : action.error}">
+      <td>{{action.user}} {{ action.name }} {{action.object_type}} {{action.object}}</td>
+      <td width="50px">{{action.id}}</td>
+      <td width="200px">{{ action.created_at | date:"dd/MM H:mm:ss"}}</td>
     </tr>
   </table>
 </div>

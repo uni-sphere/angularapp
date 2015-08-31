@@ -15,11 +15,29 @@
           breadcrumb: '=',
           nodes: '=',
           foldedNodes: '=',
-          makeNested: '=',
           reloadNodes: '=',
           cookieGestion: '=',
         },
         link: function(scope, iElement, iAttrs) {
+
+          sandboxFlatNode = [
+              {name: "Sandbox", num: 1, parent: 0},
+              {name: "Seconde", num: 2, parent: 1},
+              {name: "Première", num: 3, parent: 1},
+              {name: "Terminale", num: 4, parent: 1},
+              {name: "1", num: 6, parent: 2},
+              {name: "2", num: 7, parent: 2},
+              {name: "3", num: 8, parent: 2},
+              {name: "S", num: 9, parent: 3},
+              {name: "ES", num: 10, parent: 3},
+              {name: "L", num: 11, parent: 3},
+              {name: "S", num: 12, parent: 4},
+              {name: "ES", num: 13, parent: 4},
+              {name: "L", num: 14, parent: 4},
+              {name: "Maths", num: 15, parent: 9},
+              {name: "Anglais", num: 16, parent: 9},
+              {name: "Histoire", num: 17, parent: 9}
+            ]
 
           scope.cookieGestion = function(flatNode, nodes){
             var nodeIDs = []
@@ -57,8 +75,6 @@
                 }
               });
 
-              // console.log(scope.nodeEnd)
-              // console.log(scope.breadcrumb)
               ipCookie('activeNodes', scope.activeNodes);
               ipCookie('foldedNodes', scope.foldedNodes);
               ipCookie('nodeEnd', scope.nodeEnd);
@@ -66,20 +82,57 @@
             }
           }
 
-          scope.reloadNodes = function(){
+          if(scope.home || scope.sandbox){
+            console.log("Ok: node retrieved")
+            scope.nodes = makeNested(sandboxFlatNode)
+            scope.cookieGestion(sandboxFlatNode, scope.nodes);
+          } else{
+            // First we get the nodes
             Restangular.one('nodes').get().then(function (nodes) {
+
               console.log("Ok: node retrieved")
               scope.flatNode = nodes.plain();
-              // console.log(scope.flatNode)
-              scope.nodes = scope.makeNested(scope.flatNode)
-              scope.cookieGestion(nodes.plain(),scope.nodes);
-              render(scope.nodes, iElement);
-            },
-              function(d){
-              Notification.error("Can not display your tree")
+              scope.nodes = makeNested(scope.flatNode)
+              scope.cookieGestion(nodes.plain(), scope.nodes);
+
+              // $scope.$watch('help', function(newVals, oldVals){
+              //   if($scope.help){
+              //     console.log("Ok: First co cookies")
+              //     $scope.nodeEnd = [$scope.flatNode[1].num,$scope.flatNode[1].name]
+              //     $scope.activeNodes = [[$scope.flatNode[0].num,$scope.flatNode[0].name],[$scope.flatNode[1].num,$scope.flatNode[1].name]]
+              //     $scope.breadcrumb = [$scope.flatNode[1].name]
+              //     ipCookie('activeNodes', $scope.activeNodes);
+              //     ipCookie('nodeEnd', $scope.nodeEnd);
+              //   }
+              // });
+
+            },function(d){
+              Notification.error("Error while getting classes and documents informations. Refresh the page please.")
               console.log("Error: Get nodes");
               console.log(d)
             });
+          }
+
+          scope.reloadNodes = function(){
+            if(scope.home || scope.sandbox){
+              console.log("Ok: node retrieved");
+              scope.nodes = makeNested(sandboxFlatNode)
+              scope.cookieGestion(sandboxFlatNode, scope.nodes);
+              render(scope.nodes, iElement);
+            } else{
+                Restangular.one('nodes').get().then(function (nodes) {
+                console.log("Ok: node retrieved")
+                scope.flatNode = nodes.plain();
+                scope.nodes = makeNested(scope.flatNode)
+                scope.cookieGestion(nodes.plain(),scope.nodes);
+                render(scope.nodes, iElement);
+              },
+                function(d){
+                Notification.error("Can not display your tree")
+                console.log("Error: Get nodes");
+                console.log(d)
+              });
+            }
           }
 
           var dummyId = 50
@@ -365,13 +418,15 @@
                 node.parent.children = _.without(node.parent.children, nodeToDelete[0]);
               }
 
-
               function deleteProperly(node, nodeInitial){
                 if(node.num == scope.nodeEnd[0]){
                   scope.nodeEnd = false
 
                   findFoldedNodes(scope.root);
                   findActiveNodes(nodeInitial.parent)
+                  if(scope.activeNodes.length != 0){
+                    scope.nodeEnd = scope.activeNodes[0]
+                  }
 
                   colornodePath(scope.root);
                 }
@@ -410,14 +465,15 @@
 
                 function deleteProperly(node, nodeInitial){
                   if(node.num == scope.nodeEnd[0]){
-                    scope.nodeEnd = false;
 
                     findFoldedNodes(scope.root);
                     findActiveNodes(nodeInitial.parent)
-
+                    if(scope.activeNodes.length != 0){
+                      scope.nodeEnd = scope.activeNodes[0]
+                    }
                     ipCookie('activeNodes', scope.activeNodes);
-                    ipCookie('nodeEnd', scope.nodeEnd);
                     ipCookie('foldedNodes', scope.foldedNodes);
+                    ipCookie('nodeEnd', scope.nodeEnd);
                     colornodePath(scope.root);
                   }
                   if(node.children){
@@ -491,7 +547,6 @@
                 findNodeEnd(node.children[node.children.length - 1]);
                 colornodePath(scope.root);
 
-                console.log(scope.activeNodes)
                 ipCookie('activeNodes', scope.activeNodes);
                 ipCookie('nodeEnd', scope.nodeEnd);
 

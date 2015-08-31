@@ -20,6 +20,7 @@ angular
       }
     } else{
       console.log("NORMAL APP")
+
       // $('#first-connection').fadeIn()
       // We get the actual uni
       Restangular.one('organization').get().then(function (university) {
@@ -65,20 +66,30 @@ angular
     $scope.getBasicInfo = function(){
 
       // We get the user email and name to display them
-      Restangular.one('user').get().then(function (d) {
-        $scope.accountEmail = d.email
-        $scope.accountName = d.name
-        $scope.help = d.help
+      Restangular.one('user').get().then(function (user) {
+        $scope.accountEmail = user.email
+        $scope.accountName = user.name
+        $scope.help = user.help
+        $scope.superadmin = user.superadmin
         console.log("Ok: User info")
         if($scope.help) {
           // $('#first-connection').fadeIn(2000)
         }
 
 
+
+
         // We get the list of user in the organization
-        Restangular.one('users').get().then(function (d) {
-          $scope.listUser = d.users
+        Restangular.one('users').get().then(function (listUser) {
+          $scope.listUser = listUser.users
           console.log("Ok: List of all user")
+
+          Restangular.one('organization/actions').get().then(function (timeline) {
+            console.log("Ok: Timeline aquired")
+            $scope.timeline = timeline.actions;
+          }, function(d){
+            console.log("Error: Timeline")
+          });
         }, function(d){
           console.log("Error: List of all user");
           Notification.error('Error while getting institution infos. Please refresh')

@@ -1,7 +1,7 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('SuperadminCtrl', ['$scope', function ($scope) {
+  .controller('SuperadminCtrl', ['$scope', 'Restangular', function ($scope, Restangular) {
 
     $scope.superadminEmailRename = function(index){
       var result = prompt('Change the email '+ $scope.listUser[index].name);
@@ -24,6 +24,10 @@ angular
         });
       }
     }
+
+
+
+
 
     $scope.superadminUserDelete = function(index){
       $scope.listUser.splice(index,1)
