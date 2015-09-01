@@ -21,8 +21,7 @@ class AwsdocumentsController < ApplicationController
   end
 
   def show
-    preview_link = @current_awsdocument.content.file.authenticated_url
-    render json: preview_link, status: 200
+    render json: @current_awsdocument.content.file.authenticated_url, status: 200
   end
 
   def archives
