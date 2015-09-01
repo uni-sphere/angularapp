@@ -42,6 +42,7 @@ class ChaptersController < ApplicationController
   def index
     logger.info '-------------'
     logger.info request.subdomain
+    logger.info request.env['HTTP_ORIGIN']).host
     logger.info '-------------'
     tree = []
     @current_node.chapters.where(archived: false).each do |chapter|
