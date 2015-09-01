@@ -40,6 +40,9 @@ class ChaptersController < ApplicationController
   end
 
   def index
+    logger.info '-------------'
+    logger.info request.subdomain
+    logger.info '-------------'
     tree = []
     @current_node.chapters.where(archived: false).each do |chapter|
       tree << chapter

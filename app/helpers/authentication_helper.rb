@@ -48,9 +48,6 @@ module AuthenticationHelper
   def current_subdomain
     if Rails.env.production?
       if URI.parse(request.env['HTTP_ORIGIN']).host == 'www.unisphere.eu'|| URI.parse(request.env['HTTP_ORIGIN']).host == 'dev.unisphere.eu'
-        logger.info '-------------'
-        logger.info request.subdomain
-        logger.info '-------------'
         @current_subdomain = 'sandbox'
       else
         uri = URI.parse(request.env['HTTP_ORIGIN']).host
