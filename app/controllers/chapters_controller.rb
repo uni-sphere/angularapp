@@ -44,7 +44,7 @@ class ChaptersController < ApplicationController
     @current_node.chapters.where(archived: false).each do |chapter|
       tree << chapter
       chapter.awsdocuments.each do |document|
-        tree << (document) if !document.archived
+        tree << (document.select(:title, :user_id, :chapter_id, :organization_id)) if !document.archived
       end
     end
     render json: tree, status: 200

@@ -3,9 +3,9 @@ class AwsdocumentsController < ApplicationController
   before_action :current_subdomain
   before_action :current_organization
   before_action :track_connexion
-  before_action :current_node, only: [:archives, :create]
-  before_action :current_chapter, only: [:create]
-  before_action :current_awsdocument, except: [:create]
+  before_action :current_node, only: [:archives, :create, :show]
+  before_action :current_chapter, only: [:create, :show]
+  before_action :current_awsdocument, except: [:create, :show]
 
   before_action :is_allowed?, only: [:update, :destroy, :archives]
 
@@ -21,7 +21,15 @@ class AwsdocumentsController < ApplicationController
   end
 
   def show
-    render json: @current_awsdocument.content.file.authenticated_url, status: 200
+    if !@current_node.password.nil?
+      if @current_node.password == params[:password]
+        render json: @current_awsdocument.content.file.authenticated_url, status: 200
+      else
+        send_error('Forbidden', '403')
+      end
+    else
+      render json: @current_awsdocument.content.file.authenticated_url, status: 200
+    end
   end
 
   def archives

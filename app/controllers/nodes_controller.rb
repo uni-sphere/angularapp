@@ -36,14 +36,34 @@ class NodesController < ApplicationController
       render json: {node_error: node.errors, report_error: report.errors}, status: 422
     end
   end
-
+  
   def update
-    if @current_node.update(name: params[:name])
-      Action.create(name: 'renamed', object_id: @current_node.id, object_type: 'node', object: @current_node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
-      render json: @current_node, status: 200
+    if params[:password]
+      if params[:lock]
+        if @current_chapter.update(password: Password.create(params[:password]))
+          Action.create(name: 'secured', object_id: @current_node.id, object_type: 'node', object: '', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+          render json: @current_chapter, status: 200
+        else
+          Action.create(name: 'secured', error: true, object_type: 'node', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+          render json: @current_chapter.errors, status: 422
+        end
+      else
+        if @current_chapter.update(password: nil)
+          Action.create(name: 'unsecured', object_id: @current_node.id, object_type: 'node', object: '', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+          render json: @current_chapter, status: 200
+        else
+          Action.create(name: 'unsecured', error: true, object_type: 'node', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+          render json: @current_chapter.errors, status: 422
+        end
+      end
     else
-      Action.create(name: 'renamed', error: true, object_type: 'node', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
-      render json: @current_node.errors, status: 422
+      if @current_node.update(name: params[:name])
+        Action.create(name: 'renamed', object_id: @current_node.id, object_type: 'node', object: @current_node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+        render json: @current_node, status: 200
+      else
+        Action.create(name: 'renamed', error: true, object_type: 'node', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+        render json: @current_node.errors, status: 422
+      end
     end
   end
 

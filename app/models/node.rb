@@ -1,5 +1,7 @@
 class Node < ActiveRecord::Base
   
+  include BCrypt
+  
 	belongs_to :organization
   belongs_to :user
   
