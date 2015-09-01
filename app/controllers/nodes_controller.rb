@@ -90,7 +90,7 @@ class NodesController < ApplicationController
   private
   
   def can_create?
-    parent_owner = Node.find(parent_id: params[:parent_id])
+    parent_owner = User.find(Node.find(params[:parent_id]).user_id)
     send_error('Forbidden', '403') unless parent_owner.id == current_user.id or parent_owner.superadmin
   end
 
