@@ -21,4 +21,8 @@ class Node < ActiveRecord::Base
     self.save
   end
   
+  def password
+    @password ||= Password.new(password_hash)
+  end
+    
 end
