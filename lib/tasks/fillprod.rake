@@ -10,7 +10,7 @@ def add_reports(node)
   end
 end
 
-namespace :fill do
+namespace :fillprod do
   desc "inital filling"
   task initial: :environment do
     # clear db

@@ -22,7 +22,6 @@ namespace :filldev do
     # create sandbox
     organization = Organization.create(name: 'Sandbox', website: 'http://sandbox.unisphere.eu', created_at: Time.now-12*7.days)
     # Create a user
-    organization.users.create!(email: "teacher@university.com", name: "Teacher", uid: "foo", provider: 'email', password: 'teacher', help: false)
     organization.users.create!(email: "hello@unisphere.eu", name: "Hello", uid: "foo", provider: 'email', password: 'gabgabgab', help: false, superadmin: true)
     # create first nodes
     organization.nodes.create(name: "Sandbox", parent_id: 0, user_id: 1)
