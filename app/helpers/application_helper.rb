@@ -21,23 +21,6 @@ module ApplicationHelper
     render json: {error: error}.to_json, status: code
   end
   
-  def destroy_with_children(id)
-    @deleted = []
-    Node.find(id).chapters.all.each do |chapter|
-      @deleted << chapter.id
-    end
-    if Node.exists?(parent_id: id)
-      Node.where(parent_id: id, archived: false).each do |node|
-        node.chapters.all.each do |chapter|
-          @deleted << chapter.id
-        end
-        destroy_with_children(node.id)
-      end
-    end
-    Node.find(id).archive
-    return @deleted
-  end
-  
   def archive_children(id)
     if Node.exists?(parent_id: id)
       Node.where(parent_id: id, archived: false).each do |node|
@@ -47,7 +30,22 @@ module ApplicationHelper
           end
           chapter.archive
         end
-        destroy_with_children(node.id)
+        archive_children(node.id)
+      end
+    end
+    Node.find(id).archive
+  end
+  
+  def pull_children(id, parent_id)
+    if Node.exists?(parent_id: id)
+      Node.where(parent_id: id, archived: false).each do |node|
+        node.chapters.where(archived: false).each do |chapter|
+          chapter.awsdocuments.where(archived: false).each do |document|
+            document.update(node_id: parent_id)
+          end
+          chapter.update(node_id: parent_id)
+        end
+        shift_left_children(node.id, parent_id)
       end
     end
     Node.find(id).archive

@@ -137,7 +137,7 @@
 
           var dummyId = 50
           /*==========  Svg creation  ==========*/
-          var margin = {top: 0, right: 20, bottom: 0, left: 30};
+          var margin = {top: 20, right: 20, bottom: 10, left: 30};
 
           var svg = d3.select(iElement[0])
             .append("svg")
@@ -158,14 +158,27 @@
           });
 
           function update(source) {
+            maxWidth = scope.width - 200
             var duration = 750;
 
             // Compute the new tree layout.
             var nodes = scope.tree.nodes(scope.root).reverse();
             var links = scope.tree.links(nodes);
 
-            // Normalize for fixed-depth.
-            nodes.forEach(function(d) { d.y = d.depth * 140});
+            var maxDepth = 1;
+            nodes.forEach(function(d) {
+              // d.y = d.depth * 140
+              if(d.depth > maxDepth){
+                maxDepth = d.depth
+              }
+            });
+
+            var lengthLink = Math.floor(maxWidth / maxDepth);
+            // console.log(lengthLink)
+
+            nodes.forEach(function(d) {
+              d.y = d.depth * lengthLink
+            });
 
             // Update the nodes…
             var node = svg.selectAll("g.node")
@@ -189,9 +202,9 @@
               // Label of the node. When clicked it opens the rename
               nodeEnter.append("text")
                 .attr("class", function(d){return typeof d.parent === 'object' ? "nameNode" : ""})
-                .attr("x", function(d) { return d.children || d._children ? -15 : 10; })
-                .attr("dy", ".275em")
-                .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+                .attr("x", function(d) { return d.children ? 0 : 15; })
+                .attr("y", function(d) { return d.children ? 25 : 5; })
+                .attr("text-anchor", "start")
                 .style("fill-opacity", 1e-6)
                 .text(function(d) { return d.name; })
                 .on("click", renameNode)
@@ -199,9 +212,9 @@
               // Little + to add a node
               nodeEnter.append("text")
                 .attr("class", "addNode")
-                .attr("x", "-16px")
-                .attr("y", "-20px")
-                .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+                .attr("x", "-8px")
+                .attr("y", "-15px")
+                .attr("text-anchor", "end")
                 .text("+")
                 .style("fill-opacity", 1e-6)
                 .style("fill", "cornflowerblue")
@@ -210,9 +223,9 @@
               // Little - to remove a node
               nodeEnter.append("text")
                 .attr("class", "deleteNode")
-                .attr("x", "10px")
-                .attr("y", "-20px")
-                .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+                .attr("x", "8px")
+                .attr("y", "-16px")
+                .attr("text-anchor", "start")
                 .text("x")
                 .style("fill-opacity", 1e-6)
                 .style("fill", "#F76565")
@@ -220,10 +233,10 @@
             } else{
                // Label of the node. When clicked it opens the node
               nodeEnter.append("text")
-              .attr("class", function(d){return typeof d.parent === 'object' ? "nameNode" : ""})
-              .attr("x", function(d) { return d.children || d._children ? -15 : 10; })
-              .attr("dy", ".275em")
-              .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+                .attr("class", function(d){return typeof d.parent === 'object' ? "nameNode" : ""})
+                .attr("x", function(d) { return d.children ? 0 : 15; })
+                .attr("y", function(d) { return d.children ? 25 : 5; })
+                .attr("text-anchor", function(d) { return d.children ? "middle" : "start"; })
               .text(function(d) { return d.name; })
               .style("fill-opacity", 1e-6)
               .on("click", openNode)
@@ -249,6 +262,15 @@
 
             nodeUpdate.select("text.nameNode")
               .style("fill-opacity", 1)
+              .attr("x", function(d) {
+                if(d.children){
+                  return -Math.floor(this.getBBox().width/2)
+                } else{
+                  return 15
+                }
+              })
+              .attr("y", function(d) { return d.children ? 25 : 5; })
+              .attr("text-anchor", "start")
               .text(function(d) { return d.name; });
 
             // Transition exiting nodes to the parent's new position.
@@ -264,7 +286,6 @@
 
             nodeExit.select("text.addNode")
               .style("fill-opacity", 1e-6)
-
 
             nodeExit.select("circle.circleCollapse")
               .attr("r", 1e-6)
@@ -631,10 +652,16 @@
             scope.root.y0 = 0;
 
             scope.tree = d3.layout.tree()
-              .size([scope.height, scope.width]);
+              .separation(function(a,b){
+                if(a.parent != b.parent || b.children ){
+                  return 2
+                } else{
+                  return 1
+                }
+              })
+              .size([scope.height, scope.width])
 
-            scope.diagonal = d3.svg.diagonal()
-              .projection(function(d) { return [d.y, d.x]; });
+            scope.diagonal = d3.svg.diagonal().projection(function(d) { return [d.y, d.x]; });
 
             // console.log(scope.foldedNodes)
             if(scope.foldedNodes == undefined){

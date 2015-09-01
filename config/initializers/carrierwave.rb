@@ -10,4 +10,5 @@ CarrierWave.configure do |config|
   config.fog_directory  = 'unisphere'                             
   config.fog_public     = false
   config.fog_authenticated_url_expiration = 604800
+  # config.fog_authenticated_url_expiration = 600
 end
