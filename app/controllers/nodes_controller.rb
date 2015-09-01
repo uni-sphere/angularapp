@@ -3,9 +3,10 @@ class NodesController < ApplicationController
   before_action :current_subdomain
   before_action :current_organization
   before_action :track_connexion
-  before_action :current_node, only: [:update, :destroy, :is_allowed_destroy?, :is_allowed_update?]
-  before_action :is_allowed_destroy?, only: [:destroy]
-  before_action :is_allowed_update?, only: [:update]
+  before_action :current_node, only: [:update, :destroy, :can_destroy?, :can_update?]
+  before_action :can_create?, only: [:create]
+  before_action :can_destroy?, only: [:destroy]
+  before_action :can_update?, only: [:update]
 
   def create
     node = @current_organization.nodes.new(name: params[:name], parent_id: params[:parent_id], user_id: current_user.id)
@@ -14,7 +15,9 @@ class NodesController < ApplicationController
     if node.save and report.save
       if @current_organization.nodes.where(parent_id: parent.id).count == 1
         parent.chapters.where(archived: false).each do |chapter|
-          chapter.update(node_id: node.id)
+          chapter.node_id = node.id
+          chapter.user_id = current_user.id
+          chapter.save
         end
         Action.create(name: 'created', object_id: node.id, object_type: 'node', object: node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
         render json: node, status: 201, location: node
@@ -49,7 +52,11 @@ class NodesController < ApplicationController
       Action.create(name: 'archived', object_id: @current_node.id, object_type: 'node', object: @current_node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       parent = Node.where(archived: false).find @current_node.parent_id
       parent.chapters.create(title: 'main', parent_id: 0, user_id: current_user.id) if @current_organization.nodes.where(parent_id: parent.id).count == 1
-      deleted = archive_children(@current_node.id)
+      if params[:pull]
+        deleted = pull_children(@current_node.id)
+      else
+        deleted = archive_children(@current_node.id)
+      end
       @current_node.archive
       render json: {deleted: deleted}.to_json, status: 200
     else
@@ -81,12 +88,17 @@ class NodesController < ApplicationController
   end
 
   private
+  
+  def can_create?
+    parent_id = Node.find(email: params[:parent_id]).user_id
+    send_error('Forbidden', '403') unless User.find(parent_id).id == current_user.id or User.find(parent_id).email == 'hello@unisphere.eu'
+  end
 
-  def is_allowed_update?
+  def can_update?
     send_error('Forbidden', '403') unless current_user.nodes.where(archived: false).exists?(@current_node.id) or current_user.email == 'hello@unisphere.eu'
   end
 
-  def is_allowed_destroy?
+  def can_destroy?
     @forbidden = false
     queue = [@current_node]
     while queue != []
