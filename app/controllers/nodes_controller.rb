@@ -90,6 +90,7 @@ class NodesController < ApplicationController
   private
   
   def can_create?
+    params[:parent_id] = @current_organization.nodes.first.id if params[:parent_id] == 0
     parent_owner = User.find(Node.find(params[:parent_id]).user_id)
     send_error('Forbidden', '403') unless parent_owner.id == current_user.id or parent_owner.superadmin
   end
