@@ -51,10 +51,10 @@ class NodesController < ApplicationController
     if @current_node.parent_id != 0 and @current_organization.nodes.where(archived: false).count > 2
       Action.create(name: 'archived', object_id: @current_node.id, object_type: 'node', object: @current_node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       parent = Node.where(archived: false).find @current_node.parent_id
-      parent.chapters.create(title: 'main', parent_id: 0, user_id: current_user.id) if @current_organization.nodes.where(parent_id: parent.id).count == 1
       if params[:pull]
         deleted = pull_children(@current_node.id)
       else
+        parent.chapters.create(title: 'main', parent_id: 0, user_id: parent.user_id) if @current_organization.nodes.where(parent_id: parent.id).count == 1
         deleted = archive_children(@current_node.id)
       end
       @current_node.archive
@@ -90,7 +90,6 @@ class NodesController < ApplicationController
   private
   
   def can_create?
-    params[:parent_id] = @current_organization.nodes.first.id if params[:parent_id] == 0
     parent_owner = User.find(Node.find(params[:parent_id]).user_id)
     send_error('Forbidden', '403') unless parent_owner.id == current_user.id or parent_owner.superadmin
   end
