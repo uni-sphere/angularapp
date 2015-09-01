@@ -53,7 +53,7 @@ class ChaptersController < ApplicationController
   private
 
   def is_allowed?
-    send_error('Forbidden', '403') unless current_user.chapters.where(archived: false).exists?(@current_chapter.id) or current_user.nodes.where(archived: false).exists?(@current_chapter.node_id) or current_user.email == 'hello@unisphere.eu'
+    send_error('Forbidden', '403') unless current_user.chapters.where(archived: false).exists?(@current_chapter.id) or current_user.nodes.where(archived: false).exists?(@current_chapter.node_id) or current_user.superadmin
   end
 
   def destroy_with_children(id)

@@ -91,11 +91,11 @@ class NodesController < ApplicationController
   
   def can_create?
     parent_id = Node.find(email: params[:parent_id]).user_id
-    send_error('Forbidden', '403') unless User.find(parent_id).id == current_user.id or User.find(parent_id).email == 'hello@unisphere.eu'
+    send_error('Forbidden', '403') unless User.find(parent_id).id == current_user.id or User.find(parent_id).superadmin
   end
 
   def can_update?
-    send_error('Forbidden', '403') unless current_user.nodes.where(archived: false).exists?(@current_node.id) or current_user.email == 'hello@unisphere.eu'
+    send_error('Forbidden', '403') unless current_user.nodes.where(archived: false).exists?(@current_node.id) or current_user.superadmin
   end
 
   def can_destroy?
@@ -108,7 +108,7 @@ class NodesController < ApplicationController
         queue << node
       end
     end
-    send_error('Forbidden', '403') unless @forbidden == false or current_user.email == 'hello@unisphere.eu'
+    send_error('Forbidden', '403') unless @forbidden == false or current_user.superadmin
   end
 
 end

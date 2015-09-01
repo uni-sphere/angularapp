@@ -57,7 +57,7 @@ class AwsdocumentsController < ApplicationController
   def is_allowed?
     chapter = Chapter.where(archived: false).find @current_awsdocument.chapter_id
     node = Node.where(archived: false).find chapter.node_id
-    send_error('Forbidden', '403') unless current_user.awsdocuments.where(archived: false).exists?(@current_awsdocument.id) or current_user.nodes.where(archived: false).exists?(node.id) or current_user.email == 'hello@unisphere.eu'
+    send_error('Forbidden', '403') unless current_user.awsdocuments.where(archived: false).exists?(@current_awsdocument.id) or current_user.nodes.where(archived: false).exists?(node.id) or current_user.superadmin
   end
 
 end
