@@ -10,7 +10,11 @@ class AwsdocumentsController < ApplicationController
   before_action :is_allowed?, only: [:update, :destroy, :archives]
 
   def create
-    awsdocument = @current_chapter.awsdocuments.new(title: params[:title], content: params[:file], organization_id: @current_organization.id, user_id: current_user.id)
+    if user_signed_in?
+      awsdocument = @current_chapter.awsdocuments.new(title: params[:title], content: params[:file], organization_id: @current_organization.id, user_id: current_user.id)
+    else
+      awsdocument = @current_chapter.awsdocuments.new(title: params[:title], content: params[:file], organization_id: @current_organization.id, user_id: @current_chapter.user_id, owner: params[:owner])
+    end
     if awsdocument.save
       Action.create(name: 'created', object_id: @current_chapter.awsdocuments.last.id, object_type: 'document', object: @current_chapter.awsdocuments.last.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       render json: awsdocument, status: 201, location: awsdocument
