@@ -113,13 +113,14 @@ body{
 
 #grey-background{
   position: fixed;
-  height: 100%;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
   background: black;
   opacity: 0.3;
-  z-index: 900;
-  visibility: hidden;
-  // display: none;
+  display: none;
+  z-index: 100;
 }
 
 

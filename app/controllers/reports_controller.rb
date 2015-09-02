@@ -24,16 +24,16 @@ class ReportsController < ApplicationController
     else
       if !@current_node.reports.last.nil?
         firstchart = []
-        reports = @current_node.reports
+        reports = Report.where(node_id: @current_node.id)
         date = reports.last.created_at - 6.months
-        t = 0
+        @t = 0
         for i in 1..28
           if i > 28 - reports.count
-            report = reports[t]
-            firstchart << {date: (report.created_at).strftime('%Y-%m-%d'), downloads: report.downloads}
-            t += 1
+            report = reports[@t]
+            firstchart << {date: (report.created_at + 7.days).strftime('%Y-%m-%d'), downloads: report.downloads, id: report.id}
+            @t += 1
           else
-            firstchart << {date: (date).strftime('%Y-%m-%d'), downloads: 0}
+            firstchart << {date: (reports.first.created_at - (7.days * ((28 - reports.count) - i)) ).strftime('%Y-%m-%d'), downloads: 0}
           end
           date = date + 7.days
         end

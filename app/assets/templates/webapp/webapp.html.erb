@@ -1,8 +1,10 @@
 <div ng-file-drop ng-model="files"  drag-over-class="{accept:'dragoverAccept', reject:'dragoverReject', delay:100}"  ng-multiple="true" accept=".jpg,.png,.pdf" id="application-view" ng-controller="WebappCtrl">
 
-  <left-tree id="view-tree" node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = 'admin'  home='home' sandbox = 'sandbox' help = 'help' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' nodes = 'nodes' folded-nodes= 'foldedNodes' make-nested = 'makeNested' reload-nodes ='reloadNodes' cookie-gestion = 'cookieGestion' ></left-tree>
+  <left-tree id="view-tree" node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = 'admin'  home='home' sandbox = 'sandbox' help = 'help' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' nodes = 'nodes' folded-nodes= 'foldedNodes' make-nested = 'makeNested' reload-nodes ='reloadNodes' cookie-gestion = 'cookieGestion' delete-node-view = 'deleteNodeView' real-delete-node = 'realDeleteNode' allow-transfer = 'allowTransfer' node-selected-to-delete = 'nodeSelectedToDelete'></left-tree>
 
-  <right-tree active-nodes='activeNodes' node-end='nodeEnd' files = 'files' admin = 'admin' sandbox = 'sandbox' home='home' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' reload-nodes ='reloadNodes'></right-tree>
+  <right-tree active-nodes='activeNodes' node-end='nodeEnd' files = 'files' admin = 'admin' sandbox = 'sandbox' home='home' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' reload-nodes ='reloadNodes' document-absent = 'documentAbsent'></right-tree>
 
   <dragndrop-view ng-if="nodeEnd"></dragndrop-view>
+
+  <delete-node ng-show="deleteNodeView" delete-node-all = 'deleteNodeAll' delete-node-transfer = 'deleteNodeTransfer' delete-node-cancel = 'deleteNodeCancel' allow-transfer = 'allowTransfer' node-selected-to-delete = 'nodeSelectedToDelete'></delete-node>
 </div>

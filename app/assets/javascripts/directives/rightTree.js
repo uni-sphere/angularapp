@@ -18,11 +18,13 @@
           chapterFolded: '=',
           activeChapter: '=',
           breadcrumb: '=',
-          reloadNodes: '='
+          reloadNodes: '=',
+          documentAbsent: '='
         },
         link: function(scope){
 
           var dummyId = 50;
+
 
           (function findFoldedChapter(){
             // demo
@@ -41,6 +43,31 @@
               }
             }
           })();
+
+          // Restangular.one('chapters').get({node_id: scope.nodeEnd[0]}).then(function (document) {
+          //   scope.listItems = makeNested(document);
+          // }, function(d){
+          //   if(d.status == 404) {
+          //     console.log("Ok: Node opening cancelled. Node doesn't exist anymore")
+          //     Notification.warning('This action has been cancelled. One of your colleague deleted this node')
+          //   } else{
+          //     console.log("Error: Get document");
+          //     console.log(d)
+          //     Notification.error("We temporarly can not display the documents")
+          //   }
+          // });
+
+          scope.toggleProtection = function(d){
+            if(scope.nodeProtected){
+              scope.nodeProtected = false;
+              console.log("Ok: " + scope.nodeEnd[1] + " has been unlocked")
+              Notification.success(scope.nodeEnd[1] + " has been unlocked")
+            } else{
+              scope.nodeProtected = true;
+              console.log("Ok: " + scope.nodeEnd[1] + " has been locked")
+              Notification.success(scope.nodeEnd[1] + " has been locked")
+            }
+          }
 
           scope.$watch('nodeEnd', function(newVals, oldVals){
             if(newVals){
@@ -79,7 +106,7 @@
                     }, function(d){
                       if(d.status == 404) {
                         console.log("Ok: Node opening cancelled. Node doesn't exist anymore")
-                        Notification.warniqng('This action has been cancelled. One of your colleague deleted this node')
+                        Notification.warning('This action has been cancelled. One of your colleague deleted this node')
                       } else{
                         console.log("Error: Get document");
                         console.log(d)
@@ -209,7 +236,7 @@
             else{
               // console.log(scope.nodeEnd[0])
               Restangular.one('activity').put({node_id: scope.nodeEnd[0]}).then(function(d) {
-                Notification.success("File saved")
+                // Notification.success("File saved")
                 console.log("Download registered");
               },function(d){
                 console.log(d)
@@ -225,7 +252,7 @@
                 Notification.error("Select a lead node to upload files")
               } else{
                  console.log("Ok: File Dropped")
-                $('#fileDroppedBackground').fadeIn();
+                $('#grey-background').fadeIn();
                 $('#fileDropped').fadeIn();
               }
             }
@@ -235,17 +262,17 @@
             scope.lastDeployedPosition = position;
             upload(scope.files, true);
             $('#fileDropped').fadeOut(300);
-            $('#fileDroppedBackground').fadeOut();
+            $('#grey-background').fadeOut();
           }
 
           scope.rootSelected = function(){
             upload(scope.files, true);
             $('#fileDropped').fadeOut();
-            $('#fileDroppedBackground').fadeOut();
+            $('#grey-background').fadeOut();
           }
 
           scope.cancelDrop = function(){
-            $('#fileDroppedBackground').fadeOut();
+            $('#grey-background').fadeOut();
             $('#fileDropped').fadeOut();
           }
 
@@ -598,7 +625,7 @@
                   dummyId ++;
                   console.log("Fake file uploaded:" + file.name);
                   if(numberItems == files.length){
-                    console.log("OK upload of this level finished")
+                    // console.log("OK upload of this level finished")
                     scope.dirUploaded = true;
                   }
 
@@ -631,7 +658,6 @@
                     if(numberItems == files.length){
                       if(nodeDocData.id != 0){
                         if(dragAndDrop || !scope.activeChapter.$nodeScope.collapsed ){
-                          console.log("hello")
                           scope.chapterFolded.push(nodeDocData.id.toString());
                           ipCookie('chapterFolded', scope.chapterFolded);
                         }
@@ -657,6 +683,7 @@
                       Notification.warning('This action has been cancelled. One of your colleague deleted this node')
                       scope.reloadNodes()
                     } else{
+                      console.log(d)
                       Notification.error("File upload error")
                       console.log("Error: Upload document failed :" +  file.name + ". Please refresh.");
                     }

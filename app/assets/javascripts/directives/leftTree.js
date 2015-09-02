@@ -17,6 +17,10 @@
           foldedNodes: '=',
           reloadNodes: '=',
           cookieGestion: '=',
+          deleteNodeView: '=',
+          realDeleteNode: '=',
+          allowTransfer: '=',
+          nodeSelectedToDelete: '='
         },
         link: function(scope, iElement, iAttrs) {
 
@@ -89,7 +93,6 @@
           } else{
             // First we get the nodes
             Restangular.one('nodes').get().then(function (nodes) {
-
               console.log("Ok: node retrieved")
               scope.flatNode = nodes.plain();
               scope.nodes = makeNested(scope.flatNode)
@@ -378,25 +381,38 @@
 
           function changeBreadcrumb(){
             tempBreadcrumb = [];
-            for(var i = scope.activeNodes.length - 2; i >= 0; i--){
-              tempBreadcrumb.push(scope.activeNodes[i][1]);
+            for(var i = 0; i < scope.activeNodes.length - 1; i++){
+              if(i < 2){
+                tempBreadcrumb.unshift(scope.activeNodes[i][1]);
+              } else if(i == 2){
+                tempBreadcrumb.unshift("...");
+              }
             }
             scope.breadcrumb = tempBreadcrumb;
           }
 
           function renameBreadCrumb(nodeChanged){
             scope.breadcrumb = []
-            for(var i = scope.activeNodes.length - 2; i >= 0; i--){
+            for(var i = 0; i < scope.activeNodes.length - 1; i++){
               if(scope.activeNodes[i][0] == nodeChanged.num){
-                scope.breadcrumb.push(nodeChanged.name);
                 scope.activeNodes[i][1] = nodeChanged.name;
                 if(!scope.home && !scope.sandbox){
                   console.log(scope.activeNodes)
                   ipCookie('activeNodes', scope.activeNodes);
                 }
+                if(i < 2){
+                  scope.breadcrumb.unshift(nodeChanged.name);
+                } else if( i == 2){
+                  scope.breadcrumb.unshift("...")
+                }
               } else{
-                scope.breadcrumb.push(scope.activeNodes[i][1]);
+                if(i < 2){
+                  scope.breadcrumb.unshift(scope.activeNodes[i][1]);
+                } else if( i == 2 ){
+                  scope.breadcrumb.unshift("...")
+                }
               }
+
             }
           }
 
@@ -428,6 +444,70 @@
               scope.nodeEnd = false;
               ipCookie('nodeEnd', false);
             }
+          }
+
+          scope.realDeleteNode = function(pullDocs){
+            Restangular.all('nodes/' + scope.nodeSelectedToDelete.num).remove({pull: pullDocs}).then(function(res) {
+
+              for( var i = 0; i < res.deleted.length; i ++){
+                removeFromArray(scope.chapterFolded, res.deleted[i].toString())
+              }
+
+              var nodeToDelete = _.where(scope.nodeSelectedToDelete.parent.children, {id: scope.nodeSelectedToDelete.id});
+              if (nodeToDelete){
+                scope.nodeSelectedToDelete.parent.children = _.without(scope.nodeSelectedToDelete.parent.children, nodeToDelete[0])
+                Notification.warning("Node removed")
+              }
+
+              // We check if the node end was in the node deleted.
+              // than we need to change the cookies
+
+              function deleteProperly(node, nodeInitial){
+                if(node.num == scope.nodeEnd[0]){
+
+                  findFoldedNodes(scope.root);
+                  findActiveNodes(nodeInitial.parent)
+                  if(scope.activeNodes.length != 0){
+                    scope.nodeEnd = scope.activeNodes[0]
+                  }
+                  ipCookie('activeNodes', scope.activeNodes);
+                  ipCookie('foldedNodes', scope.foldedNodes);
+                  ipCookie('nodeEnd', scope.nodeEnd);
+                  colornodePath(scope.root);
+                }
+                if(node.children){
+                  angular.forEach(node.children, function(value, key){
+                    deleteProperly(value, nodeInitial)
+                  })
+                }
+                if(node._children){
+                  angular.forEach(node._children, function(value, key){
+                    deleteProperly(value, nodeInitial)
+                  })
+                }
+              }
+
+              deleteProperly(scope.nodeSelectedToDelete, scope.nodeSelectedToDelete)
+              update(scope.nodeSelectedToDelete);
+              console.log("Ok: Node deleted");
+              $('#grey-background').fadeOut();
+              scope.deleteNodeView = false;
+            }, function(d) {
+              if(d.status == 403){
+                console.log("Ok: Deletion forbidden")
+                Notification.warning('This node is not yours');
+              } else if(d.status == 404) {
+                console.log("Ok: Deletion cancelled node doesn't exist anymore")
+                Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                scope.reloadNodes()
+              } else{
+                console.log(d)
+                console.log("Error: Delete node");
+                Notification.error("An error occured while deleting. Please refresh.");
+              }
+              $('#grey-background').fadeOut();
+              $('#delete-node').fadeOut();
+            });
           }
 
           function deleteNode(node){
@@ -469,65 +549,30 @@
             }
             // If we are the app
             else{
-              Restangular.all('nodes/' + node.num).remove().then(function(res) {
 
-                for( var i = 0; i < res.deleted.length; i ++){
-                  removeFromArray(scope.chapterFolded, res.deleted[i].toString())
-                }
-
-                var nodeToDelete = _.where(node.parent.children, {id: node.id});
-                if (nodeToDelete){
-                  node.parent.children = _.without(node.parent.children, nodeToDelete[0]);
-                  Notification.warning("Node removed")
-                }
-
-                // We check if the node end was in the node deleted.
-                // than we need to change the cookies
-
-                function deleteProperly(node, nodeInitial){
-                  if(node.num == scope.nodeEnd[0]){
-
-                    findFoldedNodes(scope.root);
-                    findActiveNodes(nodeInitial.parent)
-                    if(scope.activeNodes.length != 0){
-                      scope.nodeEnd = scope.activeNodes[0]
-                    }
-                    ipCookie('activeNodes', scope.activeNodes);
-                    ipCookie('foldedNodes', scope.foldedNodes);
-                    ipCookie('nodeEnd', scope.nodeEnd);
-                    colornodePath(scope.root);
-                  }
-                  if(node.children){
-                    angular.forEach(node.children, function(value, key){
-                      deleteProperly(value, nodeInitial)
-                    })
-                  }
-                  if(node._children){
-                    angular.forEach(node._children, function(value, key){
-                      deleteProperly(value, nodeInitial)
-                    })
-                  }
-                }
-
-                deleteProperly(node, node)
-                update(node);
-                console.log("Ok: Node deleted");
-              }, function(d) {
-                if(d.status == 403){
-                  console.log("Ok: Deletion forbidden")
-                  Notification.warning('This node is not yours');
-                } else if(d.status == 404) {
-                  console.log("Ok: Deletion cancelled node doesn't exist anymore")
-                  Notification.warning('This action has been cancelled. One of you colleague deleted this node')
-                  scope.reloadNodes()
+              Restangular.one('chapters').get({node_id: node.id}).then(function (document) {
+                console.log("-----")
+                console.log(document.length > 1)
+                console.log(!node.children && !node._children)
+                console.log(node.parent.children.length == 1)
+                console.log(node.user_id == node.parent.user_id)
+                if(document.length > 1 && !node.children && !node._children && node.parent.children.length == 1 && node.user_id == node.parent.user_id){
+                  scope.allowTransfer = true
                 } else{
-                  console.log(d)
-                  console.log("Error: Delete node");
-                  Notification.error("An error occured while deleting. Please refresh.");
+                  scope.allowTransfer = false
                 }
+                scope.nodeSelectedToDelete = node
+                $('#grey-background').fadeIn(function(){
+                  scope.$apply((function(){scope.deleteNodeView = true})());
+                });
+              }, function(d){
+                console.log("Error: Delete node | get document");
+                console.log(d)
               });
+
             }
           }
+
 
           function addNode(node){
             var newBranch = {parent_id: node.num, name: "new"}
@@ -573,10 +618,11 @@
 
                 update(node);
 
-
               }, function(d) {
-
-                if(d.status == 404) {
+                if(d.status == 403){
+                  console.log("Ok: Node creation cancelled. This node doesnt belong to you")
+                  Notification.warning('You are not allowed to create a node here. ' + node.name + " doesn't belong to you.")
+                } else if(d.status == 404) {
                   console.log("Ok: Node creation cancelled. Node doesn't exist anymore")
                   Notification.warning('This action has been cancelled. One of you colleague deleted this node.')
                   scope.reloadNodes()

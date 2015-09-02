@@ -189,7 +189,9 @@
         DROP_FILE: "Upload data",
         WHERE_DROP: "Where do you want to drop your data?",
         ROOT: "0. Root",
-        CANCEL: "Cancel"
+        CANCEL: "Cancel",
+        NODE_LOCKED: "This node is locked. File downloads is protected by a password.",
+        NODE_UNLOCKED: "This node is unlocked. Anyone can download its content."
       })
       .translations('fr', {
         HELP: 'Aide',
@@ -239,8 +241,9 @@
         DROP_FILE: "Importez vos données",
         WHERE_DROP: "Où souhaitez vous les importer?",
         ROOT: "0. Racine",
-        CANCEL: "Annuler"
-
+        CANCEL: "Annuler",
+        NODE_LOCKED: "Ce noeud est verrouillé. Le téléchargement des fichiers est protégé par un mot de passe.",
+        NODE_UNLOCKED: "Ce noeud est déverrouillé. N'importe quel étudiant peut télécharger ses fichiers."
       })
       .preferredLanguage('en')
       .registerAvailableLanguageKeys(['fr'])

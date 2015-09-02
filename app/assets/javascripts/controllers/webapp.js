@@ -22,8 +22,18 @@
       return treeData[0];
     }
 
+    $scope.deleteNodeAll = function(){
+      $scope.realDeleteNode(false)
+    }
 
+    $scope.deleteNodeTransfer = function(){
+      $scope.realDeleteNode(true)
+    }
 
+    $scope.deleteNodeCancel = function(){
+      $scope.deleteNodeView = false;
+      $('#grey-background').fadeOut();
+    }
 
 
     /*==========  Location variable  ==========*/

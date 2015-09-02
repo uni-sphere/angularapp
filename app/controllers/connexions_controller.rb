@@ -7,7 +7,13 @@ class ConnexionsController < ApplicationController
       top_co = organization.connexions.order(count: :desc).limit(5)
       awsdocuments = organization.awsdocuments.where(archived: false).count
       users = organization.users.count
-      activity[organization.subdomain] = [active_connexions.count, awsdocuments, users, top_co]
+      @downloads = 0
+      organization.nodes.each do |node|
+        node.reports.each do |report|
+          @downloads += report.downloads
+        end
+      end 
+      activity[organization.subdomain] = [active_connexions.count, awsdocuments, @downloads, users, top_co]
     end
     render json: {activity: activity}, status: 200
   end

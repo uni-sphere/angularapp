@@ -18,6 +18,31 @@
   font-family: 'Open Sans', sans-serif;
 }
 
+.protection-file{
+  margin-left: 10px;
+  cursor: pointer;
+  // background: blue;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  line-height: 30px;
+
+  // box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px 1px;
+
+
+  &:hover{
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px 1px;
+  }
+}
+
+.protection-file-on{
+  color: red;
+}
+
+.protection-file-off{
+  color: blue;
+}
+
 #breadcrumb-container{
   position: relative;
   float: center;
@@ -112,7 +137,7 @@
     border-color: #2a65a0;
     border-bottom-color: #3884cd;
     // background-color: #6F9EF2;
-    background-image: linear-gradient(#4991F5, #66A4FA);
+    background: linear-gradient(#4991F5, #66A4FA);
     box-shadow: rgba(0, 0, 0, 0.258824) 0px 1px 2px 1px;
   }
 
@@ -201,11 +226,12 @@
 .item-name, .chapter-number{
   line-height: 48px;
   padding-top: 2px;
-  display: inline-block;
 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: table-cell;
+
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
 
   @media (max-width: 1200px) {
     font-size: .9em;
@@ -213,12 +239,43 @@
   }
 }
 
+.chapter-number{
+  width: 18px;
+}
+
+.depth1{
+  width: 30px !important;
+}
+
+.depth2{
+  width: 40px !important;
+}
+
+.depth3{
+  width: 50px !important;
+}
+
+.depth4{
+  width: 60px !important;
+}
+
 .item-name{
-  margin-left: 4px;
+  // padding-left: 10px;
+  word-break: break-all;
+  word-wrap: break-word;
 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+
+  // background: red;
+
+  // width: calc(100% - 130px);
+
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
 }
 
 .angular-ui-tree-node{
@@ -229,7 +286,9 @@
 }
 
 .angular-ui-tree-handle {
-  display: inline-block;
+  // display: inline-block;
+  display: table;
+  table-layout: fixed;
   width: 100%;
   margin-bottom: 1px;
   opacity: 1;
@@ -284,29 +343,37 @@
   }
 }
 
-/*==========  Buttons  ==========*/
-.btn, .btn-collapse{
-  float: left;
+.file-icon{
+  display: table-cell;
 
-  width: 24px !important;
+  width: 24px;
+  line-height: 50px;
+
+  color: $fa-color;
+   @media (max-width: 1200px) {
+    line-height: 40px;
+  }
+}
+
+/*==========  Buttons  ==========*/
+.empty-space{
+  display: table-cell;
+
+  width: 24px;
+}
+
+.btn-collapse{
+  display: table-cell;
+
+  width: 24px;
   line-height: 50px;
 
   @media (max-width: 1200px) {
     line-height: 40px;
   }
 
-
-  display: inline-block;
   cursor: pointer;
-}
-
-.angle-right-hidden{
-  visibility: hidden;
-}
-
-.btn-collapse{
   font-size: 1.5em;
-  // padding-right: 8px;
   color: #007CCE;
 
   @media (max-width: 1200px) {
@@ -322,7 +389,35 @@
   }
 }
 
+.angle-right-hidden{
+  visibility: hidden;
+}
+
+// .btn-collapse{
+//   font-size: 1.5em;
+//   // padding-right: 8px;
+//   color: #007CCE;
+
+//   @media (max-width: 1200px) {
+//     font-size: 1.3em;
+//   }
+
+//   &:hover,&:focus {
+//     color: #0065A8;
+//   }
+
+//   .fa{
+//     transition: all .1s ease-out;
+//   }
+// }
+
 .btn {
+  display: table-cell;
+  width: 35px;
+  text-align: center;
+
+  cursor: pointer;
+
   font-size: 1.1em;
   margin-right: 8px;
 
@@ -345,28 +440,19 @@
 
 
 .btn-delete, .btn-rename, .btn-preview, .btn-download{
-  display: none;
-  float: right;
+  visibility: hidden;
+  // float: right;
 }
 
 .fa-caret-right, .fa-caret-down{
   font-size: .8em;
 }
 
-.file-icon{
-  float: left;
-  color: $fa-color;
-  line-height: 50px;
-  margin-left: 27px;
 
-   @media (max-width: 1200px) {
-    line-height: 40px;
-  }
-}
 
 .angular-ui-tree-handle:hover {
   .btn-delete, .btn-rename, .btn-preview, .btn-download{
-    display: inline-block;
+    visibility: visible;
     color: $fa-color;
     &:hover{
       color: $fa-hover;

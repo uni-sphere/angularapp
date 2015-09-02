@@ -96,10 +96,10 @@ module AuthenticationHelper
       chapters = current_user.chapters.where(archived: false)
       ids = []
       chapters.each do |chapter|
-        ids << chapter.node_id if Chapter.where(node_id: chapter.node_id, archived: false).count > 1 || chapter.awsdocuments.count > 0
+        ids << chapter.node_id if Chapter.where(node_id: chapter.node_id, archived: false).count > 1 || chapter.awsdocuments.where(archived: false).count > 0
       end
       if Node.exists?(id: ids, archived: false)
-        return Node.where(id: ids)
+        return Node.where(id: ids, archived: false)
       else
         return {}
       end
@@ -125,13 +125,13 @@ module AuthenticationHelper
 
   def track_connexion
     ip = request.remote_ip
-    if request.path != '/' and ip != '127.0.0.1' and ip != '88.169.99.128' and current_subdomain != 'admin'
+    if request.path != '/' and ip != '127.0.0.1' and ip != '88.169.99.128' and current_subdomain != 'admin' and user_signed_in?
       place_att = Geokit::Geocoders::MultiGeocoder.geocode(request.remote_ip)
       place = "#{place_att.city}::#{place_att.country_code}"
       if @current_organization.connexions.find_by_ip(ip)
         connexion = @current_organization.connexions.find_by_ip(ip)
         if Time.now - connexion.updated_at > 30.minutes
-          Rollbar.info("User active", place: place)
+          Rollbar.info("User active", place: place, email: current_user.email)
           connexion.increase_count()
         elsif Time.now - connexion.updated_at > 15.seconds
           connexion.activity()

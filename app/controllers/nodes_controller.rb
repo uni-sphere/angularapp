@@ -13,7 +13,7 @@ class NodesController < ApplicationController
     parent = @current_organization.nodes.where(archived: false).find params[:parent_id]
     report = node.reports.new
     if node.save and report.save
-      if @current_organization.nodes.where(parent_id: parent.id).count == 1
+      if @current_organization.nodes.where(parent_id: parent.id, archived: false).count == 1
         parent.chapters.where(archived: false).each do |chapter|
           chapter.node_id = node.id
           chapter.user_id = current_user.id
@@ -50,15 +50,24 @@ class NodesController < ApplicationController
   def destroy
     if @current_node.parent_id != 0 and @current_organization.nodes.where(archived: false).count > 2
       Action.create(name: 'archived', object_id: @current_node.id, object_type: 'node', object: @current_node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
-      parent = Node.where(archived: false).find @current_node.parent_id
-      if params[:pull]
-        deleted = pull_children(@current_node.id)
+      parent = @current_organization.nodes.where(archived: false).find @current_node.parent_id
+      if params[:pull] == 'true' and @current_organization.nodes.where(archived: false, parent_id: parent.id).count < 2 and parent.user_id == current_user.id
+        @current_node.chapters.where(archived: false).each do |chapter|
+          chapter.update(node_id: parent.id)
+        end
+        pull_children(@current_node.id, parent.id)
       else
-        parent.chapters.create(title: 'main', parent_id: 0, user_id: parent.user_id) if @current_organization.nodes.where(parent_id: parent.id).count == 1
-        deleted = archive_children(@current_node.id)
+        @current_node.chapters.where(archived: false).each do |chapter|
+          chapter.awsdocuments.where(archived: false).each do |document|
+            document.archive
+          end
+          chapter.archive
+        end
+        archive_children(@current_node.id)
+        parent.chapters.create(title: 'main', parent_id: 0, user_id: parent.user_id) if @current_organization.nodes.where(parent_id: parent.id, archived: false).count == 0
       end
       @current_node.archive
-      render json: {deleted: deleted}.to_json, status: 200
+      render json: {deleted: true}.to_json, status: 200
     else
       Action.create(name: 'destroyed', error: true, object_type: 'node', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       send_error('You can not destroy the root of your tree', 400)
@@ -68,7 +77,7 @@ class NodesController < ApplicationController
   def index
     nodes = []
     @current_organization.nodes.where(archived: false).each do |node|
-      nodes << {name: node.name, num: node.id, parent: node.parent_id}
+      nodes << {name: node.name, num: node.id, parent: node.parent_id, user_id: node.user_id}
     end
     render json: nodes, status: 200
   end
@@ -88,7 +97,7 @@ class NodesController < ApplicationController
   end
 
   private
-  
+
   def can_create?
     parent_owner = User.find(Node.find(params[:parent_id]).user_id)
     send_error('Forbidden', '403') unless parent_owner.id == current_user.id or parent_owner.superadmin
