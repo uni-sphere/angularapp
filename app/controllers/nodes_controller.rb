@@ -1,5 +1,6 @@
 class NodesController < ApplicationController
 
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action :current_subdomain
   before_action :current_organization
   before_action :track_connexion
@@ -19,12 +20,14 @@ class NodesController < ApplicationController
           chapter.user_id = current_user.id
           chapter.save
         end
-        Action.create(name: 'created', object_id: node.id, object_type: 'node', object: node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+        parent.update(locked: false) if parent.locked
+        Action.create(name: 'created', obj_id: node.id, object_type: 'node', object: node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
         render json: node, status: 201, location: node
       else
         chapter = node.chapters.new(title: 'main', parent_id: 0, user_id: current_user.id)
         if chapter.save
-          Action.create(name: 'created', object_id: node.id, object_type: 'node', object: node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+          parent.update(locked: false) if parent.locked
+          Action.create(name: 'created', obj_id: node.id, object_type: 'node', object: node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
           render json: node, status: 201, location: node
         else
           Action.create(name: 'created', error: true, object_type: 'node', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
@@ -38,18 +41,43 @@ class NodesController < ApplicationController
   end
 
   def update
-    if @current_node.update(name: params[:name])
-      Action.create(name: 'renamed', object_id: @current_node.id, object_type: 'node', object: @current_node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
-      render json: @current_node, status: 200
+    if !params[:lock].nil?
+      if params[:lock] === 'true'
+        clear_logs 'if'
+        @current_node.password = params[:password]
+        @current_node.locked = true
+        if @current_node.save!
+          Action.create(name: 'secured', obj_id: @current_node.id, object_type: 'node', object: '', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+          render json: @current_node, status: 200
+        else
+          Action.create(name: 'secured', error: true, object_type: 'node', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+          send_error('Forbidden', 403)
+        end
+      else
+        clear_logs 'else'
+        @current_node.locked = false
+        if @current_node.save!
+          Action.create(name: 'unsecured', obj_id: @current_node.id, object_type: 'node', object: '', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+          render json: @current_node, status: 200
+        else
+          Action.create(name: 'unsecured', error: true, object_type: 'node', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+          render json: @current_node.errors, status: 422
+        end
+      end
     else
-      Action.create(name: 'renamed', error: true, object_type: 'node', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
-      render json: @current_node.errors, status: 422
+      if @current_node.update(name: params[:name])
+        Action.create(name: 'renamed', obj_id: @current_node.id, object_type: 'node', object: @current_node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+        render json: @current_node, status: 200
+      else
+        Action.create(name: 'renamed', error: true, object_type: 'node', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+        render json: @current_node.errors, status: 422
+      end
     end
   end
 
   def destroy
     if @current_node.parent_id != 0 and @current_organization.nodes.where(archived: false).count > 2
-      Action.create(name: 'archived', object_id: @current_node.id, object_type: 'node', object: @current_node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+      Action.create(name: 'archived', obj_id: @current_node.id, object_type: 'node', object: @current_node.name, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       parent = @current_organization.nodes.where(archived: false).find @current_node.parent_id
       if params[:pull] == 'true' and @current_organization.nodes.where(archived: false, parent_id: parent.id).count < 2 and parent.user_id == current_user.id
         @current_node.chapters.where(archived: false).each do |chapter|
@@ -93,7 +121,7 @@ class NodesController < ApplicationController
         end
       end
     end
-    render json: tree, status: 200
+    render json: @tree, status: 200
   end
 
   private

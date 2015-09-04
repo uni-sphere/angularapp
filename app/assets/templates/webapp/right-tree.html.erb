@@ -1,36 +1,23 @@
-<div id="view-document" ng-click="documentLooseFocus()">
-
-  <div id="breadcrumb" ng-class="{'breadcrumb-no-doc' : documentAbsent}">
-    <div id="breadcrumb-container">
-      <div id="breadcrumb-title">
-        <span ng-repeat="node in breadcrumb track by $index" ng-class="'breadcrumb-node'">{{node}} <span ng-class="'breadcrumb-separator'"><i class="fa fa-angle-right" ng-if="$index != breadcrumb.length - 1"></i></span></span>
-      </div>
-     <!--  <div ng-show="nodeProtected" class="fa fa-lock protection-file protection-file-on" ng-click="toggleProtection()" title="{{ 'NODE_LOCKED' | translate}}"></div>
-      <div ng-show="!nodeProtected" class="fa fa-unlock protection-file protection-file-off" ng-click="toggleProtection()" title="{{ 'NODE_UNLOCKED' | translate}}"></div> -->
-    </div>
-  </div>
-
+<div id="right-tree" ng-click="documentLooseFocus()">
 
   <script type="text/ng-template" id="items_renderer.html">
     <div ui-tree-handle ng-class="{isdocument: item.document, chapterSelected : this.$modelValue.activeItem}" ng-click="activateChapter(this); $event.stopPropagation()" >
 
       <a class="btn-collapse" nodrag ng-if="!item.document" ng-init="collapseItems(this)"><span class="fa fa-angle-right" ng-class="{'expanded': !collapsed, 'angle-right-hidden' : this.$modelValue.items.length == 0}"></span></a>
-      <div class="empty-space" nodrag ng-if="item.document"></div>
 
+      <div class="empty-space" nodrag ng-if="item.document"></div>
 
       <div ng-init="printChapter(this)" class="chapter-number" ng-if="!item.document" ng-class="{depth1 : item.depth == 1, depth2 : item.depth == 2, depth3 : item.depth == 3, depth4 : item.depth == 4}">{{item.chapter}} </div>
 
       <div class="fa fa-file-pdf-o file-icon" ng-if="this.$modelValue.document && this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1).toLowerCase() == 'pdf'"></div>
+
       <div class="fa fa-file-picture-o file-icon" ng-if="this.$modelValue.document && ['png','jpg'].indexOf(this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1).toLowerCase()) >= 0"></div>
+
       <div class="fa fa-file-o file-icon" ng-hide="!this.$modelValue.document || this.$modelValue.document && ['png','jpg','pdf'].indexOf(this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1).toLowerCase()) >= 0"></div>
 
       <div class="item-name"><span>{{item.title}}</span></div>
 
-
-      <a ng-href={{item.preview_link}} download class="btn btn-download" ng-show="item.document &&
-      !item.pdf" nodrag analytics-on="click" analytics-event="download" ng-click="downloadItem(this); $event.stopPropagation()" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-arrow-circle-o-down"></span></a>
-
-      <a ng-href={{item.preview_link}} class="btn btn-preview" target="_blank" ng-show="item.document && item.pdf" nodrag analytics-on="click" ng-click="downloadItem(this); $event.stopPropagation()" analytics-event="preview" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>" ><span class="fa fa-eye"></span></a>
+      <a  class="btn btn-download" ng-show="item.document" nodrag analytics-on="click" analytics-event="download" ng-click="downloadItem(this); $event.stopPropagation()" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-arrow-circle-o-down"></span></a>
 
       <a class="btn btn-rename" ng-controller="CrudCtrl" nodrag ng-show="!item.document && admin" ng-click="renameItems(this); $event.stopPropagation()" analytics-on="click" analytics-event="rename" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-pencil"></span></a>
       <a class="btn btn-rename" ng-controller="CrudCtrl" nodrag ng-show="item.document && admin" ng-click="renameItems(this); $event.stopPropagation()" analytics-on="click" analytics-event="rename" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-pencil"></span></a>
@@ -59,17 +46,32 @@
     </ol>
   </script>
 
-  <div id="document-tree" ng-class="{'no-docs' : documentAbsent}" >
+  <div id="breadcrumb" ng-class="{'breadcrumb-no-doc' : documentAbsent}">
+    <div id="breadcrumb-container">
+      <div id="breadcrumb-title">
+        <span ng-repeat="node in breadcrumb track by $index" ng-class="'breadcrumb-node'">{{node}} <span ng-class="'breadcrumb-separator'" ng-if="$index != breadcrumb.length - 1"><i class="fa fa-angle-right" ></i></span></span>
+      </div>
+    </div>
+
+    <div id="protection-node-container" ng-show="admin && !home && nodeEnd && !documentAbsent">
+      <div ng-show="nodeProtected" class="protection-node">
+        <span class="fa fa-lock protection-file protection-file-on" ng-click="toggleProtection()" title="{{ 'NODE_LOCKED' | translate}}"></span>
+        <span class="node-change-password" ng-click="nodeChangePassword()" title="Change your password">{{ 'EDIT_PSW' | translate}}</span>
+      </div>
+      <div ng-show="!nodeProtected" class="protection-node">
+        <span class="fa fa-unlock-alt protection-file protection-file-off" ng-click="toggleProtection()" title="{{ 'NODE_UNLOCKED' | translate}}"></span>
+        <!-- <span class="node-change-password" ng-click="nodeChangePassword()" title="Change your password">Lock your node</span> -->
+      </div>
+    </div>
+  </div>
+
+  <div id="document-tree" >
 
     <div id="button-row" ng-click="$event.stopPropagation()" ng-class="{'button-hidden' : !nodeEnd || !admin}">
       <button class="submit-button dual-submit"  ng-multiple="true" ng-file-select ng-model="firstFiles" analytics-on="click" analytics-event="upload" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>" ><!-- <i class="fa fa-file"></i> -->{{ 'UPLOAD' | translate }} </button>
 
       <button ng-controller="CrudCtrl" class="submit-button dual-submit"  ng-click="newSubItem()" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" analytics-on="click" analytics-event="create" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" ><!-- <i class="fa fa-plus"></i> -->{{ 'CHAPTER' | translate }}</button>
     </div>
-
-    <!-- <div id="document-absent-title" ng-show="documentAbsent && admin">{{ 'NEW_SUBJECT' | translate }}</div> -->
-
-    <!-- <div id="document-absent-subtitle"  ng-show="documentAbsent && admin">{{ 'LEFT_TREE_EXPLANATION' | translate }}</div> -->
 
     <div id="ui-tree-container" ng-if="!documentAbsent && nodeEnd">
       <div ui-tree="options" data-drag-enabled="false"  id="tree-root">
@@ -98,21 +100,21 @@
       <div ng-show="!nodeEnd">{{ 'SELECT_LEAF' | translate }}</div>
     </div>
 
-
   </div>
 </div>
 
-<div id="view-document-rename-popup" ng-controller="CrudCtrl">
-  <div class="popup-header">Rename node<span class="fa fa-times" ng-click="closeViewDocumentRename()"></span></div>
-    <form class="formPopup" novalidate>
 
-       <input type="email" placeholder=previousNameNode class="admin-co-input" ng-model="updateNameItem">
 
-      <button class="button-green-black" ng-click="saveViewDocumentRename()">Rename</button>
 
-    </form>
-  <div class="account-gestion-bg"></div>
-</div>
+
+
+
+
+
+
+
+
+
 
 <div id="fileDropped">
   <div class="popup-header">{{ 'DROP_FILE' | translate }}</div>

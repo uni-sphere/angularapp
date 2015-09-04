@@ -1,6 +1,6 @@
 <div class="chart-control">
   <div class="chart-title" ng-if="userNodes">{{ 'LEFT_STATISTICS' | translate }} {{userActiveNode.name}}</div>
-  <div class="chart-title" ng-if="!userNodes">Your statistics</div>
+  <div class="chart-title" ng-if="!userNodes">{{ 'LEFT_STATISTICS_MSG' | translate }}</div>
 
   <div class="metrics-breadcrumb">
      <span ng-repeat="node in breadcrumb track by $index" ng-class="'breadcrumb-node'">{{node}} <span ng-class="'breadcrumb-separator'"><i class="fa fa-angle-right" ng-if="$index != breadcrumb.length - 1"></i></span></span>
@@ -24,7 +24,7 @@
 <div id="chart-1" ng-if="!graph1Empty && userNodes[0]"></div>
 <div class="chart-empty-1" ng-show="graph1Empty || !userNodes [0]">
   <div class="chart-empty-title" ng-if="graph1Empty">{{userActiveNode.name}}{{ 'NEW_NODE' | translate }}</div>
-  <div class="chart-empty-title" ng-if="!userNodes[0]">You don't have any nodes</div>
+  <div class="chart-empty-title" ng-if="!userNodes[0]">{{ 'NEW_NODE_MSG' | translate }}</div>
 
 
   <div class="chart-empty-subtitle" ng-if="graph1Empty">{{ 'NO_DOWNLOADS' | translate }}</div>

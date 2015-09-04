@@ -1,5 +1,7 @@
 class Chapter < ActiveRecord::Base
   
+  include BCrypt
+  
   has_many :awsdocuments
   belongs_to :node
   belongs_to :user

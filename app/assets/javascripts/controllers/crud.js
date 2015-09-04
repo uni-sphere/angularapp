@@ -97,7 +97,7 @@ angular
         var extension = itemToUpdate.title.split('.')[1];
         var documentToUpdateId = itemToUpdate.doc_id;
 
-        var result = prompt('Change the name of the document',scope.title);
+        var result = prompt('Change the name of the document', scope.title);
         if(result) {
 
           // We check the user didn't change the extension

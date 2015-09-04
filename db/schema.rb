@@ -11,11 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150829081216) do
+ActiveRecord::Schema.define(version: 20150901081220) do
 
   create_table "actions", force: :cascade do |t|
     t.integer  "user_id"
-    t.integer  "object_id"
+    t.integer  "obj_id"
     t.integer  "organization_id"
     t.boolean  "error",           default: false
     t.string   "user"
@@ -65,6 +65,8 @@ ActiveRecord::Schema.define(version: 20150829081216) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "archived",        default: false
+    t.string   "password_hash"
+    t.boolean  "locked",          default: false
   end
 
   create_table "organizations", force: :cascade do |t|

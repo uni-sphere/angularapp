@@ -19,7 +19,8 @@
     'ui.router',
     'ngMap',
     'angularSpinner',
-    'ui-notification'
+    'ui-notification',
+    'angularModalService'
   ])
   .config(function (
     $stateProvider,
@@ -179,8 +180,8 @@
         CONFIRM_PSW: 'Confirm password',
         UPDATE_PSW: 'Update password',
         USERS_INVITED: 'Lecturers to add',
-        TIP_CHROME: 'Tip: You can drag & drop folders!',
-        TIP: 'Tip: You can drag & drop files (folders only on Google Chrome!)',
+        TIP_CHROME: 'Tip: You can drag & drop files and folders!',
+        TIP: 'Tip: You can drag & drop files! (folder on chrome)',
         LENGTH: 'At least 6 characters',
         SECURITY: 'Security',
         SHORT: 'too short',
@@ -191,7 +192,22 @@
         ROOT: "0. Root",
         CANCEL: "Cancel",
         NODE_LOCKED: "This node is locked. File downloads is protected by a password.",
-        NODE_UNLOCKED: "This node is unlocked. Anyone can download its content."
+        NODE_UNLOCKED: "This node is unlocked. Anyone can download its content.",
+        POPUP_VIEW_FILE: 'View a file',
+        POPUP_VIEW_FILE_CHOICES: 'You can choose to download the file or to preview it.',
+        POPUP_VIEW_DL: 'Download the file',
+        POPUP_VIEW_PW: 'Preview the file',
+        POPUP_DELETE_NODE: 'Delete the node ',
+        POPUP_DELETE_CHAPTER: 'Delete the chapter',
+        POPUP_DELETE_CHAPTER_CONTENT: 'Delete all its content',
+        POPUP_DELETE_CHAPTER_TRANSFER: 'Transfer content to previous node',
+        PSW_FORGOTTEN: 'Password forgotten',
+        SIGN_UP: 'Sign up',
+        SIGN_UP_U: 'Sign up to Unisphere',
+        SEND_EMAIL: 'Send',
+        LEFT_STATISTICS_MSG: 'Your statistics',
+        NEW_NODE_MSG: "You don't have any nodes",
+        EDIT_PSW: "Edit password"
       })
       .translations('fr', {
         HELP: 'Aide',
@@ -231,19 +247,34 @@
         CONFIRM_PSW: 'Confirmation du mot de passe',
         UPDATE_PSW: 'Modifier mot de passe',
         USERS_INVITED: 'Utilisateurs ajoutés',
-        TIP_CHROME: 'Astuce: Vous pouvez cliquer glisser des documents',
-        TIP: 'Astuce: Vous pouvez clicker glisser des documents (et des dossiers avec Google Chrome!)',
+        TIP_CHROME: 'Astuce: Cliquer glisser vos documents ou dossiers!',
+        TIP: 'Astuce: Cliquer glisser des documents! (dossiers sous Chrome)',
         LENGTH: 'Au minimum 6 charactères',
         SECURITY: 'Sécurité',
         SHORT: 'trop court',
         LECTURERS: 'Enseignants',
-        NO_DOC: "Sélectionnez une extrémité de l'arbre",
+        SELECT_LEAF: "Sélectionnez une extrémité de l'arbre",
         DROP_FILE: "Importez vos données",
-        WHERE_DROP: "Où souhaitez vous les importer?",
+        WHERE_DROP: "Où souhaitez-vous les importer?",
         ROOT: "0. Racine",
         CANCEL: "Annuler",
         NODE_LOCKED: "Ce noeud est verrouillé. Le téléchargement des fichiers est protégé par un mot de passe.",
-        NODE_UNLOCKED: "Ce noeud est déverrouillé. N'importe quel étudiant peut télécharger ses fichiers."
+        NODE_UNLOCKED: "Ce noeud est déverrouillé. N'importe quel étudiant peut télécharger ses fichiers.",
+        POPUP_VIEW_FILE: 'Ouvrir un fichier',
+        POPUP_VIEW_FILE_CHOICES: 'Vous pouvez télécharger ou ouvrir un aperçu du fichier',
+        POPUP_VIEW_DL: 'Télécharger fichier',
+        POPUP_VIEW_PW: 'Aperçu fichier',
+        POPUP_DELETE_NODE: 'Détruit le noeud ',
+        POPUP_DELETE_CHAPTER: 'Détruit le chapitre',
+        POPUP_DELETE_CHAPTER_CONTENT: 'Détruit son contenu',
+        POPUP_DELETE_CHAPTER_TRANSFER: 'Transferer son contenu au noeud précédent',
+        PSW_FORGOTTEN: 'Mot de passe oublié',
+        SIGN_UP: 'Inscription',
+        SIGN_UP_U: 'Inscription à Unisphere',
+        SEND_EMAIL: 'Envoyer',
+        LEFT_STATISTICS_MSG: 'Vos statistiques',
+        NEW_NODE_MSG: "Vous n'avez pas de noeuds",
+        EDIT_PSW: "Modifier mot de passe"
       })
       .preferredLanguage('en')
       .registerAvailableLanguageKeys(['fr'])

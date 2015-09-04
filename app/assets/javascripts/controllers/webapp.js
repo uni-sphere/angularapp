@@ -56,6 +56,14 @@
       }
     }
 
+    function checkIfChrome(){
+      if(browser() == "chrome"){
+        scope.isChrome = true;
+      } else{
+        scope.isChrome = false;
+      }
+    }
+
 
 
   }]);

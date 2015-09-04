@@ -22,7 +22,7 @@
 //= require spin.js/spin
 //= require angular-spinner/angular-spinner
 //= require angular-ui-notification/dist/angular-ui-notification.min
-
+//= require angular-modal-service/dst/angular-modal-service.min.js
 
 //= require angular-rails-templates
 //= require app

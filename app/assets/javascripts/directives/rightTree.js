@@ -3,8 +3,8 @@
   angular.module('mainApp.directives')
     .directive('rightTree', ['Restangular', 'browser', '$upload',
                 'Notification', 'ipCookie', 'activateSpinner', 'stopSpinner',
-                '$window', function(Restangular, browser,
-                $upload, Notification, ipCookie, activateSpinner, stopSpinner, $window) {
+                '$window', 'ModalService', function(Restangular, browser,
+                $upload, Notification, ipCookie, activateSpinner, stopSpinner, $window, ModalService) {
       return {
         restrict: 'E',
         templateUrl: 'webapp/right-tree.html',
@@ -18,8 +18,7 @@
           chapterFolded: '=',
           activeChapter: '=',
           breadcrumb: '=',
-          reloadNodes: '=',
-          documentAbsent: '='
+          reloadNodes: '='
         },
         link: function(scope){
 
@@ -44,28 +43,48 @@
             }
           })();
 
-          // Restangular.one('chapters').get({node_id: scope.nodeEnd[0]}).then(function (document) {
-          //   scope.listItems = makeNested(document);
-          // }, function(d){
-          //   if(d.status == 404) {
-          //     console.log("Ok: Node opening cancelled. Node doesn't exist anymore")
-          //     Notification.warning('This action has been cancelled. One of your colleague deleted this node')
-          //   } else{
-          //     console.log("Error: Get document");
-          //     console.log(d)
-          //     Notification.error("We temporarly can not display the documents")
-          //   }
-          // });
+          function showDownloadModal(url) {
+            ModalService.showModal({
+              templateUrl: "webapp/downloadDoc.html",
+              controller: "ModalCtrl",
+              inputs:{
+                url: url
+              }
+            }).then(function(modal) {
+              modal.close.then(function(result) {
+              });
+            });
+          }
+
+
+          scope.nodeChangePassword = function(){
+            var result = prompt('Set your node password');
+            if(result){
+              Restangular.one('nodes/'+ scope.nodeEnd[0]).put({password: result, lock: true}).then(function(res) {
+                Notification.success("Password for node " + scope.nodeEnd[1] + " has been set")
+                scope.nodeProtected = true;
+                console.log("Ok: Password for node set");
+              }, function(d) {
+                console.log("Error: Set password for node");
+                console.log(d);
+                Notification.error("An error occcured while setting the password")
+              });
+            }
+          }
 
           scope.toggleProtection = function(d){
             if(scope.nodeProtected){
-              scope.nodeProtected = false;
-              console.log("Ok: " + scope.nodeEnd[1] + " has been unlocked")
-              Notification.success(scope.nodeEnd[1] + " has been unlocked")
+              Restangular.one('nodes/'+ scope.nodeEnd[0]).put({lock: false, password: ""}).then(function(res) {
+                scope.nodeProtected = false;
+                console.log("Ok: " + scope.nodeEnd[1] + " has been unlocked")
+                Notification.success(scope.nodeEnd[1] + " has been unlocked")
+              }, function(d) {
+                console.log("Error: unlock node")
+                console.log(d);
+                Notification.error("Error while unlocking node")
+              });
             } else{
-              scope.nodeProtected = true;
-              console.log("Ok: " + scope.nodeEnd[1] + " has been locked")
-              Notification.success(scope.nodeEnd[1] + " has been locked")
+              scope.nodeChangePassword()
             }
           }
 
@@ -99,10 +118,10 @@
                       scope.listItems = []
                     }
                   } else{
-                    Restangular.one('chapters').get({node_id: scope.nodeEnd[0]}).then(function (document) {
-                      document.shift();
-                      // console.log(document.plain())
-                      scope.listItems = makeNested(document);
+                    Restangular.one('chapters').get({node_id: scope.nodeEnd[0]}).then(function (res) {
+                      scope.nodeProtected = res.locked;
+                      res.tree.shift()
+                      scope.listItems = makeNested(res.tree);
                     }, function(d){
                       if(d.status == 404) {
                         console.log("Ok: Node opening cancelled. Node doesn't exist anymore")
@@ -203,7 +222,6 @@
                 node.parent = node.chapter_id
                 node.doc_id = node.id
                 node.document = true
-                node.preview_link = node.url
                 delete node.id
                 delete node.chapter_id
                 delete node.url
@@ -228,21 +246,50 @@
             return treeData;
           }
 
-          // We save the number of download
-          scope.downloadItem = function(node){
+          function saveDownloadUpload(){
             if(scope.home || scope.sandbox){
-              Notification.info("It is a trial version")
+              Notification.info("Function unavailable. This is a mockup version")
             }
             else{
-              // console.log(scope.nodeEnd[0])
               Restangular.one('activity').put({node_id: scope.nodeEnd[0]}).then(function(d) {
-                // Notification.success("File saved")
                 console.log("Download registered");
               },function(d){
                 console.log(d)
                 console.log("Error: Register the download");
               });
             }
+          }
+
+          // We save the number of download
+          scope.downloadItem = function(node){
+            if(scope.home || scope.sandbox){
+              Notification.info("Function unavailable. This is a mockup version")
+            } else if(!scope.nodeProtected){
+              Restangular.one('awsdocuments', node.$modelValue.doc_id).get({node_id: scope.nodeEnd[0], chapter_id: node.$modelValue.parent}).then(function(mydoc){
+                showDownloadModal(mydoc)
+              },function(d){
+                console.log(d);
+                console.log("Error: download doc")
+                Notification.error("Error while getting download link")
+              });
+            } else{
+              var result = prompt('Type the node password');
+              if(result){
+                Restangular.one('awsdocuments', node.$modelValue.doc_id).get({password: result, node_id: scope.nodeEnd[0], chapter_id: node.$modelValue.parent}).then(function (mydoc) {
+                  showDownloadModal(mydoc)
+                },function(d){
+                  if(d.status == 403){
+                    console.log("Ok: download file | wrong password")
+                    Notification.error("Wrong node password!")
+                  } else{
+                    console.log(d)
+                    console.log("Error: download doc")
+                    Notification.error("Error while getting download link")
+                  }
+                });
+              }
+            }
+
           }
 
           // We watch when someone drag and drops a file / folder
@@ -782,14 +829,6 @@
           function isInArray(value, array) {
             return array.indexOf(value.toString()) > -1;
           }
-
-          (function checkIfChrome(){
-            if(browser() == "chrome"){
-              scope.isChrome = true;
-            } else{
-              scope.isChrome = false;
-            }
-          })();
 
         }
       }

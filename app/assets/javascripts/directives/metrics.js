@@ -27,21 +27,18 @@
 
         // We save the node of the user, so we can propose to display them in the first chart
         Restangular.one('report/nodes').get().then(function(data) {
+          console.log(data.plain())
           scope.userNodes = data.plain();
           scope.userActiveNode = scope.userNodes[0];
-          // console.log(scope.userNodes)
         });
 
         function getMetricBreadcrumb(node){
           scope.metricBreadcrumb = []
           addToMetricBreadcrumb(node)
-          console.log(scope.metricBreadcrumb)
         }
 
         function addToMetricBreadcrumb(node){
           scope.metricBreadcrumb.push(node.name)
-          console.log(node)
-          console.log(node.parent)
           if(node.parent && node.parent){
             plop(node.parent)
           }

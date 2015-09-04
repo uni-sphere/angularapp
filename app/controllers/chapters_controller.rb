@@ -1,5 +1,6 @@
 class ChaptersController < ApplicationController
 
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action :current_subdomain
   before_action :current_organization
   before_action :track_connexion
@@ -11,7 +12,7 @@ class ChaptersController < ApplicationController
     chapter = @current_node.chapters.new(title: params[:title], parent_id: params[:parent_id], user_id: current_user.id)
     chapter.parent_id = @current_node.chapters.where(archived: false).first.id if chapter.parent_id == 0
     if chapter.save
-      Action.create(name: 'created', object_id: @current_node.chapters.last.id, object_type: 'chapter', object: @current_node.chapters.last.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+      Action.create(name: 'created', obj_id: @current_node.chapters.last.id, object_type: 'chapter', object: @current_node.chapters.last.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       render json: chapter, status: 201, location: chapter
     else
       Action.create(name: 'created', error: true, object_type: 'chapter', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
@@ -25,7 +26,7 @@ class ChaptersController < ApplicationController
 
   def update
     if @current_chapter.update(title: params[:title])
-      Action.create(name: 'renamed', object_id: @current_chapter.id, object_type: 'chapter', object: @current_chapter.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+      Action.create(name: 'renamed', obj_id: @current_chapter.id, object_type: 'chapter', object: @current_chapter.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       render json: @current_chapter, status: 200
     else
       Action.create(name: 'renamed', error: true, object_type: 'chapter', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
@@ -34,7 +35,7 @@ class ChaptersController < ApplicationController
   end
 
   def destroy
-    Action.create(name: 'destroyed', object_id: @current_chapter.id, object_type: 'chapter', object: @current_chapter.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+    Action.create(name: 'destroyed', obj_id: @current_chapter.id, object_type: 'chapter', object: @current_chapter.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
     destroy_with_children(@current_chapter.id)
     head 204
   end
@@ -43,11 +44,11 @@ class ChaptersController < ApplicationController
     tree = []
     @current_node.chapters.where(archived: false).each do |chapter|
       tree << chapter
-      chapter.awsdocuments.each do |document|
+      Awsdocument.where(chapter_id: chapter.id, archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).each do |document|
         tree << (document) if !document.archived
       end
     end
-    render json: tree, status: 200
+    render json: {tree: tree, locked: @current_node.locked}.to_json, status: 200
   end
 
   private

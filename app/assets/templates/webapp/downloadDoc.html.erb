@@ -1,0 +1,17 @@
+<div class="outer-modal-container ">
+  <div class="modal-container modal-ready-to-appear">
+    <div class="modal-header">
+      <span class="modal-title">{{ 'POPUP_VIEW_FILE' | translate }}</span>
+      <span class="fa fa-times close-modal" ng-click="dismissModal()"></span>
+    </div>
+    <div class="modal-body">
+      <span class="modal-text">{{ 'POPUP_VIEW_FILE_CHOICES' | translate }}</span>
+      <div class="modal-row-center">
+        <a ng-href="{{documentUrl}}" ng-click="dismissModal()" download class="modal-button modal-margin-right">{{ 'POPUP_VIEW_DL' | translate }}</a>
+        <a ng-href="{{documentUrl}}" target="_blank" ng-click="dismissModal()" class="modal-button modal-margin-left">{{ 'POPUP_VIEW_PW' | translate }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-background"></div>

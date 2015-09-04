@@ -46,13 +46,11 @@ class ReportsController < ApplicationController
 
   def second_chart
     secondchart = []
-
     organization = @current_organization
-
     date = @current_organization.created_at
 
     # first days of creation: set 0 downloads
-    secondchart << {date: date.strftime('%Y-%m-%d'), lecturers: 1, uploads: 0, downloads: 0}
+    secondchart << {date: (date).strftime('%Y-%m-%d'), lecturers: 1, uploads: 0, downloads: 0}
     lecturers = 0
 
     if @current_subdomain == 'sandbox'
@@ -61,14 +59,15 @@ class ReportsController < ApplicationController
         date = date + 7.days
       end
     else
-      while (date - Time.now).abs > 7.days
-        lecturers = organization.users.where(created_at: date-7.days..date)
+      while (Time.now - date ) > 0
+        lecturers = organization.users.where(created_at: date-7.days..date).count
 
         #downloads
         downloads = 0
         organization.nodes.where(archived: false).each do |node|
-          report = node.reports.where("created_at >= ? AND created_at <= ?", date-7.days, date).first
-          downloads = report.downloads if report
+          node.reports.where("created_at >= ? AND created_at <= ?", date-7.days, date).each do |report|
+            downloads += report.downloads
+          end
         end
 
         #uploads
@@ -79,7 +78,7 @@ class ReportsController < ApplicationController
         # reports created at begining of the week but shows the data of the whole week
         date = date + 7.days
 
-        secondchart << {date: date.strftime('%Y-%m-%d'), lecturers: lecturers, uploads: uploads, downloads: downloads}
+        secondchart << {date: (date).strftime('%Y-%m-%d'), lecturers: lecturers, uploads: uploads, downloads: downloads}
       end
     end
     render json: secondchart.to_json, status: 200
@@ -87,8 +86,11 @@ class ReportsController < ApplicationController
 
   def nodes
     if @current_subdomain == 'sandbox'
-      nodes = @current_organization.nodes.where(name: ['Maths', 'Anglais'], archived: false)
-      render json: nodes, status: 200
+      res = []
+      @current_organization.nodes.where(name: ['Maths', 'Anglais'], archived: false).each do |node|
+        res << {parent_name: Node.find(node.parent_id).name, name: node.name, id: node.id}
+      end
+      render json: res.to_json, status: 200
     else
       render json: user_nodes, status: 200
     end

@@ -1,7 +1,9 @@
-#document-tree{
+#right-tree{
   position: relative;
-  width: 100%;
-  height: calc(100% - 40px);
+  float: left;
+  padding-top: 20px;
+  height: calc(100% - 20px);
+  width: calc(35%);
 }
 
 /*==================================
@@ -10,59 +12,81 @@
 
 #breadcrumb{
   position: relative;
-  height: 36px;
+  height: 30px;
+  line-height: 30px;
   font-size: 18px;
-  line-height: 40px;
   text-align: center;
   color: rgb(74, 74, 88);
   font-family: 'Open Sans', sans-serif;
 }
 
+/*----------  Title  ----------*/
+
+#breadcrumb-container{
+  vertical-align: top;
+  display: inline-block;
+}
+
+#breadcrumb-title{
+  position: relative;
+  display: inline-block;
+}
+
+.breadcrumb-separator{
+  display: inline-block;
+  padding: 0px 8px;
+}
+
+.chapterSelected{
+  background: #C1CCE5 !important;
+}
+
+/*----------  Protection file  ----------*/
+
+#protection-node-container{
+  vertical-align: top;
+  position: relative;
+  display: inline-block;
+}
+
+.protection-node{
+  position: relative;
+  float: left;
+  font-size: .9em;
+  cursor: pointer;
+}
+
 .protection-file{
+  position: relative;
   margin-left: 10px;
   cursor: pointer;
-  // background: blue;
   width: 30px;
   height: 30px;
   border-radius: 15px;
-  line-height: 30px;
-
-  // box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px 1px;
-
+  line-height: 32px;
+  margin-bottom: 0px;
+  font-size: 1em;
 
   &:hover{
     box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px 1px;
   }
 }
 
+.node-change-password{
+  font-size: .7em;
+  color: grey;
+
+  &:hover{
+    text-decoration: underline;
+  }
+}
+
 .protection-file-on{
-  color: red;
+  color: rgb(255,96,89);
 }
 
 .protection-file-off{
-  color: blue;
-}
-
-#breadcrumb-container{
-  position: relative;
-  float: center;
-  display: inline-block;
-}
-
-#breadcrumb-title{
-  position: relative;
-  float: left;
-}
-.breadcrumb-node{
-  float: left;
-}
-
-.breadcrumb-separator{
-  padding: 0px 8px;
-}
-
-.chapterSelected{
-  background: #C1CCE5 !important;
+  color: #29CF5D;
 }
 
 /*===============================
@@ -86,23 +110,22 @@
   visibility: hidden;
 }
 
-
 .dual-submit{
-  // border: 2px solid $document-color;
-  // color: $document-color;
-  // background: white;
-
   border: 1px solid $blue;
   color: #EEEEEE;
   cursor: pointer;
   background: $blue;
-
   border-radius: 1px;
-
   margin: 0px 30px;
   padding: 10px 20px;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px 1px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   @media (max-width: 1500px) {
     margin: 0px 18px;
@@ -114,33 +137,21 @@
     font-size: 1em;
   }
 
-  font-family: 'Open Sans', sans-serif;
-
-  font-size: 18px;
-  text-decoration: none;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
   .fa{
     margin-right: 5px;
   }
 
    &:hover{
     border-color: #66A4FA;
-    // border-bottom-color: #0084DC;
     background: #66A4FA;
   }
 
   &:active {
     border-color: #2a65a0;
     border-bottom-color: #3884cd;
-    // background-color: #6F9EF2;
     background: linear-gradient(#4991F5, #66A4FA);
     box-shadow: rgba(0, 0, 0, 0.258824) 0px 1px 2px 1px;
   }
-
 }
 
 .default-submit{
@@ -150,25 +161,24 @@
   margin-left: auto;
   margin-right: auto;
   display: table;
-
   border: 1px solid #d4d4d4;
   color: #EEEEEE;
   cursor: pointer;
-  // background: linear-gradient(#f4f4f4, #ececec);
   background: #0087E0;
   border-radius: 0.2em;
-
-
   padding: 10px 0px;
-
   font-family: 'Open Sans', sans-serif;
-
   font-size: 20px;
   text-decoration: none;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: table;
 
   &:hover{
     border-color: #008EEC;
@@ -182,128 +192,75 @@
     background-color: #3072b3;
     background-image: linear-gradient(#3072b3, #599bdc);
   }
-
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  display: table;
 }
 
 /* overrides extra padding on button elements in Firefox */
 .submit-button::-moz-focus-inner {
-    padding: 0;
-    border: 0;
+  padding: 0;
+  border: 0;
 }
-
 
 /*===============================
 =            UI Tree            =
 ===============================*/
 
-// #tree-root{
-//   width: calc(100% - 4px);
-//   margin-left: 2px;
-//   margin-top: 2px;
-//   // box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px 1px;
-//   background: #ff5722;
-// }
+#document-tree{
+  position: relative;
+  width: 100%;
+  height: calc(100% - 40px);
+}
 
 #ui-tree-container{
-	font-size: 16px;
+  font-size: 16px;
   position: absolute;
   top: 120px;
   bottom: 80px;
   width: 90%;
   margin-left: 5%;
   z-index: 10;
-
   overflow-y: auto;
 }
 
-
-.item-name, .chapter-number{
-  line-height: 48px;
-  padding-top: 2px;
-
-  display: table-cell;
-
-  // white-space: nowrap;
-  // overflow: hidden;
-  // text-overflow: ellipsis;
-
-  @media (max-width: 1200px) {
-    font-size: .9em;
-    line-height: 38px;
-  }
-}
-
-.chapter-number{
-  width: 18px;
-}
-
-.depth1{
-  width: 30px !important;
-}
-
-.depth2{
-  width: 40px !important;
-}
-
-.depth3{
-  width: 50px !important;
-}
-
-.depth4{
-  width: 60px !important;
-}
-
-.item-name{
-  // padding-left: 10px;
-  word-break: break-all;
-  word-wrap: break-word;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-
-  // background: red;
-
-  // width: calc(100% - 130px);
-
-  // white-space: nowrap;
-  // overflow: hidden;
-  // text-overflow: ellipsis;
-}
-
-.angular-ui-tree-node{
-  // margin-left: 10px;
-}
-.angular-ui-tree-nodes{
-  color: $document-color;
-}
-
 .angular-ui-tree-handle {
-  // display: inline-block;
+  font-size: .9em;
   display: table;
   table-layout: fixed;
   width: 100%;
   margin-bottom: 1px;
   opacity: 1;
   font-weight: 500;
-  height: 50px;
+  height: 40px;
+  line-height: 40px;
   padding: 0px 9px;
   cursor: default;
-  // float: left;
-
-  @media (max-width: 1200px) {
-    height: 40px;
-  }
+  color: $document-color;
 
   &:hover{
     background: $document-hover;
+  }
+}
+
+.angular-ui-tree-placeholder {
+  background: #f0f9ff;
+  border: 2px dashed #bed2db;
+  box-sizing: border-box;
+}
+
+.isdocument{
+  &:hover{background: $document-hover;}
+  .item-name{margin-left: 4px;}
+  .item-name, .file-icon{color: #0054AD;}
+}
+
+/*----------  Tree displayed while drop  ----------*/
+
+#small-ui-tree{
+  overflow-y: auto;
+  max-height: 800px;
+  margin-left: 15px;
+
+  .angular-ui-tree-handle {
+    cursor: pointer;
   }
 }
 
@@ -316,68 +273,23 @@
   }
 }
 
-.isdocument{
+/*----------  Collapse button  ----------*/
 
-  &:hover{
-    background: $document-hover;
-  }
-
-  .item-name{
-    margin-left: 4px;
-  }
-
-  .item-name, .file-icon{
-    color: #0054AD;
-  }
-}
-
-.isNew{
-  .item-name, .chapter-number{
-    // color: red;
-  }
-}
-
-.collapsed{
-  &:hover{
-    background: $document-hover;
-  }
-}
-
-.file-icon{
-  display: table-cell;
-
-  width: 24px;
-  line-height: 50px;
-
-  color: $fa-color;
-   @media (max-width: 1200px) {
-    line-height: 40px;
-  }
-}
-
-/*==========  Buttons  ==========*/
 .empty-space{
   display: table-cell;
-
   width: 24px;
 }
 
 .btn-collapse{
   display: table-cell;
-
   width: 24px;
-  line-height: 50px;
-
-  @media (max-width: 1200px) {
-    line-height: 40px;
-  }
-
   cursor: pointer;
   font-size: 1.5em;
   color: #007CCE;
 
-  @media (max-width: 1200px) {
-    font-size: 1.3em;
+  .fa{
+    margin-bottom: 0px;
+    vertical-align: middle;
   }
 
   &:hover,&:focus {
@@ -389,43 +301,56 @@
   }
 }
 
+.expanded{
+  transform: translate(0, 3px) rotate(90deg) ;
+}
+
 .angle-right-hidden{
   visibility: hidden;
 }
 
-// .btn-collapse{
-//   font-size: 1.5em;
-//   // padding-right: 8px;
-//   color: #007CCE;
+/*----------  Chapters  ----------*/
 
-//   @media (max-width: 1200px) {
-//     font-size: 1.3em;
-//   }
+.chapter-number{
+  width: 18px;
+  padding-top: 2px;
+  display: table-cell;
+}
 
-//   &:hover,&:focus {
-//     color: #0065A8;
-//   }
+.depth1{width: 30px !important;}
+.depth2{width: 40px !important;}
+.depth3{width: 50px !important;}
+.depth4{width: 60px !important;}
 
-//   .fa{
-//     transition: all .1s ease-out;
-//   }
-// }
+/*----------  File icons  ----------*/
+
+.file-icon{
+  display: table-cell;
+  width: 24px;
+  color: $fa-color;
+}
+
+/*----------  Item name  ----------*/
+
+.item-name{
+  height: 40px !important;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: table-cell;
+}
+
+/*----------  Buttons  ----------*/
 
 .btn {
   display: table-cell;
   width: 35px;
   text-align: center;
-
   cursor: pointer;
-
   font-size: 1.1em;
   margin-right: 8px;
-
-  @media (max-width: 1200px) {
-    margin-right: 2px;
-    font-size: .8em;
-    width: 18px;
-  }
 
   &:hover, &:focus,{
     color: #0065A8 !important;
@@ -433,25 +358,12 @@
   }
 }
 
-
-.expanded{
-  transform: translate(0, 3px) rotate(90deg) ;
-}
-
-
-.btn-delete, .btn-rename, .btn-preview, .btn-download{
+.angular-ui-tree-handle .btn-delete, .angular-ui-tree-handle .btn-rename, .angular-ui-tree-handle .btn-download{
   visibility: hidden;
-  // float: right;
 }
-
-.fa-caret-right, .fa-caret-down{
-  font-size: .8em;
-}
-
-
 
 .angular-ui-tree-handle:hover {
-  .btn-delete, .btn-rename, .btn-preview, .btn-download{
+  .btn-delete, .btn-rename, .btn-download{
     visibility: visible;
     color: $fa-color;
     &:hover{
@@ -460,166 +372,16 @@
   }
 }
 
-.angular-ui-tree-placeholder {
-  background: #f0f9ff;
-  border: 2px dashed #bed2db;
-  box-sizing: border-box;
-}
 
-
-/*===========================
-=            Tip            =
-===========================*/
-
-.tip{
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  position: absolute;
-  bottom: 40px;
-  height: 30px;
-  font-size: .9em;
-  color: $dark-gris;
-  z-index: 0;
-  .fa{
-    line-height: 22px;
-    margin-right: 5px;
-  }
-}
-
-
-
-/*===================================
-=            No document            =
-===================================*/
-
-// .breadcrumb-no-doc{
-//   background: $document-absent-bg !important;
-// }
-
-// .no-docs{
-//   background: $document-absent-bg !important;
-// }
-
-#document-absent-title, #document-absent-subtitle{
-  position: relative;
-  float: left;
-  z-index: 5;
-
-  width: 100%;
-  display: inline-block;
-  text-align: center;
-}
-
-#document-absent-title{
-  font-size: 2em;
-  padding-bottom: 10px;
-  padding-top: 40px;
-  height: 10%;
-}
-#document-absent-subtitle{
-  height: 5%;
-  padding-bottom: 20px;
-}
-
-/*================================
-=            Dropzone            =
-================================*/
-
-// #document-absent-dropzone-container{
-//   position: absolute;
-//   bottom: 0px;
-//   // height: 100%;
-//   top: 200px;
-//   // height: calc(75% - 80px);
-//   width: 90%;
-// }
-
-// #document-absent-dropzone{
-//   position: relative;
-//   float: left;
-//   width: 80%;
-//   height: 100%;
-//   margin-left: 10%;
-//   // margin-top: 10%;
-
-//   // border-radius: 60px;
-//   // border: 2px solid $dropzone-color;
-// }
-
-// // Pic
-// #document-absent-dropzone-image{
-//   position: relative;
-//   height: 300px;
-//   width: 300px;
-//   margin-bottom: 20px;
-
-//   //background-image: url(image-path('dropzone.png'));
-// //  background-size: contain;
-// //  background-position: center;
-// //  background-repeat: no-repeat;
-// //  opacity: 0.4;
-//   background: grey;
-//   border-radius: 150px;
-//   box-shadow: rgba(0, 0, 0, 0.258824) 0px 5px 8px 2px;
-//   text-align: center;
-//   color: rgb(239,239,239);
-// }
-
-// // #dropzone-image-container{
-// //   position: absolute;
-// //   top: calc(50% - 35px);
-// //   width: 100%;
-
-// //   .fa-download{
-// //     margin: 0px auto;
-// //     display: table;
-// //     font-size: 4em;
-// //     color: $dark-gris;
-// //   }
-// // }
-
-
-// // Text under the pic
-// #document-absent-text-under-pic{
-//   position: relative;
-//   height: 40%;
-//   width: 80%;
-//   left: 10%;
-//   text-align: center;
-//   color: $dark-gris;
-// }
-
-// #document-absent-text-drop{
-//   font-size: 1.5em;
-//   margin-bottom: 20px;
-// }
-
-
-
-
-
-/*=========================================
-=            select leaf                  =
-=========================================*/
+/*=============================================================
+=            No documents - select left | dropzone            =
+=============================================================*/
 
 .full-size-circle-container{
   display: flex;
-  // justify-content: center;
   align-items: center;
   height: calc(100% - 170px);
 }
-
-
-
-// #select-leaf-text{
-//   position: absolute;
-//   bottom: 0px;
-//   font-family: 'Open Sans', sans-serif;
-//   color: grey;
-//   width: 100%;
-//   // text-align: center;
-// }
 
 .full-size-circle{
   height: 300px;
@@ -636,39 +398,60 @@
   color: white;
 }
 
+/*----------  select leaf  ----------*/
+
 #select-leaf .full-size-circle{
   font-size: 14em;
 }
+
+/*----------  dropzone  ----------*/
 
 #dropzone-circle .full-size-circle{
   font-size: 2em;
   font-weight: bold;
   letter-spacing: 2px;
-
 }
 
-/*===================================
-=            Rename Node            =
-===================================*/
+/*===========================
+=            Tip            =
+===========================*/
 
-#view-document-rename-popup{
-  position: absolute;
-  top: 300px;
+.tip{
+  display: flex;
+  justify-content: center;
   width: 100%;
-  z-index: 100;
-  width: 500px;
-  display: none;
-}
-
-#small-ui-tree{
-  overflow-y: auto;
-  max-height: 800px;
-  margin-left: 15px;
-
-  .angular-ui-tree-handle {
-    cursor: pointer;
+  position: absolute;
+  bottom: 20px;
+  height: 30px;
+  font-size: .9em;
+  color: $dark-gris;
+  z-index: 0;
+  font-size: 0.8em;
+  .fa{
+    line-height: 22px;
+    margin-right: 5px;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #fileDropped{
@@ -728,5 +511,4 @@
 .school-ready-to-disappear{
   animation: fileDropped-flyin 1s;
 }
-
 

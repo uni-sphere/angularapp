@@ -1,10 +1,11 @@
 class AwsdocumentsController < ApplicationController
-  
+
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action :current_subdomain
   before_action :current_organization
   before_action :track_connexion
-  before_action :current_node, only: [:archives, :create]
-  before_action :current_chapter, only: [:create]
+  before_action :current_node, only: [:archives, :create, :show]
+  before_action :current_chapter, only: [:create, :show]
   before_action :current_awsdocument, except: [:create]
 
   before_action :is_allowed?, only: [:update, :destroy, :archives]
@@ -12,7 +13,7 @@ class AwsdocumentsController < ApplicationController
   def create
     awsdocument = @current_chapter.awsdocuments.new(title: params[:title], content: params[:file], organization_id: @current_organization.id, user_id: current_user.id)
     if awsdocument.save
-      Action.create(name: 'created', object_id: @current_chapter.awsdocuments.last.id, object_type: 'document', object: @current_chapter.awsdocuments.last.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+      Action.create(name: 'created', obj_id: @current_chapter.awsdocuments.last.id, object_type: 'document', object: @current_chapter.awsdocuments.last.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       render json: awsdocument, status: 201, location: awsdocument
     else
       Action.create(name: 'created', error: true, object_type: 'document', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
@@ -21,7 +22,16 @@ class AwsdocumentsController < ApplicationController
   end
 
   def show
-    render json: @current_awsdocument.content.file.authenticated_url, status: 200
+    # @current_node.reports.last.increase_downloads if !@current_node.reports.nil?
+    if @current_node.locked
+      if @current_node.password == params[:password]
+        render json: @current_awsdocument.content.file.authenticated_url.to_json, status: 200
+      else
+        send_error('Forbidden', '403')
+      end
+    else
+      render json: @current_awsdocument.content.file.authenticated_url.to_json, status: 200
+    end
   end
 
   def archives
@@ -38,7 +48,7 @@ class AwsdocumentsController < ApplicationController
 
   def update
     if @current_awsdocument.update(title: params[:title])
-      Action.create(name: 'renamed', object_id: @current_awsdocument.id, object_type: 'document', object: @current_awsdocument.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+      Action.create(name: 'renamed', obj_id: @current_awsdocument.id, object_type: 'document', object: @current_awsdocument.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
       render json: @current_awsdocument, status: 200
     else
       Action.create(name: 'renamed', error: true, object_type: 'document', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
@@ -47,7 +57,7 @@ class AwsdocumentsController < ApplicationController
   end
 
   def destroy
-    Action.create(name: 'archived', object_id: @current_awsdocument.id, object_type: 'document', object: @current_awsdocument.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
+    Action.create(name: 'archived', obj_id: @current_awsdocument.id, object_type: 'document', object: @current_awsdocument.title, organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
     @current_awsdocument.archive
     head 204
   end

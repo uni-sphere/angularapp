@@ -1,0 +1,140 @@
+.outer-modal-container{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  z-index: 990;
+}
+
+.modal-background{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: black;
+  height: 100%;
+  width: 100%;
+  opacity: 0.3;
+  z-index: 900;
+}
+
+.modal-container{
+  margin-top: 200px;
+  background: white;
+  display: inline-block;
+  color: #555459;
+  border-radius: 3px;
+  box-shadow: 0 1px 10px rgba(0,0,0,.6);
+}
+
+.modal-body{
+  text-align: left;
+  padding: 20px 60px 20px 20px;
+  min-width: 400px;
+}
+
+/*----------  Header  ----------*/
+
+.modal-header{
+  position: relative;
+  text-align: left;
+  padding: 10px 0px 10px 20px;
+  font-family: Lato;
+  font-weight: bold;
+  font-size: 1.2em;
+  background: #f2f2f5;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.close-modal{
+  text-align: center;
+  position: absolute;
+  height: 48px;
+  width: 48px;
+  right: 5px;
+  color: #C7C7C7;
+  cursor: pointer;
+  &:hover{
+    color: #555459;
+  }
+}
+
+/*----------  Animation modal  ----------*/
+
+@keyframes modal-flyout {
+  0% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-700px);
+  }
+}
+
+@keyframes modal-flyin {
+  0% {
+    opacity: 0;
+    transform: translateY(-700px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-ready-to-disappear{
+  animation: modal-flyout 0.7s;
+}
+
+.modal-ready-to-appear{
+  animation: modal-flyin 1s;
+}
+
+/*----------  Body content  ----------*/
+
+
+.modal-text{
+  display: block;
+  padding-bottom: 20px;
+}
+
+.modal-row-center{
+  text-align: center;
+}
+/*----------  Button  ----------*/
+
+.modal-button{
+  display: inline-block;
+  background: #2ab27b;
+  color: white;
+  border: 2px solid #2ab27b;
+  cursor: pointer;
+  font-family: Lato;
+  font-weight: normal;
+  text-shadow: 0 1px 1px rgba(0,0,0,.1);
+  font-size: .9em;
+  text-decoration: none;
+
+  padding: 4px 12px;
+  border-radius: 4px;
+
+  &:hover{
+    border-bottom-color: #26976A;
+  }
+
+  &:active{
+    border-bottom-color: #2ab27b;
+    border-top-color: #26976A;
+  }
+}
+
+.modal-margin-right{
+  margin-right: 10px;
+}
+
+.modal-margin-left{
+  margin-left: 10px;
+}

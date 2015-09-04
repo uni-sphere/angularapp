@@ -99,7 +99,11 @@ module AuthenticationHelper
         ids << chapter.node_id if Chapter.where(node_id: chapter.node_id, archived: false).count > 1 || chapter.awsdocuments.where(archived: false).count > 0
       end
       if Node.exists?(id: ids, archived: false)
-        return Node.where(id: ids, archived: false)
+        res = []
+        Node.where(id: ids, archived: false).each do |node|
+          res << {parent_name: Node.find(parent_id).name, name: node.name, id: node.id}
+        end
+        return res.to_json
       else
         return {}
       end
@@ -130,6 +134,7 @@ module AuthenticationHelper
       place = "#{place_att.city}::#{place_att.country_code}"
       if @current_organization.connexions.find_by_ip(ip)
         connexion = @current_organization.connexions.find_by_ip(ip)
+        sleep 2
         if Time.now - connexion.updated_at > 30.minutes
           Rollbar.info("User active", place: place, email: current_user.email)
           connexion.increase_count()

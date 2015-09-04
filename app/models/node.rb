@@ -1,13 +1,15 @@
 class Node < ActiveRecord::Base
-  
-	belongs_to :organization
+
+  include BCrypt
+
+  belongs_to :organization
   belongs_to :user
-  
+
   has_many :chapters
   has_many :reports
-  
+
   validates :name, :parent_id, :user_id, presence: true
-  
+
   def self.create_reports
     self.all.each do |node|
       if node.reports.last.nil?
@@ -17,10 +19,18 @@ class Node < ActiveRecord::Base
       end
     end
   end
-  
+
   def archive
     self.archived = true
     self.save
   end
-  
+
+  def password
+    @password ||= Password.new(password_hash)
+  end
+
+  def password=(new_password)
+    password = Password.create(new_password)
+    self.password_hash = password
+  end
 end
