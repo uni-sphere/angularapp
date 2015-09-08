@@ -1,11 +1,12 @@
-left-tree{
+#view-tree{
   position: relative;
   float: left;
-  width: calc(100%);
-  height: calc(100% - 4px);
+  z-index: 5;
+  height: 100%;
+  width: calc(65% - 3px);
 }
 
-.node {
+.circleCollapse, .nameNode, .addNode, .deleteNode, .renameNode{
   cursor: pointer;
 }
 
@@ -31,33 +32,5 @@ left-tree{
   stroke-width: 0.1em;
 }
 
-// #admin-popup-content{
-//   // margin-top: 20px;
-//   // margin-bottom: 20px;
-// }
-
-// @keyframes ngdialog-flyout {
-//   0% {
-//     opacity: 1;
-//     transform: translateY(0);
-//   }
-
-//   100% {
-//     opacity: 0;
-//     transform: translateY(-40px);
-//   }
-// }
-
-// @keyframes ngdialog-flyin {
-//   0% {
-//     opacity: 0;
-//     transform: translateY(-40px);
-//   }
-
-//   100% {
-//     opacity: 1;
-//     transform: translateY(0);
-//   }
-// }
 
 

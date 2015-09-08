@@ -19,11 +19,12 @@
 
       <a  class="btn btn-download" ng-show="item.document" nodrag analytics-on="click" analytics-event="download" ng-click="downloadItem(this); $event.stopPropagation()" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-arrow-circle-o-down"></span></a>
 
-      <a class="btn btn-rename" ng-controller="CrudCtrl" nodrag ng-show="!item.document && admin" ng-click="renameItems(this); $event.stopPropagation()" analytics-on="click" analytics-event="rename" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-pencil"></span></a>
-      <a class="btn btn-rename" ng-controller="CrudCtrl" nodrag ng-show="item.document && admin" ng-click="renameItems(this); $event.stopPropagation()" analytics-on="click" analytics-event="rename" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-pencil"></span></a>
+      <a class="btn btn-rename" ng-controller="CrudCtrl" nodrag ng-show="!item.document && admin && userId == item.user_id" ng-click="renameItems(this); $event.stopPropagation()" analytics-on="click" analytics-event="rename" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-pencil"></span></a>
 
-      <a class="btn btn-delete" nodrag ng-show="!item.document && admin" ng-click="removeItem(this); $event.stopPropagation()"  analytics-on="click" analytics-event="delete" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" ><span class="fa fa-times"></span></a>
-      <a class="btn btn-delete" nodrag ng-show="item.document && admin" ng-click="removeItem(this); $event.stopPropagation()" analytics-on="click" analytics-event="delete" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-times"></span></a>
+      <a class="btn btn-rename" ng-controller="CrudCtrl" nodrag ng-show="item.document && admin && userId == item.user_id" ng-click="renameItems(this); $event.stopPropagation()" analytics-on="click" analytics-event="rename" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-pencil"></span></a>
+
+      <a class="btn btn-delete" nodrag ng-show="!item.document && admin && userId == item.user_id" ng-click="removeItem(this); $event.stopPropagation()"  analytics-on="click" analytics-event="delete" analytics-category="chapter" analytics-label="<%#= request.url.split('.').first %>" ><span class="fa fa-times"></span></a>
+      <a class="btn btn-delete" nodrag ng-show="item.document && admin && userId == item.user_id" ng-click="removeItem(this); $event.stopPropagation()" analytics-on="click" analytics-event="delete" analytics-category="document" analytics-label="<%#= request.url.split('.').first %>"><span class="fa fa-times"></span></a>
 
     </div>
 
@@ -53,14 +54,13 @@
       </div>
     </div>
 
-    <div id="protection-node-container" ng-show="admin && !home && nodeEnd && !documentAbsent">
+    <div id="protection-node-container" ng-show="!home && nodeEnd && !documentAbsent">
       <div ng-show="nodeProtected" class="protection-node">
-        <span class="fa fa-lock protection-file protection-file-on" ng-click="toggleProtection()" title="{{ 'NODE_LOCKED' | translate}}"></span>
+        <button type="button" class="fa fa-lock protection-file protection-file-on" ng-click="toggleProtection()" title="{{ 'NODE_LOCKED' | translate}}" ></button>
         <span class="node-change-password" ng-click="nodeChangePassword()" title="Change your password">{{ 'EDIT_PSW' | translate}}</span>
       </div>
       <div ng-show="!nodeProtected" class="protection-node">
-        <span class="fa fa-unlock-alt protection-file protection-file-off" ng-click="toggleProtection()" title="{{ 'NODE_UNLOCKED' | translate}}"></span>
-        <!-- <span class="node-change-password" ng-click="nodeChangePassword()" title="Change your password">Lock your node</span> -->
+        <button type="button" class="fa fa-unlock-alt protection-file protection-file-off" ng-click="toggleProtection()" title="{{ 'NODE_UNLOCKED' | translate}}"></button>
       </div>
     </div>
   </div>

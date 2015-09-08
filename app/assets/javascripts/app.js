@@ -181,7 +181,7 @@
         UPDATE_PSW: 'Update password',
         USERS_INVITED: 'Lecturers to add',
         TIP_CHROME: 'Tip: You can drag & drop files and folders!',
-        TIP: 'Tip: You can drag & drop files! (folder on chrome)',
+        TIP: 'Tip: You can drag & drop files! (folder on Chrome)',
         LENGTH: 'At least 6 characters',
         SECURITY: 'Security',
         SHORT: 'too short',
@@ -207,7 +207,17 @@
         SEND_EMAIL: 'Send',
         LEFT_STATISTICS_MSG: 'Your statistics',
         NEW_NODE_MSG: "You don't have any nodes",
-        EDIT_PSW: "Edit password"
+        EDIT_PSW: "Edit password",
+        POPUP_DELETE_0: 'Delete ',
+        POPUP_DELETE_1: 'Delete the node and all its content.',
+        POPUP_DELETE_2: 'You can either completly delete the node or delete it',
+        POPUP_DELETE_3: 'and transfer its content to the previous node.',
+        POPUP_DELETE_4: 'Delete the node',
+        POPUP_DELETE_5: 'Delete & transfer',
+        SET_PSW_FOR: 'Set password for ',
+        SET_PSW: 'Set password',
+        POPUP_LOCK: 'This node is protected. Enter your password to unlock it',
+        ACCESS: 'Access'
       })
       .translations('fr', {
         HELP: 'Aide',
@@ -274,7 +284,17 @@
         SEND_EMAIL: 'Envoyer',
         LEFT_STATISTICS_MSG: 'Vos statistiques',
         NEW_NODE_MSG: "Vous n'avez pas de noeuds",
-        EDIT_PSW: "Modifier mot de passe"
+        EDIT_PSW: "Modifier mot de passe",
+        POPUP_DELETE_0: 'Supprimer ',
+        POPUP_DELETE_1: 'Supprimer le noeud et son contenu.',
+        POPUP_DELETE_2: 'Supprimer le noeud et son contenu ou le supprimer',
+        POPUP_DELETE_3: 'et transférer son contenu dans le noeud précédent.',
+        POPUP_DELETE_4: 'Supprimer le noeud',
+        POPUP_DELETE_5: 'Supprimer & transférer',
+        SET_PSW_FOR: 'Nouveau mot de passe pour ',
+        SET_PSW: 'Nouveau mot de passe',
+        POPUP_LOCK: 'Noeud sécurisé. Entrez le mot de passe pour y accéder.',
+        ACCESS: 'Accéder'
       })
       .preferredLanguage('en')
       .registerAvailableLanguageKeys(['fr'])

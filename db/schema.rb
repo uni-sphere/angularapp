@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150901081220) do
+ActiveRecord::Schema.define(version: 20150907081215) do
 
   create_table "actions", force: :cascade do |t|
     t.integer  "user_id"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 20150901081220) do
     t.boolean  "archived",        default: false
     t.string   "password_hash"
     t.boolean  "locked",          default: false
+    t.boolean  "superadmin",      default: false
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -120,6 +121,7 @@ ActiveRecord::Schema.define(version: 20150901081220) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "superadmin",             default: false
+    t.boolean  "news",                   default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email"

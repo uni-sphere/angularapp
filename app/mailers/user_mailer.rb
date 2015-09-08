@@ -27,5 +27,11 @@ class UserMailer < ActionMailer::Base
     @organization = Organization.find organization
     mail(to: @user.email, subject: 'Welcome to Unisphere')
   end
+  
+  def user_linked(id, organization)
+    @user = User.find id
+    @organization = Organization.find organization
+    mail(to: @user.email, subject: 'Invitation to join an organization')
+  end
 
 end

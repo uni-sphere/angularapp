@@ -5,7 +5,6 @@
   width: 200px;
   z-index: 1;
   width: 70px;
-  // background: rgb(239,239,239);
 }
 
 .sidebar-container{
@@ -15,7 +14,6 @@
   margin: 50px 0 0 0;
   padding: 0;
   list-style-type: none;
-  // background: rgb(239,239,239);
 }
 
 .siderbar-item{
@@ -28,7 +26,6 @@
   bottom: 20px;
   width: 100%;
 }
-
 
 .menu-link{
   display: block;
@@ -55,37 +52,18 @@
   margin-bottom: 3px;
 }
 
-
 .sidebar-item:hover, .menu-link-active{
   .fa{
     color: white;
     background: $blue;
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 5px 1px;
-    // box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px 1px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 2px 1px;
   }
 }
 
-.fa {
-  margin-bottom: 5px;
-}
-
-// .home-item:hover .fa, .home-item .menu-link-active .fa{
-//   background: #0080FF;
-//   // color: #5699DB;
-// }
-
-// .dashboard-item:hover .fa, .dashboard-item .menu-link-active .fa{
-//   background: #FF7F00;
-// }
-
-// .account-item:hover .fa, .account-item .menu-link-active .fa{
-//   background: green;
-// }
-
 .deco-button:hover .fa{
-  // color: black;
   background: rgb(247, 101, 101);
 }
+
 .menu-link-active{
   cursor: default;
 }

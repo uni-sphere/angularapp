@@ -1,69 +1,55 @@
 #navbar{
   position: fixed;
   opacity: 0.9;
-  // color: $navbar-color;
-  // color: white;
   color: rgb(74, 74, 88);
   top: 0px;
   left: 0px;
   font-family: 'Open Sans', sans-serif;
-//  font-weight: 00;
   z-index: 10;
   width: 100%;
   height: 50px;
   font-size: 22px;
-//  background: #1F0F00;
-  // background: #F55353;
-  // background: cornflowerblue;
   background: white;
-  // background: rgb(239,239,239);
-//  letter-spacing: 1px;
-//  background: linear-gradient(to bottom, $super-light-blue, #0087E0);
-
- // border-bottom: 1px solid black;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 4px 4px 0px;
 }
+
+/*----------  Brand  ----------*/
 
 #brand{
   position: relative;
   float: left;
-
-  // padding-left: 20px;
-
   width: calc(20%);
-
   height: 50px;
   line-height: 50px;
-
-  #brand-logo{
-    position: relative;
-    float: left;
-    margin-top: 7px;
-    margin-right: 10px;
-    margin-left: 15px;
-
-    height: 42px;
-    width: 42px;
-
-    background-image: url(image-path('logo-pirate.png'));
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
 }
+
+#brand-logo{
+  position: relative;
+  float: left;
+  margin-top: 7px;
+  margin-right: 10px;
+  margin-left: 15px;
+  height: 42px;
+  width: 42px;
+  background-image: url(image-path('logo-pirate.png'));
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/*----------  School  ----------*/
 
 #school{
   position: relative;
   float: left;
   width: 60%;
-
   display: inline-block;
   text-align: center;
-
-
   height: 50px;
   line-height: 50px;
 }
+
+/*----------  User name  ----------*/
 
 #user-name{
   position: absolute;
@@ -72,29 +58,16 @@
   font-size: .7em;
 }
 
+/*----------  Language selection  ----------*/
+
 #language-selection{
   width: calc(20% - 20px);
   position: absolute;
   right: 20px;
-
   display: inline-block;
   text-align: center;
-
   height: 50px;
   line-height: 50px;
-}
-
-
-#flag-img{
-  margin-top: 13px;
-  width: 100%;
-}
-
-#flag-img-container{
-  position: relative;
-
-  float: right;
-  width: 36px;
 }
 
 .fa-caret-down{
@@ -105,26 +78,31 @@
   cursor: pointer;
 }
 
+#flag-img-container{
+  position: relative;
+  float: right;
+  width: 36px;
+}
 
+#flag-img{
+  margin-top: 13px;
+  width: 100%;
+}
 
-/****** dropdown-menu *******/
+/*----------  dropdown  ----------*/
+
 .wrap-dd-menu {
-  /* Size and position */
   position: relative;
   height: 100%;
   width: 100%;
 }
 
 .wrap-dd-menu .dropdown {
-  /* Size & position */
   position: absolute;
   z-index: 1;
   top: 70%;
-  // left: 0;
   width: 200px;
   right: 0;
-
-  /* Styles */
   background: white;
   padding: 0;
   border-radius: 7px;
@@ -132,8 +110,6 @@
   box-shadow: 0 0 5px rgba(0,0,0,0.1);
   font-weight: normal;
   list-style: none;
-
-  /* Hiding */
   visibility: hidden;
 }
 
@@ -151,35 +127,23 @@
 
 .wrap-dd-menu .dropdown li a {
   display: block;
-  // padding: 5px;
   text-decoration: none;
   color: #8aa8bd;
   border-bottom: 1px solid #e6e8ea;
   box-shadow: inset 0 1px 0 rgba(255,255,255,1);
   cursor: pointer;
   font-size: .8em;
-
 }
-
-// .wrap-dd-menu .dropdown li i {
-//   float: right;
-//   color: inherit;
-// }
-
-// .wrap-dd-menu .dropdown li:first-of-type a {
-//   border-radius: 7px 7px 0 0;
-// }
-
-// .wrap-dd-menu .dropdown li:last-of-type a {
-//   border-radius: 0 0 7px 7px;
-//   border: none;
-// }
-
-/* Hover state */
 
 .wrap-dd-menu .dropdown li:hover a {
   background: #f3f8f8;
 }
+
+.wrap-dd-menu .dropdown.active {
+  visibility: visible;
+}
+
+/*----------  Little triangle  ----------*/
 
 .wrap-dd-menu .dropdown:after {
   content: "";
@@ -205,6 +169,4 @@
   border-color: rgba(0,0,0,0.1) transparent;
 }
 
-.wrap-dd-menu .dropdown.active {
-  visibility: visible;
-}
+

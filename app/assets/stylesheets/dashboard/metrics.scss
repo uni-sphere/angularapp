@@ -1,31 +1,24 @@
-// Chart control
 .chart-control{
   position: relative;
   display: inline-block;
-
   width: calc(50% - 50px);
-
   margin-top: 40px;
-  padding: 20px;
-
+  padding: 23px;
   text-align: center;
 }
 
-// .align-left{
-//   float: left;
-// }
+/*----------  Chart title  ----------*/
 
-// Chart title
 .chart-title{
   margin-bottom: 20px;
-
   font-size: 1.8em;
   color: $chart-title-color;
   font-family: "helvetica";
   font-weight: 100;
 }
 
-// Chart positionning
+/*----------  Chart position  ----------*/
+
 #chart-1, #chart-1-empty{
   position: relative;
   float: left;
@@ -42,7 +35,7 @@
   padding: 20px 60px;
 }
 
-/*==========  Buttons  ==========*/
+/*----------  Buttons  ----------*/
 
 .chart-button-wrapper{
   position: relative;
@@ -53,12 +46,9 @@
   position: relative;
   display: inline-block !important;
   float: left;
-
   padding: 5px 8px;
   margin: 0;
-
   color: $chart-button-color;
-
   background: $button-group-bg;
   font-family: "helvetica";
   font-weight: 100;
@@ -87,16 +77,14 @@
   border-left: none;
 }
 
-.active{
+.activeChartButton{
   background: $group-button-hover;
   box-shadow: inset 1px 1px 2px 0px #949494;
 }
 
-/*==========  Graph empty  ==========*/
+/*----------  Graph empty  ----------*/
 
 .chart-empty-1, .chart-empty-2{
-  // position: relative;
-  // float: left;
   margin-top: 80px;
   display: inline-block;
   width: 50%;

@@ -20,7 +20,7 @@ module AuthenticationHelper
   private
 
   def dev?
-    if URI.parse(request.env['HTTP_ORIGIN']).host.include? 'dev.'
+    if URI.parse(URI.encode(request.env['HTTP_ORIGIN'])).host.include? 'dev.'
       return true
     else
       return false
@@ -40,14 +40,14 @@ module AuthenticationHelper
   def authenticate_client
     if request.path == '/'
       authenticate_with_http_token do |token, options|
-        send_error('Unauthorized', 401) unless token == ENV["TOKEN_BASED_AUTH"]
+        send_error('Unauthorized', 401) unless token == ENV["TOKEN_BASED_AUTHc"]
       end
     end
   end
 
   def current_subdomain
     if Rails.env.production?
-      if URI.parse(request.env['HTTP_ORIGIN']).host == 'www.unisphere.eu'|| URI.parse(request.env['HTTP_ORIGIN']).host == 'dev.unisphere.eu'
+      if URI.parse(URI.encode(request.env['HTTP_ORIGIN'])).host == 'www.unisphere.eu'|| URI.parse(URI.encode(request.env['HTTP_ORIGIN'])).host == 'dev.unisphere.eu'
         @current_subdomain = 'sandbox'
       else
         uri = URI.parse(request.env['HTTP_ORIGIN']).host
@@ -101,7 +101,7 @@ module AuthenticationHelper
       if Node.exists?(id: ids, archived: false)
         res = []
         Node.where(id: ids, archived: false).each do |node|
-          res << {parent_name: Node.find(parent_id).name, name: node.name, id: node.id}
+          res << {parent_name: Node.find(node.parent_id).name, name: node.name, id: node.id}
         end
         return res.to_json
       else

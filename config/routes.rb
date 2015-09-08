@@ -11,7 +11,11 @@ Rails.application.routes.draw do
       end
     end
     resources :reports, only: [:update]
-
+    
+    get 'nodes/restrain_link', to: 'nodes#restrain_link'
+    get 'chapters/restrain_link', to: 'chapters#restrain_link'
+    get 'awsdocuments/restrain_link', to: 'awsdocuments#restrain_link'
+    
     get 'organization/is_signed_up', to: 'organizations#is_signed_up?'
     get 'reports/firstchart', to: 'reports#first_chart'
     get 'reports/secondchart', to: 'reports#second_chart'
@@ -31,6 +35,8 @@ Rails.application.routes.draw do
     get 'user/actions', to: 'actions#index_by_user'
     get 'organization/actions', to: 'actions#index_by_organization'
     get 'actions', to: 'actions#index'
+    
+    put 'users/connection', to: 'connexions#create'
 
   end
 

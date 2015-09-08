@@ -53,26 +53,36 @@
   position: relative;
   float: left;
   font-size: .9em;
-  cursor: pointer;
 }
 
 .protection-file{
+  background: white;
   position: relative;
   margin-left: 10px;
   cursor: pointer;
   width: 30px;
   height: 30px;
   border-radius: 15px;
-  line-height: 32px;
+  // line-height: 30px;
   margin-bottom: 0px;
   font-size: 1em;
+  border: none;
 
   &:hover{
     box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px 1px;
   }
 }
 
+.protection-file-disabled{
+  &:hover{
+    box-shadow: none;
+  }
+
+  cursor: auto;
+}
+
 .node-change-password{
+  cursor: pointer;
   font-size: .7em;
   color: grey;
 
@@ -393,7 +403,7 @@
   align-items: center;
   background: #E5E5E5;
 
-  box-shadow: rgba(0, 0, 0, 0.258824) 0px 5px 5px 2px;
+  box-shadow: rgba(0, 0, 0, 0.258824) 0px 2px 4px 2px;
   text-align: center;
   color: white;
 }

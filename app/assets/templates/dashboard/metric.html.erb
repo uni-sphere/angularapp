@@ -7,15 +7,14 @@
   </div>
 
   <div class="chart-button-wrapper">
-  <div ng-repeat="node in userNodes" ng-click="selectOtherNode(this)" class="button-group" ng-class="{'button-group-first' : $index == 0, 'button-group-last' : $index == userNodes.length - 1, 'button-group-middle' : $index != 0 && $index != userNodes.length - 1, 'active' : node == userActiveNode}">{{node.name}}</div>
-  <!-- <i class="fa fa-angle-right"></i> -->
+    <div ng-repeat="node in userNodes" ng-click="selectOtherNode(this)" class="button-group" ng-class="{'button-group-first' : $index == 0, 'button-group-last' : $index == userNodes.length - 1, 'button-group-middle' : $index != 0 && $index != userNodes.length - 1, 'activeChartButton' : node == userActiveNode}">{{node.name}}</div>
   </div>
 </div>
 
 <div class="chart-control">
   <div class="chart-title" >{{university}} {{ 'RIGHT_STATISTICS' | translate }} {{activeStat.name}}</div>
   <div class="chart-button-wrapper">
-  <div ng-repeat="stat in generalStats" ng-click="selectStat(this)" class="button-group" ng-class="{'button-group-first' : $index == 0, 'button-group-last' : $index == generalStats.length - 1, 'button-group-middle' : $index != 0 && $index != generalStats.length - 1, 'active' : stat.name == activeStat}">{{stat.name}}</div>
+    <div ng-repeat="stat in generalStats" ng-click="selectStat(this)" class="button-group" ng-class="{'button-group-first' : $index == 0, 'button-group-last' : $index == generalStats.length - 1, 'button-group-middle' : $index != 0 && $index != generalStats.length - 1, 'activeChartButton' : stat.name == activeStat}">{{stat.name}}</div>
   </div>
 </div>
 

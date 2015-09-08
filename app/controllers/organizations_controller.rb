@@ -2,7 +2,6 @@ class OrganizationsController < ApplicationController
   
   before_action :current_subdomain, except: [:create, :destroy, :index]
   before_action :current_organization, except: [:create, :destroy, :index]
-  before_action :track_connexion, except: [:create, :destroy, :index]
   
   def is_signed_up?
     if @current_organization.users.where(email: params[:email]).exists?

@@ -1,0 +1,14 @@
+<div class="outer-modal-container ">
+  <div class="modal-container modal-ready-to-appear">
+    <div class="modal-header">
+      <span class="modal-title">{{ 'PSW_FORGOTTEN' | translate }}</span>
+      <span class="fa fa-times close-modal" ng-click="dismissModal('')"></span>
+    </div>
+    <div class="modal-body">
+      <input class="modal-input" ng-model="email" required>
+      <div ng-click="resetAccount()" class="modal-button">{{ 'SEND_EMAIL' | translate }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-background"></div>

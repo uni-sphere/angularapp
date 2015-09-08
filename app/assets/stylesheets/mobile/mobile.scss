@@ -27,12 +27,6 @@ body {
   position: relative;
 }
 
-#slide1-mob{
-  // height: 100vh;
-}
-
-
-
 .mob-large-title{
   position: relative;
   width: 100%;
@@ -43,18 +37,12 @@ body {
   margin-bottom: 15px;
 }
 
-
-
-
 .slide1-explanation{
   position: relative;
-  // padding-top: 40px;
-
   font-size: 1.3em;
   text-align: center;
   margin-bottom: 20px;
   margin-top: 10px;
-  // font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 #learn-more{
@@ -73,33 +61,26 @@ body {
   }
 }
 
-
 #slide4-mob, #slide3-mob{
   margin-top: 100px;
 }
+
 #slide2-mob{
   margin-top: 40px;
 }
 
 .mob-small-title{
   font-size: 1.3em;
-  // padding: 20px 0px;
   text-align: center;
-  // font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  // color: $mob-black;
 }
 
 .mob-explanation{
   width: 80%;
   margin-left: 10%;
-  // color: $mob-grey;
-  // padding: 20px 0px;
   font-size: .9em;
-  // font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   text-align: center;
   color: rgb(61,70,77);
 }
-
 
 .mobile-image{
   margin-left: 15%;
@@ -109,7 +90,6 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
-
 
 .presentation-image{
   background-image: url(image-path('wallpaper.png'));
@@ -144,13 +124,6 @@ body {
   color: white;
   line-height: 40px;
 }
-// #mob-slide-2{
-//   background-image: url(image-path('mobile-sharing.jpg'));
-// }
-
-// #mob-slide-3{
-//   background-image: url(image-path('mob-stat.jpg'));
-// }
 
 
 

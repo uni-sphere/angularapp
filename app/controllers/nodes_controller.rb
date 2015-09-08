@@ -3,8 +3,7 @@ class NodesController < ApplicationController
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action :current_subdomain
   before_action :current_organization
-  before_action :track_connexion
-  before_action :current_node, only: [:update, :destroy, :can_destroy?, :can_update?]
+  before_action :current_node, only: [:update, :destroy, :can_destroy?, :can_update?, :restrain_link]
   before_action :can_create?, only: [:create]
   before_action :can_destroy?, only: [:destroy]
   before_action :can_update?, only: [:update]
@@ -43,7 +42,6 @@ class NodesController < ApplicationController
   def update
     if !params[:lock].nil?
       if params[:lock] === 'true'
-        clear_logs 'if'
         @current_node.password = params[:password]
         @current_node.locked = true
         if @current_node.save!
@@ -54,7 +52,6 @@ class NodesController < ApplicationController
           send_error('Forbidden', 403)
         end
       else
-        clear_logs 'else'
         @current_node.locked = false
         if @current_node.save!
           Action.create(name: 'unsecured', obj_id: @current_node.id, object_type: 'node', object: '', organization_id: @current_organization.id, user_id: current_user.id, user: current_user.email)
@@ -123,12 +120,21 @@ class NodesController < ApplicationController
     end
     render json: @tree, status: 200
   end
+  
+  def restrain_link
+     render json: {link: "http://#{@current_organization}.unisphere.eu/nodes/#{@current_node.id}"}.to_json, status: 200
+  end
 
   private
 
   def can_create?
-    parent_owner = User.find(Node.find(params[:parent_id]).user_id)
-    send_error('Forbidden', '403') unless parent_owner.id == current_user.id or parent_owner.superadmin
+    user_id = Node.find(params[:parent_id]).user_id
+    if user_id == 0
+      parent_owner = User.find(@current_organization.nodes.first.user_id)
+    else
+      parent_owner = User.find(user_id)
+    end
+    send_error('Forbidden', '403') unless parent_owner.id == current_user.id or parent_owner.superadmin or @current_organization.nodes.where(parent_id: parent.id, archived: false).count > 0
   end
 
   def can_update?

@@ -1,0 +1,19 @@
+<div class="outer-modal-container ">
+  <div class="modal-container modal-ready-to-appear">
+    <div class="modal-header">
+      <span class="modal-title">{{ 'POPUP_DELETE_0' | translate }}{{nodeToDeleteName}}</span>
+      <span class="fa fa-times close-modal" ng-click="dismissModal(undefined)"></span>
+    </div>
+    <div class="modal-body">
+      <span class="modal-text" ng-if="!allowTransfer">{{ 'POPUP_DELETE_1' | translate }}</span>
+      <span class="modal-text" ng-if="allowTransfer">{{ 'POPUP_DELETE_2' | translate }}</br>{{ 'POPUP_DELETE_3' | translate }}</span>
+      <div class="modal-row-center">
+        <div ng-click="deleteNode()" class="modal-button" ng-class="{'modal-margin-right' : allowTransfer}">{{ 'POPUP_DELETE_4' | translate }}</div>
+        <div ng-if="allowTransfer" ng-click="deleteTransferNode()" class="modal-button modal-margin-left">{{ 'POPUP_DELETE_5' | translate }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-background"></div>
+

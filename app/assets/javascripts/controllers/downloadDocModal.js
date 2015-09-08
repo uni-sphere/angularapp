@@ -1,9 +1,10 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('ModalCtrl', ['$scope', 'close', 'url', '$timeout', function ($scope, close, url, $timeout) {
+  .controller('DownloadDocModalCtrl', ['$scope', 'close', 'url', '$timeout', 'preview', function ($scope, close, url, $timeout, preview) {
 
     $scope.documentUrl = url
+    $scope.preview = preview
 
     $timeout(function() {
       $('.modal-container').removeClass("modal-ready-to-appear")

@@ -82,11 +82,9 @@
               $scope.listUser.push(response.user);
               $scope.newUser = "";
               stopSpinner()
-              console.log(response.plain());
+              $scope.organizationForm.$setUntouched();
               console.log("New user added");
               Notification.success('Your colleague has been invited');
-              $scope.newUser = "";
-              $scope.organizationForm.$setUntouched();
             }, function(d){
               stopSpinner()
               console.log("Error: Invite colleague");
@@ -95,7 +93,10 @@
             });
           } else {
             Restangular.all('users').post({user_id: signup.response, organization_id: $scope.universityId}).then(function (d) {
+              $scope.listUser.push(response.user);
+              $scope.newUser = "";
               stopSpinner()
+              $scope.organizationForm.$setUntouched();
               console.log("link created")
               Notification.success('Your colleague has been invited');
             }, function(d) {
@@ -283,8 +284,6 @@
 
   }]);
 })();
-
-
 
 
 

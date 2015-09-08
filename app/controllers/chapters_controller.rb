@@ -3,9 +3,8 @@ class ChaptersController < ApplicationController
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action :current_subdomain
   before_action :current_organization
-  before_action :track_connexion
-  before_action :current_node, only: [:create, :index, :show, :update, :destroy, :is_allowed?]
-  before_action :current_chapter, only: [:show, :update, :destroy, :is_allowed?]
+  before_action :current_node, only: [:create, :index, :show, :update, :destroy, :is_allowed?, :restrain_link]
+  before_action :current_chapter, only: [:show, :update, :destroy, :is_allowed?, :restrain_link]
   before_action :is_allowed?, only: [:update, :destroy]
 
   def create
@@ -50,7 +49,11 @@ class ChaptersController < ApplicationController
     end
     render json: {tree: tree, locked: @current_node.locked}.to_json, status: 200
   end
-
+  
+  def restrain_link
+     render json: {link: "http://#{@current_organization}.unisphere.eu/chapters/#{@current_chapter.id}?node_id=#{@current_node.id}"}.to_json, status: 200
+  end
+  
   private
 
   def is_allowed?

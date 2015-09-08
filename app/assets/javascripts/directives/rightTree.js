@@ -18,12 +18,12 @@
           chapterFolded: '=',
           activeChapter: '=',
           breadcrumb: '=',
-          reloadNodes: '='
+          reloadNodes: '=',
+          userId: '='
         },
         link: function(scope){
 
           var dummyId = 50;
-
 
           (function findFoldedChapter(){
             // demo
@@ -43,12 +43,18 @@
             }
           })();
 
-          function showDownloadModal(url) {
+          function showDownloadModal(url, fileName) {
+            if(['png','jpg','pdf'].indexOf(fileName.substr(fileName.lastIndexOf('.') + 1).toLowerCase()) > -1){
+              var preview = true
+            } else{
+              var preview = false
+            }
             ModalService.showModal({
-              templateUrl: "webapp/downloadDoc.html",
-              controller: "ModalCtrl",
+              templateUrl: "webapp/download-doc-modal.html",
+              controller: "DownloadDocModalCtrl",
               inputs:{
-                url: url
+                url: url,
+                preview: preview
               }
             }).then(function(modal) {
               modal.close.then(function(result) {
@@ -56,20 +62,33 @@
             });
           }
 
-
           scope.nodeChangePassword = function(){
-            var result = prompt('Set your node password');
-            if(result){
-              Restangular.one('nodes/'+ scope.nodeEnd[0]).put({password: result, lock: true}).then(function(res) {
-                Notification.success("Password for node " + scope.nodeEnd[1] + " has been set")
-                scope.nodeProtected = true;
-                console.log("Ok: Password for node set");
-              }, function(d) {
-                console.log("Error: Set password for node");
-                console.log(d);
-                Notification.error("An error occcured while setting the password")
+            ModalService.showModal({
+              templateUrl: "webapp/set-node-password-modal.html",
+              controller: "SetNodePswCtrl",
+              inputs:{
+                name: scope.nodeEnd[1]
+              }
+            }).then(function(modal) {
+              modal.close.then(function(result) {
+                if(result){
+                  Restangular.one('nodes/'+ scope.nodeEnd[0]).put({password: result, lock: true}).then(function(res) {
+                    Notification.success("Password for node " + scope.nodeEnd[1] + " has been set")
+                    scope.nodeProtected = true;
+                    console.log("Ok: Password for node set");
+                  }, function(d) {
+                    if(d.status == 403){
+                      console.log("Ok: set password cancelled | This node is not yours")
+                      Notification.error("Your can't lock this node, it is not yours.")
+                    } else{
+                      console.log("Error: Set password for node");
+                      console.log(d);
+                      Notification.error("An error occcured while setting the password")
+                    }
+                  });
+                }
               });
-            }
+            });
           }
 
           scope.toggleProtection = function(d){
@@ -92,6 +111,17 @@
             if(newVals){
               //Loads docs
               if(scope.nodeEnd){
+                // gestion of the lock
+                if(scope.nodeEnd[2] != scope.userId){
+                  $('#protection-node-container .protection-file').attr('disabled', true)
+                  $('#protection-node-container .protection-file').addClass('protection-file-disabled')
+                  $('#protection-node-container .node-change-password').css('display', 'none')
+                } else{
+                  $('#protection-node-container .node-change-password').css('display', 'inline-block')
+                  $('#protection-node-container .protection-file').attr('disabled', false)
+                  $('#protection-node-container .protection-file').removeClass('protection-file-disabled')
+                }
+
                 if(scope.sandbox && scope.nodeEnd[0] > 49 || scope.home && scope.nodeEnd[0] > 49){
                   console.log("Ok: fake nodes")
                    scope.listItems = [];
@@ -266,30 +296,34 @@
               Notification.info("Function unavailable. This is a mockup version")
             } else if(!scope.nodeProtected){
               Restangular.one('awsdocuments', node.$modelValue.doc_id).get({node_id: scope.nodeEnd[0], chapter_id: node.$modelValue.parent}).then(function(mydoc){
-                showDownloadModal(mydoc)
+                showDownloadModal(mydoc, node.$modelValue.title)
               },function(d){
                 console.log(d);
                 console.log("Error: download doc")
                 Notification.error("Error while getting download link")
               });
             } else{
-              var result = prompt('Type the node password');
-              if(result){
-                Restangular.one('awsdocuments', node.$modelValue.doc_id).get({password: result, node_id: scope.nodeEnd[0], chapter_id: node.$modelValue.parent}).then(function (mydoc) {
-                  showDownloadModal(mydoc)
-                },function(d){
-                  if(d.status == 403){
-                    console.log("Ok: download file | wrong password")
-                    Notification.error("Wrong node password!")
-                  } else{
-                    console.log(d)
-                    console.log("Error: download doc")
-                    Notification.error("Error while getting download link")
-                  }
-                });
+              if(['png','jpg','pdf'].indexOf(node.$modelValue.title.substr(node.$modelValue.title.lastIndexOf('.') + 1).toLowerCase()) > -1){
+                var preview = true
+              } else{
+                var preview = false
               }
-            }
 
+              ModalService.showModal({
+                templateUrl: "webapp/download-protected-doc-modal.html",
+                controller: "DownloadProtectedProtectedDocModal",
+                inputs:{
+                  node_id: scope.nodeEnd[0],
+                  chapter_id: node.$modelValue.parent,
+                  preview: preview,
+                  demo: scope.sandbox || scope.home,
+                  doc_id: node.$modelValue.doc_id
+                }
+              }).then(function(modal) {
+                modal.close.then(function(result) {
+                });
+              });
+            }
           }
 
           // We watch when someone drag and drops a file / folder
@@ -694,8 +728,9 @@
                       content: file
                     }
                   }).then(function(fileUploaded) {
+                    console.log(fileUploaded.data.user_id)
                     scope.progressionUpload --;
-                    var a = {title: fileUploaded.data.title, doc_id: fileUploaded.data.id, document: true, preview_link: fileUploaded.data.url}
+                    var a = {title: fileUploaded.data.title, doc_id: fileUploaded.data.id, document: true, user_id: fileUploaded.data.user_id}
                     if(file.type == 'application/pdf'){
                       a.pdf = true;
                     }

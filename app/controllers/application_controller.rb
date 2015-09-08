@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   include SubdomaindevHelper
   
   protect_from_forgery with: :null_session
-  # before_action :track_connexion
   before_action :authenticate_client
   
   protected

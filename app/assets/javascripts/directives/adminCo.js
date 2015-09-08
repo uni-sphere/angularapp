@@ -1,51 +1,15 @@
 (function () {
   angular.module('mainApp.directives')
-  .directive('adminCo', [ 'Restangular', '$auth', 'Notification', function(Restangular, $auth, Notification) {
+  .directive('adminCo', [ 'Restangular', '$auth', 'Notification', 'ModalService', function(Restangular, $auth, Notification, ModalService) {
     return {
       restrict: 'E',
       templateUrl: 'webapp/admin-co.html',
       scope: {
-        admin: '=',
-        accountForgotten: '=',
-        accountForgottenEmail: '=',
         sandbox: '=',
         getBasicInfo: '=',
-        accountEmail: '=',
-        accountName: '=',
-        help: '=',
-        listUser: '='
+        admin: '='
       },
-      link: function(scope) {
-
-        function getBasicInfo(){
-          // We get the user email and name to display them
-          Restangular.one('user').get().then(function (d) {
-            scope.accountEmail = d.email
-            scope.accountName = d.name
-            scope.help = d.help
-
-            console.log("Ok: User info")
-            if(scope.help) {
-              // $('#first-connection').fadeIn(2000)
-            }
-
-
-            // We get the list of user in the organization
-            Restangular.one('users').get().then(function (d) {
-              scope.listUser = d.users
-              console.log("Ok: List of all user")
-            }, function(d){
-              console.log("Error: List of all user");
-              Notification.error('Error while getting institution infos. Please refresh')
-              console.log(d)
-            });
-
-          }, function(d){
-            console.log("Error: User info");
-            Notification.error('Error while getting user infos. Please refresh')
-            console.log(d)
-          });
-        }
+      link: function(scope, element, attrs) {
 
         scope.toggleAdmin = function(){
           if(scope.open == true){
@@ -62,9 +26,19 @@
 
         // PASSWORD FORGOTTEN
         scope.passwordForgotten = function() {
-          scope.accountForgottenEmail = scope.admincoEmail
-          scope.accountForgotten = true;
-          $('#account-forgotten-email').focus();
+          ModalService.showModal({
+            templateUrl: "webapp/account-forgotten-modal.html",
+            controller: "AccountForgottenModalCtrl",
+            inputs:{
+              email: scope.admincoEmail
+            }
+          }).then(function(modal) {
+            modal.close.then(function(result){
+              if(result){
+                Notification.success("Password reseted - we sent you an email")
+              }
+            });
+          });
         }
 
         scope.signupRequest = function(){
@@ -95,8 +69,12 @@
                 // }
 
 
-                scope.admin = true;
-                getBasicInfo()
+                scope.getBasicInfo()
+
+                // console.log(scope.admin)
+                // scope.$apply()
+                // scope.$apply(attrs.getBasicInfo);
+                // scope.$apply("getBasicInfo()");
               }, function(resp){
                 console.log(resp);
                 if(resp.reason == "unauthorized"){

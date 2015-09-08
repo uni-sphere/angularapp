@@ -27,7 +27,6 @@
 
         // We save the node of the user, so we can propose to display them in the first chart
         Restangular.one('report/nodes').get().then(function(data) {
-          console.log(data.plain())
           scope.userNodes = data.plain();
           scope.userActiveNode = scope.userNodes[0];
         });

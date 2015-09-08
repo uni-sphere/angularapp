@@ -2,8 +2,36 @@
 angular
   .module('mainApp.controllers')
   .controller('MainCtrl', ['$scope','$timeout', 'Restangular', '$translate', '$auth', '$state',
-   'usSpinnerService', 'Notification', 'ipCookie', function ($scope, $timeout, Restangular, $translate,
-    $auth, $state, usSpinnerService, Notification, ipCookie) {
+   'usSpinnerService', 'Notification', 'ipCookie', '$q', function ($scope, $timeout, Restangular, $translate,
+    $auth, $state, usSpinnerService, Notification, ipCookie, $q) {
+
+
+    $scope.deconnection = function(){
+      if($scope.sandbox){
+        $scope.admin = false;
+        $state.transitionTo('main.application');
+      } else{
+        $auth.signOut().then(function(resp) {
+          console.log("OK: deconnection successful")
+          $scope.admin = false;
+          $state.transitionTo('main.application');
+
+          $scope.accountEmail = undefined;
+          $scope.accountName = undefined;
+          $scope.userId = undefined;
+
+          // if(window.location.host != 'localhost:3000'){
+          //   FHChat.transitionTo('closed');
+          // }
+        }, function(d){
+          console.log(d)
+          console.log("Impossible to deco")
+          Notification.error('Error during deconnection. Please refresh.')
+        });
+      }
+    }
+
+
 
     if(window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
       console.log("SANDBOX")
@@ -15,9 +43,6 @@ angular
     } else if(window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home'){
       console.log("HOME")
       $scope.home = true
-      if(window.location.host == 'dev.unisphere.eu'){
-        $scope.dev = true;
-      }
     } else{
       console.log("NORMAL APP")
 
@@ -37,7 +62,7 @@ angular
       // console.log("Validation attempt: main.js")
       $auth.validateUser().then(function(){
         console.log("Ok: admin connected")
-        $scope.admin = true;
+
 
         // Help Center
         // if(window.location.host != 'localhost:3000'){
@@ -51,7 +76,7 @@ angular
         // }
 
         $scope.getBasicInfo()
-      }, function(){
+      }, function(d){
         console.log("Ok: Student co")
         $scope.admin = false
       })
@@ -67,29 +92,42 @@ angular
 
       // We get the user email and name to display them
       Restangular.one('user').get().then(function (user) {
+        // console.log(user.plain());
         $scope.accountEmail = user.email
         $scope.accountName = user.name
         $scope.help = user.help
         $scope.superadmin = user.superadmin
+        $scope.userId = user.id
+        $scope.viewNews = true
+        $scope.admin = true
         console.log("Ok: User info")
         if($scope.help) {
           // $('#first-connection').fadeIn(2000)
         }
 
-
-
+        if(!$scope.superadmin && !$scope.local){
+          Restangular.one('users/connection').put({id: $scope.universityId, user_id: $scope.userId}).then(function(d) {
+            console.log("Ok: admin tracked")
+          }, function(d){
+            console.log("Error: track admin")
+            console.log(d)
+          });
+        }
 
         // We get the list of user in the organization
         Restangular.one('users').get().then(function (listUser) {
           $scope.listUser = listUser.users
           console.log("Ok: List of all user")
 
-          Restangular.one('organization/actions').get().then(function (timeline) {
-            console.log("Ok: Timeline aquired")
-            $scope.timeline = timeline.actions;
-          }, function(d){
-            console.log("Error: Timeline")
-          });
+          if($scope.superadmin){
+            Restangular.one('organization/actions').get().then(function (timeline) {
+              console.log("Ok: Timeline aquired")
+              $scope.timeline = timeline.actions;
+            }, function(d){
+              console.log("Error: Timeline")
+            });
+          }
+
         }, function(d){
           console.log("Error: List of all user");
           Notification.error('Error while getting institution infos. Please refresh')
@@ -101,6 +139,7 @@ angular
         Notification.error('Error while getting user infos. Please refresh')
         console.log(d)
       });
+
     }
 
   }]);

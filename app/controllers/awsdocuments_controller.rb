@@ -3,10 +3,9 @@ class AwsdocumentsController < ApplicationController
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action :current_subdomain
   before_action :current_organization
-  before_action :track_connexion
   before_action :current_node, only: [:archives, :create, :show]
-  before_action :current_chapter, only: [:create, :show]
-  before_action :current_awsdocument, except: [:create]
+  before_action :current_chapter, only: [:create]
+  before_action :current_awsdocument, except: [:create, :restrain_link]
 
   before_action :is_allowed?, only: [:update, :destroy, :archives]
 
@@ -22,7 +21,7 @@ class AwsdocumentsController < ApplicationController
   end
 
   def show
-    # @current_node.reports.last.increase_downloads if !@current_node.reports.nil?
+    @current_node.reports.last.increase_downloads if !@current_node.reports.nil?
     if @current_node.locked
       if @current_node.password == params[:password]
         render json: @current_awsdocument.content.file.authenticated_url.to_json, status: 200
@@ -61,7 +60,11 @@ class AwsdocumentsController < ApplicationController
     @current_awsdocument.archive
     head 204
   end
-
+  
+  def restrain_link
+     render json: {link: "http://#{@current_organization}.unisphere.eu/awsdocuments/#{@current_awsdocument.id}"}.to_json, status: 200
+  end
+  
   private
 
   def is_allowed?

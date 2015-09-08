@@ -7,11 +7,12 @@
     <div class="modal-body">
       <span class="modal-text">{{ 'POPUP_VIEW_FILE_CHOICES' | translate }}</span>
       <div class="modal-row-center">
-        <a ng-href="{{documentUrl}}" ng-click="dismissModal()" download class="modal-button modal-margin-right">{{ 'POPUP_VIEW_DL' | translate }}</a>
-        <a ng-href="{{documentUrl}}" target="_blank" ng-click="dismissModal()" class="modal-button modal-margin-left">{{ 'POPUP_VIEW_PW' | translate }}</a>
+        <a ng-href="{{documentUrl}}" download="true" ng-click="dismissModal()" class="modal-button" ng-class="{'modal-margin-right' : preview}">{{ 'POPUP_VIEW_DL' | translate }}</a>
+        <a ng-if="preview" ng-href="{{documentUrl}}" target="_blank" ng-click="dismissModal()" class="modal-button modal-margin-left">{{ 'POPUP_VIEW_PW' | translate }}</a>
       </div>
     </div>
   </div>
 </div>
 
 <div class="modal-background"></div>
+

@@ -1,0 +1,25 @@
+<div class="outer-modal-container ">
+  <div class="modal-container modal-ready-to-appear">
+    <div class="modal-header">
+      <span class="modal-title">{{ 'POPUP_VIEW_FILE' | translate }}</span>
+      <span class="fa fa-times close-modal" ng-click="dismissModal()"></span>
+    </div>
+    <div class="modal-body">
+      <div id="modal-download-protected-doc">
+        <span class="modal-text" ng-class="{'modal-text-disabled' : !protectedNode}">{{ 'POPUP_LOCK' | translate }}</span>
+        <input type="password" class="modal-input" ng-model="nodePassword">
+        <button type="button" ng-click="unlockNode(nodePassword)" class="modal-button" ng-class="{'modal-button-disabled' : !protectedNode}">{{ 'ACCESS' | translate }}</button>
+      </div>
+      <div ng-show="!protectedNode" class="modal-vertical-separation">
+        <span class="modal-text">{{ 'POPUP_VIEW_FILE_CHOICES' | translate }}</span>
+        <div class="modal-row-center">
+          <a ng-href="{{linkUrl}}" download="true" ng-click="dismissModal()" class="modal-button" ng-class="{'modal-margin-right' : preview}">{{ 'POPUP_VIEW_DL' | translate }}</a>
+          <a ng-if="preview" ng-href="{{linkUrl}}" target="_blank" ng-click="dismissModal()" class="modal-button modal-margin-left">{{ 'POPUP_VIEW_PW' | translate }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-background"></div>
+
