@@ -10,6 +10,8 @@
 
     <div class="item-name"><span>{{item.title}}</span></div>
 
+    <a class="btn btn-download" ng-show="item.document" nodrag ng-click="downloadItem(this); $event.stopPropagation()"><span class="fa fa-arrow-circle-o-down"></span></a>
+
   </div>
 
   <ol ui-tree-nodes="options" ng-model="item.items" ng-init="initCounter()">

@@ -3,8 +3,8 @@
   angular.module('mainApp.directives')
     .directive('rightTree', ['Restangular', 'browser', '$upload',
                 'Notification', 'ipCookie', 'activateSpinner', 'stopSpinner',
-                '$window', 'ModalService', 'makeNested', function(Restangular, browser,
-                $upload, Notification, ipCookie, activateSpinner, stopSpinner, $window, ModalService, makeNested) {
+                '$window', 'ModalService', 'makeNested', 'createChap', function(Restangular, browser,
+                $upload, Notification, ipCookie, activateSpinner, stopSpinner, $window, ModalService, makeNested, createChap) {
       return {
         restrict: 'E',
         templateUrl: 'webapp/right-tree.html',
@@ -42,25 +42,6 @@
               }
             }
           })();
-
-          function showDownloadModal(url, fileName) {
-            if(['png','jpg','pdf'].indexOf(fileName.substr(fileName.lastIndexOf('.') + 1).toLowerCase()) > -1){
-              var preview = true
-            } else{
-              var preview = false
-            }
-            ModalService.showModal({
-              templateUrl: "webapp/download-doc-modal.html",
-              controller: "DownloadDocModalCtrl",
-              inputs:{
-                url: url,
-                preview: preview
-              }
-            }).then(function(modal) {
-              modal.close.then(function(result) {
-              });
-            });
-          }
 
           scope.nodeChangePassword = function(){
             ModalService.showModal({
@@ -171,13 +152,14 @@
 
           scope.$watch('listItems', function(newVals, oldVals) {
             if(newVals){
-
-
+              if(newVals.length == 0){
+                scope.documentAbsent = true;
+              } else{
+                scope.documentAbsent = false;
+              }
+              createChap(newVals)
             }
           }, true);
-
-          // Take flat data and make them nested
-
 
           function saveDownloadUpload(){
             if(scope.home || scope.sandbox){
@@ -197,35 +179,8 @@
           scope.downloadItem = function(node){
             if(scope.home || scope.sandbox){
               Notification.info("Function unavailable. This is a mockup version")
-            } else if(!scope.nodeProtected){
-              Restangular.one('awsdocuments', node.$modelValue.doc_id).get({node_id: scope.nodeEnd[0], chapter_id: node.$modelValue.parent}).then(function(mydoc){
-                showDownloadModal(mydoc, node.$modelValue.title)
-              },function(d){
-                console.log(d);
-                console.log("Error: download doc")
-                Notification.error("Error while getting download link")
-              });
             } else{
-              if(['png','jpg','pdf'].indexOf(node.$modelValue.title.substr(node.$modelValue.title.lastIndexOf('.') + 1).toLowerCase()) > -1){
-                var preview = true
-              } else{
-                var preview = false
-              }
-
-              ModalService.showModal({
-                templateUrl: "webapp/download-protected-doc-modal.html",
-                controller: "DownloadProtectedProtectedDocModal",
-                inputs:{
-                  node_id: scope.nodeEnd[0],
-                  chapter_id: node.$modelValue.parent,
-                  preview: preview,
-                  demo: scope.sandbox || scope.home,
-                  doc_id: node.$modelValue.doc_id
-                }
-              }).then(function(modal) {
-                modal.close.then(function(result) {
-                });
-              });
+              downloadItem(scope.nodeProtected,node.$modelValue.title)
             }
           }
 

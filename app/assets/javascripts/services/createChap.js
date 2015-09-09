@@ -2,13 +2,6 @@
   'use strict';
   angular.module('mainApp.directives').service('createChap', ['usSpinnerService', function(usSpinnerService) {
     return function(treeData) {
-
-      if(treeData.length == 0){
-        scope.documentAbsent = true;
-      } else{
-        scope.documentAbsent = false;
-      }
-
       var j = 1;
       var chap = [];
       var savedValueByDepth = [];
