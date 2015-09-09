@@ -1,0 +1,15 @@
+<div>chapter</div>
+
+<script type="text/ng-template" id="specific_renderer.html">
+  <div ui-tree-handle ng-click="selectDrop(this)" ng-if="!item.document">
+
+    <div ng-init="printChapter(this)" class="chapter-number" >{{item.chapter}}</div>
+
+    <div class="item-name">{{item.title}}</div>
+
+  </div>
+
+  <ol ui-tree-nodes="options" ng-model="item.items" ng-init="initCounter()">
+    <li ng-repeat="item in item.items" ui-tree-node ng-include="'specific_renderer.html'"  ng-init="initI()" ng-if="!item.document"></li>
+  </ol>
+</script>

@@ -70,18 +70,24 @@
         .state('main.view', {
           url: 'view',
           abstract: true,
-          templateUrl: 'view/view.html',
-          controller: 'ViewCtrl',
+          templateUrl: 'view/view.html'
         })
 
-        .state('main.view.chapter', {
-          url: '/chapter',
-          templateUrl: 'view/chapter.html'
+        .state('main.view.chapters', {
+          url: '/chapters/{id:int}',
+          templateUrl: 'view/chapters.html',
+          controller: 'ChaptersCtrl',
+          resolve:{
+            chapter_id: ['$stateParams', function($stateParams){
+              return $stateParams.id;
+            }]
+          }
         })
 
         .state('main.view.document', {
           url: '/document',
-          templateUrl: 'view/document.html'
+          templateUrl: 'view/document.html',
+
         })
 
         .state('main.superadmin', {

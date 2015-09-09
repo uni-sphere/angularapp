@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   get '/account', to: 'angular#index'
   get '/superadmin', to: 'angular#index'
   get '/view', to: 'angular#index'
-  get '/view/chapter', to: 'angular#index'
+  get '/view/chapters/:id', to: 'angular#index'
 
   get '/mailer', to: 'mail#index'
 
