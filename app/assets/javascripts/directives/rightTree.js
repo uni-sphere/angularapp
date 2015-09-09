@@ -3,8 +3,8 @@
   angular.module('mainApp.directives')
     .directive('rightTree', ['Restangular', 'browser', '$upload',
                 'Notification', 'ipCookie', 'activateSpinner', 'stopSpinner',
-                '$window', 'ModalService', function(Restangular, browser,
-                $upload, Notification, ipCookie, activateSpinner, stopSpinner, $window, ModalService) {
+                '$window', 'ModalService', 'makeNested', function(Restangular, browser,
+                $upload, Notification, ipCookie, activateSpinner, stopSpinner, $window, ModalService, makeNested) {
       return {
         restrict: 'E',
         templateUrl: 'webapp/right-tree.html',
@@ -172,109 +172,12 @@
           scope.$watch('listItems', function(newVals, oldVals) {
             if(newVals){
 
-              if(scope.listItems.length == 0){
-                scope.documentAbsent = true;
-              } else{
-                scope.documentAbsent = false;
-              }
 
-              var j = 1;
-              var chap = [];
-              var savedValueByDepth = [];
-              var previousDepth = 0;
-
-              function createChap(d){
-                if(!d.document){
-                  var newValueByDepth = savedValueByDepth;
-                  if(d.depth == previousDepth){
-                    // console.log("==");
-                    if(savedValueByDepth[[d.depth]] != undefined){
-                      newValueByDepth[d.depth] = savedValueByDepth[[d.depth]] + 1;
-                    } else{
-                      newValueByDepth[d.depth] = 1;
-                    }
-                    // console.log(newValueByDepth);
-                    savedValueByDepth = newValueByDepth;
-                  }
-                  if(d.depth > previousDepth){
-                    // console.log(">");
-                    if(savedValueByDepth[[d.depth]] == undefined){
-                      newValueByDepth[d.depth] = 1;
-                    } else{
-                      newValueByDepth[d.depth] = savedValueByDepth[[d.depth]] + 1;
-                    }
-                    savedValueByDepth = newValueByDepth;
-                  }
-                  if(d.depth < previousDepth){
-                    // console.log("<")
-                    var diff = previousDepth - d.depth;
-                    newValueByDepth[d.depth] = savedValueByDepth[d.depth] + 1;
-                    for(var i= 0; i < diff; i++){
-                      newValueByDepth.pop();
-                    }
-
-                    savedValueByDepth[d.depth] = savedValueByDepth[d.depth];
-                  }
-
-                  previousDepth = d.depth;
-                  d.chapter = newValueByDepth.join('.') + ".";
-                  // console.log(d.chapter);
-                }
-              }
-
-              function iterate(d){
-                createChap(d);
-                if(d.items){
-                  d.items.forEach(iterate);
-                }
-              }
-
-              newVals.forEach(iterate);
             }
           }, true);
 
           // Take flat data and make them nested
-          function makeNested(flatData){
-            var dataMap = flatData.reduce(function(map, node) {
-              map[node.id] = node;
-              return map;
-            }, {});
 
-            var treeData = [];
-            flatData.forEach(function(node) {
-
-              node.depth = 0;
-
-              if(node.chapter_id){
-                if(node.title.substr(node.title.lastIndexOf('.')+1) == 'pdf'){
-                  node.pdf = true
-                }
-                node.parent = node.chapter_id
-                node.doc_id = node.id
-                node.document = true
-                delete node.id
-                delete node.chapter_id
-                delete node.url
-              } else{
-                node.parent = node.parent_id
-                delete node.parent_id
-              }
-            });
-
-            flatData.forEach(function(node) {
-              node.items = [];
-
-              var parent = dataMap[node.parent];
-              if (parent) {
-                node.depth = node.depth + 1;
-                (parent.items || (parent.items = [])).push(node);
-              } else {
-                treeData.push(node);
-              }
-            });
-
-            return treeData;
-          }
 
           function saveDownloadUpload(){
             if(scope.home || scope.sandbox){

@@ -1,15 +1,24 @@
-<div>chapter</div>
+<script type="text/ng-template" id="chapter-view.html">
+  <div ui-tree-handle>
+    <div class="chapter-number" ng-if="!item.document" ng-class="{depth1 : item.depth == 1, depth2 : item.depth == 2, depth3 : item.depth == 3, depth4 : item.depth == 4}">{{item.chapter}} </div>
 
-<script type="text/ng-template" id="specific_renderer.html">
-  <div ui-tree-handle ng-click="selectDrop(this)" ng-if="!item.document">
+    <div class="fa fa-file-pdf-o file-icon" ng-if="this.$modelValue.document && this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1).toLowerCase() == 'pdf'"></div>
 
-    <div ng-init="printChapter(this)" class="chapter-number" >{{item.chapter}}</div>
+    <div class="fa fa-file-picture-o file-icon" ng-if="this.$modelValue.document && ['png','jpg'].indexOf(this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1).toLowerCase()) >= 0"></div>
 
-    <div class="item-name">{{item.title}}</div>
+    <div class="fa fa-file-o file-icon" ng-hide="!this.$modelValue.document || this.$modelValue.document && ['png','jpg','pdf'].indexOf(this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1).toLowerCase()) >= 0"></div>
+
+    <div class="item-name"><span>{{item.title}}</span></div>
 
   </div>
 
   <ol ui-tree-nodes="options" ng-model="item.items" ng-init="initCounter()">
-    <li ng-repeat="item in item.items" ui-tree-node ng-include="'specific_renderer.html'"  ng-init="initI()" ng-if="!item.document"></li>
+    <li ng-repeat="item in item.items" ui-tree-node ng-include="'chapter-view.html'" ng-init="initI()"></li>
   </ol>
 </script>
+
+<div id="small-ui-tree" ui-tree="options" data-drag-enabled="false">
+  <ol ui-tree-nodes ng-model="listItems" >
+    <li ng-repeat="item in listItems" ui-tree-node ng-include="'chapter-view.html'"></li>
+  </ol>
+</div>
