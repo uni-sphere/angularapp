@@ -57,32 +57,29 @@ angular
         Notification.error("Can you please refresh the page, there was an error");
       });
 
-      if(window.location.pathname.indexOf("/view") > -1){
-        $scope.restrainView = true
-      } else{
-        // We authentificated the user
-        // console.log("Validation attempt: main.js")
-        $auth.validateUser().then(function(){
-          console.log("Ok: admin connected")
+
+      // We authentificated the user
+      // console.log("Validation attempt: main.js")
+      $auth.validateUser().then(function(){
+        console.log("Ok: admin connected")
 
 
-          // Help Center
-          // if(window.location.host != 'localhost:3000'){
-          //   FHChat = {product_id: "6227bca7722d"};
-          //   FHChat.properties={};
-          //   FHChat.set=function(key,data){this.properties[key]=data};
-          //   !function(){
-          //     var a,b;
-          //     return b=document.createElement("script"),a=document.getElementsByTagName("script")[0],b.src="https://chat-client-js.firehoseapp.com/chat-min.js",b.async=!0,a.parentNode.insertBefore(b,a)
-          //   }();
-          // }
+        // Help Center
+        // if(window.location.host != 'localhost:3000'){
+        //   FHChat = {product_id: "6227bca7722d"};
+        //   FHChat.properties={};
+        //   FHChat.set=function(key,data){this.properties[key]=data};
+        //   !function(){
+        //     var a,b;
+        //     return b=document.createElement("script"),a=document.getElementsByTagName("script")[0],b.src="https://chat-client-js.firehoseapp.com/chat-min.js",b.async=!0,a.parentNode.insertBefore(b,a)
+        //   }();
+        // }
 
-          $scope.getBasicInfo()
-        }, function(d){
-          console.log("Ok: Student co")
-          $scope.admin = false
-        })
-      }
+        $scope.getBasicInfo()
+      }, function(d){
+        console.log("Ok: Student co")
+        $scope.admin = false
+      })
 
 
     }

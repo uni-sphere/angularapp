@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="chapter-view.html">
-  <div ui-tree-handle>
+  <div ui-tree-handle ng-class="{'isChapter' : !item.document, 'isdocument' : item.document}">
     <div class="chapter-number" ng-if="!item.document" ng-class="{depth1 : item.depth == 1, depth2 : item.depth == 2, depth3 : item.depth == 3, depth4 : item.depth == 4}">{{item.chapter}} </div>
 
     <div class="fa fa-file-pdf-o file-icon" ng-if="this.$modelValue.document && this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1).toLowerCase() == 'pdf'"></div>
@@ -8,19 +8,27 @@
 
     <div class="fa fa-file-o file-icon" ng-hide="!this.$modelValue.document || this.$modelValue.document && ['png','jpg','pdf'].indexOf(this.$modelValue.title.substr(this.$modelValue.title.lastIndexOf('.') + 1).toLowerCase()) >= 0"></div>
 
-    <div class="item-name"><span>{{item.title}}</span></div>
-
-    <a class="btn btn-download" ng-show="item.document" nodrag ng-click="downloadItem(this); $event.stopPropagation()"><span class="fa fa-arrow-circle-o-down"></span></a>
+    <div class="item-name" ng-show="!item.document"><span>{{item.title}}</span></div>
+    <div class="item-name" ng-show="item.document" ng-click="downloadItem(this)"><span>{{item.title}}</span></div>
 
   </div>
 
   <ol ui-tree-nodes="options" ng-model="item.items" ng-init="initCounter()">
-    <li ng-repeat="item in item.items" ui-tree-node ng-include="'chapter-view.html'" ng-init="initI()"></li>
+    <li ng-repeat="item in item.items" ui-tree-node ng-include="'chapter-view.html'"></li>
   </ol>
 </script>
 
-<div id="small-ui-tree" ui-tree="options" data-drag-enabled="false">
-  <ol ui-tree-nodes ng-model="listItems" >
-    <li ng-repeat="item in listItems" ui-tree-node ng-include="'chapter-view.html'"></li>
-  </ol>
+
+<div id="view-chapter">
+  <div id="view-chapter-title">
+    <span>{{rootchapter}}</span>
+    <i ng-show="locked"class="fa fa-lock"></i>
+    <i ng-show="!locked" class="fa fa-unlock-alt"></i>
+  </div>
+
+  <div id="view-chapter-tree" ui-tree="options" data-drag-enabled="false">
+    <ol ui-tree-nodes ng-model="listItems" >
+      <li ng-repeat="item in listItems" ui-tree-node ng-include="'chapter-view.html'"></li>
+    </ol>
+  </div>
 </div>
