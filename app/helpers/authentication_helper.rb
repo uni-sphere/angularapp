@@ -79,8 +79,7 @@ module AuthenticationHelper
   end
 
   def current_node
-    clear_logs request.inspect
-    if true
+    if !URI(request.referer).path.include? '/view/'
       params[:node_id] = params[:id] if request.url.split('?').first.include? 'node'
       if params[:node_id]
         if @current_organization.nodes.where(archived: false).exists? params[:node_id]
@@ -151,6 +150,7 @@ module AuthenticationHelper
   end
 
 end
+
 
 
 

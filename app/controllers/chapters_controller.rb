@@ -22,14 +22,18 @@ class ChaptersController < ApplicationController
   def show
     @current_chapter = Chapter.find(params[:id])
     tree = []
-    tree << @current_chapter
-    Chapter.where(archived: false, parent_id: @current_chapter.id).each do |chapter|
+    queue = [@current_chapter]
+    while queue != [] do
+      chapter = queue.pop
       tree << chapter
       Awsdocument.where(chapter_id: chapter.id, archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).each do |document|
         tree << (document) if !document.archived
       end
+      Chapter.where(archived: false, parent_id: chapter.id).each do |chap|
+        queue << chap
+      end
     end
-    render json: {tree: tree, locked: Node.find(@current_chapter.node_id).locked}.to_json, status: 200
+    render json: {tree: tree, locked: Node.find(@current_chapter.node_id).locked, node_id: @current_chapter.node_id}.to_json, status: 200
   end
 
   def update
