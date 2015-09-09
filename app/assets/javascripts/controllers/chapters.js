@@ -4,7 +4,7 @@ angular
   .controller('ChaptersCtrl', ['$scope', 'Restangular','Notification', 'chapter_id', function ($scope, Restangular, Notification, chapter_id) {
 
     Restangular.one('chapters', chapter_id).get().then(function(flatChapters){
-      console.log(flatChapters)
+      console.log(flatChapters.plain())
     },function(d){
       console.log(d);
       console.log("Error: getting restrained chapters")

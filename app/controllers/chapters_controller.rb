@@ -23,7 +23,7 @@ class ChaptersController < ApplicationController
     @current_chapter = Chapter.find(params[:id])
     tree = []
     tree << @current_chapter
-    Chapters.where(archived: false, parent_id: @current_chapter.id).each do |chapter|
+    Chapter.where(archived: false, parent_id: @current_chapter.id).each do |chapter|
       tree << chapter
       Awsdocument.where(chapter_id: chapter.id, archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).each do |document|
         tree << (document) if !document.archived

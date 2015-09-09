@@ -48,6 +48,7 @@ Rails.application.routes.draw do
   get '/superadmin', to: 'angular#index'
   get '/view', to: 'angular#index'
   get '/view/chapters/:id', to: 'angular#index'
+  get '/view/documents/:id', to: 'angular#index'
 
   get '/mailer', to: 'mail#index'
 

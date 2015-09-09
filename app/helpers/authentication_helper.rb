@@ -79,15 +79,18 @@ module AuthenticationHelper
   end
 
   def current_node
-    params[:node_id] = params[:id] if request.url.split('?').first.include? 'node'
-    if params[:node_id]
-      if @current_organization.nodes.where(archived: false).exists? params[:node_id]
-        @current_node = @current_organization.nodes.find params[:node_id]
+    clear_logs request.inspect
+    if true
+      params[:node_id] = params[:id] if request.url.split('?').first.include? 'node'
+      if params[:node_id]
+        if @current_organization.nodes.where(archived: false).exists? params[:node_id]
+          @current_node = @current_organization.nodes.find params[:node_id]
+        else
+          send_error('node not found', 404)
+        end
       else
-        send_error('node not found', 404)
+        send_error('node id not received', 400)
       end
-    else
-      send_error('node id not received', 400)
     end
   end
 

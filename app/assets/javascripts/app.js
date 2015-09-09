@@ -84,10 +84,15 @@
           }
         })
 
-        .state('main.view.document', {
-          url: '/document',
-          templateUrl: 'view/document.html',
-
+        .state('main.view.documents', {
+          url: '/documents/{id:int}',
+          templateUrl: 'view/documents.html',
+          controller: 'DocumentsCtrl',
+          resolve:{
+            document_id: ['$stateParams', function($stateParams){
+              return $stateParams.id;
+            }]
+          }
         })
 
         .state('main.superadmin', {
