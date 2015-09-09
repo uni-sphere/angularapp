@@ -4,7 +4,13 @@ angular
   .controller('ChaptersCtrl', ['$scope', 'Restangular','Notification', 'chapter_id', 'makeNested', 'createChap', 'downloadItem', function ($scope, Restangular, Notification, chapter_id, makeNested, createChap, downloadItem) {
 
     Restangular.one('chapters', chapter_id).get().then(function(flatChapters){
-      flatChapters.tree.shift()
+      var rootchapter = flatChapters.tree.shift()
+      if(rootchapter.title == 'main'){
+        $scope.rootchapter = flatChapters.name
+      } else{
+        $scope.rootchapter = rootchapter.title;
+      }
+
       $scope.locked = flatChapters.locked
       $scope.node_id = flatChapters.node_id
       $scope.listItems = makeNested(flatChapters.tree)
@@ -16,11 +22,8 @@ angular
     });
 
     $scope.downloadItem = function(node){
-      // console.log(node.$modelValue)
       downloadItem($scope.locked, node.$modelValue.title, false, node.$modelValue.doc_id, node.$modelValue.parent,$scope.node_id)
     }
-
-
 
   }]);
 })();

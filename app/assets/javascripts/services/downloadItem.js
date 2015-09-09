@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  angular.module('mainApp.directives').service('downloadItem', ['Restangular', 'ModalService', function(Restangular, ModalService) {
+  angular.module('mainApp.directives').service('downloadItem', ['Restangular', 'ModalService', 'Notification', function(Restangular, ModalService, Notification) {
     return function(nodeProtected, title, demo, doc_id, chapter_id, node_id) {
       if(['png','jpg','pdf'].indexOf(title.substr(title.lastIndexOf('.') + 1).toLowerCase()) > -1){
         var preview = true

@@ -67,15 +67,16 @@
           }
         })
 
-        .state('main.view', {
-          url: 'view',
+        .state('view', {
+          url: '/view',
           abstract: true,
-          templateUrl: 'view/view.html'
+          templateUrl: 'restrainview/restrainview.html',
+          controller: 'RestrainCtrl',
         })
 
-        .state('main.view.chapters', {
+        .state('view.chapters', {
           url: '/chapters/{id:int}',
-          templateUrl: 'view/chapters.html',
+          templateUrl: 'restrainview/chapters.html',
           controller: 'ChaptersCtrl',
           resolve:{
             chapter_id: ['$stateParams', function($stateParams){
@@ -84,9 +85,9 @@
           }
         })
 
-        .state('main.view.documents', {
+        .state('view.documents', {
           url: '/documents/{id:int}',
-          templateUrl: 'view/documents.html',
+          templateUrl: 'restrainview/documents.html',
           controller: 'DocumentsCtrl',
           resolve:{
             document_id: ['$stateParams', function($stateParams){
