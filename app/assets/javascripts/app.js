@@ -132,7 +132,7 @@
 
     $authProvider.configure({
       apiUrl: getEnvironment(),
-      passwordResetSuccessUrl: window.location.href + 'account'
+      passwordResetSuccessUrl: window.location.href // + 'account'
     });
 
     RestangularProvider

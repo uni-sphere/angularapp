@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     resources :nodes, only: [:create, :index, :update, :destroy]
     resources :organizations, only: [:create, :index, :update, :destroy]
     resources :chapters, only: [:create, :show, :index, :update, :destroy]
-    resources :awsdocuments, only: [:create, :show, :update, :destroy] do
+    resources :awsdocuments, only: [:create, :show, :update, :destroy, :index] do
       member do
         put 'unarchive'
       end

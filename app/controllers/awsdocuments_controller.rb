@@ -5,8 +5,7 @@ class AwsdocumentsController < ApplicationController
   before_action :current_organization
   before_action :current_node, only: [:archives, :create, :show]
   before_action :current_chapter, only: [:create]
-  before_action :current_awsdocument, except: [:create, :restrain_link]
-
+  before_action :current_awsdocument, except: [:create, :restrain_link, :index]
   before_action :is_allowed?, only: [:update, :destroy, :archives]
 
   def create
@@ -31,6 +30,10 @@ class AwsdocumentsController < ApplicationController
     else
       render json: @current_awsdocument.content.file.authenticated_url.to_json, status: 200
     end
+  end
+  
+  def index
+    render json: Awsdocument.where(id: params[:id], archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).to_json, status: 200
   end
 
   def archives
