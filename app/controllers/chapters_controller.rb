@@ -33,7 +33,7 @@ class ChaptersController < ApplicationController
         queue << chap
       end
     end
-    render json: {tree: tree, locked: Node.find(@current_chapter.node_id).locked, node_id: @current_chapter.node_id}.to_json, status: 200
+    render json: {tree: tree, locked: Node.find(@current_chapter.node_id).locked, node_id: @current_chapter.node_id, name: Node.find(@current_chapter.node_id).name}.to_json, status: 200
   end
 
   def update
