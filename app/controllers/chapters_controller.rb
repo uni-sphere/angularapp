@@ -3,8 +3,8 @@ class ChaptersController < ApplicationController
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action :current_subdomain
   before_action :current_organization
-  before_action :current_node, only: [:create, :index, :show, :update, :destroy, :is_allowed?, :restrain_link]
-  before_action :current_chapter, only: [:show, :update, :destroy, :is_allowed?, :restrain_link]
+  before_action :current_node, only: [:create, :index, :update, :destroy, :is_allowed?, :restrain_link]
+  before_action :current_chapter, only: [:update, :destroy, :is_allowed?, :restrain_link]
   before_action :is_allowed?, only: [:update, :destroy]
 
   def create
@@ -20,7 +20,16 @@ class ChaptersController < ApplicationController
   end
 
   def show
-    render json: @current_chapter, status: 200
+    @current_chapter = Chapter.find(params[:id])
+    tree = []
+    tree << @current_chapter
+    Chapters.where(archived: false, parent_id: @current_chapter.id).each do |chapter|
+      tree << chapter
+      Awsdocument.where(chapter_id: chapter.id, archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).each do |document|
+        tree << (document) if !document.archived
+      end
+    end
+    render json: {tree: tree, locked: Node.find(@current_chapter.node_id).locked}.to_json, status: 200
   end
 
   def update
@@ -51,7 +60,7 @@ class ChaptersController < ApplicationController
   end
   
   def restrain_link
-     render json: {link: "http://#{@current_organization}.unisphere.eu/chapters/#{@current_chapter.id}?node_id=#{@current_node.id}"}.to_json, status: 200
+     render json: {link: "http://#{@current_organization}.unisphere.eu/chapters/#{@current_chapter.id}"}.to_json, status: 200
   end
   
   private

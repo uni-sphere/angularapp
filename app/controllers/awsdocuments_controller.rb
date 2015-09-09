@@ -6,7 +6,6 @@ class AwsdocumentsController < ApplicationController
   before_action :current_node, only: [:archives, :create, :show]
   before_action :current_chapter, only: [:create]
   before_action :current_awsdocument, except: [:create, :restrain_link]
-
   before_action :is_allowed?, only: [:update, :destroy, :archives]
 
   def create
@@ -21,15 +20,19 @@ class AwsdocumentsController < ApplicationController
   end
 
   def show
-    @current_node.reports.last.increase_downloads if !@current_node.reports.nil?
-    if @current_node.locked
-      if @current_node.password == params[:password]
-        render json: @current_awsdocument.content.file.authenticated_url.to_json, status: 200
+    if !params[:node_id].nil?
+      @current_node.reports.last.increase_downloads if !@current_node.reports.nil?
+      if @current_node.locked
+        if @current_node.password == params[:password]
+          render json: @current_awsdocument.content.file.authenticated_url.to_json, status: 200
+        else
+          send_error('Forbidden', '403')
+        end
       else
-        send_error('Forbidden', '403')
+        render json: @current_awsdocument.content.file.authenticated_url.to_json, status: 200
       end
     else
-      render json: @current_awsdocument.content.file.authenticated_url.to_json, status: 200
+      render json: Awsdocument.where(id: params[:id], archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).to_json, status: 200
     end
   end
 

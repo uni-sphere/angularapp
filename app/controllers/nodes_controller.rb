@@ -3,7 +3,7 @@ class NodesController < ApplicationController
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action :current_subdomain
   before_action :current_organization
-  before_action :current_node, only: [:update, :destroy, :can_destroy?, :can_update?, :restrain_link]
+  before_action :current_node, only: [:update, :destroy, :can_destroy?, :can_update?]
   before_action :can_create?, only: [:create]
   before_action :can_destroy?, only: [:destroy]
   before_action :can_update?, only: [:update]
@@ -119,10 +119,6 @@ class NodesController < ApplicationController
       end
     end
     render json: @tree, status: 200
-  end
-  
-  def restrain_link
-     render json: {link: "http://#{@current_organization}.unisphere.eu/nodes/#{@current_node.id}"}.to_json, status: 200
   end
 
   private
