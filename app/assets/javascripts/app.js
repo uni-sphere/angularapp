@@ -67,6 +67,23 @@
           }
         })
 
+        .state('main.view', {
+          url: 'view',
+          abstract: true,
+          templateUrl: 'view/view.html',
+          controller: 'ViewCtrl',
+        })
+
+        .state('main.view.chapter', {
+          url: '/chapter',
+          templateUrl: 'view/chapter.html'
+        })
+
+        .state('main.view.document', {
+          url: '/document',
+          templateUrl: 'view/document.html'
+        })
+
         .state('main.superadmin', {
           url: 'superadmin',
           templateUrl: 'superadmin/superadmin.html',

@@ -692,7 +692,8 @@
                 templateUrl: "webapp/rename-item.html",
                 controller: "RenameModalCtrl",
                 inputs:{
-                  name: node.name
+                  name: node.name,
+                  length: 10
                 }
               }).then(function(modal) {
                 modal.close.then(function(result) {
