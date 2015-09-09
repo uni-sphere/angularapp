@@ -5,12 +5,10 @@ angular
 
     Restangular.one('chapters', chapter_id).get().then(function(flatChapters){
       flatChapters.tree.shift()
-      console.log(flatChapters.tree)
       $scope.locked = flatChapters.locked
       $scope.node_id = flatChapters.node_id
-      // console.log(flatChapters.locked)
-      // $scope.listItems = makeNested(flatChapters.tree)
-      // createChap($scope.listItems)
+      $scope.listItems = makeNested(flatChapters.tree)
+      createChap($scope.listItems)
     },function(d){
       console.log(d);
       console.log("Error: getting restrained chapters")
