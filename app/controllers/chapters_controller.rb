@@ -20,7 +20,7 @@ class ChaptersController < ApplicationController
   end
 
   def show
-    @current_chapter = Chapter.find(params[:chapter_id])
+    @current_chapter = Chapter.find(params[:id])
     tree = []
     tree << @current_chapter
     Chapters.where(archived: false, parent_id: @current_chapter.id).each do |chapter|
@@ -60,7 +60,7 @@ class ChaptersController < ApplicationController
   end
   
   def restrain_link
-     render json: {link: "http://#{@current_organization}.unisphere.eu/ chapters/#{@current_chapter.id}?node_id=#{@current_node.id}"}.to_json, status: 200
+     render json: {link: "http://#{@current_organization}.unisphere.eu/chapters/#{@current_chapter.id}"}.to_json, status: 200
   end
   
   private

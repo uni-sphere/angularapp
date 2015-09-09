@@ -1,13 +1,13 @@
 <div class="outer-modal-container ">
   <div class="modal-container modal-ready-to-appear">
     <div class="modal-header">
-      <span class="modal-title">Rename {{renameModalToDisplay}}</span>
+      <span class="modal-title">{{ 'RENAME_SPACE' | translate }}{{renameModalToDisplay}}</span>
       <span class="fa fa-times close-modal" ng-click="dismissModal()"></span>
     </div>
     <div class="modal-body">
       <input class="modal-input" ng-model="renameModalName" autofocus required>
-      <div ng-click="renameModal()" class="modal-button">Rename</div>
-      <div class="modal-hint">Hint: Your node name most be less than 15 caracters</div>
+      <div ng-click="renameModal()" class="modal-button">{{ 'RENAME' | translate }}</div>
+      <div class="modal-hint">{{ 'HINT' | translate }}</div>
     </div>
   </div>
 </div>

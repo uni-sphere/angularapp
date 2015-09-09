@@ -234,7 +234,10 @@
         SET_PSW_FOR: 'Set password for ',
         SET_PSW: 'Set password',
         POPUP_LOCK: 'This node is protected. Enter your password to unlock it',
-        ACCESS: 'Access'
+        ACCESS: 'Access',
+        RENAME_SPACE: 'Rename ',
+        RENAME: 'Rename',
+        HINT: 'Hint: Your node name most be less than 15 caracters'
       })
       .translations('fr', {
         HELP: 'Aide',
@@ -311,7 +314,10 @@
         SET_PSW_FOR: 'Nouveau mot de passe pour ',
         SET_PSW: 'Nouveau mot de passe',
         POPUP_LOCK: 'Noeud sécurisé. Entrez le mot de passe pour y accéder.',
-        ACCESS: 'Accéder'
+        ACCESS: 'Accéder',
+        RENAME_SPACE: 'Renommer ',
+        RENAME: 'Renommer',
+        HINT: 'Le nom du noeud doit contenir moins de 15 charactères'
       })
       .preferredLanguage('en')
       .registerAvailableLanguageKeys(['fr'])
