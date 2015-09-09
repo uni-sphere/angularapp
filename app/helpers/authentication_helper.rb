@@ -79,7 +79,7 @@ module AuthenticationHelper
   end
 
   def current_node
-    if !URI(request.referer).path.include? '/view/'
+    if !URI(request.referer).path.include? '/view/documents/'
       params[:node_id] = params[:id] if request.url.split('?').first.include? 'node'
       if params[:node_id]
         if @current_organization.nodes.where(archived: false).exists? params[:node_id]
