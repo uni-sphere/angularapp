@@ -3,8 +3,8 @@
   angular.module('mainApp.directives')
     .directive('rightTree', ['Restangular', 'browser', '$upload',
                 'Notification', 'ipCookie', 'activateSpinner', 'stopSpinner',
-                '$window', 'ModalService', 'makeNested', 'createChap', function(Restangular, browser,
-                $upload, Notification, ipCookie, activateSpinner, stopSpinner, $window, ModalService, makeNested, createChap) {
+                '$window', 'ModalService', 'makeNested', 'createChap', 'downloadItem', function(Restangular, browser,
+                $upload, Notification, ipCookie, activateSpinner, stopSpinner, $window, ModalService, makeNested, createChap, downloadItem) {
       return {
         restrict: 'E',
         templateUrl: 'webapp/right-tree.html',
@@ -180,7 +180,7 @@
             if(scope.home || scope.sandbox){
               Notification.info("Function unavailable. This is a mockup version")
             } else{
-              downloadItem(scope.nodeProtected,node.$modelValue.title)
+              downloadItem(scope.nodeProtected,node.$modelValue.title, scope.sandbox || scope.home, node.$modelValue.doc_id, node.$modelValue.parent, scope.nodeEnd[0])
             }
           }
 

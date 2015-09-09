@@ -1,15 +1,15 @@
 (function () {
   'use strict';
-  angular.module('mainApp.directives').service('downloadItem', ['usSpinnerService', function(usSpinnerService) {
-    return function(nodeProtected, title) {
-      if(['png','jpg','pdf'].indexOf(node.$modelValue.title.substr(node.$modelValue.title.lastIndexOf('.') + 1).toLowerCase()) > -1){
+  angular.module('mainApp.directives').service('downloadItem', ['Restangular', 'ModalService', function(Restangular, ModalService) {
+    return function(nodeProtected, title, demo, doc_id, chapter_id, node_id) {
+      if(['png','jpg','pdf'].indexOf(title.substr(title.lastIndexOf('.') + 1).toLowerCase()) > -1){
         var preview = true
       } else{
         var preview = false
       }
 
       if(!nodeProtected){
-        Restangular.one('awsdocuments', node.$modelValue.doc_id).get({node_id: scope.nodeEnd[0], chapter_id: node.$modelValue.parent}).then(function(mydoc){
+        Restangular.one('awsdocuments', doc_id).get({node_id: node_id, chapter_id: chapter_id}).then(function(mydoc){
           ModalService.showModal({
             templateUrl: "webapp/download-doc-modal.html",
             controller: "DownloadDocModalCtrl",
@@ -32,11 +32,11 @@
           templateUrl: "webapp/download-protected-doc-modal.html",
           controller: "DownloadProtectedProtectedDocModal",
           inputs:{
-            node_id: scope.nodeEnd[0],
-            chapter_id: node.$modelValue.parent,
+            node_id: node_id,
+            chapter_id: chapter_id,
             preview: preview,
-            demo: scope.sandbox || scope.home,
-            doc_id: node.$modelValue.doc_id
+            demo: demo,
+            doc_id: doc_id
           }
         }).then(function(modal) {
           modal.close.then(function(result) {
