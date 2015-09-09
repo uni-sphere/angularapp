@@ -101,7 +101,8 @@ angular
           templateUrl: "webapp/rename-item.html",
           controller: "RenameModalCtrl",
           inputs:{
-            name: itemToUpdate.title
+            name: itemToUpdate.title,
+            length: 0
           }
         }).then(function(modal) {
           modal.close.then(function(result) {
@@ -152,7 +153,8 @@ angular
           templateUrl: "webapp/rename-item.html",
           controller: "RenameModalCtrl",
           inputs:{
-            name: node.$modelValue.title
+            name: node.$modelValue.title,
+            length: 0
           }
         }).then(function(modal) {
           modal.close.then(function(result) {

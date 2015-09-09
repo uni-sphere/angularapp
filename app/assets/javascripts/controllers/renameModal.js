@@ -1,7 +1,7 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('RenameModalCtrl', ['$scope', 'close', 'name', '$timeout', function ($scope, close, name, $timeout) {
+  .controller('RenameModalCtrl', ['$scope', 'close', 'name', '$timeout', 'length', function ($scope, close, name, $timeout, length) {
 
     if(name.indexOf('.') > -1){
       var fileName = name.split('.')[0];
