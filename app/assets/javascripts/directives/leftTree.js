@@ -499,7 +499,7 @@
               // than we need to change the cookies
 
               function deleteProperly(node, nodeInitial){
-                if(node.num == scope.nodeEnd[0]){
+                if(node.num == scope.nodeEnd[1]){
 
                   findFoldedNodes(scope.root);
                   findActiveNodes(nodeInitial.parent)

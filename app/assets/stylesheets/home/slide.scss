@@ -1,0 +1,132 @@
+#slide {
+  display: block;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  color: rgb(71, 82, 93);
+}
+
+#welcome-wrapper {
+  position: relative;
+  padding-top: 100px;
+  margin-bottom: 100px;
+}
+
+#welcome-title {
+  display: block;
+  text-align: center;
+  font-size: 3em;
+}
+
+#welcome-comment {
+  display: block;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  font-size: 2em;
+}
+
+#test-app {
+  position: relative;
+  background: blue;
+  width: 75%;
+  display: inline-block;
+}
+
+#features-wrapper {
+  position: relative;
+}
+
+.feature {
+  position: relative;
+  display: block;
+  text-align: center;
+  margin: 100px 0;
+}
+
+.feature-content {
+  position: relative;
+  display: inline-block;
+  width: 30%;
+  text-align: left;
+  padding: 15px 30px;
+  margin: 0 50px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  line-height: 150%;
+  vertical-align: middle;
+  font-size: 1.2em;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.content-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 2em;
+  margin-bottom: 20px;
+  line-height: 100%;
+}
+
+#map-wrapper {
+  position: relative;
+  display: block;
+  text-align: center;
+}
+
+#map-picture {
+  position: relative;
+  background: blue;
+  width: 75%;
+  display: inline-block;
+  margin: 100px 0;
+}
+
+#deployement-wrapper {
+  text-align: center;
+}
+
+.deployement-content {
+  position: relative;
+  display: inline-block;
+  width: 30%;
+  text-align: left;
+  padding: 15px 30px;
+  margin: 0 40px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  line-height: 150%;
+  vertical-align: middle;
+  font-size: 1.2em;
+}
+
+.subdomain {
+  font-family: Arial;
+  font-size: 1.2em;
+  border: 3px solid grey;
+  border-radius: 5px;
+}
+
+#contact-wrapper{
+  position: relative;
+}
+
+.contact-content {
+  position: relative;
+  display: inline-block;
+  margin: 100px 0;
+  padding: 15px 30px;
+  color: grey;
+  i {
+    font-size: 2em;
+  }
+}
+
+#footer-web {
+  position: relative;
+  color: grey !important;
+  text-align: center;
+  padding-bottom: 15px;
+}
