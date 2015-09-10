@@ -5,10 +5,14 @@
   color: rgb(71, 82, 93);
 }
 
+strong {
+  font-weight: 100;
+}
+
 #welcome-wrapper {
   position: relative;
   padding-top: 100px;
-  margin-bottom: 100px;
+  margin-bottom: 70px;
 }
 
 #welcome-title {
@@ -27,9 +31,58 @@
 
 #test-app {
   position: relative;
-  background: blue;
   width: 75%;
   display: inline-block;
+  height: 500px;
+  border: 1px solid #ddd;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 6px 6px 0px;
+  border-radius: 4px 4px 0 0;
+}
+
+#test-app::before {
+  content: '';
+  display: block;
+  position: relative;
+  height: 30px;
+  border-radius: 4px 4px 0 0;
+  width: 100%;
+  background-color: #ddd;
+}
+
+#test-app-buttons-1 {
+  z-index: 10;
+  display: block;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: rgb(255,63,74);
+}
+
+#test-app-buttons-2 {
+  z-index: 10;
+  display: block;
+  position: absolute;
+  left: 30px;
+  top: 10px;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: rgb(255,193,0);
+}
+
+#test-app-buttons-3 {
+  z-index: 10;
+  display: block;
+  position: absolute;
+  left: 50px;
+  top: 10px;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: rgb(0,218,67);
 }
 
 #features-wrapper {
@@ -49,7 +102,7 @@
   width: 30%;
   text-align: left;
   padding: 15px 30px;
-  margin: 0 50px;
+  margin: 0 30px;
   font-family: 'Roboto', sans-serif;
   font-weight: 100;
   line-height: 150%;
@@ -65,8 +118,8 @@ img {
 .content-title {
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
-  font-size: 2em;
-  margin-bottom: 20px;
+  font-size: 2em !important;
+  margin-bottom: 10px;
   line-height: 100%;
 }
 
@@ -76,46 +129,135 @@ img {
   text-align: center;
 }
 
-#map-picture {
+#slide2{
   position: relative;
-  background: blue;
-  width: 75%;
-  display: inline-block;
+  width: 100%;
+  display: block;
   margin: 100px 0;
+  text-align: center;
+}
+
+.contact-input{
+  width: 300px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  outline: none;
+  margin: 10px 0;
+  height: 30px;
+  padding: 10px 10px;
+  font-size: 1em;
+
+  &:focus{
+    box-shadow: 0px 0px 0px 1px #2ab27b,inset 0 0 0 0 #000 !important;
+    background: white !important;
+  }
+}
+
+.contact-button{
+  display: inline-block;
+  background: #2ab27b;
+  color: white;
+  border: 2px solid #2ab27b;
+  cursor: pointer;
+  font-family: Lato;
+  font-weight: normal;
+  text-shadow: 0 1px 1px rgba(0,0,0,.1);
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 1em;
+
+  &:hover{
+    border-bottom-color: #26976A;
+  }
+
+  &:active{
+    border-bottom-color: #2ab27b;
+    border-top-color: #26976A;
+  }
 }
 
 #deployement-wrapper {
   text-align: center;
+  margin-bottom: 40px;
 }
 
 .deployement-content {
   position: relative;
   display: inline-block;
-  width: 30%;
-  text-align: left;
+  width: 40%;
+  text-align: center;
   padding: 15px 30px;
   margin: 0 40px;
   font-family: 'Roboto', sans-serif;
   font-weight: 100;
   line-height: 150%;
   vertical-align: middle;
-  font-size: 1.2em;
 }
 
 .subdomain {
+  display: block;
+  margin: 0px auto;
+  text-align: center;
   font-family: Arial;
   font-size: 1.2em;
-  border: 3px solid grey;
+  border: 1px solid rgb(246,246,249);
   border-radius: 50px;
+  margin-bottom: 100px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
+  .fa {
+    padding-right: 5px;
+  }
 }
 
-a:link{
+a{
   text-decoration: none;
-  color: grey;
+}
+
+#email-wrapper {
+  text-align: center;
+  margin-bottom: 40px;
+  margin: 50px 0;
+}
+
+#contact-us-wrapper {
+  text-align: center;
+}
+
+.email-content {
+  position: relative;
+  display: inline-block;
+  width: 30%;
+  text-align: left;
+  padding: 40px 30px;
+  padding-left: 20px;
+  margin: 30px 40px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  line-height: 150%;
+  vertical-align: top;
+  font-weight: 300;
+  span {
+    color: rgb(71, 82, 93) !important; 
+    padding-left: 15px;
+  }
+  a {
+    padding-left: 15px;
+    color: rgb(71, 82, 93);
+    text-decoration: none;
+  }
+  .content-title{
+    text-align: center;
+    padding-bottom: 30px;
+  }
+}
+
+#users-content{
+  margin-top: 30px;
 }
 
 #contact-wrapper{
   position: relative;
+  background: rgb(246,246,249);
 }
 
 .contact-content {
@@ -123,15 +265,13 @@ a:link{
   display: inline-block;
   margin: 100px 0;
   padding: 15px 30px;
-  color: grey;
-  i {
-    font-size: 2em;
-  }
+  font-size: 1.3em;
 }
 
 #footer-web {
+  background: rgb(246,246,249);
   position: relative;
-  color: grey !important;
+  color: black;
   text-align: center;
   padding-bottom: 15px;
 }

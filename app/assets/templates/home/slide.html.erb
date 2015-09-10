@@ -1,11 +1,14 @@
 <div class="slide" id="slide">
 
   <div id='welcome-wrapper'>
-    <div id="welcome-title">UNISPHERE</div>
-    <div id="welcome-comment">A collaborative worspace for educational institutions</div>
+    <h1 id="welcome-title">UNISPHERE</h1>
+    <h2 id="welcome-comment">A collaborative workspace for educational institutions</h2>
   </div>
 
   <div id='test-app'>
+    <div id='test-app-buttons-1'></div>
+    <div id='test-app-buttons-2'></div>
+    <div id='test-app-buttons-3'></div>
     <left-tree id="view-tree" node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = 'true'  home='home' sandbox = 'sandbox' help = 'help' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' nodes = 'nodes' folded-nodes= 'foldedNodes' cookie-gestion = 'cookieGestion' user-id = 'userId' reload-nodes ='reloadNodes' view-news = 'viewNews'></left-tree>
 
     <right-tree active-nodes='activeNodes' node-end='nodeEnd' files = 'files' admin = 'true' sandbox = 'sandbox' home='home' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' reload-nodes ='reloadNodes' user-id = 'userId'></right-tree>
@@ -16,9 +19,9 @@
   <div id='features-wrapper'>
     <div class='feature'>
       <div class='feature-content'>
-        <div class='content-title'>Share & Collaborate</div>
-        The left tree represents the univeristy.<br>
-        All teachers are working on the same worspace.
+        <h2 class='content-title'>Share & Collaborate</h2>
+        <p>The left tree represents the <strong>university</strong>.
+        All teachers are working on the same <strong>workspace</strong>.</p>
       </div>
       <div class='feature-content'>
         <%= image_tag "tree.png" %>
@@ -29,26 +32,49 @@
         <%= image_tag "metrics.png" %>
       </div>
       <div class='feature-content'>
-        <div class='content-title'>Customs Metrics</div>
-        Teachers have access to customs metrics about their data usage by students.
+        <h2 class='content-title'>Personal Metrics</h2>
+        <p>Teachers have access to <strong>metrics</strong> about their data usage by their <strong>students</strong>.</p>
       </div>
     </div>
   </div>
 
   <div id='map-wrapper'>
-    <div class='content-title'>Hundreds of students & teachers are already using Unisphere</div>
+    <h2 class='content-title'>Find your university</h2>
     <slide2></slide2>
   </div>
 
   <div id='deployement-wrapper'>
     <div class='deployement-content'>
-      <div class='content-title'>Quick & easy deployement</div>
-      We can create your own application in less then 2 minutes.<br>
-      Its configuration is way easier then worspace on the market.<br>
-      Create your tree representations and invite collegues.
+      <h2 class='content-title'>Quick & easy deployement</h2>
+      <p>Unisphere works like a plug in.
+      Its configuration is way easier then workspace on the market.
+      Create your tree representations and invite collegues.</p>
     </div>
     <div class='deployement-content subdomain'>
-      <i class="fa fa-search"></i> www.your-university.unisphere.eu ...
+      <i class="fa fa-search"></i><span>http://www.your-university.unisphere.eu ...</span>
+    </div>
+  </div>
+  
+  <div id='email-wrapper'>
+    
+    <div class='email-content'>
+      <h2 class='content-title'>Partners</h2>
+      <i class="fa fa-check"><a href="http://www.lycee-kleber.unisphere.eu" title='unisphere lycée kléber'>Lycée Kléber - (FR) Strasbourg</a></i><br>
+      <i class="fa fa-check"><a href="http://www.lycee-couffignal.unisphere.eu" title='unisphere lycée couffignal'>Lycée Couffignal - (FR) Strasbourg</a></i><br>
+      <i class="fa fa-check"><a href="http://www.fseg.unisphere.eu" title='unisphere fseg'>Faculté des sciences économiques et de gestion  - (FR) Strasbourg</a></i><br>
+      <div id='users-content'>
+        <h2 class='content-title'>Users</h2>
+        <i class="fa fa-check"><span>30 teachers</span></i><br>
+        <i class="fa fa-check"><span>350 students</span></i>
+      </div>
+    </div>
+    
+    <div class="email-content" id="contact-us-wrapper">
+      <h2 class='content-title'>Contact us</h2>
+      <input class="contact-input" type="email" ng-model="webEmail" placeholder='email'><br>
+      <input class="contact-input" type="text" ng-model="webUniversity" placeholder='university'><br>
+      <textarea class="contact-input" type="text" ng-model="webMessage" placeholder='message'></textarea><br>
+      <input class="contact-button" type="submit" value="Send">
     </div>
   </div>
 
@@ -56,17 +82,17 @@
 
     <div class="contact-content">
       <p><i class="fa fa-envelope"></i></p>
-      hello@unisphere.eu
+      <p>hello@unisphere.eu</p>
     </div>
 
     <div class="contact-content">
       <p><i class="fa fa-home"></i></p>
-      Strasbourg, France
+      <p>Strasbourg, France</p>
     </div>
 
     <div class="contact-content">
       <p><i class="fa fa-tumblr"></i></p>
-      <a href="www.blog.unisphere.eu">www.blog.unisphere.eu</a>
+      <a href="http://www.blog.unisphere.eu" title='blog unisphere'>http://www.blog.unisphere.eu</a>
     </div>
 
   </div>
