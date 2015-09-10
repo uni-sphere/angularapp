@@ -5,11 +5,13 @@
       restrict: 'E',
       templateUrl: 'home/slide.html',
       scope: {
+        sandbox: '=',
+        home: '='
       },
       link: function(scope) {
-        
-        
-        
+
+
+
       }
     }
 
