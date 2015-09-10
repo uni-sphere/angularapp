@@ -106,7 +106,12 @@ img {
   font-family: Arial;
   font-size: 1.2em;
   border: 3px solid grey;
-  border-radius: 5px;
+  border-radius: 50px;
+}
+
+a:link{
+  text-decoration: none;
+  color: grey;
 }
 
 #contact-wrapper{
