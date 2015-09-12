@@ -1,8 +1,8 @@
-
 #slide5{
   padding-top: 80px;
   background: #2f2f2f;
   padding-bottom: 20px;
+  position: relative;
 }
 
 .contact-icons{
@@ -16,8 +16,6 @@
 .icon-hover{
   position: relative;
   float: left;
-  // display: inline-block;
-
   height: 175px;
   width: 1/6 * 100%;
   text-align: center;
