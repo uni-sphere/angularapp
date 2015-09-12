@@ -1,5 +1,5 @@
 <div id="slide2">
-  
+
   <div id='map-itself'>
     <map
       center="[48.46, 7.48]"
@@ -39,4 +39,30 @@
     </div>
   </div>
 
+  <!-- Popup if school exist -->
+  <div class="school-popup-wrapper" id="existing-school-display-wrapper" ng-show="showExistingSchool" ng-class="{'school-ready-to-disappear': !showExistingSchool, 'school-ready-to-appear': showExistingSchool}">
+    <div class="school-header">{{place.name}} already uses Unisphere<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
+    <div class="school-display">
+      <span class="school-display-row-center">{{place.formatted_address}} </span>
+      <span class="school-display-row-center"><a class="school-link" target="_blank" ng-href="{{showExistingSchool}}">{{showExistingSchool}}</a></span>
+    </div>
+    <div class="school-display-bg"></div>
+  </div>
+
+  <!-- Popup for new school -->
+  <div class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="showNewSchool" ng-class="{'school-ready-to-disappear': !showNewSchool, 'school-ready-to-appear': showNewSchool}" novalidate>
+    <div class="school-header">Subscribe {{place.name}} to Unisphere
+    <span class="fa fa-times" ng-click="closePopupMap()"></span></div>
+
+    <div class="school-display">
+      <span class="school-display-row-center">{{place.formatted_address}} </span>
+      <button id="add-school" class="home-button" ng-click="findUrl()">Get started</button>
+    </div>
+
+    <div class="school-display-bg"></div>
+  </div>
+
+  <div class="separation-line"></div>
+
 </div>
+
