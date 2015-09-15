@@ -1,5 +1,4 @@
 //= require jquery
-//= require swiper/dist/js/swiper.min
 
 $(document).ready(function(){
   var myHeight = $('#slide1-mob').width() * 7 / 10;

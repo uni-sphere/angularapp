@@ -1,7 +1,5 @@
 angular.module('ui-notification',[]);
 
-angular.module('ui-notification').value('uiNotificationTemplates','angular-ui-notification.html');
-
 angular.module('ui-notification').provider('Notification', function() {
 
     this.options = {
@@ -12,7 +10,8 @@ angular.module('ui-notification').provider('Notification', function() {
         horizontalSpacing: 10,
         positionX: 'right',
         positionY: 'top',
-        replaceMessage: false
+        replaceMessage: false,
+        templateUrl: 'angular-ui-notification.html'
     };
 
     this.setOptions = function(options) {
@@ -20,7 +19,7 @@ angular.module('ui-notification').provider('Notification', function() {
         this.options = angular.extend({}, this.options, options);
     };
 
-    this.$get = function($timeout, uiNotificationTemplates, $http, $compile, $templateCache, $rootScope, $injector, $sce, $q) {
+    this.$get = function($timeout, $http, $compile, $templateCache, $rootScope, $injector, $sce, $q, $window) {
         var options = this.options;
 
         var startTop = options.startTop;
@@ -30,6 +29,7 @@ angular.module('ui-notification').provider('Notification', function() {
         var delay = options.delay;
 
         var messageElements = [];
+        var isResizeBound = false;
 
         var notify = function(args, t){
             var deferred = $q.defer();
@@ -39,7 +39,7 @@ angular.module('ui-notification').provider('Notification', function() {
             }
 
             args.scope = args.scope ? args.scope : $rootScope;
-            args.template = args.template ? args.template : uiNotificationTemplates;
+            args.template = args.templateUrl ? args.templateUrl : options.templateUrl;
             args.delay = !angular.isUndefined(args.delay) ? args.delay : delay;
             args.type = t ? t : '';
             args.positionY = args.positionY ? args.positionY : options.positionY;
@@ -76,11 +76,15 @@ angular.module('ui-notification').provider('Notification', function() {
                             j = 0;
                         }
 
-                        var top = (lastTop = position ? position : startTop) + (j === 0 ? 0 : verticalSpacing);
+                        var top = (lastTop = position ? (j === 0 ? position : position + verticalSpacing) : startTop);
                         var right = lastRight + (k * (horizontalSpacing + elWidth));
 
                         element.css(element._positionY, top + 'px');
-                        element.css(element._positionX, right + 'px');
+                        if (element._positionX == 'center') {
+                            element.css('left', parseInt(window.innerWidth / 2 - elWidth / 2) + 'px');
+                        } else {
+                            element.css(element._positionX, right + 'px');
+                        }
 
                         lastPosition[element._positionY+element._positionX] = top + elHeight;
 
@@ -125,6 +129,13 @@ angular.module('ui-notification').provider('Notification', function() {
 
                 $timeout(reposite);
 
+                if (!isResizeBound) {
+                    angular.element($window).bind('resize', function(e) {
+                        $timeout(reposite);
+                    });
+                    isResizeBound = true;
+                }
+
                 deferred.resolve(scope);
 
             }).error(function(data){
@@ -151,13 +162,9 @@ angular.module('ui-notification').provider('Notification', function() {
         };
 
         notify.clearAll = function() {
-            var notifys = angular.element(document.getElementsByClassName('ui-notification'));
-
-            if (notifys) {
-                angular.forEach(notifys, function(notify) {
-                    notify.remove();
-                });
-            }
+            angular.forEach(messageElements, function(element) {
+                element.addClass('killed');
+            });
         };
 
         return notify;

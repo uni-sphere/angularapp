@@ -7,6 +7,12 @@
   width: 70px;
 }
 
+#slide{
+  .sidebar{
+    position: absolute ;
+  }
+}
+
 .sidebar-container{
   position: relative;
   width: 100%;
@@ -67,5 +73,6 @@
 .menu-link-active{
   cursor: default;
 }
+
 
 

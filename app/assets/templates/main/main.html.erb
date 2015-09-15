@@ -5,20 +5,16 @@
 <span us-spinner="{radius:50, width:12, length: 16, color: 'white', position: 'fixed', 'z-index': 999}" spinner-key="spinner-1"></span>
 
 <div ng-if="home" id="home-container">
-  <slide1></slide1>
-  <slide3 home ='home' sandbox='sandbox'></slide3>
-  <slide2></slide2>
-  <slide4></slide4>
-  <slide5></slide5>
+  <slide deconnection = 'deconnection' superadmin = 'superadmin' admin = 'admin' university = 'university'></slide>
 </div>
 
 <div ng-if="!home" id="application-container">
 
   <navbar account-email='accountEmail' university='university'></navbar>
 
-  <admin-co ng-hide="admin" sandbox= 'sandbox' get-basic-info = 'getBasicInfo' admin = 'admin'></admin-co>
+  <admin-co ng-hide="admin" get-basic-info = 'getBasicInfo' admin = 'admin' sandbox='sandbox' superadmin = 'superadmin'></admin-co>
 
-  <sidebar ng-show="admin" deconnection = 'deconnection' superadmin = 'superadmin'></sidebar>
+  <sidebar sandbox = 'sandbox' ng-show="admin" deconnection = 'deconnection' superadmin = 'superadmin'></sidebar>
 
   <div ui-view id="main-view-container"></div>
 

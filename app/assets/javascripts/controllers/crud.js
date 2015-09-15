@@ -3,12 +3,9 @@ angular
   .module('mainApp.controllers')
   .controller('CrudCtrl', ['$scope', 'Restangular', 'Notification', 'ipCookie', 'ModalService', function ($scope, Restangular, Notification, ipCookie, ModalService) {
 
-
-
     /*===========================================
     =            Create new chapter             =
     ===========================================*/
-    $scope.dummyId = 100;
     $scope.newSubItem = function() {
 
       if($scope.activeChapter){
@@ -23,15 +20,14 @@ angular
         parent_id: nodeData.id,
       }
 
-      if($scope.home || $scope.sandbox){
+      Restangular.all('chapters').post(nodeToCreate).then(function(newChapter) {
         Notification.success("Chapter created")
-        $scope.dummyId ++;
         if(nodeData.items == undefined){
           depth = 0
         } else{
           depth = nodeData.depth + 1;
         }
-        var a = {title: "New chapter", id: $scope.dummyId, items: [], depth: depth }
+        var a = {title: "New chapter", id: newChapter.id, items: [], depth: depth, user_id: newChapter.user_id}
 
         if(nodeData.items == undefined){
           $scope.listItems.push(a);
@@ -39,48 +35,27 @@ angular
           nodeData.items.push(a);
         }
 
+        if(nodeData.id != 0 && $scope.chapterFolded.indexOf(nodeData.id.toString()) == -1){
+          $scope.chapterFolded.push(nodeData.id.toString());
+          ipCookie('chapterFolded', $scope.chapterFolded);
+        }
+
         $scope.documentAbsent = false;
-      }
-      // Real Version
-      else{
-        Restangular.all('chapters').post(nodeToCreate).then(function(newChapter) {
-          Notification.success("Chapter created")
-          if(nodeData.items == undefined){
-            depth = 0
-          } else{
-            depth = nodeData.depth + 1;
-          }
-          var a = {title: "New chapter", id: newChapter.id, items: [], depth: depth, user_id: newChapter.user_id}
 
-          if(nodeData.items == undefined){
-            $scope.listItems.push(a);
-          } else{
-            nodeData.items.push(a);
-          }
-
-          if(nodeData.id != 0 && $scope.chapterFolded.indexOf(nodeData.id.toString()) == -1){
-            $scope.chapterFolded.push(nodeData.id.toString());
-            ipCookie('chapterFolded', $scope.chapterFolded);
-          }
-
-
-          $scope.documentAbsent = false;
-
-        }, function(d) {
-          if (d.status == 403) {
-            console.log('Ok: Chapter creation not allowed');
-            Notification.warning("This node is not yours");
-          } else if(d.status == 404) {
-            console.log("Ok: Chapter creation cancelled. Node doesn't exist anymore")
-            Notification.warning('This action has been cancelled. One of you colleague deleted this node')
-            $scope.reloadNodes()
-          } else{
-            console.log("Error: Create a chapter");
-            console.log(d);
-            Notification.error("We can't temporarily create a chapter");
-          }
-        });
-      }
+      }, function(d) {
+        if (d.status == 403) {
+          console.log('Ok: Chapter creation not allowed');
+          Notification.warning("This node is not yours");
+        } else if(d.status == 404) {
+          console.log("Ok: Chapter creation cancelled. Node doesn't exist anymore")
+          Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+          $scope.reloadNodes()
+        } else{
+          console.log("Error: Create a chapter");
+          console.log(d);
+          Notification.error("We can't temporarily create a chapter");
+        }
+      });
 
     };
 
@@ -101,7 +76,8 @@ angular
           templateUrl: "webapp/rename-item.html",
           controller: "RenameModalCtrl",
           inputs:{
-            name: itemToUpdate.title
+            name: itemToUpdate.title,
+            length: 0
           }
         }).then(function(modal) {
           modal.close.then(function(result) {
@@ -114,32 +90,25 @@ angular
 
               var nodeUpdate = {title: result + "." + extension}
 
-              // Demo version
-              if($scope.home || $scope.sandbox){
+              Restangular.one('awsdocuments/' + documentToUpdateId).put(nodeUpdate).then(function(d) {
                 itemToUpdate.title = result + "." + extension;
-              }
-              // Real version
-              else{
-                Restangular.one('awsdocuments/' + documentToUpdateId).put(nodeUpdate).then(function(d) {
-                  itemToUpdate.title = result + "." + extension;
-                  Notification.success("File renamed")
-                  console.log("Object updated");
-                }, function(d) {
-                  if (d.status == 403) {
-                    console.log("Ok: Rename document forbidden");
-                    console.log(d);
-                    Notification.warning("This file is not yours");
-                  } else if(d.status == 404) {
-                    console.log("Ok: Rename file cancelled. Node doesn't exist anymore")
-                    Notification.warning('This action has been cancelled. One of you colleague deleted this node')
-                    $scope.reloadNodes()
-                  } else{
-                    console.log("Error: Rename document");
-                    console.log(d);
-                    Notification.error("We can't temporarily rename this file");
-                  }
-                });
-              }
+                Notification.success("File renamed")
+                console.log("Object updated");
+              }, function(d) {
+                if (d.status == 403) {
+                  console.log("Ok: Rename document forbidden");
+                  console.log(d);
+                  Notification.warning("This file is not yours");
+                } else if(d.status == 404) {
+                  console.log("Ok: Rename file cancelled. Node doesn't exist anymore")
+                  Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                  $scope.reloadNodes()
+                } else{
+                  console.log("Error: Rename document");
+                  console.log(d);
+                  Notification.error("We can't temporarily rename this file");
+                }
+              });
             }
           });
         });
@@ -152,7 +121,8 @@ angular
           templateUrl: "webapp/rename-item.html",
           controller: "RenameModalCtrl",
           inputs:{
-            name: node.$modelValue.title
+            name: node.$modelValue.title,
+            length: 0
           }
         }).then(function(modal) {
           modal.close.then(function(result) {
@@ -163,32 +133,25 @@ angular
 
               var nodeUpdate = {title: result, node_id: $scope.nodeEnd[0]}
 
-              // Demo version
-              if($scope.home || $scope.sandbox){
+              Restangular.one('chapters/' + chapterToUpdateId).put(nodeUpdate).then(function(d) {
                 itemToUpdate.title = result;
-              }
-              // Real version
-              else{
-                Restangular.one('chapters/' + chapterToUpdateId).put(nodeUpdate).then(function(d) {
-                  itemToUpdate.title = result;
-                  Notification.success("Chapter renamed")
-                  console.log("Object updated");
-                }, function(d) {
-                  if (d.status == 403) {
-                    console.log("Ok: Rename chapter forbidden");
-                    console.log(d);
-                    Notification.warning("This chapter is not yours");
-                  } else if(d.status == 404) {
-                    console.log("Ok: Rename file cancelled. Node doesn't exist anymore")
-                    Notification.warning('This action has been cancelled. One of you colleague deleted this node')
-                    $scope.reloadNodes()
-                  } else{
-                    console.log("Error: Rename chapter");
-                    console.log(d);
-                    Notification.error("We can't temporarily rename the chapter");
-                  }
-                });
-              }
+                Notification.success("Chapter renamed")
+                console.log("Object updated");
+              }, function(d) {
+                if (d.status == 403) {
+                  console.log("Ok: Rename chapter forbidden");
+                  console.log(d);
+                  Notification.warning("This chapter is not yours");
+                } else if(d.status == 404) {
+                  console.log("Ok: Rename file cancelled. Node doesn't exist anymore")
+                  Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                  $scope.reloadNodes()
+                } else{
+                  console.log("Error: Rename chapter");
+                  console.log(d);
+                  Notification.error("We can't temporarily rename the chapter");
+                }
+              });
             }
           });
         });

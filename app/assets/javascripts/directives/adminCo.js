@@ -6,8 +6,10 @@
       templateUrl: 'webapp/admin-co.html',
       scope: {
         sandbox: '=',
+        home: '=',
         getBasicInfo: '=',
-        admin: '='
+        admin: '=',
+        superadmin: '='
       },
       link: function(scope, element, attrs) {
 
@@ -16,8 +18,9 @@
             scope.open = false;
           } else{
             // If we are in sandbox we directly co as admins
-            if(scope.sandbox){
+            if(scope.sandbox || scope.home){
               scope.admin = true
+              scope.superadmin = true
             } else{
               scope.open = true;
             }

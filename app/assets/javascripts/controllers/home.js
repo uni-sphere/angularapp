@@ -1,8 +1,8 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('HomeCtrl', ['$scope', function ($scope) {
-
+  .controller('HomeCtrl', ['$scope', '$translate', function ($scope, $translate) {
+    
 
   }]);
 })();

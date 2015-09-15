@@ -23,7 +23,9 @@ namespace :filldev do
     organization = Organization.create(name: 'Sandbox', website: 'http://sandbox.unisphere.eu', created_at: Time.now-12*7.days)
     # Create a user
     organization.users.create!(email: "hello@unisphere.eu", name: "Hello", uid: "foo", provider: 'email', password: 'gabgabgab', help: false, superadmin: true)
-    organization.users.create!(email: "gab@mul.fr", name: "Gab", uid: "bar", provider: 'email', password: 'gabgabgab', help: false, superadmin: false)
+    organization.users.create!(email: "gabriel.muller@unisphere.eu", name: "Gab", uid: "bar", provider: 'email', password: 'gabgabgab', help: false, superadmin: false)
+    organization.users.create!(email: "user@unisphere.eu", name: "User", uid: "foo", provider: 'email', password: 'gabgabgab', help: false, superadmin: true)
+    
     # create first nodes
     organization.nodes.create(name: "Sandbox", parent_id: 0, user_id: 1)
     # create nodes
@@ -76,6 +78,19 @@ namespace :filldev do
     node.chapters.create(title: "Preparation BAC", parent_id: 11, user_id: 1)
     node.chapters.create(title: "Cours", parent_id: 22, user_id: 1)
     node.chapters.create(title: "Annexes", parent_id: 22, user_id: 1)
+
+    #ifma
+    user = User.find_by_email('hello@unisphere.eu')
+    organization = Organization.create(name: 'IFMA', website: 'https://www.ifma.fr', latitude: "45.757656", longitude: "3.112736000000041", place_id: "ChIJzTllBHAc90cRUtUbHjJFpl0")
+    organization.organizationsuserslinks.create(user_id: User.find_by_email('gabriel.muller@unisphere.eu'))
+    organization.organizationsuserslinks.create(user_id: user.id)
+    organization.nodes.create(name: 'IFMA', parent_id: 0, user_id: user.id)
+    node = organization.nodes.where(archived: false).first
+    firstchild = organization.nodes.create(name: 'First Level', parent_id: node.id, user_id: user.id)
+    firstchild.chapters.create(title: 'main', parent_id: 0, user_id: user.id)
+    secondchild = organization.nodes.create(name: 'Second Level', parent_id: node.id, user_id: user.id)
+    secondchild.chapters.create(title: 'main', parent_id: 0, user_id: user.id)
+
   end
 
 end

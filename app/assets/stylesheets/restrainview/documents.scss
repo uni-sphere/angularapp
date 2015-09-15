@@ -1,0 +1,30 @@
+#restrain-documents-wrapper {
+  position: relative;
+  display: block;
+  text-align: center;
+  height: 100vh;
+}
+
+#restrain-documents-content {
+  background: white;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  margin-top: 200px;
+  font-size: 1.6em;
+  color: rgb(48,89,225);
+  text-shadow: 0 2px 2px rgba(0,0,0,.1);
+  cursor: pointer;
+  padding: 10px 40px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px 1px;
+  border-radius: 5px;
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px 2px;
+  }
+}
+
+#doc-view-name {
+  display: inline-block;
+  padding-left: 20px;
+}

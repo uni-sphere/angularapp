@@ -1,17 +1,13 @@
 class ReportsController < ApplicationController
 
-  before_action :current_subdomain
-  before_action :current_organization
-  before_action :current_node, only: [:first_chart, :current_node, :update]
-
   def update
-    report = @current_node.reports.last
+    report = current_node.reports.last
     report.increase_downloads
     render json: {res: true}.to_json, status: 200
   end
 
   def first_chart
-    if @current_subdomain == 'sandbox'
+    if current_subdomain == 'sandbox'
       firstchart = []
       date = Time.now - 6.months
       t = 0
@@ -21,9 +17,9 @@ class ReportsController < ApplicationController
       end
       render json: firstchart.to_json, status: 200
     else
-      if !@current_node.reports.last.nil?
+      if !current_node.reports.last.nil?
         firstchart = []
-        reports = Report.where(node_id: @current_node.id)
+        reports = Report.where(node_id: current_node.id)
         date = reports.last.created_at - 6.months
         @t = 0
         for i in 1..28
@@ -45,14 +41,14 @@ class ReportsController < ApplicationController
 
   def second_chart
     secondchart = []
-    organization = @current_organization
-    date = @current_organization.created_at
+    organization = current_organization
+    date = current_organization.created_at
 
     # first days of creation: set 0 downloads
     secondchart << {date: (date).strftime('%Y-%m-%d'), lecturers: 1, uploads: 0, downloads: 0}
     lecturers = 0
 
-    if @current_subdomain == 'sandbox'
+    if current_subdomain == 'sandbox'
       while (date - Time.now).abs > 7.days
         secondchart << {date: date.strftime('%Y-%m-%d'), lecturers: rand(2..5), uploads: rand(5..30), downloads: rand(20..70)}
         date = date + 7.days
@@ -84,9 +80,9 @@ class ReportsController < ApplicationController
   end
 
   def nodes
-    if @current_subdomain == 'sandbox'
+    if current_subdomain == 'sandbox'
       res = []
-      @current_organization.nodes.where(name: ['Maths', 'Anglais'], archived: false).each do |node|
+      current_organization.nodes.where(name: ['Maths', 'Anglais'], archived: false).each do |node|
         res << {parent_name: Node.find(node.parent_id).name, name: node.name, id: node.id}
       end
       render json: res.to_json, status: 200

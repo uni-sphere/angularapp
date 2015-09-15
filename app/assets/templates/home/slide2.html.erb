@@ -1,8 +1,7 @@
-<div id="slide2" class="slide">
 
-<!--   <span us-spinner="{radius:50, width:12, length: 16, color: 'white', position: 'fixed'}" spinner-key="spinner-2"></span> -->
+<div id='map-itself'>
 
-  <div class="slide-title">Find your university</div>
+  <div id="map-top-banner">{{ 'WEB_UNIVERSITY_BANNER_1' | translate }}</div>
   <map
     center="[48.46, 7.48]"
     disable-default-u-i="true"
@@ -19,11 +18,13 @@
     scrollwheel="false"
     zoom-control="true"
     pan-control="true"
+    pan-control-options="{position: 'LEFT_CENTER'}"
+    zoom-control-options="{position: 'LEFT_CENTER'}"
     >
   </map>
 
   <!-- Google Autocomplete -->
-  <div id="uni-input">
+  <div id="uni-input" ng-keypress="clearPopup()">
     <div id="uni-input-black-bg"></div>
     <div id="location-wrapper">
       <div id="location" ng-show="geolocation" ng-click="centerMap()" class="fa fa-location-arrow"></div>
@@ -39,55 +40,31 @@
       </div>
     </div>
   </div>
-
-  <!-- Popup if school exist -->
-  <div class="school-popup-wrapper" id="existing-school-display-wrapper" ng-show="showExistingSchool" ng-class="{'school-ready-to-disappear': !showExistingSchool, 'school-ready-to-appear': showExistingSchool}">
-    <div class="school-header">{{place.name}} already uses Unisphere<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
-    <div class="school-display">
-      <span class="school-display-row-center">{{place.formatted_address}} </span>
-      <span class="school-display-row-center"><a class="school-link" target="_blank" ng-href="{{showExistingSchool}}">{{showExistingSchool}}</a></span>
-    </div>
-    <div class="school-display-bg"></div>
-  </div>
-
-  <!-- Popup for new school -->
-  <div class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="showNewSchool" ng-class="{'school-ready-to-disappear': !showNewSchool, 'school-ready-to-appear': showNewSchool}" novalidate>
-    <div class="school-header">Subscribe {{place.name}} to Unisphere
-    <span class="fa fa-times" ng-click="closePopupMap()"></span></div>
-
-    <div class="school-display">
-      <span class="school-display-row-center">{{place.formatted_address}} </span>
-      <button id="add-school" class="home-button" ng-click="findUrl()">Get started</button>
-    </div>
-
-    <div class="school-display-bg"></div>
-  </div>
-
-  <!-- Signup -->
-  <form name="homeSignup" class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="signupShow" ng-class="{'school-ready-to-disappear': !signupShow, 'school-ready-to-appear': signupShow}" novalidate>
-    <div class="school-header">Account for {{place.name}}<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
-
-    <div class="school-display">
-      <input type="text" class="signup-input home-input input-action-design" ng-model="adminName" placeholder="Surname Name"/>
-      <input type="email" class="signup-input home-input input-action-design" ng-model="adminEmail" placeholder="Email"/>
-      <input type="password" ng-minLength=8 class="signup-input home-input input-action-design" id="homeSignupPassword" ng-model="adminPassword" placeholder="Password"/>
-      <button id="signup" class="home-button" ng-click="signup()">Sign up</button>
-    </div>
-
-    <div class="school-display-bg"></div>
-  </div>
-
-  <!-- SuccessFull signup -->
-  <div class="school-popup-wrapper" id="subdomain-created-wrapper" ng-show="subdomainCreated" ng-class="{'school-ready-to-disappear': !subdomainCreated, 'school-ready-to-appear': subdomainCreated}">
-    <div class="school-header">Congrats! {{place.name}} is registered<span class="fa fa-times" ng-click="closePopupMap()"></span></div>
-
-    <div class="school-display">
-      <div class="school-display-row-center">Your Unisphere App is available on</div>
-      <div class="school-display-row-center">URL</div>
-    </div>
-
-    <div class="school-display-bg"></div>
-  </div>
-
-  <div class="separation-line"></div>
 </div>
+
+<!-- Popup if school exist -->
+<div class="school-popup-wrapper" id="existing-school-display-wrapper" ng-show="showExistingSchool">
+  <div class="school-header">{{place.name}} already uses Unisphere<span class="fa fa-times" ng-click="clearPopup()"></span></div>
+  <div class="school-display">
+    <span class="school-display-row-center">{{place.formatted_address}} </span>
+    <span class="school-display-row-center"><a class="school-link" target="_blank" ng-href="{{showExistingSchool}}">{{showExistingSchool}}</a></span>
+  </div>
+  <div class="school-display-bg"></div>
+</div>
+
+<!-- Popup for new school -->
+<div class="school-popup-wrapper" id="new-school-display-wrapper" ng-show="showNewSchool">
+  <div class="school-header">Subscribe {{place.name}} to Unisphere
+  <span class="fa fa-times" ng-click="clearPopup()"></span></div>
+
+  <div class="school-display">
+    <span class="school-display-row-center">{{place.formatted_address}} </span>
+    <button id="add-school" class="home-button" ng-click="findUrl()">Contact us</button>
+  </div>
+
+  <div class="school-display-bg"></div>
+</div>
+
+<!-- <div class="separation-line"></div> -->
+
+

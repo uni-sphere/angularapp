@@ -9,8 +9,8 @@ module Clockwork
     `rake activity_reports:send`
   }
   
-  every(6.days, 'awsdocuments links') {
-    `rake awsdocuments:refresh`
+  every(1.day, 'reset sandbox') {
+    `rake sandbox:reset`
   }
 
 end

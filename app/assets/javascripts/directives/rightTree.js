@@ -3,8 +3,8 @@
   angular.module('mainApp.directives')
     .directive('rightTree', ['Restangular', 'browser', '$upload',
                 'Notification', 'ipCookie', 'activateSpinner', 'stopSpinner',
-                '$window', 'ModalService', function(Restangular, browser,
-                $upload, Notification, ipCookie, activateSpinner, stopSpinner, $window, ModalService) {
+                '$window', 'ModalService', 'makeNested', 'createChap', 'downloadItem', '$timeout', function(Restangular, browser,
+                $upload, Notification, ipCookie, activateSpinner, stopSpinner, $window, ModalService, makeNested, createChap, downloadItem, $timeout) {
       return {
         restrict: 'E',
         templateUrl: 'webapp/right-tree.html',
@@ -13,54 +13,21 @@
           nodeEnd: '=',
           files: '=',
           admin: '=',
-          sandbox: '=',
-          home: '=',
           chapterFolded: '=',
           activeChapter: '=',
           breadcrumb: '=',
           reloadNodes: '=',
-          userId: '='
+          userId: '=',
+          looseFocusItem: '=',
+          superadmin: '=',
+          home: '=',
+          sandbox: '='
         },
         link: function(scope){
 
-          var dummyId = 50;
-
-          (function findFoldedChapter(){
-            // demo
-            if(scope.home || scope.sandbox){
-              scope.chapterFolded = ["0", "19"];
-            }
-            // Normal mode
-            else{
-              scope.chapterFolded = ipCookie('chapterFolded');
-              if(scope.chapterFolded != undefined ){
-                if(!isInArray(0, scope.chapterFolded)){
-                  scope.chapterFolded.push("0");
-                }
-              } else{
-                scope.chapterFolded =["0"];
-              }
-            }
-          })();
-
-          function showDownloadModal(url, fileName) {
-            if(['png','jpg','pdf'].indexOf(fileName.substr(fileName.lastIndexOf('.') + 1).toLowerCase()) > -1){
-              var preview = true
-            } else{
-              var preview = false
-            }
-            ModalService.showModal({
-              templateUrl: "webapp/download-doc-modal.html",
-              controller: "DownloadDocModalCtrl",
-              inputs:{
-                url: url,
-                preview: preview
-              }
-            }).then(function(modal) {
-              modal.close.then(function(result) {
-              });
-            });
-          }
+          scope.chapterFolded = ipCookie('chapterFolded');
+          scope.nodeDropdownSelected = {};
+          scope.dropdownSelected = {};
 
           scope.nodeChangePassword = function(){
             ModalService.showModal({
@@ -75,6 +42,7 @@
                   Restangular.one('nodes/'+ scope.nodeEnd[0]).put({password: result, lock: true}).then(function(res) {
                     Notification.success("Password for node " + scope.nodeEnd[1] + " has been set")
                     scope.nodeProtected = true;
+                    scope.nodeDropdownOptions = [{text: 'Change password',value: 'change'},{text: 'Share node',value: 'share'}];
                     console.log("Ok: Password for node set");
                   }, function(d) {
                     if(d.status == 403){
@@ -91,10 +59,21 @@
             });
           }
 
+          scope.watchEnterPressed = function($event, item){
+            if($event.which == 13){
+              $event.preventDefault()
+              item.title = $event.currentTarget.innerHTML
+              $timeout(function () { $event.target.blur() }, 0, false);
+            } else{
+              item.title = $event.currentTarget.innerHTML
+            }
+          }
+
           scope.toggleProtection = function(d){
             if(scope.nodeProtected){
               Restangular.one('nodes/'+ scope.nodeEnd[0]).put({lock: false, password: ""}).then(function(res) {
                 scope.nodeProtected = false;
+                scope.nodeDropdownOptions = [{text: 'Share',value: 'share'}];
                 console.log("Ok: " + scope.nodeEnd[1] + " has been unlocked")
                 Notification.success(scope.nodeEnd[1] + " has been unlocked")
               }, function(d) {
@@ -112,218 +91,57 @@
               //Loads docs
               if(scope.nodeEnd){
                 // gestion of the lock
-                if(scope.nodeEnd[2] != scope.userId){
-                  $('#protection-node-container .protection-file').attr('disabled', true)
-                  $('#protection-node-container .protection-file').addClass('protection-file-disabled')
-                  $('#protection-node-container .node-change-password').css('display', 'none')
+                if(scope.nodeEnd[2] != scope.userId && !scope.superadmin){
+                  $('#protection-node-container .round-button').attr('disabled', true)
+                  $('#protection-node-container .round-button').addClass('protection-file-disabled')
                 } else{
-                  $('#protection-node-container .node-change-password').css('display', 'inline-block')
-                  $('#protection-node-container .protection-file').attr('disabled', false)
-                  $('#protection-node-container .protection-file').removeClass('protection-file-disabled')
+                  $('#protection-node-container .round-button').attr('disabled', false)
+                  $('#protection-node-container .round-button').removeClass('protection-file-disabled')
                 }
 
-                if(scope.sandbox && scope.nodeEnd[0] > 49 || scope.home && scope.nodeEnd[0] > 49){
-                  console.log("Ok: fake nodes")
-                   scope.listItems = [];
-                } else{
-                  if(scope.sandbox || scope.home){
-                    // pas parfait je vérifie pas les enfant de 17..
-                    if(newVals[0] == 17){
-                      sandboxListItems = [
-                        {title: "Les rois de France", id: 13, parent_id: 11, node_id: 17},
-                        {title: "Cours", id: 14, parent_id: 13, node_id: 17},
-                        {title: "Images", id: 15, parent_id: 13, node_id: 17},
-                        {title: "Le continent Africain", id: 16, parent_id: 1, node_id: 17},
-                        {title: "Cours", id: 17, parent_id: 16, node_id: 17},
-                        {title: "Exercices", id: 18, parent_id: 16, node_id: 17},
-                        {title: "La guerre de 100 ans", id: 19, parent_id: 11, node_id: 17},
-                        {title: "Cours", id: 20, parent_id: 19, node_id: 17},
-                        {title: "Vidéo", id: 21, parent_id: 19, node_id: 17},
-                        {title: "Préparation du BAC", id: 22, parent_id: 11, node_id: 17},
-                        {title: "Exercices", id: 23, parent_id: 22, node_id: 17},
-                        {title: "Annales", id: 24, parent_id: 22, node_id: 17},
-                      ]
-                      scope.listItems = makeNested(sandboxListItems);
-                    } else{
-                      scope.listItems = []
-                    }
+                Restangular.one('chapters').get({node_id: scope.nodeEnd[0]}).then(function (res) {
+                  scope.nodeProtected = res.locked;
+
+                  if(scope.nodeEnd[2] == scope.userId || scope.superadmin && scope.nodeProtected){
+                    scope.nodeDropdownOptions = [{text: 'Share',value: 'share'}, {text: 'Change password',value: 'change'}];
                   } else{
-                    Restangular.one('chapters').get({node_id: scope.nodeEnd[0]}).then(function (res) {
-                      scope.nodeProtected = res.locked;
-                      res.tree.shift()
-                      scope.listItems = makeNested(res.tree);
-                    }, function(d){
-                      if(d.status == 404) {
-                        console.log("Ok: Node opening cancelled. Node doesn't exist anymore")
-                        Notification.warning('This action has been cancelled. One of your colleague deleted this node')
-                      } else{
-                        console.log("Error: Get document");
-                        console.log(d)
-                        Notification.error("We temporarly can not display the documents")
-                      }
-                      scope.reloadNodes()
-                    });
+                    scope.nodeDropdownOptions = [{text: 'Share',value: 'share'}];
                   }
-                }
+
+                  res.tree.shift()
+                  scope.listItems = makeNested(res.tree);
+                  if((scope.home && !ipCookie('chapterFolded')) || (scope.sandbox && !ipCookie('chapterFolded'))){
+                    addTochapterFolded(scope.listItems[2].id)
+                  }
+                }, function(d){
+                  if(d.status == 404) {
+                    console.log("Ok: Node opening cancelled. Node doesn't exist anymore")
+                    Notification.warning('This action has been cancelled. One of your colleague deleted this node')
+                  } else{
+                    console.log("Error: Get document");
+                    console.log(d)
+                    Notification.error("We temporarly can not display the documents")
+                  }
+                  scope.reloadNodes()
+                });
               }
             }
           });
 
           scope.$watch('listItems', function(newVals, oldVals) {
             if(newVals){
-
-              if(scope.listItems.length == 0){
+              if(newVals.length == 0){
                 scope.documentAbsent = true;
               } else{
                 scope.documentAbsent = false;
               }
-
-              var j = 1;
-              var chap = [];
-              var savedValueByDepth = [];
-              var previousDepth = 0;
-
-              function createChap(d){
-                if(!d.document){
-                  var newValueByDepth = savedValueByDepth;
-                  if(d.depth == previousDepth){
-                    // console.log("==");
-                    if(savedValueByDepth[[d.depth]] != undefined){
-                      newValueByDepth[d.depth] = savedValueByDepth[[d.depth]] + 1;
-                    } else{
-                      newValueByDepth[d.depth] = 1;
-                    }
-                    // console.log(newValueByDepth);
-                    savedValueByDepth = newValueByDepth;
-                  }
-                  if(d.depth > previousDepth){
-                    // console.log(">");
-                    if(savedValueByDepth[[d.depth]] == undefined){
-                      newValueByDepth[d.depth] = 1;
-                    } else{
-                      newValueByDepth[d.depth] = savedValueByDepth[[d.depth]] + 1;
-                    }
-                    savedValueByDepth = newValueByDepth;
-                  }
-                  if(d.depth < previousDepth){
-                    // console.log("<")
-                    var diff = previousDepth - d.depth;
-                    newValueByDepth[d.depth] = savedValueByDepth[d.depth] + 1;
-                    for(var i= 0; i < diff; i++){
-                      newValueByDepth.pop();
-                    }
-
-                    savedValueByDepth[d.depth] = savedValueByDepth[d.depth];
-                  }
-
-                  previousDepth = d.depth;
-                  d.chapter = newValueByDepth.join('.') + ".";
-                  // console.log(d.chapter);
-                }
-              }
-
-              function iterate(d){
-                createChap(d);
-                if(d.items){
-                  d.items.forEach(iterate);
-                }
-              }
-
-              newVals.forEach(iterate);
+              createChap(newVals)
             }
           }, true);
 
-          // Take flat data and make them nested
-          function makeNested(flatData){
-            var dataMap = flatData.reduce(function(map, node) {
-              map[node.id] = node;
-              return map;
-            }, {});
-
-            var treeData = [];
-            flatData.forEach(function(node) {
-
-              node.depth = 0;
-
-              if(node.chapter_id){
-                if(node.title.substr(node.title.lastIndexOf('.')+1) == 'pdf'){
-                  node.pdf = true
-                }
-                node.parent = node.chapter_id
-                node.doc_id = node.id
-                node.document = true
-                delete node.id
-                delete node.chapter_id
-                delete node.url
-              } else{
-                node.parent = node.parent_id
-                delete node.parent_id
-              }
-            });
-
-            flatData.forEach(function(node) {
-              node.items = [];
-
-              var parent = dataMap[node.parent];
-              if (parent) {
-                node.depth = node.depth + 1;
-                (parent.items || (parent.items = [])).push(node);
-              } else {
-                treeData.push(node);
-              }
-            });
-
-            return treeData;
-          }
-
-          function saveDownloadUpload(){
-            if(scope.home || scope.sandbox){
-              Notification.info("Function unavailable. This is a mockup version")
-            }
-            else{
-              Restangular.one('activity').put({node_id: scope.nodeEnd[0]}).then(function(d) {
-                console.log("Download registered");
-              },function(d){
-                console.log(d)
-                console.log("Error: Register the download");
-              });
-            }
-          }
-
           // We save the number of download
           scope.downloadItem = function(node){
-            if(scope.home || scope.sandbox){
-              Notification.info("Function unavailable. This is a mockup version")
-            } else if(!scope.nodeProtected){
-              Restangular.one('awsdocuments', node.$modelValue.doc_id).get({node_id: scope.nodeEnd[0], chapter_id: node.$modelValue.parent}).then(function(mydoc){
-                showDownloadModal(mydoc, node.$modelValue.title)
-              },function(d){
-                console.log(d);
-                console.log("Error: download doc")
-                Notification.error("Error while getting download link")
-              });
-            } else{
-              if(['png','jpg','pdf'].indexOf(node.$modelValue.title.substr(node.$modelValue.title.lastIndexOf('.') + 1).toLowerCase()) > -1){
-                var preview = true
-              } else{
-                var preview = false
-              }
-
-              ModalService.showModal({
-                templateUrl: "webapp/download-protected-doc-modal.html",
-                controller: "DownloadProtectedProtectedDocModal",
-                inputs:{
-                  node_id: scope.nodeEnd[0],
-                  chapter_id: node.$modelValue.parent,
-                  preview: preview,
-                  demo: scope.sandbox || scope.home,
-                  doc_id: node.$modelValue.doc_id
-                }
-              }).then(function(modal) {
-                modal.close.then(function(result) {
-                });
-              });
-            }
+            downloadItem(scope.nodeProtected,node.$modelValue.title, node.$modelValue.doc_id, node.$modelValue.parent, scope.nodeEnd[0])
           }
 
           // We watch when someone drag and drops a file / folder
@@ -374,23 +192,256 @@
             }
           }
 
-          scope.activateChapter = function(node){
-            if(!node.document){
-              // activate the chapter
-              if(!node.$modelValue.document){
-                if(scope.activeChapter != undefined){
-                  scope.activeChapter.$modelValue.activeItem = false;
-                }
+          scope.actionNodeOptions = function(){
 
+            /*----------  Rename  ----------*/
+            if(scope.nodeDropdownSelected.value == 'change'){
+              scope.nodeChangePassword()
+            }
+
+            /*----------  Share  ----------*/
+            if(scope.nodeDropdownSelected.value == 'share'){
+              Restangular.one('chapter/restrain_link').get({id: 0, node_id: scope.nodeEnd[0]}).then(function(res){
+                var itemLink = res.link
+                ModalService.showModal({
+                  templateUrl: "webapp/share-item-modal.html",
+                  controller: "ShareItemCtrl",
+                  inputs:{
+                    itemLink: itemLink,
+                    itemTitle: ''
+                  }
+                }).then(function(modal) {
+                  modal.close.then(function(result) {
+                  })
+                })
+              },function(d){
+                if(d.status == 404){
+                  console.log("Ok: node archived | cannot get share link")
+                  Notification.warning("This node has been deleted by its owner")
+                  scope.reloadNodes()
+                } else{
+                  console.log(d);
+                  console.log("Error: download doc")
+                  Notification.error("Can not get the share link")
+                }
+              });
+            }
+
+            $('.dropdown.active').removeClass('active')
+          }
+
+          scope.actionItem = function(item){
+            /*----------  Delete  ----------*/
+            if(scope.dropdownSelected.value == 'delete'){
+              scope.removeItem(item)
+              scope.looseFocusItem()
+            }
+
+            /*----------  Share  ----------*/
+            if(scope.dropdownSelected.value == 'share'){
+              if(scope.activeChapter == undefined){
+                Restangular.one('awsdocument/restrain_link').get({id: scope.activeFile.$modelValue.doc_id}).then(function(res){
+                  var itemLink = res.link
+
+
+                  ModalService.showModal({
+                    templateUrl: "webapp/share-item-modal.html",
+                    controller: "ShareItemCtrl",
+                    inputs:{
+                      itemLink: itemLink,
+                      itemTitle: scope.activeFile.$modelValue.title
+                    }
+                  }).then(function(modal) {
+                    modal.close.then(function(result) {
+                    })
+                  })
+                  scope.looseFocusItem()
+                },function(d){
+                  if(d.status == 404){
+                    console.log("Ok: file archived | cannot get share link")
+                    Notification.warning("This file has been deleted by its owner")
+                    scope.reloadNodes()
+                  } else{
+                    console.log(d);
+                    console.log("Error: download doc")
+                    Notification.error("Can not get the share link")
+                  }
+                });
+              } else if (scope.activeFile == undefined) {
+                Restangular.one('chapter/restrain_link').get({id: scope.activeChapter.$modelValue.id, node_id: scope.activeChapter.$modelValue.node_id}).then(function(res){
+                  var itemLink = res.link
+
+
+                  ModalService.showModal({
+                    templateUrl: "webapp/share-item-modal.html",
+                    controller: "ShareItemCtrl",
+                    inputs:{
+                      itemLink: itemLink,
+                      itemTitle: scope.activeChapter.$modelValue.title
+                    }
+                  }).then(function(modal) {
+                    modal.close.then(function(result) {
+                    })
+                  })
+
+                  scope.looseFocusItem()
+
+                },function(d){
+                  if(d.status == 404){
+                    console.log(d)
+                    console.log("Ok: chapter archived | cannot get share link")
+                    Notification.warning("This chapter has been deleted by its owner")
+                    scope.reloadNodes()
+                  } else{
+                    console.log(d);
+                    console.log("Error: download doc")
+                    Notification.error("Can not get the share link")
+                  }
+                });
+              }
+            }
+
+            //Rename
+            if(scope.dropdownSelected.value == 'rename'){
+              ModalService.showModal({
+                templateUrl: "webapp/rename-item.html",
+                controller: "RenameModalCtrl",
+                inputs:{
+                  name: item.$modelValue.title,
+                  length: 0
+                }
+              }).then(function(modal) {
+                modal.close.then(function(result) {
+                  itemToUpdate = item.$modelValue
+                  if(result && result != itemToUpdate.savedTitle){
+
+                    // files
+                    if(itemToUpdate.document){
+                      Restangular.one('awsdocuments/' + itemToUpdate.doc_id).put({title: result}).then(function(res) {
+                        itemToUpdate.title = result;
+                        itemToUpdate.savedTitle = result;
+                        Notification.success("File renamed")
+                        console.log("Object updated");
+                      }, function(d) {
+                        if (d.status == 403) {
+                          console.log("Ok: Rename document forbidden");
+                          console.log(d);
+                          Notification.warning("This file is not yours");
+                        } else if(d.status == 404) {
+                          console.log("Ok: Rename file cancelled. Node doesn't exist anymore")
+                          Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                          scope.reloadNodes()
+                        } else{
+                          console.log("Error: Rename document");
+                          console.log(d);
+                          Notification.error("We can't temporarily rename this file");
+                        }
+                      });
+                    }
+                    // Chapters
+                    else{
+                      Restangular.one('chapters/' + itemToUpdate.id).put({title: result, node_id: scope.nodeEnd[0]}).then(function(res) {
+                        itemToUpdate.title = result;
+                        itemToUpdate.savedTitle = result;
+                        Notification.success("Chapter renamed")
+                        console.log("Object updated");
+                      }, function(d) {
+                        if (d.status == 403) {
+                          console.log("Ok: Rename chapter forbidden");
+                          console.log(d);
+                          Notification.warning("This chapter is not yours");
+                        } else if(d.status == 404) {
+                          console.log("Ok: Rename file cancelled. Node doesn't exist anymore")
+                          Notification.warning('This action has been cancelled. One of you colleague deleted this node')
+                          scope.reloadNodes()
+                        } else{
+                          console.log("Error: Rename chapter");
+                          console.log(d);
+                          Notification.error("We can't temporarily rename the chapter");
+                        }
+                      });
+                    }
+                  }
+                })
+              })
+              scope.looseFocusItem()
+            }
+
+            /*----------  Download  ----------*/
+            //Download
+            if(scope.dropdownSelected.value == 'download'){
+              scope.downloadItem(scope.activeFile)
+              scope.looseFocusItem()
+            }
+
+          }
+
+          // $('.input-rename-item').click(function(){
+          //   console.log(this)
+          // })
+
+          scope.selectItem = function(node){
+            // We remove colors on either files or chapters
+            if(scope.activeChapter != undefined){
+              scope.activeChapter.$modelValue.selectedItem = false;
+            }
+            if(scope.activeFile != undefined){
+              scope.activeFile.$modelValue.selectedItem = false
+            }
+
+            // If we color a chapter
+            if(!node.$modelValue.document){
+              scope.activeFile = undefined
+              node.$modelValue.selectedItem = true;
+              scope.activeChapter = node;
+              if(scope.userId == scope.activeChapter.$modelValue.user_id || scope.nodeEnd[2] == scope.userId || scope.superadmin){
+                scope.dropdownOptions = [{text: 'Rename',value: 'rename'}, {text: 'Share',value: 'share'}, {text: 'Delete',value: 'delete'}];
+              } else{
+                scope.dropdownOptions = [{text: 'Share',value: 'share'}];
+              }
+            }
+            // If we color a file
+            else{
+              scope.activeChapter = undefined
+              node.$modelValue.selectedItem = true;
+              scope.activeFile = node;
+              if(scope.userId == scope.activeFile.$modelValue.user_id || scope.nodeEnd[2] == scope.userId || scope.superadmin){
+                scope.dropdownOptions = [{text: 'Rename',value: 'rename'}, {text: 'Download',value: 'download'}, {text: 'Share',value: 'share'}, {text: 'Delete',value: 'delete'} ]
+              } else{
+                scope.dropdownOptions = [{text: 'Download',value: 'download'}, {text: 'Share',value: 'share'}];
+              }
+            }
+          }
+
+          scope.activateChapter = function(node){
+              // activate the chapter
+            if(!node.$modelValue.document){
+              // We remove colors on either files or chapters
+              if(scope.activeChapter != undefined){
+                scope.activeChapter.$modelValue.selectedItem = false;
+              }
+              if(scope.activeFile != undefined){
+                scope.activeFile.$modelValue.selectedItem = false
+              }
+
+              // If we color a chapter
+              if(!node.$modelValue.document){
+                scope.activeFile = undefined
                 if(node.collapsed || node.$modelValue.items.length == 0){
-                  node.$modelValue.activeItem = true;
+                  node.$modelValue.selectedItem = true;
                   scope.activeChapter = node;
                 } else{
                   scope.activeChapter = undefined;
                 }
-
+              }
+              // If we color a file
+              else{
+                scope.activeChapter = undefined
+                node.$modelValue.selectedItem = true;
+                scope.activeFile = node;
               }
 
+              $('.dropdown.active').removeClass('active')
               // toggle the node
               if(node.$modelValue.items.length != 0){
                 node.toggle();
@@ -399,11 +450,16 @@
             }
           }
 
-          scope.documentLooseFocus = function(){
+          scope.looseFocusItem = function(){
             if(scope.activeChapter != undefined){
-              scope.activeChapter.$modelValue.activeItem = false;
+              scope.activeChapter.$modelValue.selectedItem = false;
               scope.activeChapter = undefined
             }
+            if(scope.activeFile != undefined){
+              scope.activeFile.$modelValue.selectedItem = false;
+              scope.activeFile = undefined
+            }
+            $('.dropdown.active').removeClass('active')
           }
 
           function addTochapterFolded(nb){
@@ -427,102 +483,74 @@
           =            Delete Documents            =
           ========================================*/
 
-          var dummyId = 30;
-
           scope.removeItem = function(node) {
             var parent = node.$parentNodeScope;
 
             // Delete the documents
             if(node.$modelValue.document){
 
-              // Demo mode
-              if(scope.home || scope.sandbox){
+              Restangular.all('awsdocuments/' + node.$modelValue.doc_id).remove().then(function() {
                 node.remove();
                 console.log("Ok: Document deleted");
                 Notification.warning("File removed")
-
                 if(scope.listItems.length == 0){
                   scope.documentAbsent = true;
                 }
-              }
-              // Normal mode
-              else{
-                Restangular.all('awsdocuments/' + node.$modelValue.doc_id).remove().then(function() {
-                  node.remove();
-                  console.log("Ok: Document deleted");
-                  Notification.warning("File removed")
-                  if(scope.listItems.length == 0){
-                    scope.documentAbsent = true;
-                  }
-                }, function(d) {
-                  if (d.status == 403){
-                    console.log("Ok: Delete a file forbidden");
-                    Notification.warning("This file is not yours");
-                  } else if(d.status == 404) {
-                    console.log("Ok: Deletion cancelled node doesn't exist anymore")
-                    Notification.warning('This action has been cancelled. One of your colleague deleted this node')
-                    scope.reloadNodes()
-                  } else{
-                    console.log("Error: Delete file");
-                    console.log(d);
-                    Notification.error("We can't temporarily delete the file " + node.$modelValue.title);
-                  }
-                });
-              }
+              }, function(d) {
+                if (d.status == 403){
+                  console.log("Ok: Delete a file forbidden");
+                  Notification.warning("This file is not yours");
+                } else if(d.status == 404) {
+                  console.log("Ok: Deletion cancelled node doesn't exist anymore")
+                  Notification.warning('This action has been cancelled. One of your colleague deleted this node')
+                  scope.reloadNodes()
+                } else{
+                  console.log("Error: Delete file");
+                  console.log(d);
+                  Notification.error("We can't temporarily delete the file " + node.$modelValue.title);
+                }
+              });
             }
 
             //delete the chapters
             else{
-              // Demo mode
-              if(scope.home || scope.sandbox){
+              Restangular.all('chapters/' + node.$modelValue.id).remove({node_id: scope.nodeEnd[0]}).then(function() {
+
+                if(scope.activeChapter != undefined && scope.activeChapter.$modelValue.id == node.$modelValue.id){
+                  scope.activeChapter = undefined;
+                }
+
+                // Remove from cookies the chapter folded deleted
+                if(scope.chapterFolded && scope.chapterFolded.indexOf(node.$modelValue.id.toString()) > -1){
+                  scope.chapterFolded.splice(scope.chapterFolded.indexOf(node.$modelValue.id.toString()), 1);
+                }
+                angular.forEach(node.$modelValue.items, function(value,key){
+                  if(!value.document && scope.chapterFolded && scope.chapterFolded.indexOf(value.id.toString()) > -1){
+                    scope.chapterFolded.splice(scope.chapterFolded.indexOf(value.id.toString()), 1);
+                  }
+                });
+
                 node.remove();
-                console.log("Ok: Document deleted");
-                Notification.warning("File removed")
+                console.log("Ok: Chapter deleted");
+                Notification.warning("Chapter removed")
 
                 if(scope.listItems.length == 0){
                   scope.documentAbsent = true;
                 }
-              }
-              // Normal mode
-              else{
-                Restangular.all('chapters/' + node.$modelValue.id).remove({node_id: scope.nodeEnd[0]}).then(function() {
-
-                  if(scope.activeChapter != undefined && scope.activeChapter.$modelValue.id == node.$modelValue.id){
-                    scope.activeChapter = undefined;
-                  }
-
-                  // Remove from cookies the chapter folded deleted
-                  if(scope.chapterFolded && scope.chapterFolded.indexOf(node.$modelValue.id.toString()) > -1){
-                    scope.chapterFolded.splice(scope.chapterFolded.indexOf(node.$modelValue.id.toString()), 1);
-                  }
-                  angular.forEach(node.$modelValue.items, function(value,key){
-                    if(!value.document && scope.chapterFolded && scope.chapterFolded.indexOf(value.id.toString()) > -1){
-                      scope.chapterFolded.splice(scope.chapterFolded.indexOf(value.id.toString()), 1);
-                    }
-                  });
-
-                  node.remove();
-                  console.log("Ok: Chapter deleted");
-                  Notification.warning("Chapter removed")
-
-                  if(scope.listItems.length == 0){
-                    scope.documentAbsent = true;
-                  }
-                }, function(d) {
-                  if (d.status == 403){
-                    console.log("Ok: Delete a chapter forbidden");
-                    Notification.warning("This chapter is not yours");
-                  } else if(d.status == 404) {
-                    console.log("Ok: Deletion cancelled node doesn't exist anymore")
-                    Notification.warning('This action has been cancelled. One of your colleague deleted this node')
-                    scope.reloadNodes()
-                  } else{
-                    console.log("Error: Delete a chapter");
-                    console.log(d);
-                    Notification.error("We can't temporarily delete this chapter");
-                  }
-                });
-              }
+              }, function(d) {
+                if (d.status == 403){
+                  console.log("Ok: Delete a chapter forbidden");
+                  Notification.warning("This chapter is not yours");
+                } else if(d.status == 404) {
+                  console.log("Ok: Deletion cancelled node doesn't exist anymore")
+                  Notification.warning('This action has been cancelled. One of your colleague deleted this node')
+                  scope.reloadNodes()
+                } else{
+                  console.log("Error: Delete a chapter");
+                  console.log(d);
+                  Notification.error("We can't temporarily delete this chapter");
+                }
+              });
             }
           }
 
@@ -613,15 +641,13 @@
                 parent_id: nodeData.id
               }
 
-              // Demo
-              if(scope.home || scope.sandbox){
+              Restangular.all('chapters').post(chapterToCreate).then(function(d) {
                 if(nodeData.items == undefined){
                   var depth = 0
                 } else{
                   depth = nodeData.depth + 1;
                 }
-                var a = {title: folder.name, id: dummyId, items: [], depth: depth}
-                dummyId ++;
+                var a = {title: folder.name, id: d.id, items: [], depth: depth}
 
                 if(nodeData.items == undefined){
                   scope.listItems.push(a);
@@ -631,66 +657,36 @@
                   nodeDocData = nodeData.items[nodeData.items.length -1];
                 }
 
-                scope.chapterFolded.push(dummyId.toString());
+                // We add the chapter to chapter folded, so as to see it!
+                scope.chapterFolded.push(d.id.toString());
+                ipCookie('chapterFolded', scope.chapterFolded);
 
                 scope.progressionUpload --;
-                console.log("OK fake chapter created:" + folder.name);
+                Notification.success("Chapter created")
+                console.log("OK chapter created:" + folder.name);
 
                 // If there is no files to upload. We put dirUploaded to true
                 if(files.length == 0){
                   scope.dirUploaded = true;
                 } else{
-                  uploadFiles(files)
+                   uploadFiles(files)
                 }
-              } else{
-                // Real
-                Restangular.all('chapters').post(chapterToCreate).then(function(d) {
-                  if(nodeData.items == undefined){
-                    var depth = 0
-                  } else{
-                    depth = nodeData.depth + 1;
-                  }
-                  var a = {title: folder.name, id: d.id, items: [], depth: depth}
-
-                  if(nodeData.items == undefined){
-                    scope.listItems.push(a);
-                    nodeDocData = scope.listItems[scope.listItems.length - 1];
-                  } else{
-                    nodeData.items.push(a);
-                    nodeDocData = nodeData.items[nodeData.items.length -1];
-                  }
-
-                  // We add the chapter to chapter folded, so as to see it!
-                  scope.chapterFolded.push(d.id.toString());
-                  ipCookie('chapterFolded', scope.chapterFolded);
-
-                  scope.progressionUpload --;
-                  Notification.success("Chapter created")
-                  console.log("OK chapter created:" + folder.name);
-
-                  // If there is no files to upload. We put dirUploaded to true
-                  if(files.length == 0){
-                    scope.dirUploaded = true;
-                  } else{
-                     uploadFiles(files)
-                  }
 
 
-                }, function(d) {
-                  stopSpinner()
-                  if (d.status == 403) {
-                    console.log("Ok: Chapter creation forbidden");
-                    Notification.warning("This node is not yours. " +folder.name +" was not created.")
-                  } else if(d.status == 404) {
-                    console.log("Ok: chapter creation cancelled. Node doesn't exist anymore")
-                    Notification.warning('This action has been cancelled. One of your colleague deleted this node')
-                    scope.reloadNodes()
-                  } else{
-                    Notification.error("Chapter creation problem")
-                    console.log("Error: Failed to create chapter:" + folder.name +". Please refresh.");
-                  }
-                });
-              }
+              }, function(d) {
+                stopSpinner()
+                if (d.status == 403) {
+                  console.log("Ok: Chapter creation forbidden");
+                  Notification.warning("This node is not yours. " +folder.name +" was not created.")
+                } else if(d.status == 404) {
+                  console.log("Ok: chapter creation cancelled. Node doesn't exist anymore")
+                  Notification.warning('This action has been cancelled. One of your colleague deleted this node')
+                  scope.reloadNodes()
+                } else{
+                  Notification.error("Chapter creation problem")
+                  console.log("Error: Failed to create chapter:" + folder.name +". Please refresh.");
+                }
+              });
             }
 
             function uploadFiles(files){
@@ -698,79 +694,57 @@
               for (var i = 0; i < files.length; i++) {
                 var file = files[i];
 
-                // Demo
-                if(scope.home || scope.sandbox){
-                  var a = {title: file.name, doc_id: dummyId, document: true, type: file.type}
-
+                $upload.upload({
+                  url: getEnvironment() + '/awsdocuments',
+                  file: file,
+                  fields: {
+                    title: file.name,
+                    node_id: scope.nodeEnd[0],
+                    chapter_id: nodeDocData.id,
+                    content: file
+                  }
+                }).then(function(fileUploaded) {
+                  console.log(fileUploaded.data.user_id)
+                  scope.progressionUpload --;
+                  var a = {title: fileUploaded.data.title, doc_id: fileUploaded.data.id, document: true, user_id: fileUploaded.data.user_id,  extension: fileUploaded.data.title.split('.').pop()}
+                  if(file.type == 'application/pdf'){
+                    a.pdf = true;
+                  }
                   numberItems ++;
-                  dummyId ++;
-                  console.log("Fake file uploaded:" + file.name);
+                  console.log("OK document uploaded:" + fileUploaded.data.title);
+                  Notification.success(fileUploaded.data.title + " uploaded")
                   if(numberItems == files.length){
-                    // console.log("OK upload of this level finished")
+                    if(nodeDocData.id != 0){
+                      if(dragAndDrop || !scope.activeChapter.$nodeScope.collapsed ){
+                        scope.chapterFolded.push(nodeDocData.id.toString());
+                        ipCookie('chapterFolded', scope.chapterFolded);
+                      }
+                    }
+                    console.log("OK upload of this level finished")
                     scope.dirUploaded = true;
                   }
 
                   if(nodeDocData.items == undefined){
                     scope.listItems.unshift(a);
                   } else{
-                    nodeDocData.items.unshift(a);
+                    nodeDocData.items.unshift(a)
                   }
-                }
-                // Normal mode
-                else{
-                  $upload.upload({
-                    url: getApiUrl() + '/awsdocuments',
-                    file: file,
-                    fields: {
-                      title: file.name,
-                      node_id: scope.nodeEnd[0],
-                      chapter_id: nodeDocData.id,
-                      content: file
-                    }
-                  }).then(function(fileUploaded) {
-                    console.log(fileUploaded.data.user_id)
-                    scope.progressionUpload --;
-                    var a = {title: fileUploaded.data.title, doc_id: fileUploaded.data.id, document: true, user_id: fileUploaded.data.user_id}
-                    if(file.type == 'application/pdf'){
-                      a.pdf = true;
-                    }
-                    numberItems ++;
-                    console.log("OK document uploaded:" + fileUploaded.data.title);
-                    Notification.success(fileUploaded.data.title + " uploaded")
-                    if(numberItems == files.length){
-                      if(nodeDocData.id != 0){
-                        if(dragAndDrop || !scope.activeChapter.$nodeScope.collapsed ){
-                          scope.chapterFolded.push(nodeDocData.id.toString());
-                          ipCookie('chapterFolded', scope.chapterFolded);
-                        }
-                      }
-                      console.log("OK upload of this level finished")
-                      scope.dirUploaded = true;
-                    }
-
-                    if(nodeDocData.items == undefined){
-                      scope.listItems.unshift(a);
-                    } else{
-                      nodeDocData.items.unshift(a);
-                    }
-
-                  }, function(d) {
-                    stopSpinner()
-                    if (d.status == 403) {
-                      console.log("Ok: Upload documents forbidden");
-                      Notification.warning("This node is not yours")
-                    } else if(d.status == 404) {
-                      console.log(d)
-                      console.log("Ok: File upload cancelled. Node doesn't exist anymore")
-                      Notification.warning('This action has been cancelled. One of your colleague deleted this node')
-                      scope.reloadNodes()
-                    } else{
-                      console.log(d)
-                      Notification.error("File upload error")
-                      console.log("Error: Upload document failed :" +  file.name + ". Please refresh.");
-                    }
-                  });
-                }
+                }, function(d) {
+                  stopSpinner()
+                  if (d.status == 403) {
+                    console.log("Ok: Upload documents forbidden");
+                    Notification.warning("This node is not yours")
+                  } else if(d.status == 404) {
+                    console.log(d)
+                    console.log("Ok: File upload cancelled. Node doesn't exist anymore")
+                    Notification.warning('This action has been cancelled. One of your colleague deleted this node')
+                    scope.reloadNodes()
+                  } else{
+                    console.log(d)
+                    Notification.error("File upload error")
+                    console.log("Error: Upload document failed :" +  file.name + ". Please refresh.");
+                  }
+                });
               }
             }
 
@@ -852,10 +826,12 @@
             }
           }
 
-          function getApiUrl(){
+          function getEnvironment(){
             var host = window.location.host;
             if(host == 'localhost:3000'){
               return "http://api.unisphere-dev.com:3000"
+            } else if(host.indexOf('dev.') > -1){
+              return "http://apidev.unisphere.eu"
             } else{
               return "http://api.unisphere.eu"
             }

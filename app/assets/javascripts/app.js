@@ -62,8 +62,41 @@
           templateUrl: 'account/account.html',
           resolve: {
             auth: function($auth){
-              return $auth.validateUser();
+              // if(window.location.host == 'localhost:3000' || window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home' || window.location.host == 'www.sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
+              //   return true
+              // } else{
+                return $auth.validateUser();
+              // }
             }
+          }
+        })
+
+        .state('view', {
+          url: '/view',
+          abstract: true,
+          templateUrl: 'restrainview/restrainview.html',
+          controller: 'RestrainCtrl',
+        })
+
+        .state('view.chapters', {
+          url: '/chapters/{id:int}',
+          templateUrl: 'restrainview/chapters.html',
+          controller: 'ChaptersCtrl',
+          resolve:{
+            chapter_id: ['$stateParams', function($stateParams){
+              return $stateParams.id;
+            }]
+          }
+        })
+
+        .state('view.documents', {
+          url: '/documents/{id:int}',
+          templateUrl: 'restrainview/documents.html',
+          controller: 'DocumentsCtrl',
+          resolve:{
+            document_id: ['$stateParams', function($stateParams){
+              return $stateParams.id;
+            }]
           }
         })
 
@@ -78,7 +111,7 @@
         })
 
 
-        if(window.location.host == "sandbox.unisphere.eu"){
+        if(window.location.host == "sandbox.unisphere.eu" || window.location.host == "sandbox.dev.unisphere.eu" || window.location.host == "www.sandbox.unisphere.eu"){
           $stateProvider.state('main.dashboard', {
             url: 'dashboard',
             templateUrl: 'dashboard/one.html',
@@ -98,10 +131,10 @@
 
       if(window.location.host == 'localhost:3000'){
         $stateProvider.state('home', {
-            url: '/home',
-            templateUrl: 'main/main.html',
-            controller: 'MainCtrl'
-          })
+          url: '/home',
+          templateUrl: 'main/main.html',
+          controller: 'MainCtrl'
+        })
       }
 
       $urlRouterProvider.otherwise('/');
@@ -112,11 +145,10 @@
     NotificationProvider.setOptions({
       delay: 5000,
       startTop: 100,
-      startRight: 40,
       verticalSpacing: 20,
-      horizontalSpacing: 20,
       positionX: 'right',
-      positionY: 'top'
+      positionY: 'top',
+      templateUrl: 'main/notification-template.html'
     });
 
     function getEnvironment(){
@@ -132,7 +164,7 @@
 
     $authProvider.configure({
       apiUrl: getEnvironment(),
-      passwordResetSuccessUrl: window.location.href + 'account'
+      passwordResetSuccessUrl: window.location.href
     });
 
     RestangularProvider
@@ -217,7 +249,28 @@
         SET_PSW_FOR: 'Set password for ',
         SET_PSW: 'Set password',
         POPUP_LOCK: 'This node is protected. Enter your password to unlock it',
-        ACCESS: 'Access'
+        ACCESS: 'Access',
+        RENAME_SPACE: 'Rename ',
+        RENAME: 'Rename',
+        HINT: 'Hint: Your node name most be less than 20 caracters',
+        SHARE: 'Share',
+        COPY: 'Hint: Copy ',
+        WEB_WELCOME_COMMENT: 'A collaborative workspace for educational institutions',
+        WEB_SEPARATION_BANNER: 'Unisphere provides tools for collaborative work and files sharing',
+        WEB_FEATURE_1: 'Collaborate',
+        WEB_FEATURE_2: 'Navigation between subjects is simple and efficient.',
+        WEB_FEATURE_3: 'Everyone and everything is gathered on the subject tree.',
+        WEB_FEATURE_4: 'Share',
+        WEB_FEATURE_5: 'Upload files. Organise them into chapters. Share your knwoledge.',
+        WEB_FEATURE_6: 'Analyse',
+        WEB_FEATURE_7: "Keep track of your files usage. Analyse yours students behaviour. Adapt your lessons.",
+        WEB_FEATURE_8: 'http://your-university.unisphere.eu',
+        WEB_FEATURE_9: 'Deploy',
+        WEB_FEATURE_10: 'You want a new learning management system, but you are afraid it might be hard to change.',
+        WEB_FEATURE_11: 'Contact us, together we will find a solution to fit your needs.',
+        WEB_UNIVERSITY_BANNER_1: 'Hundreds of students and teachers are already using Unisphere.',
+        WEB_CONTACT_1: 'Contact us',
+        WEB_CONTACT_2: 'Send'
       })
       .translations('fr', {
         HELP: 'Aide',
@@ -257,8 +310,8 @@
         CONFIRM_PSW: 'Confirmation du mot de passe',
         UPDATE_PSW: 'Modifier mot de passe',
         USERS_INVITED: 'Utilisateurs ajoutés',
-        TIP_CHROME: 'Astuce: Cliquer glisser vos documents ou dossiers!',
-        TIP: 'Astuce: Cliquer glisser des documents! (dossiers sous Chrome)',
+        TIP_CHROME: 'Astuce: Cliquez glissez vos documents ou dossiers!',
+        TIP: 'Astuce: Cliquez glissez des documents! (dossiers sous Chrome)',
         LENGTH: 'Au minimum 6 charactères',
         SECURITY: 'Sécurité',
         SHORT: 'trop court',
@@ -294,7 +347,28 @@
         SET_PSW_FOR: 'Nouveau mot de passe pour ',
         SET_PSW: 'Nouveau mot de passe',
         POPUP_LOCK: 'Noeud sécurisé. Entrez le mot de passe pour y accéder.',
-        ACCESS: 'Accéder'
+        ACCESS: 'Accéder',
+        RENAME_SPACE: 'Renommer ',
+        RENAME: 'Renommer',
+        HINT: 'Le nom du noeud doit contenir moins de 20 charactères',
+        SHARE: 'Partager ',
+        COPY: 'Astuce: Copier ',
+        WEB_WELCOME_COMMENT: "Un outils de travail collaboratif pour les établissements d'enseignement supérieur",
+        WEB_SEPARATION_BANNER: "Unisphere propose des outils de travail collaboratif et d'échange de documents",
+        WEB_FEATURE_1: 'Collaborez',
+        WEB_FEATURE_2: 'La navigation entre les classes et les matières est simple et efficace.',
+        WEB_FEATURE_3: 'Tous les étudiants et tous les enseignants partagent le même arbre des matières.',
+        WEB_FEATURE_4: 'Partagez',
+        WEB_FEATURE_5: 'Importez vos documents, organisez-les dans des chapitres, partagez vos connaissances.',
+        WEB_FEATURE_6: 'Analysez',
+        WEB_FEATURE_7: "Suivez l'utilisation de vos documents par vos étudiants. Analysez et adaptez vos cours.",
+        WEB_FEATURE_8: 'http://votre-universite.unisphere.eu',
+        WEB_FEATURE_9: 'Installation simple',
+        WEB_FEATURE_10: "Vous souhaitez changer de plateforme pédagogique ou avoir plus d'informations?",
+        WEB_FEATURE_11: "Contactez-nous, nous trouverons ensemble la solution adaptée à vos besoins.",
+        WEB_UNIVERSITY_BANNER_1: "Des centaines d'étudiants et d'enseignants utilisent déjà Unisphere",
+        WEB_CONTACT_1: 'Contactez-nous',
+        WEB_CONTACT_2: 'Envoyez'
       })
       .preferredLanguage('en')
       .registerAvailableLanguageKeys(['fr'])

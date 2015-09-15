@@ -1,10 +1,7 @@
 class OrganizationsController < ApplicationController
   
-  before_action :current_subdomain, except: [:create, :destroy, :index]
-  before_action :current_organization, except: [:create, :destroy, :index]
-  
   def is_signed_up?
-    if @current_organization.users.where(email: params[:email]).exists?
+    if current_organization.users.where(email: params[:email]).exists?
       render json: {response: true}.to_json, status: 200
     elsif User.where(email: params[:email]).exists?
       user = User.where(email: params[:email]).first
@@ -22,9 +19,9 @@ class OrganizationsController < ApplicationController
     organization.organizationsuserslinks.build(user_id: User.find_by_email('hello@unisphere.eu').id)
     if organization.save  
       node = organization.nodes.where(archived: false).first
-      firstchild = organization.nodes.create(name: 'First Level', parent_id: node.id, user_id: user.id)
+      firstchild = organization.nodes.new(name: 'First Level', parent_id: node.id, user_id: user.id)
       firstchild.chapters.build(title: 'main', parent_id: 0, user_id: user.id)
-      secondchild = organization.nodes.create(name: 'Second Level', parent_id: node.id, user_id: user.id)
+      secondchild = organization.nodes.new(name: 'Second Level', parent_id: node.id, user_id: user.id)
       secondchild.chapters.build(title: 'main', parent_id: 0, user_id: user.id)
       if firstchild.save and secondchild.save
         if dev?
@@ -51,6 +48,8 @@ class OrganizationsController < ApplicationController
           end
         end
       else
+        node.destroy
+        organization.destroy
         send_error('Problem occured', '500')
       end
     else
@@ -60,14 +59,14 @@ class OrganizationsController < ApplicationController
   end
 
   def show
-    render json: {organization: @current_organization}.to_json, status: 200
+    render json: {organization: current_organization}.to_json, status: 200
   end
 
   def update
-    if @current_organization.update(name: params[:name])
-      render json: @current_organization, status: 200
+    if current_organization.update(name: params[:name])
+      render json: current_organization, status: 200
     else
-      render json: @current_organization.errors, status: 422
+      render json: current_organization.errors, status: 422
     end
   end
 

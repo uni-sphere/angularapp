@@ -1,27 +1,18 @@
+
 #slide2{
-  // margin-top: 80px;
-}
-
-/*===================================
-=            Slide Title            =
-===================================*/
-
-.slide-title{
-  display: inline-block;
+  position: relative;
   width: 100%;
-  font-size: 1.5em;
+  display: block;
   text-align: center;
-  line-height: 60px;
-  box-shadow: 1px 2px 4px 0px black;
-  margin-bottom: 4px;
-  background: $nice-noir;
-  letter-spacing: 2px;
-  color: white;
 }
 
 /*===========================
 =            Map            =
 ===========================*/
+#map-itself {
+  position: relative;
+  display: block;
+}
 
 map{
   height: 70vh;
@@ -31,6 +22,19 @@ map{
   position: absolute;
   bottom: 0px;
   width: 100%;
+}
+
+#map-top-banner{
+  position: absolute;
+  top: 0px;
+  height: 63px;
+  background: black;
+  opacity: 0.8;
+  width: 100%;
+  z-index: 999;
+  color: white;
+  line-height: 63px;
+  font-size: 1.1em;
 }
 
 #uni-input-black-bg{
@@ -75,20 +79,6 @@ map{
 =            Input            =
 =============================*/
 
-// .home-input{
-//   position: relative;
-//   background: $input-bg;
-//   border-radius: 3px;
-//   border: none;
-//   box-shadow: inset 0 2px 3px rgba( 0, 0, 0, 0.1 );
-
-//   font-size: 15px;
-//   font-weight: bold;
-
-//   padding: 13px 10px;
-//   color: black;
-// }
-
 .home-input{
   position: relative;
   background: $input-bg;
@@ -101,8 +91,6 @@ map{
 
   padding: 13px 10px;
   color: black;
-
-
 }
 
 .input-action-design{
@@ -198,22 +186,15 @@ map{
   position: absolute;
   right: 40px;
 }
-// Existing school
 
+// Existing school
 #existing-school-display-wrapper{
   top: calc(50% - 95px);
 }
 
-#new-school-display-wrapper{
-  top: calc(50% - 95px);
-}
 
 #new-school-display-wrapper{
   top: calc(50% - 180px);
-}
-
-#subdomain-created-wrapper{
-  top: calc(50% - 95px);
 }
 
 .school-header{
@@ -291,7 +272,7 @@ map{
 
   100% {
     opacity: 0;
-    transform: translateX(-350px);
+    transform: translateX(350px);
   }
 }
 
@@ -308,7 +289,7 @@ map{
 }
 
 .school-ready-to-disappear{
-  animation: school-flyout .5s;
+  animation: school-flyout 1s;
 }
 
 .school-ready-to-appear{

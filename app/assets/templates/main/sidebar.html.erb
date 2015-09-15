@@ -3,31 +3,37 @@
   <ul class="sidebar-container">
 
     <li class="sidebar-item home-item">
-      <a ui-sref="main.application"  ui-sref-active="menu-link-active" class="menu-link" title="Home">
-        <i class="menu-icon fa fa-fw fa-home"></i>
+      <a ng-show="!home" ui-sref="main.application"  ui-sref-active="menu-link-active" class="menu-link" title="Home">
+        <i class="menu-icon fa fa-fw fa-share-alt"></i>
+      </a>
+      <a ng-show="home" ng-click="showHome()" ng-class="{'menu-link-active' : viewhome}" class="menu-link" title="Home">
+        <i class="menu-icon fa fa-fw fa-share-alt"></i>
       </a>
     </li>
 
     <li class="sidebar-item dashboard-item">
-      <a ui-sref="main.dashboard" ui-sref-active="menu-link-active" class="menu-link" title="Dashboard">
+      <a ng-show="!home" ui-sref="main.dashboard" ui-sref-active="menu-link-active" class="menu-link" title="Dashboard">
+        <i class="menu-icon fa fa-fw fa-bar-chart-o"></i>
+      </a>
+      <a ng-show="home" ng-click="showDashboard()" ng-class="{'menu-link-active' : viewdashboard}" class="menu-link" title="Dashboard">
         <i class="menu-icon fa fa-fw fa-bar-chart-o"></i>
       </a>
     </li>
 
-    <li class="sidebar-item account-item">
+    <li class="sidebar-item account-item" ng-hide="sandbox || home">
       <a ui-sref="main.account" class="menu-link" ui-sref-active="menu-link-active" title="Account">
         <i class="menu-icon fa fa-fw fa-user"></i>
       </a>
     </li>
 
-    <li class="sidebar-item account-item" ng-if="superadmin">
+    <li class="sidebar-item account-item" ng-show="superadmin && !home && !sandbox">
       <a ui-sref="main.superadmin" class="menu-link" ui-sref-active="menu-link-active" title="Super admin">
         <i class="menu-icon fa fa-fw fa-rocket"></i>
       </a>
     </li>
 
-    <li class="sidebar-item deco-button" >
-      <a class="menu-link" title="Sign out" ng-click="deconnection()">
+    <li class="sidebar-item deco-button">
+      <a class="menu-link" title="Sign out" ng-click="triggerDeco()">
         <i class="menu-icon  fa fa-fw fa-sign-out" ></i>
       </a>
     </li>

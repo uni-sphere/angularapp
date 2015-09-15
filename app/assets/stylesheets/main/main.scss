@@ -3,6 +3,15 @@ input::-moz-placeholder {color: $place-holder;}
 input:-moz-placeholder {color: $place-holder;}
 input:-ms-input-placeholder {color: $place-holder;}
 
+button::-moz-focus-inner {
+  border: 0;
+}
+
+textarea::-webkit-input-placeholder {color: $place-holder;}
+textarea::-moz-placeholder {color: $place-holder;}
+textarea:-moz-placeholder {color: $place-holder;}
+textarea:-ms-input-placeholder {color: $place-holder;}
+
 input:-webkit-autofill {
 -webkit-box-shadow: 0 0 0px 1000px $input-bg inset;
 }
@@ -10,13 +19,6 @@ input:-webkit-autofill:focus {
   -webkit-box-shadow: 0px 0 1px 2px blue, inset 0 1px 2px 1000px white;
 }
 
-.ui-notification{
-  right: calc(50% - 250px) !important;
-  width: 500px !important;
-  font-family: Roboto, sans-serif;
-  text-align: center;
-  padding: 0px 30px;
-}
 
 html, body, #application-container{
   position: absolute;
@@ -47,15 +49,15 @@ body{
 }
 
 @media (max-width: 700px) {
-    html { font-size: 80%; }
+  html { font-size: 80%; }
 }
 
 @media (min-width: 700px) {
-    html { font-size: 100%; }
+  html { font-size: 100%; }
 }
 
 @media (min-width: 1200px) {
-    html { font-size: 120%; }
+  html { font-size: 120%; }
 }
 
 #main-view-container{
@@ -66,7 +68,6 @@ body{
   margin-top: 50px;
   margin-left: 70px;
   width: calc(100% - 70px);
-
 }
 
 #ui-view-main-wrapper{

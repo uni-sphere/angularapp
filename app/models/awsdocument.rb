@@ -9,6 +9,12 @@ class Awsdocument < ActiveRecord::Base
   
   validates :title, :content, :organization_id, :user_id, :chapter_id, presence: true
   
+  validate :check_size, on: :create
+  
+  def check_size
+    errors.add(:content, "too large") if self.content.file.size >= 20000000
+  end
+    
   def fill_url
     update_column(:url, self.content.file.url)
   end

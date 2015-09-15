@@ -1,10 +1,8 @@
-<div ng-file-drop ng-model="files"  drag-over-class="{accept:'dragoverAccept', reject:'dragoverReject', delay:100}"  ng-multiple="true" accept=".jpg,.png,.pdf" id="application-view" ng-controller="WebappCtrl">
+<div ng-file-drop ng-model="files"  drag-over-class="{accept:'dragoverAccept', reject:'dragoverReject', delay:100}"  ng-multiple="true" accept=".jpg,.png,.pdf" id="application-view" ng-controller="WebappCtrl" ng-click="looseFocusItem()">
 
-  <left-tree id="view-tree" node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = 'admin'  home='home' sandbox = 'sandbox' help = 'help' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' nodes = 'nodes' folded-nodes= 'foldedNodes' make-nested = 'makeNested' cookie-gestion = 'cookieGestion' user-id = 'userId' reload-nodes ='reloadNodes' view-news = 'viewNews'></left-tree>
+  <left-tree id="view-tree" node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = 'admin' help = 'help' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' nodes = 'nodes' folded-nodes= 'foldedNodes' cookie-gestion = 'cookieGestion' user-id = 'userId' reload-nodes ='reloadNodes' view-news = 'viewNews' superadmin = 'superadmin'></left-tree>
 
-  <right-tree active-nodes='activeNodes' node-end='nodeEnd' files = 'files' admin = 'admin' sandbox = 'sandbox' home='home' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' reload-nodes ='reloadNodes' user-id = 'userId'></right-tree>
+  <right-tree active-nodes='activeNodes' node-end='nodeEnd' files = 'files' admin = 'admin' sandbox = 'sandbox' home='home' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' reload-nodes ='reloadNodes' user-id = 'userId' loose-focus-item = 'looseFocusItem' superadmin = 'superadmin'></right-tree>
 
   <dragndrop-view ng-if="nodeEnd"></dragndrop-view>
-
-  <delete-node ng-show="deleteNodeView" delete-node-all = 'deleteNodeAll' delete-node-transfer = 'deleteNodeTransfer' delete-node-cancel = 'deleteNodeCancel' allow-transfer = 'allowTransfer' node-selected-to-delete = 'nodeSelectedToDelete'></delete-node>
 </div>

@@ -6,22 +6,28 @@
       restrict: 'E',
       templateUrl: 'dashboard/metric.html',
       scope: {
-        university: '=',
-        lookForNode: '='
+        university: '='
       },
       link: function(scope, element) {
         var globals = {};
+        if(scope.home){
+          var outerContainer  = $('.test-app-content')
+        } else{
+          var outerContainer  = $('#metrics')
+        }
 
-        scope.containerWidth = $('#main-view-container').width();
+
+        scope.containerWidth = outerContainer.width();
 
         // when the window is resized the graphs are changing
         window.onresize = function() {
-          options1.width = $('#main-view-container').width() / 2 - 120,
-          options1.height =  $('#main-view-container').height() * 50 / 100,
+          console.log("hello")
+          options1.width = outerContainer.width() / 2 - 120,
+          options1.height =  outerContainer.height() * 50 / 100,
           MG.data_graphic(options1);
 
-          options2.width =  $('#main-view-container').width() / 2 - 120,
-          options2.height =  $('#main-view-container').height() * 50 / 100,
+          options2.width =  outerContainer.width() / 2 - 120,
+          options2.height =  outerContainer.height() * 50 / 100,
           MG.data_graphic(options2);
         };
 
@@ -48,8 +54,8 @@
 
         // Options of the first chart
         var options1 = {
-          width: $('#main-view-container').width() / 2 - 120,
-          height: $('#main-view-container').height() * 50 / 100,
+          width: outerContainer.width() / 2 - 120,
+          height: outerContainer.height() * 50 / 100,
           target: '#chart-1',
           x_accessor: 'date',
           y_accessor: 'downloads',
@@ -100,8 +106,8 @@
 
         // Options of the second chart
         var options2 = {
-          width: $('#main-view-container').width() / 2 - 120,
-          height: $('#main-view-container').height() * 50 / 100,
+          width: outerContainer.width() / 2 - 120,
+          height: outerContainer.height() * 50 / 100,
           target: '#chart-2',
           x_accessor: 'date',
           xax_start_at_min: 'true',

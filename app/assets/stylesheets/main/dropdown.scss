@@ -1,0 +1,77 @@
+/*----------  dropdown  ----------*/
+
+.dropdown{
+  position: absolute;
+  z-index: 1;
+  width: 200px;
+  background: white;
+  padding: 0;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px 2px;
+  font-weight: normal;
+  list-style: none;
+  text-decoration: none;
+  display: none;
+  z-index: 999;
+  overflow: visible !important;
+
+  margin: 0px;
+  padding: 0px;
+
+  li{
+    cursor: pointer;
+    font-size: .8em;
+    text-align: left;
+    position: relative;
+    height: 20px;
+    padding: 0px;
+    margin: 0px;
+    border-left: 3px solid white;
+    padding: 5px 0px;
+    padding-left: 10px;
+    &:hover{
+      background: #eeeeee;
+      border-left: 3px solid grey;
+    }
+  }
+
+  a{
+    padding: 0px;
+    margin: 0px;
+    position: relative;
+    height: 20px;
+    width: 100%;
+    float: left;
+    padding-left: 10px;
+    line-height: 20px;
+    color: $document-color;
+  }
+
+}
+
+.dropdown.active {
+  display: inline-block !important;
+}
+
+/*----------  Little triangle  ----------*/
+
+.dropdown:after {
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  bottom: 100%;
+  border-width: 0 6px 6px 6px;
+  border-style: solid;
+  border-color: #fff transparent;
+}
+
+.dropdown:before {
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  bottom: 100%;
+  border-width: 0 8px 8px 8px;
+  border-style: solid;
+  border-color: rgba(0,0,0,0.1) transparent;
+}

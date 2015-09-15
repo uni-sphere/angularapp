@@ -1,7 +1,5 @@
 class ActionsController < ApplicationController
 
-  before_action :current_subdomain
-  before_action :current_organization, only: [:index_by_organization]
   before_action :is_superadmin?
 
   def index
@@ -9,7 +7,7 @@ class ActionsController < ApplicationController
   end
 
   def index_by_organization
-    render json: {actions: Action.where(organization_id: @current_organization.id).last(15)}.to_json, status: 200
+    render json: {actions: Action.where(organization_id: current_organization.id).last(15)}.to_json, status: 200
   end
 
   def index_by_user

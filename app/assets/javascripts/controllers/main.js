@@ -5,10 +5,10 @@ angular
    'usSpinnerService', 'Notification', 'ipCookie', '$q', function ($scope, $timeout, Restangular, $translate,
     $auth, $state, usSpinnerService, Notification, ipCookie, $q) {
 
-
     $scope.deconnection = function(){
       if($scope.sandbox){
         $scope.admin = false;
+        $scope.superadmin = false
         $state.transitionTo('main.application');
       } else{
         $auth.signOut().then(function(resp) {
@@ -19,6 +19,7 @@ angular
           $scope.accountEmail = undefined;
           $scope.accountName = undefined;
           $scope.userId = undefined;
+          $scope.university = "My university"
 
           // if(window.location.host != 'localhost:3000'){
           //   FHChat.transitionTo('closed');
@@ -31,21 +32,25 @@ angular
       }
     }
 
-
-
-    if(window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
-      console.log("SANDBOX")
-      $scope.sandbox = true
+    if(window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home' || window.location.host == 'www.sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
+    // if(window.location.host == 'localhost:3000' || window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home' || window.location.host == 'www.sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
+      if(window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home'){
+        $scope.home = true;
+        console.log("HOME")
+      } else{
+        $scope.sandbox = true;
+        console.log("SANDBOX")
+      }
       $scope.admin = true
-      Notification.warning({message: 'This is a test version. Your actions will not be saved.', delay: 20000})
-      // $('#first-connection').fadeIn(2000)
       $scope.university = "My university"
-    } else if(window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home'){
-      console.log("HOME")
-      $scope.home = true
+
+      $scope.accountEmail = "user@unisphere.eu"
+      $scope.userId = 1
+      $scope.superadmin = true
+      $scope.testVersion = true
+      $scope.listUser = ["user@unisphere.eu"]
     } else{
       console.log("NORMAL APP")
-
       // $('#first-connection').fadeIn()
       // We get the actual uni
       Restangular.one('organization').get().then(function (university) {
@@ -58,10 +63,11 @@ angular
         Notification.error("Can you please refresh the page, there was an error");
       });
 
+
       // We authentificated the user
-      // console.log("Validation attempt: main.js")
       $auth.validateUser().then(function(){
         console.log("Ok: admin connected")
+        // Notification({message: 'Hello', delay: 10000, templateUrl: 'main/notification-template.html'})
 
 
         // Help Center
@@ -80,6 +86,8 @@ angular
         console.log("Ok: Student co")
         $scope.admin = false
       })
+
+
     }
 
     if(window.location.host == 'localhost:3000'){
@@ -98,11 +106,24 @@ angular
         $scope.help = user.help
         $scope.superadmin = user.superadmin
         $scope.userId = user.id
-        $scope.viewNews = true
         $scope.admin = true
         console.log("Ok: User info")
+
         if($scope.help) {
           // $('#first-connection').fadeIn(2000)
+        }
+
+        if(user.news){
+          $timeout(function() {
+            Notification({templateUrl: 'main/new-version-notification.html', delay: 100000})
+          }, 1000);
+          // update user to remove notification
+          Restangular.one('users/news').put().then(function(d) {
+            console.log("Ok: set news to false")
+          }, function(d){
+            console.log("Error: cannot set news to false")
+            console.log(d)
+          });
         }
 
         if(!$scope.superadmin && !$scope.local){

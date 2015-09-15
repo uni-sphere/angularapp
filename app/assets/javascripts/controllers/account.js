@@ -69,7 +69,6 @@
         // We check if the email is already used
         Restangular.one('organization/is_signed_up').get({email: $scope.newUser}).then(function (signup) {
           // If the email is already taken
-          console.log(signup.response)
           if(signup.response == true){
             console.log("Error: Invite colleague | he already uses unisphere");
             Notification.error($scope.newUser + " already uses Unisphere")
@@ -93,7 +92,7 @@
             });
           } else {
             Restangular.all('users').post({user_id: signup.response, organization_id: $scope.universityId}).then(function (d) {
-              $scope.listUser.push(response.user);
+              $scope.listUser.push(signup.response.user);
               $scope.newUser = "";
               stopSpinner()
               $scope.organizationForm.$setUntouched();
