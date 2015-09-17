@@ -23,6 +23,11 @@
   color: $chart-title-color;
   font-family: "helvetica";
   font-weight: 100;
+  width: 100%;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /*----------  Chart position  ----------*/

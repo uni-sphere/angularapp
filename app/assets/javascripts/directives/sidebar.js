@@ -11,7 +11,9 @@
         viewhome: '=',
         viewdashboard: '=',
         home: '=',
-        admin: '='
+        admin: '=',
+        reloadNodes: '=',
+        reloadGraph: '='
       },
       link: function(scope) {
 
@@ -20,7 +22,8 @@
             scope.viewhome = true;
             scope.viewdashboard = false;
             scope.admin = false;
-            scope.superadmin = false
+            scope.superadmin = false;
+
           } else{
             scope.deconnection()
           }
@@ -28,12 +31,14 @@
 
         scope.showHome = function(){
           scope.viewdashboard = false;
-          scope.viewhome = true
+          scope.viewhome = true;
+          scope.reloadNodes();
         }
 
         scope.showDashboard = function(){
           scope.viewdashboard = true;
-          scope.viewhome = false
+          scope.viewhome = false;
+          scope.reloadGraph($('.test-app-content').width(), $('.test-app-content').height());
         }
       }
     }

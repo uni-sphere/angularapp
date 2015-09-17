@@ -6,7 +6,7 @@ namespace :sandbox do
     organization = Organization.find_by_subdomain 'sandbox'
     awsdocument_sandbox = Awsdocument.where(user_id: User.find_by_email('user@unisphere.eu').id, title: 'cours.pdf').first
 
-    if Time.now - organization.nodes.first.created_at <= 1.days and Rails.env.production?
+    if Time.now - organization.nodes.first.created_at <= 12.hours and Rails.env.production?
       #destroy data
       awsdocuments = organization.awsdocuments
       nodes = organization.nodes

@@ -17,7 +17,8 @@
           userId: '=',
           reloadNodes: '=',
           viewNews: '=',
-          superadmin: '='
+          superadmin: '=',
+          viewhome: '='
         },
         link: function(scope, iElement, iAttrs) {
 
@@ -82,6 +83,13 @@
               scope.reloadNodes()
             }
           });
+
+          // scope.$watch('viewhome', function(newVals, oldVals){
+          //   if(newVals){
+          //     console.log("resize")
+          //     scope.reloadNodes()
+          //   }
+          // });
 
           var dummyId = 50
           /*==========  Svg creation  ==========*/
@@ -577,8 +585,8 @@
 
           function render(branch, iElement){
             window.onresize = function() {
-              if(window.location.pathname == '/' || window.location.pathname == '/home'){
-                console.log("Ok: Window resize. Render tree")
+              if(window.location.pathname == '/' || (window.location.pathname == '/home' && scope.viewhome)){
+                console.log("Ok: Window resize | Reload tree")
                 render(scope.nodes, iElement);
               }
             };

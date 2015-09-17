@@ -1,35 +1,40 @@
 (function () {
   angular.module('mainApp.directives')
-  .directive('metrics', [ 'Restangular', function(Restangular) {
+  .directive('metrics', [ 'Restangular', '$window', function(Restangular, $window) {
 
     return {
       restrict: 'E',
       templateUrl: 'dashboard/metric.html',
       scope: {
-        university: '='
+        university: '=',
+        viewdashboard: '=',
+        reloadGraph: '='
       },
       link: function(scope, element) {
         var globals = {};
+
         if(scope.home){
-          var outerContainer  = $('.test-app-content')
+          scope.graphOuterContainer = $('.test-app-content')
         } else{
-          var outerContainer  = $('#metrics')
+          scope.graphOuterContainer = $('#metrics')
         }
 
-
-        scope.containerWidth = outerContainer.width();
-
-        // when the window is resized the graphs are changing
-        window.onresize = function() {
-          console.log("hello")
-          options1.width = outerContainer.width() / 2 - 120,
-          options1.height =  outerContainer.height() * 50 / 100,
+        scope.reloadGraph = function(width, height){
+          options1.width = width / 2 - 120,
+          options1.height = height * 50 / 100,
           MG.data_graphic(options1);
 
-          options2.width =  outerContainer.width() / 2 - 120,
-          options2.height =  outerContainer.height() * 50 / 100,
+          options2.width =  width / 2 - 120,
+          options2.height =  height * 50 / 100,
           MG.data_graphic(options2);
-        };
+        }
+
+        angular.element($window).bind('resize', function() {
+          if(window.location.pathname == '/dashboard' || (window.location.pathname == '/home' && scope.viewdashboard)){
+            console.log("Ok: Window resize | reload graph")
+            scope.reloadGraph($('.test-app-content').width(),$('.test-app-content').height())
+          }
+        });
 
         // We save the node of the user, so we can propose to display them in the first chart
         Restangular.one('report/nodes').get().then(function(data) {
@@ -54,8 +59,8 @@
 
         // Options of the first chart
         var options1 = {
-          width: outerContainer.width() / 2 - 120,
-          height: outerContainer.height() * 50 / 100,
+          width: scope.graphOuterContainer.width() / 2 - 120,
+          height: scope.graphOuterContainer.height() * 50 / 100,
           target: '#chart-1',
           x_accessor: 'date',
           y_accessor: 'downloads',
@@ -106,8 +111,8 @@
 
         // Options of the second chart
         var options2 = {
-          width: outerContainer.width() / 2 - 120,
-          height: outerContainer.height() * 50 / 100,
+          width: scope.graphOuterContainer.width() / 2 - 120,
+          height: scope.graphOuterContainer.height() * 50 / 100,
           target: '#chart-2',
           x_accessor: 'date',
           xax_start_at_min: 'true',

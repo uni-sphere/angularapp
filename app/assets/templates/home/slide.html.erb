@@ -6,20 +6,22 @@
   </div>
 
   <div id='test-app'>
-    <sidebar ng-show="admin" home = 'true' deconnection = 'deconnection' superadmin = 'superadmin' viewdashboard = 'viewdashboard' viewhome = 'viewhome' admin='admin'></sidebar>
+    <sidebar ng-show="admin" home = 'true' deconnection = 'deconnection' superadmin = 'superadmin' viewdashboard = 'viewdashboard' viewhome = 'viewhome' admin='admin' reload-nodes = 'reloadNodes' reload-graph = 'reloadGraph'></sidebar>
     <admin-co ng-hide="admin" get-basic-info = 'getBasicInfo' admin = 'admin' home = 'true' superadmin = 'superadmin'></admin-co>
     <div id='test-app-buttons-1'></div>
     <div id='test-app-buttons-2'></div>
     <div id='test-app-buttons-3'></div>
-    <div ng-show = "viewhome" class="test-app-content">
-      <left-tree id="view-tree" node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = 'admin'  home ='true' sandbox = 'sandbox' help = 'help' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' nodes = 'nodes' folded-nodes= 'foldedNodes' cookie-gestion = 'cookieGestion' user-id = 'userId' reload-nodes ='reloadNodes' view-news = 'viewNews' superadmin = 'superadmin'></left-tree>
+    <div class="test-app-content">
+      <left-tree ng-show = "viewhome" id="view-tree" node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = 'admin'  home ='true' sandbox = 'sandbox' help = 'help' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' nodes = 'nodes' folded-nodes= 'foldedNodes' cookie-gestion = 'cookieGestion' user-id = 'userId' reload-nodes ='reloadNodes' view-news = 'viewNews' superadmin = 'superadmin' viewhome = 'viewhome'></left-tree>
 
-      <right-tree active-nodes='activeNodes' node-end='nodeEnd' files = 'files' admin = 'admin' sandbox = 'false' home = 'true' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' reload-nodes ='reloadNodes' user-id = 'userId' loose-focus-item = 'looseFocusItem' superadmin = 'superadmin' home = 'true'></right-tree>
+      <right-tree ng-show = "viewhome" active-nodes='activeNodes' node-end='nodeEnd' files = 'files' admin = 'admin' sandbox = 'false' home = 'true' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' reload-nodes ='reloadNodes' user-id = 'userId' loose-focus-item = 'looseFocusItem' superadmin = 'superadmin' home = 'true'></right-tree>
+
+      <div ng-show="viewdashboard">
+        <metrics university = 'university' id="metrics" viewdashboard = 'viewdashboard' reload-graph = 'reloadGraph'></metrics>
+      </div>
     </div>
 
-    <div class="test-app-content" ng-show="viewdashboard">
-      <metrics university = 'university' id="metrics"></metrics>
-    </div>
+
   </div>
 
   <div id="separation-banner" class="banner">
