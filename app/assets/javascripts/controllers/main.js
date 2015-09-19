@@ -1,9 +1,22 @@
 (function(){
-angular
-  .module('mainApp.controllers')
-  .controller('MainCtrl', ['$scope','$timeout', 'Restangular', '$translate', '$auth', '$state',
-   'usSpinnerService', 'Notification', 'ipCookie', '$q', function ($scope, $timeout, Restangular, $translate,
-    $auth, $state, usSpinnerService, Notification, ipCookie, $q) {
+  angular
+    .module('mainApp.controllers')
+    .controller('MainCtrl', MainCtrl);
+
+  MainCtrl.$inject = ['$rootScope', '$scope','$timeout', 'Restangular', '$translate', '$auth', '$state', 'usSpinnerService', 'Notification', 'ipCookie', '$q']
+  function MainCtrl($rootScope, $scope, $timeout, Restangular, $translate, $auth, $state, usSpinnerService, Notification, ipCookie, $q){
+
+    $scope.looseFocusItem = function(){
+      if($rootScope.activeChapter != undefined){
+        $rootScope.activeChapter.$modelValue.selectedItem = false;
+        $rootScope.activeChapter = undefined
+      }
+      if($rootScope.activeFile != undefined){
+        $rootScope.activeFile.$modelValue.selectedItem = false;
+        $rootScope.activeFile = undefined
+      }
+      $('.dropdown.active').removeClass('active')
+    }
 
     $scope.deconnection = function(){
       if($scope.sandbox){
@@ -21,9 +34,6 @@ angular
           $scope.userId = undefined;
           $scope.university = "My university"
 
-          // if(window.location.host != 'localhost:3000'){
-          //   FHChat.transitionTo('closed');
-          // }
         }, function(d){
           console.log(d)
           console.log("Impossible to deco")
@@ -163,5 +173,5 @@ angular
 
     }
 
-  }]);
+  }
 })();
