@@ -17,12 +17,8 @@ class Node < ActiveRecord::Base
   end
   
   def self.create_reports
-    self.all.each do |node|
-      if node.reports.last.nil?
-        node.reports.create if node.chapters.count > 2
-      else
-        node.reports.create if node.chapters.count > 2 and Time.now - node.reports.last.created_at < 7.days and Time.now - node.reports.last.created_at > 6.days
-      end
+    self.where(archived: false).each do |node|
+      node.reports.create if node.chapters.where(archived: false).count > 0 and Time.now - node.reports.last.created_at >= 7.days 
     end
   end
 
