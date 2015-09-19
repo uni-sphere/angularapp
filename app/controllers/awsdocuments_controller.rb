@@ -16,7 +16,7 @@ class AwsdocumentsController < ApplicationController
 
   def show
     if !params[:node_id].nil?
-      # current_node.reports.last.increase_downloads if !current_node.reports.nil? and !dev?
+      current_node.reports.last.increase_downloads if !current_node.reports.nil? and !dev?
       if current_node.locked
         if current_node.password == params[:password]
           render json: current_awsdocument.content.file.authenticated_url.to_json, status: 200
