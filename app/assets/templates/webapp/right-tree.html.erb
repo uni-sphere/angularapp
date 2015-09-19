@@ -1,7 +1,7 @@
-<div id="right-tree">
+<div id="right-tree" ng-controller="uploadCtrl">
 
   <script type="text/ng-template" id="items_renderer.html">
-    <div ui-tree-handle ng-class="{isdocument: item.document, itemSelected : item.selectedItem}" ng-click="$event.stopPropagation(); activateChapter(this)">
+    <div ui-tree-handle ng-class="{isdocument: item.document, itemSelected : item.selectedItem}" ng-click="$event.stopPropagation(); toggleChapter(this)">
 
       <a class="btn-collapse" nodrag ng-if="!item.document" ng-init="collapseItems(this)"><span class="fa fa-angle-right" ng-class="{'expanded': !collapsed, 'angle-right-hidden' : this.$modelValue.items.length == 0}"></span></a>
 
@@ -17,8 +17,8 @@
 
       <div class="item-name"><span>{{item.title}}</span></div>
 
-      <div class="btn btn-options" nodrag ng-click="$event.stopPropagation()">
-        <div dropdown-menu="dropdownOptions" dropdown-model="dropdownSelected" dropdown-onchange="actionItem(this)">
+      <div class="btn btn-options" ng-controller="itemActionsButtonCtrl" nodrag ng-click="$event.stopPropagation()">
+        <div dropdown-menu="dropdownOptions" dropdown-model="dropdownSelected" dropdown-onchange="actionItem(this)" >
           <span class="fa fa-ellipsis-v" ng-click="selectItem(this)"></span>
         </div>
       </div>
@@ -44,7 +44,7 @@
     </ol>
   </script>
 
-  <div id="breadcrumb" ng-class="{'breadcrumb-no-doc' : documentAbsent}">
+  <div id="breadcrumb" ng-class="{'breadcrumb-no-doc' : documentAbsent}" ng-controller="breadcrumbCtrl">
     <div id="breadcrumb-container">
       <div id="breadcrumb-title">
         <span ng-repeat="node in breadcrumb track by $index" ng-class="'breadcrumb-node'">{{node}} <span ng-class="'breadcrumb-separator'" ng-if="$index != breadcrumb.length - 1"><i class="fa fa-angle-right" ></i></span></span>
@@ -67,10 +67,10 @@
   <div id="button-row" ng-class="{'button-hidden' : !nodeEnd || !admin}" ng-click="$event.stopPropagation()">
     <button class="submit-button dual-submit" ng-multiple="true" ng-file-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>
 
-    <button ng-click="newSubItem()" ng-controller="CrudCtrl" class="submit-button dual-submit"  >{{ 'CHAPTER' | translate }}</button>
+    <button ng-click="newChapter()" ng-controller="createChapterCtrl" class="submit-button dual-submit"  >{{ 'CHAPTER' | translate }}</button>
   </div>
 
-  <div id="document-tree" >
+  <div id="document-tree" ng-controller="toggleChapterCtrl">
     <div id="ui-tree-container" ng-if="!documentAbsent && nodeEnd">
       <div ui-tree="options" data-drag-enabled="false"  id="tree-root">
         <ol ui-tree-nodes ng-model="listItems" >

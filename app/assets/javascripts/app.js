@@ -1,5 +1,7 @@
 (function(){
-  var app = angular.module('mainApp', [
+
+  angular
+  .module('mainApp', [
     'ngAnimate',
     'templates',
     'ngResource',
@@ -7,11 +9,11 @@
     'mainApp.directives',
     'mainApp.controllers',
     'mainApp.filters',
+    'mainApp.services',
     'ipCookie',
     'restangular',
     'angularFileUpload',
     'angulartics',
-    'angulartics.google.analytics',
     'pascalprecht.translate',
     'ngDropdowns',
     'ng-token-auth',
@@ -21,8 +23,7 @@
     'angularSpinner',
     'ui-notification',
     'angularModalService'
-  ])
-  .config(function (
+  ]).config(function (
     $stateProvider,
     $urlRouterProvider,
     $locationProvider,
@@ -31,7 +32,14 @@
     $authProvider,
     NotificationProvider
   ) {
-    (function initRoute(){
+
+    configureRoute()
+    configureTranslation()
+    configureNotifications()
+    configureAuth()
+    configureRestangular()
+
+    function configureRoute(){
       if(window.location.host == "admin.unisphere.eu" || window.location.host == "admin.dev.unisphere.eu"){
         $stateProvider
         .state('admin', {
@@ -140,38 +148,9 @@
       $urlRouterProvider.otherwise('/');
 
       $locationProvider.html5Mode(true);
-    })();
-
-    NotificationProvider.setOptions({
-      delay: 5000,
-      startTop: 100,
-      verticalSpacing: 20,
-      positionX: 'right',
-      positionY: 'top',
-      templateUrl: 'main/notification-template.html'
-    });
-
-    function getEnvironment(){
-      var host = window.location.host;
-      if(host == 'localhost:3000'){
-        return "http://api.unisphere-dev.com:3000"
-      } else if(host.indexOf('dev.') > -1){
-        return "http://apidev.unisphere.eu"
-      } else{
-        return "http://api.unisphere.eu"
-      }
     }
 
-    $authProvider.configure({
-      apiUrl: getEnvironment(),
-      passwordResetSuccessUrl: window.location.href
-    });
-
-    RestangularProvider
-      .setBaseUrl(getEnvironment())
-      .setDefaultHeaders({ 'Authorization': 'Token token=ce76e09ea8191a3b5410dbf033cf23ad' });
-
-    (function initTranslation(){
+    function configureTranslation(){
       $translateProvider
       .useSanitizeValueStrategy(null)
       .translations('en', {
@@ -374,14 +353,51 @@
       .registerAvailableLanguageKeys(['fr'])
       .determinePreferredLanguage()
       .fallbackLanguage('en');
-    })();
+    }
+
+    function configureAuth(){
+      $authProvider.configure({
+        apiUrl: getEnvironment(),
+        passwordResetSuccessUrl: window.location.href
+      });
+    }
+
+    function configureRestangular(){
+      RestangularProvider
+        .setBaseUrl(getEnvironment())
+        .setDefaultHeaders({ 'Authorization': 'Token token=ce76e09ea8191a3b5410dbf033cf23ad' });
+    }
+
+    function configureNotifications(){
+      NotificationProvider.setOptions({
+        delay: 5000,
+        startTop: 100,
+        verticalSpacing: 20,
+        positionX: 'right',
+        positionY: 'top',
+        templateUrl: 'main/notification-template.html'
+      });
+    }
+
+    // Functions
+
+    function getEnvironment(){
+      var host = window.location.host;
+      if(host == 'localhost:3000'){
+        return "http://api.unisphere-dev.com:3000"
+      } else if(host.indexOf('dev.') > -1){
+        return "http://apidev.unisphere.eu"
+      } else{
+        return "http://api.unisphere.eu"
+      }
+    }
 
   });
 
   angular.module('mainApp.filters', []);
+  angular.module('mainApp.services', []);
   angular.module('mainApp.controllers', []);
   angular.module('mainApp.directives', []);
-  angular.module('mainApp.services', []);
 
 })();
 
