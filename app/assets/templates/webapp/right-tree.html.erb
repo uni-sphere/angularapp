@@ -65,7 +65,7 @@
   </div>
 
   <div id="button-row" ng-class="{'button-hidden' : !nodeEnd || !admin}" ng-click="$event.stopPropagation()">
-    <button class="submit-button dual-submit" ng-multiple="true" ng-file-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>
+    <button type="file" class="submit-button dual-submit" ng-multiple="true" ng-file-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>
 
     <button ng-click="newChapter()" ng-controller="createChapterCtrl" class="submit-button dual-submit"  >{{ 'CHAPTER' | translate }}</button>
   </div>

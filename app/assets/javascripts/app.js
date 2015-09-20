@@ -232,7 +232,7 @@
         RENAME_SPACE: 'Rename ',
         RENAME: 'Rename',
         HINT: 'Hint: Your node name most be less than 20 caracters',
-        SHARE: 'Share',
+        SHARE: 'Share ',
         COPY: 'Hint: Copy ',
         WEB_WELCOME_COMMENT: 'A collaborative workspace for educational institutions',
         WEB_SEPARATION_BANNER: 'Unisphere provides tools for collaborative work and files sharing',
