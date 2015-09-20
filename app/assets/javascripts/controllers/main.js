@@ -32,6 +32,7 @@
           $scope.accountEmail = undefined;
           $scope.accountName = undefined;
           $scope.userId = undefined;
+          $scope.superadmin = false;
           $scope.university = "My university"
 
         }, function(d){
