@@ -22,7 +22,7 @@ angular
     });
 
     $scope.downloadItem = function(node){
-      downloadItem($scope.locked, node.$modelValue.title, false, node.$modelValue.doc_id, node.$modelValue.parent,$scope.node_id)
+      downloadItem($scope.locked, node.$modelValue.title, node.$modelValue.doc_id, node.$modelValue.parent,$scope.node_id)
     }
 
   }]);
