@@ -1,7 +1,10 @@
 (function(){
   angular
-  .module('mainApp.controllers')
-  .controller('AccountCtrl', ['$scope', 'Restangular', '$auth', 'Notification', 'activateSpinner', 'stopSpinner', function ($scope, Restangular, $auth, Notification, activateSpinner, stopSpinner) {
+    .module('mainApp.controllers')
+    .controller('accountCtrl', accountCtrl)
+
+  accountCtrl.$digest = ['$scope', 'Restangular', '$auth', 'Notification', 'spinnerService'];
+  function accountCtrl($scope, Restangular, $auth, Notification, spinnerService){
 
     /*======================================
     =            Update profile            =
@@ -56,7 +59,7 @@
 
     $scope.inviteUsers = function(){
       if($scope.organizationForm.$valid){
-        activateSpinner();
+        spinnerService.begin()
         var newPassword = makePassword(8);
 
         // Sign up
@@ -80,12 +83,12 @@
             Restangular.all('user/invite').post({email: $scope.newUser, password: newPassword}).then(function (response) {
               $scope.listUser.push(response.user);
               $scope.newUser = "";
-              stopSpinner()
+              spinnerService.stop()
               $scope.organizationForm.$setUntouched();
               console.log("New user added");
               Notification.success('Your colleague has been invited');
             }, function(d){
-              stopSpinner()
+              spinnerService.stop()
               console.log("Error: Invite colleague");
               console.log(d);
               Notification.error('We didn\'t manage to invite your colleague. We will fix this soon');
@@ -94,19 +97,19 @@
             Restangular.all('users').post({user_id: signup.response, organization_id: $scope.universityId}).then(function (d) {
               $scope.listUser.push(signup.response.user);
               $scope.newUser = "";
-              stopSpinner()
+              spinnerService.stop()
               $scope.organizationForm.$setUntouched();
               console.log("link created")
               Notification.success('Your colleague has been invited');
             }, function(d) {
-              stopSpinner()
+              spinnerService.stop()
               console.log("Error: link not created")
               console.log(d)
               Notification.error('We didn\'t manage to invite your colleague. We will fix this soon')
             });
           }
         }, function(d){
-          stopSpinner()
+          spinnerService.stop()
           console.log("Error: Invite colleague");
           console.log(d);
           Notification.error("We didn't manage to invite your colleague. We will fix it soon.")
@@ -281,7 +284,7 @@
       }
     },100);
 
-  }]);
+  }
 })();
 
 

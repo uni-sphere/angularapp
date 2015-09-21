@@ -1,7 +1,17 @@
 (function () {
-  'use strict';
-  angular.module('mainApp.directives').service('downloadItem', ['Restangular', 'ModalService', 'Notification', function(Restangular, ModalService, Notification) {
-    return function(nodeProtected, title, doc_id, chapter_id, node_id) {
+  angular
+    .module('mainApp.services')
+    .service('downloadService', downloadService)
+
+  downloadService.$inject = ['Restangular', 'ModalService', 'Notification']
+  function downloadService(Restangular, ModalService, Notification){
+    var service = {
+      download: download
+    };
+
+    return service;
+
+    function download(nodeProtected, title, doc_id, chapter_id, node_id){
 
       if(['png','jpg','pdf'].indexOf(title.substr(title.lastIndexOf('.') + 1).toLowerCase()) > -1){
         var preview = true
@@ -41,6 +51,7 @@
 
         },function(d){
           if(d.status == 403){
+            // If we receive a 403 it means the node has been locked by the admin, while the user didnt refresh
             callModalLocked()
           } else{
             console.log(d);
@@ -52,5 +63,6 @@
         callModalLocked()
       }
     }
-  }]);
-}());
+
+  }
+})();

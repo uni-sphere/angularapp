@@ -1,39 +1,37 @@
 (function(){
-angular
-  .module('mainApp.controllers')
-  .controller('SuperadminCtrl', ['$scope', 'Restangular', function ($scope, Restangular) {
+  angular
+    .module('mainApp.controllers')
+    .controller('SuperadminCtrl', SuperadminCtrl)
 
-    $scope.superadminEmailRename = function(index){
-      var result = prompt('Change the email '+ $scope.listUser[index].name);
-      if(result) {
-        $scope.listUser[index].email = result;
-      }
-    }
+  SuperadminCtrl.$inject =  ['$scope', 'Restangular'];
+  function SuperadminCtrl($scope, Restangular){
+    // $scope.superadminEmailRename = function(index){
+    //   var result = prompt('Change the email '+ $scope.listUser[index].name);
+    //   if(result) {
+    //     $scope.listUser[index].email = result;
+    //   }
+    // }
 
-    $scope.superadminNameRename = function(index){
-      var result = prompt('Change the name ' + $scope.listUser[index].name);
-      if(result) {
-        Restangular.one('user/'+ index).put({'name': result}).then(function(d) {
-          $scope.listUser[index].name = result;
-          Notification.success("Ok: name changed")
-          console.log("Ok: name changed");
-        }, function(d) {
-          console.log("Error: name changed");
-          console.log(d)
-          Notification.success("Error: name changed")
-        });
-      }
-    }
+    // $scope.superadminNameRename = function(index){
+    //   var result = prompt('Change the name ' + $scope.listUser[index].name);
+    //   if(result) {
+    //     Restangular.one('user/'+ index).put({'name': result}).then(function(d) {
+    //       $scope.listUser[index].name = result;
+    //       Notification.success("Ok: name changed")
+    //       console.log("Ok: name changed");
+    //     }, function(d) {
+    //       console.log("Error: name changed");
+    //       console.log(d)
+    //       Notification.success("Error: name changed")
+    //     });
+    //   }
+    // }
 
+    // $scope.superadminUserDelete = function(index){
+    //   $scope.listUser.splice(index,1)
+    // }
+  }
 
-
-
-
-    $scope.superadminUserDelete = function(index){
-      $scope.listUser.splice(index,1)
-    }
-
-  }]);
 })();
 
 

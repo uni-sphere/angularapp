@@ -29,11 +29,13 @@
             });
 
             // We look if the node in the cookies still exist
-            if(ipCookie('nodeEnd') && nodeIDs.indexOf(ipCookie('nodeEnd')[0]) > -1){
+            if(ipCookie('nodeEnd') == false || nodeIDs.indexOf(ipCookie('nodeEnd')[0]) > -1){
               console.log('Ok: cookies - no problem')
               scope.activeNodes = ipCookie('activeNodes');
               scope.nodeEnd = ipCookie('nodeEnd');
             } else{
+              console.log(ipCookie('nodeEnd'))
+              console.log(nodeIDs)
               console.log('Ok: cookies - problems')
               scope.activeNodes = []
               setInitialCookies(nodes)
@@ -84,14 +86,6 @@
             }
           });
 
-          // scope.$watch('viewhome', function(newVals, oldVals){
-          //   if(newVals){
-          //     console.log("resize")
-          //     scope.reloadNodes()
-          //   }
-          // });
-
-          var dummyId = 50
           /*==========  Svg creation  ==========*/
           var margin = {top: 20, right: 20, bottom: 10, left: 30};
 

@@ -1,7 +1,7 @@
 class Node < ActiveRecord::Base
 
   include BCrypt
-  
+
   belongs_to :organization
   belongs_to :user
 
@@ -9,13 +9,13 @@ class Node < ActiveRecord::Base
   has_many :reports
 
   validates :name, :parent_id, :user_id, presence: true
-  
+
   before_save :set_superadmin
-  
+
   def set_superadmin
     self.superadmin = true if User.find(self.user_id).superadmin
   end
-  
+
   def self.create_reports
     self.where(archived: false).each do |node|
       if node.reports.count != 0

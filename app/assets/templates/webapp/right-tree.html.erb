@@ -1,7 +1,7 @@
-<div id="right-tree">
+<div id="right-tree" ng-controller="uploadCtrl">
 
   <script type="text/ng-template" id="items_renderer.html">
-    <div ui-tree-handle ng-class="{isdocument: item.document, itemSelected : item.selectedItem}" ng-click="$event.stopPropagation(); activateChapter(this)">
+    <div ui-tree-handle ng-class="{isdocument: item.document, itemSelected : item.selectedItem}" ng-click="$event.stopPropagation(); toggleChapter(this)">
 
       <a class="btn-collapse" nodrag ng-if="!item.document" ng-init="collapseItems(this)"><span class="fa fa-angle-right" ng-class="{'expanded': !collapsed, 'angle-right-hidden' : this.$modelValue.items.length == 0}"></span></a>
 
@@ -9,16 +9,14 @@
 
       <div class="chapter-number" ng-if="!item.document" ng-class="{depth1 : item.depth == 1, depth2 : item.depth == 2, depth3 : item.depth == 3, depth4 : item.depth == 4}">{{item.chapter}} </div>
 
-      <div class="fa fa-file-pdf-o file-icon" ng-if="item.document && this.$modelValue.title.substr(item.title.lastIndexOf('.') + 1).toLowerCase() == 'pdf'"></div>
+      <div class="fa file-icon"  ng-show="item.document && ['docx', 'doc', 'pdf', 'avi', 'png', 'jpg'].indexOf(item.extension) > -1" ng-class="{'fa-file-pdf-o' : item.extension == 'pdf', 'fa-file-picture-o' : ['png', 'jpg'].indexOf(item.extension) > -1, 'fa-file-word-o' : ['docx', 'doc'].indexOf(item.extension) > -1, 'fa-file-video-o' : item.extension == 'avi'}"></div>
 
-      <div class="fa fa-file-picture-o file-icon" ng-if="item.document && ['png','jpg'].indexOf(item.title.substr(item.title.lastIndexOf('.') + 1).toLowerCase()) >= 0"></div>
-
-      <div class="fa fa-file-o file-icon" ng-hide="!this.$modelValue.document || item.document && ['png','jpg','pdf'].indexOf(this.$modelValue.title.substr(item.title.lastIndexOf('.') + 1).toLowerCase()) >= 0"></div>
+      <div class="fa file-icon fa-file-o"  ng-hide="!item.document || ['docx', 'doc', 'pdf', 'avi', 'png', 'jpg'].indexOf(item.extension) > -1" ></div>
 
       <div class="item-name"><span>{{item.title}}</span></div>
 
-      <div class="btn btn-options" nodrag ng-click="$event.stopPropagation()">
-        <div dropdown-menu="dropdownOptions" dropdown-model="dropdownSelected" dropdown-onchange="actionItem(this)">
+      <div class="btn btn-options" ng-controller="itemActionsButtonCtrl" nodrag ng-click="$event.stopPropagation()">
+        <div dropdown-menu="dropdownOptions" dropdown-model="dropdownSelected" dropdown-onchange="actionItem(this)" >
           <span class="fa fa-ellipsis-v" ng-click="selectItem(this)"></span>
         </div>
       </div>
@@ -44,20 +42,20 @@
     </ol>
   </script>
 
-  <div id="breadcrumb" ng-class="{'breadcrumb-no-doc' : documentAbsent}">
+  <div id="breadcrumb" ng-controller="breadcrumbCtrl">
     <div id="breadcrumb-container">
       <div id="breadcrumb-title">
         <span ng-repeat="node in breadcrumb track by $index" ng-class="'breadcrumb-node'">{{node}} <span ng-class="'breadcrumb-separator'" ng-if="$index != breadcrumb.length - 1"><i class="fa fa-angle-right" ></i></span></span>
       </div>
     </div>
 
-    <div id="protection-node-container" ng-show="nodeEnd && !documentAbsent">
+    <div id="protection-node-container" ng-show="nodeEnd && listItems.length != 0">
       <button ng-show="nodeProtected" type="button" class="fa fa-lock round-button protection-file-on" ng-click="toggleProtection()" title="{{ 'NODE_LOCKED' | translate}}" ></button>
 
       <button ng-show="!nodeProtected" type="button" class="fa fa-unlock-alt round-button protection-file-off" ng-click="toggleProtection()" title="{{ 'NODE_UNLOCKED' | translate}}"></button>
     </div>
 
-    <div id="options-node" ng-show="admin && nodeEnd && !documentAbsent" >
+    <div id="options-node" ng-show="admin && nodeEnd && listItems.length != 0" >
       <div dropdown-menu="nodeDropdownOptions" dropdown-model="nodeDropdownSelected" dropdown-onchange="actionNodeOptions()">
         <button type="button" class="round-button fa fa-bars"></button>
       </div>
@@ -67,11 +65,11 @@
   <div id="button-row" ng-class="{'button-hidden' : !nodeEnd || !admin}" ng-click="$event.stopPropagation()">
     <button class="submit-button dual-submit" ng-multiple="true" ng-file-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>
 
-    <button ng-click="newSubItem()" ng-controller="CrudCtrl" class="submit-button dual-submit"  >{{ 'CHAPTER' | translate }}</button>
+    <button ng-click="newChapter()" ng-controller="createChapterCtrl" class="submit-button dual-submit"  >{{ 'CHAPTER' | translate }}</button>
   </div>
 
-  <div id="document-tree" >
-    <div id="ui-tree-container" ng-if="!documentAbsent && nodeEnd">
+  <div id="document-tree" ng-controller="toggleChapterCtrl">
+    <div id="ui-tree-container" ng-if="listItems.length > 0 && nodeEnd">
       <div ui-tree="options" data-drag-enabled="false"  id="tree-root">
         <ol ui-tree-nodes ng-model="listItems" >
           <li ng-repeat="item in listItems" ui-tree-node ng-include="'items_renderer.html'"></li>
@@ -79,11 +77,11 @@
       </div>
     </div>
 
-    <div id="select-leaf" class="full-size-circle-container" ng-show="!nodeEnd || documentAbsent && !admin">
+    <div id="select-leaf" class="full-size-circle-container" ng-show="!nodeEnd || listItems.length == 0 && !admin">
       <div class="full-size-circle">!</div>
     </div>
 
-    <div id="dropzone-circle" class="full-size-circle-container" ng-show="nodeEnd && documentAbsent && admin">
+    <div id="dropzone-circle" class="full-size-circle-container" ng-show="nodeEnd && listItems.length == 0 && admin">
       <div class="full-size-circle" >
         <div id="dropzone-text">DROP ZONE</div>
       </div>
@@ -94,7 +92,7 @@
       <span id="tip-chrome" ng-show="admin && nodeEnd && !isChrome " >{{ 'TIP' | translate }}</span>
       <span id="tip-chrome" ng-show="admin && nodeEnd && isChrome">{{ 'TIP_CHROME' | translate }}</span>
 
-      <div ng-show="documentAbsent && nodeEnd && !admin">{{ 'NEW_SUBJECT' | translate }}</div>
+      <div ng-show="listItems.length == 0 && nodeEnd && !admin">{{ 'NEW_SUBJECT' | translate }}</div>
       <div ng-show="!nodeEnd">{{ 'SELECT_LEAF' | translate }}</div>
     </div>
 

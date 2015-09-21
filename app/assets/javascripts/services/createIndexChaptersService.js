@@ -1,7 +1,17 @@
 (function () {
-  'use strict';
-  angular.module('mainApp.directives').service('createChap', ['usSpinnerService', function(usSpinnerService) {
-    return function(treeData) {
+
+  angular
+    .module('mainApp.services')
+    .service('createIndexChaptersService', createIndexChaptersService)
+
+  function createIndexChaptersService(){
+    var service = {
+      create: create
+    }
+
+    return service;
+
+    function create(treeData){
       var j = 1;
       var chap = [];
       var savedValueByDepth = [];
@@ -10,6 +20,8 @@
       function createChap(d){
         if(!d.document){
           var newValueByDepth = savedValueByDepth;
+
+          // If we have a sibling chapter
           if(d.depth == previousDepth){
             // console.log("==");
             if(savedValueByDepth[[d.depth]] != undefined){
@@ -17,9 +29,10 @@
             } else{
               newValueByDepth[d.depth] = 1;
             }
-            // console.log(newValueByDepth);
             savedValueByDepth = newValueByDepth;
           }
+
+          // If we have a sibling higher in the organization
           if(d.depth > previousDepth){
             // console.log(">");
             if(savedValueByDepth[[d.depth]] == undefined){
@@ -29,6 +42,8 @@
             }
             savedValueByDepth = newValueByDepth;
           }
+
+          // If we have a child
           if(d.depth < previousDepth){
             // console.log("<")
             var diff = previousDepth - d.depth;
@@ -53,9 +68,7 @@
       }
 
       treeData.forEach(iterate);
-
-      return treeData
-
     }
-  }]);
+
+  }
 }());

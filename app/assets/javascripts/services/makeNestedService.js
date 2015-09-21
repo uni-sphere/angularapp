@@ -1,7 +1,16 @@
 (function () {
-  'use strict';
-  angular.module('mainApp.directives').service('makeNested', [ function() {
-    return function(flatData) {
+  angular
+    .module('mainApp.services')
+    .service('makeNestedItemService', makeNestedItemService)
+
+  function makeNestedItemService(){
+    service = {
+      create : create
+    }
+
+    return service
+
+    function create(flatData){
       var dataMap = flatData.reduce(function(map, node) {
         map[node.id] = node;
         return map;
@@ -18,7 +27,7 @@
           node.doc_id = node.id
           node.document = true
           if(node.title.indexOf('.') > -1){
-            node.extension = node.title.split('.')[1]
+            node.extension = node.title.split('.')[1].toLowerCase();
           }
           delete node.id
           delete node.chapter_id
@@ -43,5 +52,6 @@
 
       return treeData;
     }
-  }]);
+  }
+
 }());

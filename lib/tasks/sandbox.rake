@@ -1,6 +1,6 @@
 namespace :sandbox do
   desc "reset"
-  task reset: :environment do |t, args|
+  task reset: :environment do
 
     #set subdomain
     organization = Organization.find_by_subdomain 'sandbox'
@@ -78,7 +78,7 @@ namespace :sandbox do
 
   end
   
-  task force_reset: :environment do |t, args|
+  task force_reset: :environment do
 
     #set subdomain
     organization = Organization.find_by_subdomain 'sandbox'
@@ -103,7 +103,7 @@ namespace :sandbox do
       user = User.find_by_email('hello@unisphere.eu')
       node = organization.nodes.create(name: 'University', parent_id: 0, user_id: user.id)
       # create nodes
-      parent_2 = organization.nodes.create(name: "Seconde", parent_id: node.id, user_id: user.id)
+      parent_2 = organization.nodes.create(name: "Seconde", parent_id: node.id, user_id: user.idq)
       parent_3 = organization.nodes.create(name: "Premiere", parent_id: node.id, user_id: user.id)
       parent_4 = organization.nodes.create(name: "Terminal", parent_id: node.id, user_id: user.id)
       #
