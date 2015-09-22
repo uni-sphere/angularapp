@@ -1,4 +1,4 @@
-<div id="right-tree" ng-controller="uploadCtrl">
+<div id="right-tree">
 
   <script type="text/ng-template" id="items_renderer.html">
     <div ui-tree-handle ng-class="{isdocument: item.document, itemSelected : item.selectedItem}" ng-click="$event.stopPropagation(); toggleChapter(this)">
@@ -28,19 +28,7 @@
     </ol>
   </script>
 
-  <script type="text/ng-template" id="specific_renderer.html">
-    <div ui-tree-handle ng-click="selectDrop(this)" ng-if="!item.document">
 
-      <div ng-init="printChapter(this)" class="chapter-number" >{{item.chapter}}</div>
-
-      <div class="item-name">{{item.title}}</div>
-
-    </div>
-
-    <ol ui-tree-nodes="options" ng-model="item.items" ng-init="initCounter()">
-      <li ng-repeat="item in item.items" ui-tree-node ng-include="'specific_renderer.html'"  ng-init="initI()" ng-if="!item.document"></li>
-    </ol>
-  </script>
 
   <div id="breadcrumb" ng-controller="breadcrumbCtrl">
     <div id="breadcrumb-container">
@@ -63,7 +51,7 @@
   </div>
 
   <div id="button-row" ng-class="{'button-hidden' : !nodeEnd || !admin}" ng-click="$event.stopPropagation()">
-    <button class="submit-button dual-submit" ng-multiple="true" ng-file-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>
+    <button class="submit-button dual-submit" ngf-multiple="true" name="firstFiles" ngf-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>
 
     <button ng-click="newChapter()" ng-controller="createChapterCtrl" class="submit-button dual-submit"  >{{ 'CHAPTER' | translate }}</button>
   </div>
@@ -112,17 +100,5 @@
 
 
 
-<div id="fileDropped">
-  <div class="popup-header">{{ 'DROP_FILE' | translate }}</div>
-  <div class="popup-body">
-    <div id="file-dropped-position">{{ 'WHERE_DROP' | translate }}</div>
-    <div id="root-object" ng-click="rootSelected()">{{ 'ROOT' | translate }}</div>
-    <div id="small-ui-tree" ui-tree="options" data-drag-enabled="false">
-      <ol ui-tree-nodes ng-model="listItems" >
-        <li ng-repeat="item in listItems" ui-tree-node ng-include="'specific_renderer.html'"></li>
-      </ol>
-    </div>
-    <button class="submit-button default-submit" ng-click="cancelDrop()">{{ 'CANCEL' | translate }}</button>
-  </div>
-</div>
+
 

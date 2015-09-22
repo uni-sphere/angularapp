@@ -3,8 +3,8 @@
     .module('mainApp.controllers')
     .controller('MainCtrl', MainCtrl);
 
-  MainCtrl.$inject = ['$rootScope', '$scope','$timeout', 'Restangular', '$translate', '$auth', '$state', 'usSpinnerService', 'Notification', 'ipCookie', '$q']
-  function MainCtrl($rootScope, $scope, $timeout, Restangular, $translate, $auth, $state, usSpinnerService, Notification, ipCookie, $q){
+  MainCtrl.$inject = ['ipCookie', '$rootScope', '$scope','$timeout', 'Restangular', '$translate', '$auth', '$state', 'usSpinnerService', 'Notification', '$q', 'makeNestedService']
+  function MainCtrl(ipCookie, $rootScope, $scope, $timeout, Restangular, $translate, $auth, $state, usSpinnerService, Notification, $q, makeNestedService){
 
     $scope.looseFocusItem = function(){
       if($rootScope.activeChapter != undefined){
@@ -173,6 +173,9 @@
       });
 
     }
+
+
+
 
   }
 })();

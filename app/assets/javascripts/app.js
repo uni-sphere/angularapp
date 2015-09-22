@@ -1,6 +1,6 @@
 (function(){
 
-angular
+  angular
   .module('mainApp', [
     'ngAnimate',
     'templates',
@@ -12,7 +12,7 @@ angular
     'mainApp.services',
     'ipCookie',
     'restangular',
-    'angularFileUpload',
+    'ngFileUpload',
     'angulartics',
     'pascalprecht.translate',
     'ngDropdowns',

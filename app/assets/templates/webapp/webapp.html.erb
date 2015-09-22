@@ -1,9 +1,8 @@
-<div ng-file-drop ng-model="files"  drag-over-class="{accept:'dragoverAccept', reject:'dragoverReject', delay:100}"  ng-multiple="true" accept=".jpg,.png,.pdf" id="application-view" ng-controller="WebappCtrl" ng-click="looseFocusItem()">
-
+<div ngf-drop="" ngf-multiple = "true" ng-model = "files" ngf-drag-over-class="{accept:'dragoverAccept', reject:'dragoverReject', delay:100}" id="application-view" ng-click="looseFocusItem()">
 
   <left-tree id="view-tree" node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = 'admin' help = 'help' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' nodes = 'nodes' folded-nodes= 'foldedNodes' cookie-gestion = 'cookieGestion' user-id = 'userId' reload-nodes ='reloadNodes' view-news = 'viewNews' superadmin = 'superadmin' render = 'render' change-breadcrumb = 'changeBreadcrumb'></left-tree>
 
-  <right-tree node-end='nodeEnd' files = 'files' admin = 'admin' sandbox = 'sandbox' home='home' chapter-folded = 'chapterFolded' breadcrumb = 'breadcrumb' reload-nodes ='reloadNodes' user-id = 'userId' superadmin = 'superadmin' loose-focus-item = 'looseFocusItem' active-chapter ='activeChapter'></right-tree>
+  <right-tree node-end='nodeEnd' files = 'files' admin = 'admin' sandbox = 'sandbox' home='home' chapter-folded = 'chapterFolded' breadcrumb = 'breadcrumb' reload-nodes ='reloadNodes' user-id = 'userId' superadmin = 'superadmin' loose-focus-item = 'looseFocusItem' active-chapter ='activeChapter' list-items = 'listItems' is-chrome = 'isChrome'></right-tree>
 
-  <dragndrop-view ng-if="nodeEnd"></dragndrop-view>
+  <dragndrop-view ng-if="nodeEnd" files = 'files' list-items = 'listItems' node-end = 'nodeEnd' is-chrome = 'isChrome' user-id = 'userId' chapter-folded = 'chapterFolded'></dragndrop-view>
 </div>

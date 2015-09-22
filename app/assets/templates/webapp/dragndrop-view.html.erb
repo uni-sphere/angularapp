@@ -1,3 +1,14 @@
+<script type="text/ng-template" id="specific_renderer.html">
+  <div ui-tree-handle ng-click="selectDrop(this)" ng-if="!item.document">
+    <div class="chapter-number" >{{item.chapter}}</div>
+    <div class="item-name">{{item.title}}</div>
+  </div>
+
+  <ol ui-tree-nodes="options" ng-model="item.items">
+    <li ng-repeat="item in item.items" ui-tree-node ng-include="'specific_renderer.html'" ng-if="!item.document"></li>
+  </ol>
+</script>
+
 <div id="dragndrop-view">
   <div id="dragndrop-container">
     <div id="dragndrop-content">
@@ -7,4 +18,18 @@
     <div id="dragndrop-black-area"></div>
   </div>
   <div class="black-background"></div>
+</div>
+
+<div id="fileDropped">
+  <div class="popup-header">{{ 'DROP_FILE' | translate }}</div>
+  <div class="popup-body">
+    <div id="file-dropped-position">{{ 'WHERE_DROP' | translate }}</div>
+    <div id="root-object" ng-click="rootSelected()">{{ 'ROOT' | translate }}</div>
+    <div id="small-ui-tree" ui-tree="options" data-drag-enabled="false">
+      <ol ui-tree-nodes ng-model="listItems" >
+        <li ng-repeat="item in listItems" ui-tree-node ng-include="'specific_renderer.html'"></li>
+      </ol>
+    </div>
+    <button class="submit-button default-submit" ng-click="cancelDrop()">{{ 'CANCEL' | translate }}</button>
+  </div>
 </div>

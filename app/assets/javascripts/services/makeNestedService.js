@@ -1,16 +1,36 @@
 (function () {
   angular
     .module('mainApp.services')
-    .service('makeNestedItemService', makeNestedItemService)
+    .service('makeNestedService', makeNestedService)
 
-  function makeNestedItemService(){
+  function makeNestedService(){
     service = {
-      create : create
+      item : item,
+      node: node
     }
 
     return service
 
-    function create(flatData){
+    function node(flatData){
+      var dataMap = flatData.reduce(function(map, node) {
+        map[node.num] = node;
+        return map;
+      }, {});
+
+      var treeData = [];
+      flatData.forEach(function(node) {
+        var parent = dataMap[node.parent];
+        if (parent) {
+          (parent.children || (parent.children = []))
+            .push(node);
+        } else {
+          treeData.push(node);
+        }
+      });
+      return treeData[0];
+    }
+
+    function item(flatData){
       var dataMap = flatData.reduce(function(map, node) {
         map[node.id] = node;
         return map;

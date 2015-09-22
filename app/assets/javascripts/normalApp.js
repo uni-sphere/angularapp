@@ -7,8 +7,8 @@
 //= require angular-resource
 //= require angular-ui-tree
 //= require underscore
-//= require ng-file-upload/angular-file-upload-shim
-//= require ng-file-upload/angular-file-upload
+//= require ng-file-upload/ng-file-upload-shim
+//= require ng-file-upload/ng-file-upload
 //= require restangular
 //= require	angulartics/dist/angulartics.min
 //= require	angulartics/dist/angulartics-ga.min

@@ -4,8 +4,8 @@
     .module('mainApp.directives')
     .directive('rightTree', rightTree);
 
-  rightTree.$inject = ['Restangular', 'Notification', 'ipCookie', 'makeNestedItemService', 'createIndexChaptersService', 'browserService']
-  function rightTree(Restangular, Notification, ipCookie, makeNestedItemService, createIndexChaptersService, browserService){
+  rightTree.$inject = ['Restangular', 'Notification', 'ipCookie', 'makeNestedService', 'createIndexChaptersService', 'browserService', 'uploadService']
+  function rightTree(Restangular, Notification, ipCookie, makeNestedService, createIndexChaptersService, browserService, uploadService){
     var directive = {
       link: link,
       templateUrl: 'webapp/right-tree.html',
@@ -23,18 +23,22 @@
         looseFocusItem: '=',
         activeChapter: '=',
         noItem: '=',
-        listItems: '='
+        listItems: '=',
+        upload: '=',
+        myupload: '=',
+        isChrome: '='
       }
     };
     return directive;
 
     function link(scope){
 
-      scope.choosePic = function(){
-        // console.log(this)
-        // console.log(this.$element)
-        this.$element.addClass('fa-file-pdf-o')
-      }
+      scope.$watch('firstFiles', function (newVals, oldVals) {
+        if(newVals && newVals.length != 0){
+          console.log("Ok: file choosen")
+          uploadService.upload(scope.firstFiles, scope.activeChapter, scope.nodeEnd[0], scope.listItems, scope.chapterFolded);
+        }
+      });
 
       /*----------  We display different tip in case we are on chrome or another browser  ----------*/
       if(browserService.analyse() == "chrome"){
@@ -69,7 +73,7 @@
 
             // Removes the main chapter & saves the items
             res.tree.shift()
-            scope.listItems = makeNestedItemService.create(res.tree);
+            scope.listItems = makeNestedService.item(res.tree);
 
             // We index the chapters
             createIndexChaptersService.create(scope.listItems)
@@ -80,7 +84,6 @@
             } else{
               scope.noItem = false;
             }
-
 
             // In case we are on home or sandbox we unfold the the second chapter of the first leaf
             if((scope.home && !ipCookie('chapterFolded')) || (scope.sandbox && !ipCookie('chapterFolded'))){

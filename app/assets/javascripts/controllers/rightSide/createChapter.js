@@ -53,9 +53,6 @@
           ipCookie('chapterFolded', $scope.chapterFolded);
         }
 
-        // We remove the document absent view
-        $scope.noItem = false;
-
         // We index the chapters
         createIndexChaptersService.create($scope.listItems)
 

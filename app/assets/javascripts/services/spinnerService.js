@@ -3,7 +3,8 @@
     .module('mainApp.services')
     .service('spinnerService', spinnerService)
 
-  function spinnerService(){
+  spinnerService.$inject = ['usSpinnerService']
+  function spinnerService(usSpinnerService){
     var service = {
       begin: begin,
       stop: stop
