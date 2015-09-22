@@ -35,8 +35,7 @@
         } else{
           depth = $scope.activeChapter.$modelValue.depth + 1;
         }
-
-        var chapterToCreate = {title: "New chapter", id: newChapter.id, items: [], depth: depth, user_id: newChapter.user_id}
+        var chapterToCreate = {title: "New chapter", node_id: newChapter.node_id, id: $scope.nodeEnd[0], items: [], depth: depth, user_id: newChapter.user_id}
 
         // If we have no parent, we create the chapter directly at the root
         if(parent_id == 0){
