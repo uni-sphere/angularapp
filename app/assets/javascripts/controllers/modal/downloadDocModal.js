@@ -1,7 +1,10 @@
 (function(){
-angular
-  .module('mainApp.controllers')
-  .controller('DownloadDocModalCtrl', ['$scope', 'close', 'url', '$timeout', 'preview', function ($scope, close, url, $timeout, preview) {
+  angular
+    .module('mainApp.controllers')
+    .controller('DownloadDocModalCtrl', DownloadDocModalCtrl)
+
+  DownloadDocModalCtrl.$inject = ['$scope', 'close', 'url', '$timeout', 'preview']
+  function DownloadDocModalCtrl($scope, close, url, $timeout, preview){
 
     $scope.documentUrl = url
     $scope.preview = preview
@@ -15,5 +18,5 @@ angular
       close(result, 300);
     };
 
-  }])
+  }
 })()

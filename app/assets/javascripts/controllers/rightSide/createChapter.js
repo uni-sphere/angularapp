@@ -4,14 +4,24 @@
     .module('mainApp.controllers')
     .controller('createChapterCtrl', createChapterCtrl);
 
-  createChapterCtrl.$inject = ['$scope', 'Restangular', 'Notification', 'ipCookie', 'createIndexChaptersService']
-  function createChapterCtrl($scope, Restangular, Notification, ipCookie, createIndexChaptersService){
-
+  createChapterCtrl.$inject = ['cookiesService', '$rootScope', '$scope', 'Restangular', 'Notification', 'ipCookie', 'createIndexChaptersService', '$translate']
+  function createChapterCtrl(cookiesService, $rootScope, $scope, Restangular, Notification, ipCookie, createIndexChaptersService, $translate){
+    
+    var error,
+      success,
+      forbidden,
+      cancel_warning,
+      new_chapter;
+      
+    $translate(['ERROR', 'NW_CANCEL', 'SUCCESS', 'FORBIDDEN', 'NEW_CHAPTER_NAME']).then(function (translations) {
+      success = translations.SUCCESS;
+      error = translations.ERROR;
+      forbidden = translations.FORBIDDEN;
+      cancel_warning = translations.NW_CANCEL;
+      new_chapter = translations.NEW_CHAPTER_NAME;
+    });
+    
     $scope.newChapter = function() {
-      newChapter()
-    }
-
-    function newChapter(){
 
       // If we have an activeChapter, it means we have a parent to create the chapter in
       if($scope.activeChapter){
@@ -21,13 +31,13 @@
       }
 
       var nodeToCreate ={
-        node_id: $scope.nodeEnd[0],
-        title: "New chapter",
+        node_id: $rootScope.nodeEnd[0],
+        title: new_chapter,
         parent_id: parent_id
       }
 
       Restangular.all('chapters').post(nodeToCreate).then(function(newChapter) {
-        Notification.success("Chapter created")
+        Notification.success(success)
 
         // We save the depth of the new chapter
         if(parent_id == 0){
@@ -36,11 +46,11 @@
           depth = $scope.activeChapter.$modelValue.depth + 1;
         }
 
-        var chapterToCreate = {title: "New chapter", id: newChapter.id, items: [], depth: depth, user_id: newChapter.user_id}
+        var chapterToCreate = {title: new_chapter, node_id: $rootScope.nodeEnd[0],id: newChapter.id, items: [], depth: depth, user_id: newChapter.user_id}
 
         // If we have no parent, we create the chapter directly at the root
         if(parent_id == 0){
-          $scope.listItems.push(chapterToCreate);
+          $rootScope.listItems.push(chapterToCreate);
         }
         // If we have a parent we create the chapter in the parent items
         else{
@@ -48,27 +58,27 @@
         }
 
         // In case we create a chapter in a chapter that did have any items, we open this chapter and save it in cookies
-        if(parent_id != 0 && $scope.chapterFolded.indexOf($scope.activeChapter.$modelValue.id) == -1){
-          $scope.chapterFolded.push($scope.activeChapter.$modelValue.id);
-          ipCookie('chapterFolded', $scope.chapterFolded);
+        if(parent_id != 0 && $rootScope.foldedChapters.indexOf($scope.activeChapter.$modelValue.id) == -1){
+          $rootScope.foldedChapters.push($scope.activeChapter.$modelValue.id);
+          ipCookie('foldedChapters', $rootScope.foldedChapters);
         }
 
         // We index the chapters
-        createIndexChaptersService.create($scope.listItems)
+        createIndexChaptersService.create($rootScope.listItems)
 
       }, function(d) {
-        if (d.status == 403) {
+        if(d.status == 403) {
           console.log('Ok: Chapter creation not allowed');
-          Notification.warning("Error while creating the chapter, please refresh.");
+          Notification.warning(forbidden);
         } else if(d.status == 404) {
           console.log("Ok: Chapter creation cancelled. Node doesn't exist anymore")
-          Notification.warning('This action has been cancelled. One of you colleague deleted this node.')
-          $scope.reloadNodes()
+          Notification.warning(cancel_warning)
+          cookiesService.reload()
         } else{
           console.log("Error: Create a chapter");
-          console.log(d);
-          Notification.error("Error while creating the chapter, please refresh.");
+          Notification.error(error);
         }
+        console.log(d);
       });
     }
   }

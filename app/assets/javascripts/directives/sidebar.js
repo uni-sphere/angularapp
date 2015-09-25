@@ -1,46 +1,46 @@
 (function () {
 
-  angular.module('mainApp.directives').directive('sidebar', ['$state', '$auth', function($state, $auth) {
-    return {
-      restrict: 'E',
+  angular
+    .module('mainApp.directives')
+    .directive('sidebar', sidebar)
+
+  sidebar.$inject = ['cookiesService', '$rootScope', '$state', '$auth']
+  function sidebar(cookiesService, $rootScope, $state, $auth){
+    var directive = {
+      link: link,
       templateUrl: 'main/sidebar.html',
-      scope: {
+      scope:{
         deconnection: '=',
-        superadmin: '=',
-        sandbox: '=',
         viewhome: '=',
-        viewdashboard: '=',
-        home: '=',
-        admin: '=',
-        reloadNodes: '=',
-        reloadGraph: '='
-      },
-      link: function(scope) {
+        viewdashboard: '='
+      }
+    };
 
-        scope.triggerDeco = function(){
-          if(scope.home){
-            scope.viewhome = true;
-            scope.viewdashboard = false;
-            scope.admin = false;
-            scope.superadmin = false;
+    return directive;
 
-          } else{
-            scope.deconnection()
-          }
-        }
-
-        scope.showHome = function(){
-          scope.viewdashboard = false;
-          scope.viewhome = true;
-          scope.reloadNodes();
-        }
-
-        scope.showDashboard = function(){
-          scope.viewdashboard = true;
-          scope.viewhome = false;
-          scope.reloadGraph($('.test-app-content').width(), $('.test-app-content').height());
+    function link(scope) {
+      scope.triggerDeco = function(){
+        if(scope.home){
+          $rootScope.viewhome = true;
+          $rootScope.viewdashboard = false;
+          scope.admin = false;
+          scope.superadmin = false;
+        } else{
+          scope.deconnection()
         }
       }
+
+      scope.showHome = function(){
+        $rootScope.viewdashboard = false;
+        $rootScope.viewhome = true;
+        // cookiesService.reload()
+      }
+
+      scope.showDashboard = function(){
+        $rootScope.viewdashboard = true;
+        $rootScope.viewhome = false;
+        // scope.reloadGraph($('.test-app-content').width(), $('.test-app-content').height());
+      }
     }
-  }]);
+  }
 })();

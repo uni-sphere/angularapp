@@ -55,19 +55,19 @@ class ReportsController < ApplicationController
       end
     else
       while (Time.now - date ) > 0
-        lecturers = organization.users.where(created_at: date-7.days..date).count
+        lecturers = organization.users.where(created_at: organization.created_at..date-7.days).count
 
         #downloads
         downloads = 0
         organization.nodes.where(archived: false).each do |node|
-          node.reports.where("created_at >= ? AND created_at <= ?", date-7.days, date).each do |report|
+          node.reports.where(created_at: date-7.days..date).each do |report|
             downloads += report.downloads
           end
         end
 
         #uploads
         uploads = 0
-        awsdocuments = organization.awsdocuments.where("created_at >= ? AND created_at <= ?",  date-7.days, date)
+        awsdocuments = organization.awsdocuments.where(created_at: date-7.days..date)
         uploads = awsdocuments.count if awsdocuments
 
         # reports created at begining of the week but shows the data of the whole week

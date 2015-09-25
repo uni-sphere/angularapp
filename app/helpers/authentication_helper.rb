@@ -133,7 +133,7 @@ module AuthenticationHelper
 
   def current_node
     params[:node_id] = params[:id] if request.url.split('?').first.include? 'node'
-    @current_node ||= current_organization.nodes.find params[:node_id]
+    @current_node ||= current_organization.nodes.where(id: params[:node_id], archived: false).first
   end
 
   def current_chapter

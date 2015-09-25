@@ -1,0 +1,47 @@
+/*=============================================================
+=            No documents - select left | dropzone            =
+=============================================================*/
+
+.full-size-circle-container{
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: calc(100% - 50px);
+}
+
+.full-size-circle{
+  height: 300px;
+  width: 300px;
+  margin-left: calc(50% - 150px);
+  border-radius: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #E5E5E5;
+
+  box-shadow: rgba(0, 0, 0, 0.258824) 0px 2px 4px 2px;
+  text-align: center;
+  color: white;
+
+  @media (max-width: 1200px) {
+
+  }
+
+  @media (max-width: 900px) {
+
+  }
+}
+
+/*----------  select leaf  ----------*/
+
+#select-leaf .full-size-circle{
+  font-size: 14em;
+}
+
+/*----------  dropzone  ----------*/
+
+#dropzone-circle .full-size-circle{
+  font-size: 2em;
+  font-weight: bold;
+  letter-spacing: 2px;
+}

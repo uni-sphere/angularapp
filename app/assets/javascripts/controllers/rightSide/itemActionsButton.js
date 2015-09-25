@@ -4,8 +4,29 @@
     .module('mainApp.controllers')
     .controller('itemActionsButtonCtrl', itemActionsButtonCtrl);
 
-  itemActionsButtonCtrl.$inject = ['$rootScope', '$scope', 'Restangular', 'Notification', 'ModalService', 'downloadService', 'createIndexChaptersService']
-  function itemActionsButtonCtrl($rootScope, $scope, Restangular, Notification, ModalService, downloadService, createIndexChaptersService){
+  itemActionsButtonCtrl.$inject = ['$rootScope', '$scope', 'Restangular', 'Notification', 'ModalService', 'downloadService', 'createIndexChaptersService', 'cookiesService', '$translate']
+  function itemActionsButtonCtrl($rootScope, $scope, Restangular, Notification, ModalService, downloadService, createIndexChaptersService, cookiesService, $translate){
+
+    var error,
+      success,
+      forbidden,
+      cancel_warning,
+      share,
+      rename,
+      destroy,
+      download;
+
+    $translate(['ERROR', 'SUCCESS', 'CANCEL', 'FORBIDDEN', 'DD_SHARE', 'DD_DESTROY', 'DD_RENAME', 'DD_DOWNLOAD']).then(function (translations) {
+      error = translations.ERROR;
+      success = translations.SUCCESS;
+      forbidden = translations.FORBIDDEN;
+      cancel_warning = translations.CANCEL;
+      share = translations.DD_SHARE;
+      rename = translations.DD_RENAME;
+      destroy = translations.DD_DESTROY;
+      download = translations.DD_DOWNLOAD;
+    });
+
     $scope.dropdownSelected = {};
 
     /*----------  Triggers an action after the user choose it in the dropdown  ----------*/
@@ -38,10 +59,10 @@
         node.$modelValue.selectedItem = true;
         $rootScope.activeFile = undefined;
         $rootScope.activeChapter = node;
-        if($scope.userId == node.$modelValue.user_id || $scope.nodeEnd[2] == $scope.userId || $scope.superadmin){
-          $scope.dropdownOptions = [{text: 'Rename',value: 'rename'}, {text: 'Share',value: 'share'}, {text: 'Delete',value: 'delete'}];
+        if($rootScope.userId == node.$modelValue.user_id || $rootScope.nodeEnd[2] == $rootScope.userId || $rootScope.superadmin){
+          $scope.dropdownOptions = [{text: rename, value: 'rename'}, {text: share, value: 'share'}, {text: destroy, value: 'delete'}];
         } else{
-          $scope.dropdownOptions = [{text: 'Share',value: 'share'}];
+          $scope.dropdownOptions = [{text: share, value: 'share'}];
         }
       }
       // If we color a file
@@ -49,10 +70,10 @@
         node.$modelValue.selectedItem = true;
         $rootScope.activeFile = node;
         $rootScope.activeChapter = undefined;
-        if($scope.userId == node.$modelValue.user_id || $scope.nodeEnd[2] == $scope.userId || $scope.superadmin){
-          $scope.dropdownOptions = [{text: 'Rename',value: 'rename'}, {text: 'Download',value: 'download'}, {text: 'Share',value: 'share'}, {text: 'Delete',value: 'delete'} ]
+        if($rootScope.userId == node.$modelValue.user_id || $rootScope.nodeEnd[2] == $rootScope.userId || $rootScope.superadmin){
+          $scope.dropdownOptions = [{text: rename,value: 'rename'}, {text: download, value: 'download'}, {text: share, value: 'share'}, {text: destroy, value: 'delete'} ]
         } else{
-          $scope.dropdownOptions = [{text: 'Download',value: 'download'}, {text: 'Share',value: 'share'}];
+          $scope.dropdownOptions = [{text: download,value: 'download'}, {text: share, value: 'share'}];
         }
       }
     }
@@ -69,57 +90,57 @@
         Restangular.all('awsdocuments/' + item.$modelValue.doc_id).remove().then(function() {
           item.remove();
           console.log("Ok: Document deleted");
-          Notification.warning( item.$modelValue.title + " removed.")
+          Notification.success(success)
         }, function(d) {
           if (d.status == 403){
             console.log("Ok: Delete a file forbidden");
-             Notification.error("Error while deleting the file " + item.$modelValue.title + ", please refresh.");
+            Notification.error(forbidden);
           } else if(d.status == 404) {
             console.log("Ok: Deletion cancelled node doesn't exist anymore")
-            Notification.warning('This action has been cancelled. One of your colleague deleted this node')
-            $scope.reloadNodes()
+            Notification.warning(cancel_warning)
+            cookiesService.reload()
           } else{
             console.log("Error: Delete file");
             console.log(d);
-            Notification.error("Error while deleting the file " + item.$modelValue.title + ", please refresh.");
+            Notification.error(error);
           }
         });
       }
 
       /*----------  Chapter  ----------*/
       else{
-        Restangular.all('chapters/' + item.$modelValue.id).remove({node_id: $scope.nodeEnd[0]}).then(function() {
+        Restangular.all('chapters/' + item.$modelValue.id).remove({node_id: $rootScope.nodeEnd[0]}).then(function(res) {
 
-          // Remove from cookies the chapter folded deleted
-          if($scope.chapterFolded && $scope.chapterFolded.indexOf(item.$modelValue.id) > -1){
-            $scope.chapterFolded.splice($scope.chapterFolded.indexOf(item.$modelValue.id), 1);
-          }
+          // // Remove from cookies the chapter folded deleted
+          // if($rootScope.foldedChapters && $rootScope.foldedChapters.indexOf(item.$modelValue.id) > -1){
+          //   $rootScope.foldedChapters.splice($rootScope.foldedChapters.indexOf(item.$modelValue.id), 1);
+          // }
 
-          // We remove from cookies all the sub chapters of the chapter we delete
-          angular.forEach(item.$modelValue.items, function(value,key){
-            if(!value.document && $scope.chapterFolded && $scope.chapterFolded.indexOf(value.id) > -1){
-              $scope.chapterFolded.splice($scope.chapterFolded.indexOf(value.id), 1);
-            }
-          });
+          // // We remove from cookies all the sub chapters of the chapter we delete
+          // angular.forEach(item.$modelValue.items, function(value,key){
+          //   if(!value.document && $rootScope.foldedChapters && $rootScope.foldedChapters.indexOf(value.id) > -1){
+          //     $rootScope.foldedChapters.splice($rootScope.foldedChapters.indexOf(value.id), 1);
+          //   }
+          // });
 
           item.remove();
           console.log("Ok: Chapter deleted");
-          Notification.warning(item.$modelValue.title + " removed")
+          Notification.success(success)
 
           // We index the chapters
-          createIndexChaptersService.create($scope.listItems)
+          createIndexChaptersService.create($rootScope.listItems)
         }, function(d) {
           if (d.status == 403){
             console.log("Ok: Delete of chapter forbidden, it is not yours");
-            Notification.error("Error while deleting " + item.$modelValue.title +", please refresh.");
+            Notification.error(forbidden);
           } else if(d.status == 404) {
             console.log("Ok: Deletion cancelled node doesn't exist anymore")
-            Notification.warning('This action has been cancelled. One of your colleague deleted this node.')
-            $scope.reloadNodes()
+            Notification.warning(cancel_warning)
+            cookiesService.reload()
           } else{
             console.log("Error: Delete a chapter");
             console.log(d);
-            Notification.error("Error while deleting " + item.$modelValue.title +", please refresh.");
+            Notification.error(error);
           }
         });
       }
@@ -128,7 +149,12 @@
 
     /*----------  Download file  ----------*/
     function downloadFile(file){
-      downloadService.download($scope.nodeProtected, file.$modelValue.title, file.$modelValue.doc_id, file.$modelValue.parent, $scope.nodeEnd[0])
+      // console.log($scope.nodeProtected)
+      // console.log(file.$modelValue.title)
+      // console.log(file.$modelValue.doc_id)
+      // console.log(file.$modelValue.parent)
+      // console.log($rootScope.nodeEnd[0])
+      downloadService.download($rootScope.nodeProtected, file.$modelValue.title, file.$modelValue.doc_id, file.$modelValue.parent, $rootScope.nodeEnd[0])
     }
 
     /*----------  Share item  ----------*/
@@ -152,12 +178,12 @@
         },function(d){
           if(d.status == 404){
             console.log("Ok: file archived | cannot get share link")
-            Notification.warning("You can't share " + item.$modelValue.title + ", it has been deleted by one of your colleagues.")
-            $scope.reloadNodes()
+            Notification.warning(cancel_warning)
+            cookiesService.reload()
           } else{
             console.log(d);
             console.log("Error: download doc")
-            Notification.error("Error while sharing " + item.$modelValue.title + ", please refresh.")
+            Notification.error(error)
           }
         });
       }
@@ -180,12 +206,12 @@
           if(d.status == 404){
             console.log(d)
             console.log("Ok: chapter archived | cannot get share link")
-             Notification.warning("You can't share " + item.$modelValue.title + ", it has been deleted by one of your colleagues.")
-            $scope.reloadNodes()
+             Notification.warning(cancel_warning)
+            cookiesService.reload()
           } else{
             console.log(d);
             console.log("Error: download doc")
-            Notification.error("Error while sharing " + item.$modelValue.title + ", please refresh.")
+            Notification.error(error)
           }
         });
       }
@@ -210,44 +236,44 @@
               Restangular.one('awsdocuments/' + itemToUpdate.doc_id).put({title: result}).then(function(res) {
                 itemToUpdate.title = result;
                 itemToUpdate.savedTitle = result;
-                Notification.success("File renamed")
+                Notification.success(success)
                 console.log("File renamed");
               }, function(d) {
                 if (d.status == 403) {
                   console.log("Ok: Rename document forbidden");
                   console.log(d);
-                  Notification.error("Error while renaming " + item.$modelValue.title + ", pleae refresh.");
+                  Notification.error(forbidden);
                 } else if(d.status == 404) {
                   console.log("Ok: Rename file cancelled. Node doesn't exist anymore")
-                  Notification.warning("File rename cancelled, this file has been deleted by one of your colleagues.");
-                  $scope.reloadNodes()
+                  Notification.warning(cancel_warning);
+                  cookiesService.reload()
                 } else{
                   console.log("Error: Rename document");
                   console.log(d);
-                  Notification.error("Error while renaming " + item.$modelValue.title + ", pleae refresh.");
+                  Notification.error(error);
                 }
               });
             }
             // Chapters
             else{
-              Restangular.one('chapters/' + itemToUpdate.id).put({title: result, node_id: $scope.nodeEnd[0]}).then(function(res) {
+              Restangular.one('chapters/' + itemToUpdate.id).put({title: result, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
                 itemToUpdate.title = result;
                 itemToUpdate.savedTitle = result;
-                Notification.success("Chapter renamed")
+                Notification.success(success)
                 console.log("Chapter renamed");
               }, function(d) {
                 if (d.status == 403) {
                   console.log("Ok: Rename chapter forbidden");
                   console.log(d);
-                  Notification.error("Error while renaming " + item.$modelValue.title + ", pleae refresh.");
+                  Notification.error(forbidden);
                 } else if(d.status == 404) {
                   console.log("Ok: Rename file cancelled. Node doesn't exist anymore")
-                  Notification.warning("File rename cancelled, this file has been deleted by one of your colleagues.");
-                  $scope.reloadNodes()
+                  Notification.warning(cancel_warning);
+                  cookiesService.reload()
                 } else{
                   console.log("Error: Rename chapter");
                   console.log(d);
-                  Notification.error("Error while renaming " + item.$modelValue.title + ", pleae refresh.");
+                  Notification.error(error);
                 }
               });
             }

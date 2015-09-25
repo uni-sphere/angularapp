@@ -3,7 +3,8 @@
     .module('mainApp.services')
     .service('makeNestedService', makeNestedService)
 
-  function makeNestedService(){
+  makeNestedService.$inject = ['$q','$rootScope']
+  function makeNestedService($q,$rootScope){
     service = {
       item : item,
       node: node
@@ -12,35 +13,57 @@
     return service
 
     function node(flatData){
-      var dataMap = flatData.reduce(function(map, node) {
-        map[node.num] = node;
-        return map;
-      }, {});
+      return $q(function(resolve, reject){
+        $rootScope.chaptersId = []
+        angular.forEach(flatData, function(key, value){
+          if(key.node_data.length > 1){
+            key.items = item(key.node_data)
+            angular.forEach(key.node_data, function(value, key){
+              if(!value.document){
+                $rootScope.chaptersId.push(value.id)
+              }
+            })
+          } else{
+            key.items = []
+          }
+        })
 
-      var treeData = [];
-      flatData.forEach(function(node) {
-        var parent = dataMap[node.parent];
-        if (parent) {
-          (parent.children || (parent.children = []))
-            .push(node);
-        } else {
-          treeData.push(node);
-        }
-      });
-      return treeData[0];
+        var dataMap = flatData.reduce(function(map, node) {
+          map[node.num] = node;
+          return map;
+        }, {});
+
+        var treeData = [];
+
+        flatData.forEach(function(node) {
+          node.children = []
+
+          var parent = dataMap[node.parent];
+          if (parent) {
+            parent.children.push(node);
+          } else {
+            treeData.push(node);
+          }
+        });
+        resolve(treeData[0]);
+      })
     }
 
     function item(flatData){
+      // console.log(flatData)
       var dataMap = flatData.reduce(function(map, node) {
         map[node.id] = node;
         return map;
       }, {});
 
       var treeData = [];
+      var mainId = flatData.shift().id
       flatData.forEach(function(node) {
 
         node.depth = 0;
         node.savedTitle = node.title
+        node.items = [];
+
 
         if(node.chapter_id){
           node.parent = node.chapter_id
@@ -56,17 +79,20 @@
           node.parent = node.parent_id
           delete node.parent_id
         }
+
+        if(node.parent == mainId){
+          delete node.parent
+        }
+
       });
 
       flatData.forEach(function(node) {
-        node.items = [];
-
         var parent = dataMap[node.parent];
-        if (parent) {
+        if(parent) {
           node.depth = node.depth + 1;
-          (parent.items || (parent.items = [])).push(node);
+          parent.items.push(node);
         } else {
-          treeData.push(node);
+          treeData.push(node)
         }
       });
 

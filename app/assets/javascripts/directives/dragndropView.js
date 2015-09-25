@@ -3,19 +3,15 @@
     .module('mainApp.directives')
     .directive('dragndropView', dragndropView)
 
-  dragndropView.$inject = ['uploadService']
-  function dragndropView(uploadService){
+  dragndropView.$inject = ['uploadService', '$rootScope', 'Notification', '$translate']
+  function dragndropView(uploadService, $rootScope, Notification, $translate){
+
     var directive = {
       link: link,
       templateUrl: 'webapp/dragndrop-view.html',
       scope:{
-        listItems: '=',
         files: '=',
-        nodeEnd: '=',
         myupload: '=',
-        isChrome: '=',
-        userId: '=',
-        chapterFolded: '='
       }
     };
 
@@ -23,37 +19,48 @@
 
     function link(scope){
 
+      var chrome_error,
+        size_error;
+
+      $translate(['CHROME_ERROR', 'NE_SIZE']).then(function (translations) {
+        chrome_error = translations.CHROME_ERROR;
+        size_error = translations.NE_SIZE;
+      });
+
       // We watch when someone drag and drops a file / folder
       scope.$watch('files', function (newVals, oldVals) {
         if(newVals){
-          uploadService.upload(scope.files, undefined, scope.nodeEnd[0], scope.listItems, scope.chapterFolded);
-          // if(!scope.nodeEnd){
-          //   Notification.error("Select a lead node to upload files")
-          // } else{
-          //    console.log("Ok: File Dropped")
-          //   $('#grey-background').fadeIn();
-          //   $('#fileDropped').fadeIn();
-          // }
+          console.log("Ok: File Dropped")
+          $('#grey-background').fadeIn();
+          $('#fileDropped').fadeIn();
         }
       });
 
-      scope.selectDrop = function(position){
-        uploadService.upload(scope.files, position, scope.nodeEnd[0], scope.listItems, scope.chapterFolded);
+      function uploadFile(position){
+        if(scope.files[0].type === "" && !rootScope.isChrome){
+          Notification.error(chrome_error)
+        }
+        else if(scope.files[0].type != "directory" && $rootScope.uploadForm.$error.maxSize){
+          Notification.error(size_error)
+        }
+        else{
+          uploadService.upload(scope.files, position, $rootScope.nodeEnd[0], $rootScope.listItems);
+        }
         $('#fileDropped').fadeOut(300);
-        $('#grey-background').fadeOut();
+      }
+
+      scope.selectDrop = function(position){
+        uploadFile(position)
       }
 
       scope.rootSelected = function(){
-        $('#fileDropped').fadeOut();
-        uploadService.upload(scope.files, true, undefined, scope.nodeEnd[0], scope.userId, scope.listItems, scope.chapterFolded);
+        uploadFile(undefined)
       }
 
       scope.cancelDrop = function(){
         $('#grey-background').fadeOut();
         $('#fileDropped').fadeOut();
       }
-
-
     }
   }
 }());

@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="specific_renderer.html">
-  <div ui-tree-handle ng-click="selectDrop(this)" ng-if="!item.document">
-    <div class="chapter-number" >{{item.chapter}}</div>
+  <div ui-tree-handle ng-click="selectDrop(this)">
+    <div class="chapter-number" ng-if="!item.document" ng-class="{depth1 : item.depth == 1, depth2 : item.depth == 2, depth3 : item.depth == 3, depth4 : item.depth == 4}">{{item.chapter}} </div>
     <div class="item-name">{{item.title}}</div>
   </div>
 
@@ -12,7 +12,7 @@
 <div id="dragndrop-view">
   <div id="dragndrop-container">
     <div id="dragndrop-content">
-      <%= image_tag("dragndrop.png", id: "dragndrop-image")%>
+      <%= image_tag "dragndrop.png", id: "dragndrop-image"%>
       <div id="dragndrop-text">{{ 'DROP' | translate }}</div>
     </div>
     <div id="dragndrop-black-area"></div>
@@ -26,8 +26,8 @@
     <div id="file-dropped-position">{{ 'WHERE_DROP' | translate }}</div>
     <div id="root-object" ng-click="rootSelected()">{{ 'ROOT' | translate }}</div>
     <div id="small-ui-tree" ui-tree="options" data-drag-enabled="false">
-      <ol ui-tree-nodes ng-model="listItems" >
-        <li ng-repeat="item in listItems" ui-tree-node ng-include="'specific_renderer.html'"></li>
+      <ol ui-tree-nodes ng-model="$root.listItems" >
+        <li ng-repeat="item in $root.listItems" ui-tree-node ng-include="'specific_renderer.html'" ng-if="!item.document"></li>
       </ol>
     </div>
     <button class="submit-button default-submit" ng-click="cancelDrop()">{{ 'CANCEL' | translate }}</button>

@@ -1,8 +1,13 @@
-<div ngf-drop="" ngf-multiple = "true" ng-model = "files" ngf-drag-over-class="{accept:'dragoverAccept', reject:'dragoverReject', delay:100}" id="application-view" ng-click="looseFocusItem()">
+<form ngf-drop="" name = "uploadForm"  ngf-drop-disabled="!nodeEnd || !admin" ngf-drag-over-class="{accept:'dragover', delay:100}" ngf-multiple = "true" ng-model = "files" id="application-view" ngf-max-size="20MB" ng-click="looseFocusItem()">
 
-  <left-tree id="view-tree" node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = 'admin' help = 'help' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' nodes = 'nodes' folded-nodes= 'foldedNodes' cookie-gestion = 'cookieGestion' user-id = 'userId' reload-nodes ='reloadNodes' view-news = 'viewNews' superadmin = 'superadmin' render = 'render' change-breadcrumb = 'changeBreadcrumb'></left-tree>
+  <div id="tutorial-left-tree" ng-if="$root.help" ng-hide="$root.tutorialLeftTreeSeen" ng-click="$root.tutorialLeftTreeOpen = true; $event.stopPropagation(); $root.setHelp()">
+    <span id="tutorial-text-box-left-tree" class="tutorial-text-box" ng-show="$root.tutorialLeftTreeOpen">{{ 'TUTO_5' | translate }}</span>
+    <span class="tutorial-round" ng-hide="$root.tutorialLeftTreeOpen"></span>
+  </div>
 
-  <right-tree node-end='nodeEnd' files = 'files' admin = 'admin' sandbox = 'sandbox' home='home' chapter-folded = 'chapterFolded' breadcrumb = 'breadcrumb' reload-nodes ='reloadNodes' user-id = 'userId' superadmin = 'superadmin' loose-focus-item = 'looseFocusItem' active-chapter ='activeChapter' list-items = 'listItems' is-chrome = 'isChrome'></right-tree>
+  <left-tree id="view-tree" active-nodes = 'activeNodes' admin = 'admin' help = 'help' active-chapter = 'activeChapter' folded-nodes= 'foldedNodes' user-id = 'userId' view-news = 'viewNews' superadmin = 'superadmin' change-breadcrumb = 'changeBreadcrumb'></left-tree>
 
-  <dragndrop-view ng-if="nodeEnd" files = 'files' list-items = 'listItems' node-end = 'nodeEnd' is-chrome = 'isChrome' user-id = 'userId' chapter-folded = 'chapterFolded'></dragndrop-view>
-</div>
+  <right-tree files = 'files' admin = 'admin' user-id = 'userId' superadmin = 'superadmin' loose-focus-item = 'looseFocusItem' active-chapter ='activeChapter' is-chrome = 'isChrome'></right-tree>
+
+  <dragndrop-view ng-init="setForm(uploadForm)" ng-if="nodeEnd" files = 'files' is-chrome = 'isChrome' user-id = 'userId'></dragndrop-view>
+</form>

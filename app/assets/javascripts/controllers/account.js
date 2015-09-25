@@ -3,8 +3,28 @@
     .module('mainApp.controllers')
     .controller('accountCtrl', accountCtrl)
 
-  accountCtrl.$digest = ['$scope', 'Restangular', '$auth', 'Notification', 'spinnerService'];
-  function accountCtrl($scope, Restangular, $auth, Notification, spinnerService){
+  accountCtrl.$digest = ['$scope', 'Restangular', '$auth', 'Notification', 'spinnerService', '$translate'];
+  function accountCtrl($scope, Restangular, $auth, Notification, spinnerService, $translate){
+
+    var success,
+      error,
+      valid_both,
+      valid_email,
+      valid_name,
+      registered_user,
+      psw_short,
+      psw_inputs_error;
+
+    $translate(['SUCCESS', 'ERROR', 'VALID_BOTH', 'VALID_EMAIL', 'VALID_NAME', 'REGISTERED_USER', 'PSW_UPDATE', 'PSW_INPUTS_ERROR']).then(function (translations) {
+      success = translations.SUCCESS;
+      error = translations.ERROR;
+      valid_both = translations.VALID_BOTH;
+      valid_email = translations.VALID_EMAIL;
+      valid_name = translations.VALID_NAME;
+      registered_user = translations.REGISTERED_USER;
+      psw_short = translations.PSW_UPDATE;
+      psw_inputs_error = translations.PSW_INPUTS_ERROR;
+    });
 
     /*======================================
     =            Update profile            =
@@ -19,11 +39,11 @@
       }
 
       if($scope.updatedName == undefined && $scope.updatedEmail == undefined){
-        Notification.error('Enter either a valid new name or email');
+        Notification.error(valid_both);
       } else if(!$scope.profileForm.updatedEmailValid.$valid){
-        Notification.error('Enter a valid mail');
+        Notification.error(valid_email);
       } else if($scope.profileForm.updatedNameValid.$error.minlength){
-        Notification.error('Enter a valid name');
+        Notification.error(valid_name);
       } else {
 
         var credentials = {
@@ -34,18 +54,17 @@
         $auth.updateAccount(credentials)
         .then(function(resp) {
           console.log("Profil updated")
-          Notification.success('Profile updated');
-          $scope.accountEmail = resp.data.data.email
-          $scope.accountName = resp.data.data.name
+          Notification.success(success);
+          $rootScope.accountEmail = resp.data.data.email
+          $rootScope.accountName = resp.data.data.name
           $scope.updatedName = ""
           $scope.updatedEmail = ""
-          console.log($scope.accountEmail)
           $('#user-name').css('display', 'none')
           $('#user-name').css('display', '')
           // $scope.profileForm.$setUntouched();
         })
         .catch(function(resp) {
-          Notification.error('You can\'t temporarily update your profile');
+          Notification.error(error);
           console.log("Error: Update profil")
           console.log(resp);
           $('updatedName').focus()
@@ -74,7 +93,7 @@
           // If the email is already taken
           if(signup.response == true){
             console.log("Error: Invite colleague | he already uses unisphere");
-            Notification.error($scope.newUser + " already uses Unisphere")
+            Notification.error($scope.newUser + registered_user)
             $scope.newUser = "";
             $scope.organizationForm.$setUntouched();
           } else if (signup.response == false) {
@@ -86,12 +105,12 @@
               spinnerService.stop()
               $scope.organizationForm.$setUntouched();
               console.log("New user added");
-              Notification.success('Your colleague has been invited');
+              Notification.success(success);
             }, function(d){
               spinnerService.stop()
               console.log("Error: Invite colleague");
               console.log(d);
-              Notification.error('We didn\'t manage to invite your colleague. We will fix this soon');
+              Notification.error(error);
             });
           } else {
             Restangular.all('users').post({user_id: signup.response, organization_id: $scope.universityId}).then(function (d) {
@@ -100,25 +119,25 @@
               spinnerService.stop()
               $scope.organizationForm.$setUntouched();
               console.log("link created")
-              Notification.success('Your colleague has been invited');
+              Notification.success(success);
             }, function(d) {
               spinnerService.stop()
               console.log("Error: link not created")
               console.log(d)
-              Notification.error('We didn\'t manage to invite your colleague. We will fix this soon')
+              Notification.error(error)
             });
           }
         }, function(d){
           spinnerService.stop()
           console.log("Error: Invite colleague");
           console.log(d);
-          Notification.error("We didn't manage to invite your colleague. We will fix it soon.")
+          Notification.error(error)
         });
 
 
       } else{
         console.log("Error: Invite colleague | Email invalid");
-        Notification.error("Enter a valid email!")
+        Notification.error(valid_email)
         $('#addAdmin').focus()
       }
     }
@@ -129,11 +148,11 @@
 
     $scope.updatePsw = function() {
       if(!$scope.newPasswordValid){
-        Notification.error('Your password is too short');
+        Notification.error(psw_short);
         console.log("Error: Change password | Password is too short");
         $('#new-password').focus();
       } else if(!$scope.newPasswordConfirmed){
-        Notification.error('The password you typed are not the same');
+        Notification.error(psw_inputs_error);
         console.log("Error: Change password | Password different");
         $scope.confirmPsw = "";
         $('#confirm-password').focus();
@@ -144,7 +163,7 @@
         };
 
         $auth.updatePassword(credentials).then(function(resp) {
-          Notification.success('Password updated');
+          Notification.success(success);
 
           // We remove all what was displayed
           $scope.newPsw = "";
@@ -157,7 +176,7 @@
         }).catch(function(resp) {
           console.log("Error: Change password")
           console.log(resp);
-          Notification.error('Try again to change your password');
+          Notification.error(error);
 
           // We remove all what was displayed
           $scope.newPsw = "";

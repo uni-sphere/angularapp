@@ -1,7 +1,18 @@
 (function(){
-angular
-  .module('mainApp.controllers')
-  .controller('DownloadProtectedProtectedDocModal', ['$scope', 'Restangular', 'close', 'node_id', 'chapter_id', '$timeout', 'Notification', 'preview', 'doc_id', function ($scope, Restangular, close, node_id, chapter_id, $timeout, Notification, preview, doc_id) {
+  angular
+    .module('mainApp.controllers')
+    .controller('DownloadProtectedProtectedDocModal', DownloadProtectedProtectedDocModal)
+
+  DownloadProtectedProtectedDocModal.$inject = ['$scope', 'Restangular', 'close', 'node_id', 'chapter_id', '$timeout', 'Notification', 'preview', 'doc_id', '$translate'];
+  function DownloadProtectedProtectedDocModal($scope, Restangular, close, node_id, chapter_id, $timeout, Notification, preview, doc_id, $translate){
+
+    var error,
+      forbidden;
+
+    $translate(['ERROR', 'FORBIDDEN']).then(function (translations) {
+      error = translations.ERROR;
+      forbidden = translations.FORBIDDEN;
+    });
 
     Notification.clearAll()
     $scope.protectedNode = true;
@@ -29,15 +40,15 @@ angular
       },function(d){
         if(d.status == 403){
           console.log("Ok: wrong password to unlock the node")
-          Notification.error("Your password is incorrect")
+          Notification.error(forbidden)
           $('.modal-input').focus()
         } else{
           console.log(d);
           console.log("Error: download doc")
-          Notification.error("Error while getting download link")
+          Notification.error(error)
         }
       });
     }
 
-  }])
+  }
 })()

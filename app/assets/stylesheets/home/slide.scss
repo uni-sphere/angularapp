@@ -1,23 +1,12 @@
 #slide {
   position: relative;
-  // top: 0px;
-  // left: 0px;
-
-  // bottom: 0px;
-  // right: 0px;
-
   margin: 0px;
   padding: 0px;
-
   text-align: center;
   font-family: 'Roboto', sans-serif;
   color: rgb(71, 82, 93);
 
-
-//  background: #F5F5F5;
-
-
-  h1, h2{
+  h1, h2, h3{
     margin: 0;
   }
 }
@@ -50,46 +39,47 @@ strong {
 
 /*----------  Test app  ----------*/
 
-// @keyframes side-flyin {
-//   0% {
-//     opacity: 0;
-//     transform: translateX(-300px);
-//   }
+ @keyframes side-flyin {
+   0% {
+     opacity: 0;
+     transform: translateX(-300px);
+   }
 
-//   5%{
-//     opacity: 0;
-//     transform: translateX(-300px);
-//   }
+   5%{
+     opacity: 0;
+     transform: translateX(-300px);
+   }
 
-//   10%{
-//     opacity: 1;
-//     transform: translateX(0);
-//   }
+   10%{
+     opacity: 1;
+     transform: translateX(0);
+   }
 
-//   50% {
-//     opacity: 1;
-//     transform: translateX(0);
-//   }
+   90% {
+     opacity: 1;
+     transform: translateX(0);
+   }
 
-//   100% {
-//     opacity: 0;
-//   }
-// }
+   100% {
+     opacity: 0;
+   }
+ }
 
-// #test-app::after{
-//   position: absolute;
-//   content: 'This is a live test version';
-//   line-height: 40px;
-//   color: white;
-//   left: 0px;
-//   top: -50px;
-//   width: 250px;
-//   height: 40px;
-//   background: black;
-//   border-radius: 5px;
-//   opacity: .8;
-//   animation: side-flyin 10s;
-// }
+ #test-app::after{
+   position: absolute;
+   content: 'This is a live test version';
+   line-height: 40px;
+   color: white;
+   left: 0px;
+   top: -50px;
+   width: 250px;
+   height: 40px;
+   background: black;
+   border-radius: 5px;
+   opacity: 0;
+   animation: side-flyin 10s;
+   animation-delay: 2s;
+ }
 
 #test-app {
   background: white;

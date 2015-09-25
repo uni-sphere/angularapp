@@ -1,7 +1,18 @@
 (function(){
-angular
-  .module('mainApp.controllers')
-  .controller('AccountForgottenModalCtrl', ['$scope', 'close', 'email', '$timeout', 'Notification', 'Restangular', '$auth', function ($scope, close, email, $timeout, Notification, Restangular, $auth) {
+  angular
+    .module('mainApp.controllers')
+    .controller('AccountForgottenModalCtrl', AccountForgottenModalCtrl)
+
+  AccountForgottenModalCtrl.$inject = ['$scope', 'close', 'email', '$timeout', 'Notification', 'Restangular', '$auth', '$translate'];
+  function AccountForgottenModalCtrl($scope, close, email, $timeout, Notification, Restangular, $auth, $translate){
+
+    var error,
+      email_error;
+
+    $translate(['ERROR', 'NE_EMAIL']).then(function (translations) {
+      error = translations.ERROR;
+      email_error = translations.NE_EMAIL;
+    });
 
     Notification.clearAll()
     $scope.email = email
@@ -28,19 +39,19 @@ angular
           }, function(d){
             console.log("Error: Password reset");
             console.log(d);
-            Notification.error("Error while reseting your password. Please refresh")
+            Notification.error(error)
             $('#account-forgotten-email').focus()
           });
         } else{
           console.log("Error: Password reset | wrong email");
           console.log(signup);
-          Notification.error("This email doesn't have a Unisphere account")
+          Notification.error(email_error)
           $('.modal-input').focus()
         }
       }, function(d){
         console.log("Error: Password reset");
         console.log(d);
-        Notification.error("Error while reseting your password. Please refresh")
+        Notification.error(error)
        $('.modal-input').focus()
       });
     }
@@ -56,5 +67,5 @@ angular
       return text;
     }
 
-  }])
+  }
 })()

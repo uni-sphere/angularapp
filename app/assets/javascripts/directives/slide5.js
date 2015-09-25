@@ -1,5 +1,5 @@
 (function () {
-  
+
   angular.module('mainApp.directives').directive('slide5', ['Restangular', function(Restangular) {
     return {
       restrict: 'E',
@@ -7,9 +7,6 @@
       scope: {
       },
       link: function(scope) {
-
-
-        
 
         // --------------------------
         // Contact page text hovering -------------------------------

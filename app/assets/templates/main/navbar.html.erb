@@ -7,18 +7,20 @@
   </div>
 
   <div id="school">
-    <span id="school-name">{{ university }}</span>
+    <span id="school-name">{{ $root.university }}</span>
   </div>
 
   <div id="user-name">
-    <span>{{accountEmail}}</span>
+    <span>{{$root.accountEmail}}</span>
   </div>
 
   <div id="language-selection">
     <div dropdown-menu="ddSelectOptions" dropdown-model="ddSelectSelected" dropdown-onchange="changeLanguage('fr')">
-      <span id="flag-img-container">
-        <object id="flag-img" type="image/svg+xml" data='<%= asset_path "en.svg" %>' ng-if="ddSelectSelected.value == 'en'">{{ddSelectSelected.value}}</object>
-        <object id="flag-img" type="image/svg+xml" data='<%= asset_path "fr.svg" %>'  ng-if="ddSelectSelected.value == 'fr'">{{ddSelectSelected.value}}</object>
+      <span id="flag-img-container" ng-if="ddSelectSelected.value == 'en'">
+        <%= image_tag "uk.png" %>
+      </span>
+      <span id="flag-img-container" ng-if="ddSelectSelected.value == 'fr'">
+        <%= image_tag "fr.png"%>
       </span>
       <span class="fa fa-caret-down"></span>
     </div>

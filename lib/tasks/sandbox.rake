@@ -58,6 +58,7 @@ namespace :sandbox do
       # add_reports(node)
       node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
       node = organization.nodes.create(name: "Histoire", parent_id: parent_9.id, user_id: user.id)
+      node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
       add_reports(node)
       # create chapters
       parent_13 = node_chap.chapters.create(title: "Les rois de France", parent_id: parent_chap.id, user_id: user.id)
@@ -136,6 +137,7 @@ namespace :sandbox do
       # add_reports(node)
       node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
       node = organization.nodes.create(name: "Histoire", parent_id: parent_9.id, user_id: user.id)
+      node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
       add_reports(node)
       # create chapters
       parent_13 = node_chap.chapters.create(title: "Les rois de France", parent_id: parent_chap.id, user_id: user.id)

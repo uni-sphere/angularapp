@@ -25,7 +25,6 @@ Rails.application.configure do
     domain: 'unisphere.eu'
   }
 
-
   # Code is not reloaded between requests.
   config.cache_classes = true
 
@@ -48,10 +47,12 @@ Rails.application.configure do
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
   config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.static_cache_control = "public, max-age=2592000"
+  # config.serve_static_files = true
 
   # Compress JavaScripts and CSS.
-  # config.assets.js_compressor = :uglifier
-  # config.assets.css_compressprecompileor = :scss
+  config.assets.js_compressor = Uglifier.new(:mangle => false)
+  # config.assets.css_compressor = :scss
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false

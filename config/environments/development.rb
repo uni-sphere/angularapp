@@ -1,12 +1,12 @@
 Rails.application.configure do
-  
+
   # Settings specified here will take precedence over those in config/application.rb.
-  
+
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: 'http://api.unisphere-dev.com:3000' }
-  
+
   # EMAIL PAR GANDI
   # config.action_mailer.smtp_settings = {
   #   address: "mail.gandi.net",
@@ -17,7 +17,7 @@ Rails.application.configure do
   #   password: '//11hello',
   #   enable_starttls_auto: true
   # }
-  
+
   # EMAIL PAR MANDRIL
   config.action_mailer.smtp_settings = {
     address: "smtp.mandrillapp.com",
@@ -28,7 +28,7 @@ Rails.application.configure do
     authentication: 'login',
     domain: 'unisphere.eu'
   }
-  
+
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.

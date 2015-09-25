@@ -8,17 +8,21 @@ gem 'rails'
 gem 'puma'
 
 #  logs
-gem 'rails_12factor'
+
 
 #  Asset pipeline
 gem 'sprockets-rails', :require => 'sprockets/railtie'
-gem 'uglifier'
+
 gem 'sass-rails'
+
+#minify js
+gem 'uglifier'
+gem 'rails_12factor'
+
 
 # front-end
 gem 'font-awesome-rails'
 gem 'autoprefixer-rails'
-gem 'bower-rails'
 gem 'angular-rails-templates'
 
 # back-end
@@ -51,5 +55,6 @@ gem 'railroady'
 
 group :production do
   gem 'mysql2'
+  gem 'therubyracer'
 end
 

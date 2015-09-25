@@ -2,7 +2,6 @@
 
 .dropdown{
   position: absolute;
-  z-index: 1;
   width: 200px;
   background: white;
   padding: 0;
@@ -11,7 +10,7 @@
   list-style: none;
   text-decoration: none;
   display: none;
-  z-index: 999;
+  z-index: 100;
   overflow: visible !important;
 
   margin: 0px;

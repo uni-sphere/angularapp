@@ -1,7 +1,10 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('SetNodePswCtrl', ['$scope', 'close', 'name', '$timeout', 'Notification', function ($scope, close, name, $timeout, Notification) {
+  .controller('SetNodePswCtrl', SetNodePswCtrl)
+
+    SetNodePswCtrl.$inject = ['$scope', 'close', 'name', '$timeout', 'Notification']
+    function SetNodePswCtrl($scope, close, name, $timeout, Notification){
 
     Notification.clearAll()
     $scope.nameNode = name
@@ -22,5 +25,5 @@ angular
       close($scope.nodePassword, 300);
     }
 
-  }])
+  }
 })()

@@ -1,8 +1,10 @@
 (function(){
-angular
-  .module('mainApp.controllers')
-  .controller('ShareItemCtrl', ['Restangular', '$scope', 'close', 'itemTitle', 'itemLink', '$timeout', 'Notification', function (Restangular, $scope, close, itemTitle, itemLink, $timeout, Notification) {
+  angular
+    .module('mainApp.controllers')
+    .controller('ShareItemCtrl', ShareItemCtrl)
 
+  ShareItemCtrl.$inject = ['Restangular', '$scope', 'close', 'itemTitle', 'itemLink', '$timeout', 'Notification'];
+  function ShareItemCtrl(Restangular, $scope, close, itemTitle, itemLink, $timeout, Notification){
     Notification.clearAll()
 
     $scope.itemLink = itemLink;
@@ -35,5 +37,5 @@ angular
       }
     }
 
-  }])
+  }
 })()

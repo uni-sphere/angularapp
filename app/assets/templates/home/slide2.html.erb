@@ -1,42 +1,44 @@
 
-<div id='map-itself'>
+<div id='map-itself' itemprop="audience" itemscope itemtype="http://schema.org/Audience">
 
-  <div id="map-top-banner">{{ 'WEB_UNIVERSITY_BANNER_1' | translate }}</div>
-  <map
-    center="[48.46, 7.48]"
-    disable-default-u-i="true"
-    disable-double-click-zoom="true"
-    draggable="true"
-    draggable-cursor="url(http://www.google.com/intl/en_ALL/mapfiles/openhand.cur), auto"
-    dragging-cursor="move"
-    keyboard-shortcuts="false"
-    zoom="6"
-    max-zoom="12"
-    min-zoom="4"
-    tilt="45"
-    map-type-id="ROADMAP"
-    scrollwheel="false"
-    zoom-control="true"
-    pan-control="true"
-    pan-control-options="{position: 'LEFT_CENTER'}"
-    zoom-control-options="{position: 'LEFT_CENTER'}"
-    >
-  </map>
+  <div id="map-top-banner" itemprop="audienceType">{{ 'WEB_UNIVERSITY_BANNER_1' | translate }}</div>
+  <div map-lazy-load="http://maps.google.com/maps/api/js?libraries=places">
+    <map
+      center="[48.46, 7.48]"
+      disable-default-u-i="true"
+      disable-double-click-zoom="true"
+      draggable="true"
+      draggable-cursor="url(http://www.google.com/intl/en_ALL/mapfiles/openhand.cur), auto"
+      dragging-cursor="move"
+      keyboard-shortcuts="false"
+      zoom="6"
+      max-zoom="12"
+      min-zoom="4"
+      tilt="45"
+      map-type-id="ROADMAP"
+      scrollwheel="false"
+      zoom-control="true"
+      pan-control="true"
+      pan-control-options="{position: 'LEFT_CENTER'}"
+      zoom-control-options="{position: 'LEFT_CENTER'}"
+      >
+    </map>
 
-  <!-- Google Autocomplete -->
-  <div id="uni-input" ng-keypress="clearPopup()">
-    <div id="uni-input-black-bg"></div>
-    <div id="location-wrapper">
-      <div id="location" ng-show="geolocation" ng-click="centerMap()" class="fa fa-location-arrow"></div>
-      <div id="uni-input-form">
-        <!-- <button id="location-button" class="">ll</button> -->
-        <input places-auto-complete size=80
-          ng-model="address"
-          types= ['establishment']
-          on-place-changed="placeChanged(place)"
-          class="search-input home-input"
-          placeholder="School name"
-        />
+    <!-- Google Autocomplete -->
+    <div id="uni-input" ng-keypress="clearPopup()">
+      <div id="uni-input-black-bg"></div>
+      <div id="location-wrapper">
+        <div id="location" ng-show="geolocation" ng-click="centerMap()" class="fa fa-location-arrow"></div>
+        <div id="uni-input-form">
+          <!-- <button id="location-button" class="">ll</button> -->
+          <input places-auto-complete size=80
+            ng-model="address"
+            types= ['establishment']
+            on-place-changed="placeChanged(place)"
+            class="search-input home-input"
+            placeholder="School name"
+          />
+        </div>
       </div>
     </div>
   </div>

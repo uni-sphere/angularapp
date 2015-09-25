@@ -1,0 +1,233 @@
+(function(){
+
+  angular
+  .module('mainApp', [
+    'ngAnimate',
+    'templates',
+    'ngResource',
+    'ui.tree',
+    'mainApp.directives',
+    'mainApp.controllers',
+    'mainApp.filters',
+    'mainApp.services',
+    'ipCookie',
+    'restangular',
+    'ngFileUpload',
+    'angulartics',
+    'pascalprecht.translate',
+    'ngDropdowns',
+    'ng-token-auth',
+    'ng-rails-csrf',
+    'ui.router',
+    'ngMap',
+    'angularSpinner',
+    'ui-notification',
+    'angularModalService',
+    'angularLoad',
+  ])
+  .config(configuration)
+
+  function configuration($stateProvider,$urlRouterProvider,$locationProvider,RestangularProvider,$translateProvider,$authProvider,NotificationProvider){
+
+    configureRoute()
+    configureTranslation()
+    configureNotifications()
+    configureAuth()
+    configureRestangular()
+
+    function configureRoute(){
+      if(window.location.host == "admin.unisphere.eu" || window.location.host == "admin.dev.unisphere.eu"){
+        $stateProvider
+        .state('admin', {
+          url: '/',
+          templateUrl: 'admin/admin.html',
+        })
+      } else {
+        $stateProvider
+        .state('main', {
+          url: '/',
+          abstract: true,
+          templateUrl: 'main/main.html',
+          controller: 'MainCtrl',
+          resolve:{
+            load: ['angularLoad', function(angularLoad){
+              return angularLoad.loadCSS('<%= asset_path "normalApp.css" %>')
+            }]
+          }
+        })
+
+        .state('admin', {
+          url: '/admin',
+          templateUrl: 'admin/admin.html',
+        })
+
+        .state('main.application', {
+          url: '',
+          templateUrl: 'webapp/webapp.html'
+        })
+
+        .state('main.account', {
+          url: 'account',
+          templateUrl: 'account/account.html',
+          resolve:{
+            auth: ['$auth', function($auth){
+              // if(window.location.host == 'localhost:3000' || window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home' || window.location.host == 'www.sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
+              //   return true
+              // } else{
+                return $auth.validateUser();
+              // }
+            }]
+          }
+        })
+
+        .state('view', {
+          url: '/view',
+          abstract: true,
+          templateUrl: 'restrainview/restrainview.html',
+          controller: 'RestrainCtrl',
+          resolve:{
+            load: ['angularLoad', function(angularLoad){
+              return angularLoad.loadCSS('<%= asset_path "normalApp.css" %>')
+            }]
+          }
+        })
+
+        .state('view.chapters', {
+          url: '/chapters/{id:int}',
+          templateUrl: 'restrainview/restrainViewChapters.html',
+          controller: 'restrainViewChaptersCtrl',
+          resolve:{
+            chapter_id: ['$stateParams', function($stateParams){
+              return $stateParams.id;
+            }]
+          }
+        })
+
+        .state('view.documents', {
+          url: '/documents/{id:int}',
+          templateUrl: 'restrainview/restrainViewDocument.html',
+          controller: 'restrainViewDocumentCtrl',
+          resolve:{
+            document_id: ['$stateParams', function($stateParams){
+              return $stateParams.id;
+            }]
+          }
+        })
+
+        .state('main.superadmin', {
+          url: 'superadmin',
+          templateUrl: 'superadmin/superadmin.html',
+          resolve:{
+            auth: ['$auth', function($auth){
+              return $auth.validateUser();
+            }]
+          }
+        })
+
+
+        if(window.location.host == "sandbox.unisphere.eu" || window.location.host == "sandbox.dev.unisphere.eu" || window.location.host == "www.sandbox.unisphere.eu"){
+          $stateProvider.state('main.dashboard', {
+            url: 'dashboard',
+            templateUrl: 'dashboard/one.html',
+          })
+        } else{
+          $stateProvider.state('main.dashboard', {
+            url: 'dashboard',
+            templateUrl: 'dashboard/one.html',
+            resolve:{
+              auth: ['$auth', function($auth){
+                return $auth.validateUser();
+              }]
+            }
+          })
+        }
+      }
+
+      if(window.location.host == 'localhost:3000'){
+        $stateProvider.state('home', {
+          url: '/home',
+          templateUrl: 'main/main.html',
+          controller: 'MainCtrl',
+          resolve:{
+            load: ['angularLoad', function(angularLoad){
+              return angularLoad.loadCSS('<%= asset_path "normalApp.css" %>')
+            }]
+          }
+        })
+      }
+
+      $urlRouterProvider.otherwise('/');
+
+      $locationProvider.html5Mode(true);
+    }
+
+    function configureTranslation(){
+      $translateProvider.useSanitizeValueStrategy(null);
+      $translateProvider.useUrlLoader('translate');
+      $translateProvider.preferredLanguage('en');
+      $translateProvider.registerAvailableLanguageKeys(['fr']);
+      $translateProvider.determinePreferredLanguage();
+    }
+
+    function configureAuth(){
+      $authProvider.configure({
+        apiUrl: getEnvironment(),
+        passwordResetSuccessUrl: window.location.href
+      });
+    }
+
+    function configureRestangular(){
+      RestangularProvider
+        .setBaseUrl(getEnvironment())
+        .setDefaultHeaders({ 'Authorization': 'Token token=ce76e09ea8191a3b5410dbf033cf23ad' });
+    }
+
+    function configureNotifications(){
+      NotificationProvider.setOptions({
+        delay: 2000,
+        startTop: 100,
+        verticalSpacing: 20,
+        positionX: 'right',
+        positionY: 'top',
+        templateUrl: 'main/notification-template.html'
+      });
+    }
+
+    // Functions
+
+    function getEnvironment(){
+      var host = window.location.host;
+      if(host == 'localhost:3000'){
+        return "http://api.unisphere-dev.com:3000"
+      } else if(host.indexOf('dev.') > -1){
+        return "http://apidev.unisphere.eu"
+      } else{
+        return "http://api.unisphere.eu"
+      }
+    }
+
+  }
+
+
+  // angular.module('mainApp').config(configuration)
+
+  // AppController.$provider = [angularLoad];
+  // function AppController(angularLoad){
+  //   angularLoad.loadCSS('<%= asset_path "normalApp.css" %>').then(function() {
+  //     console.log("hello")
+
+  //     angular.module('mainApp').config(configuration)
+  //   })
+  // }
+
+  angular.module('mainApp.filters', []);
+  angular.module('mainApp.services', []);
+  angular.module('mainApp.controllers', []);
+  angular.module('mainApp.directives', []);
+
+
+
+})();
+
+
+

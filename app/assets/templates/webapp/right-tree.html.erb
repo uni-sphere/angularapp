@@ -28,60 +28,76 @@
     </ol>
   </script>
 
-
-
   <div id="breadcrumb" ng-controller="breadcrumbCtrl">
     <div id="breadcrumb-container">
       <div id="breadcrumb-title">
-        <span ng-repeat="node in breadcrumb track by $index" ng-class="'breadcrumb-node'">{{node}} <span ng-class="'breadcrumb-separator'" ng-if="$index != breadcrumb.length - 1"><i class="fa fa-angle-right" ></i></span></span>
+        <span ng-repeat="node in $root.breadcrumb track by $index" ng-class="'breadcrumb-node'">{{node}} <span ng-class="'breadcrumb-separator'" ng-show="$index != $root.breadcrumb.length - 1"><i class="fa fa-angle-right" ></i></span></span>
       </div>
     </div>
 
-    <div id="protection-node-container" ng-show="nodeEnd && listItems.length != 0">
-      <button ng-show="nodeProtected" type="button" class="fa fa-lock round-button protection-file-on" ng-click="toggleProtection()" title="{{ 'NODE_LOCKED' | translate}}" ></button>
+    <div id="protection-node-container" ng-show="$root.nodeEnd && $root.listItems.length != 0">
+      <button ng-show="$root.nodeProtected" type="button" class="fa fa-lock round-button protection-file-on" ng-click="toggleProtection()" title="{{ 'NODE_LOCKED' | translate}}" ></button>
 
-      <button ng-show="!nodeProtected" type="button" class="fa fa-unlock-alt round-button protection-file-off" ng-click="toggleProtection()" title="{{ 'NODE_UNLOCKED' | translate}}"></button>
+      <button ng-show="!$root.nodeProtected" type="button" class="fa fa-unlock-alt round-button protection-file-off" ng-click="toggleProtection()" title="{{ 'NODE_UNLOCKED' | translate}}"></button>
+
+      <div id="tutorial-padlock" ng-if="$root.help" ng-hide="$root.tutorialPadlockSeen" ng-click="$root.tutorialPadlockOpen = true; $event.stopPropagation(); $root.setHelp()">
+        <span class="tutorial-round" ng-hide="$root.tutorialPadlockOpen"></span>
+        <span id="tutorial-text-box-padlock" class="tutorial-text-box" ng-show="$root.tutorialPadlockOpen">{{ 'TUTO_2' | translate }}</span>
+      </div>
+
     </div>
 
-    <div id="options-node" ng-show="admin && nodeEnd && listItems.length != 0" >
+    <div id="options-node" ng-show="$root.admin && $root.nodeEnd && $root.listItems.length != 0" >
       <div dropdown-menu="nodeDropdownOptions" dropdown-model="nodeDropdownSelected" dropdown-onchange="actionNodeOptions()">
         <button type="button" class="round-button fa fa-bars"></button>
       </div>
     </div>
   </div>
 
-  <div id="button-row" ng-class="{'button-hidden' : !nodeEnd || !admin}" ng-click="$event.stopPropagation()">
-    <button class="submit-button dual-submit" ngf-multiple="true" name="firstFiles" ngf-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>
+  <div id="button-row" ng-class="{'button-hidden' : !$root.nodeEnd || !$root.admin}" ng-click="$event.stopPropagation()">
+
+    <button type="file" class="submit-button dual-submit" ngf-multiple="true" name="firstFiles" ngf-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>
 
     <button ng-click="newChapter()" ng-controller="createChapterCtrl" class="submit-button dual-submit"  >{{ 'CHAPTER' | translate }}</button>
   </div>
 
   <div id="document-tree" ng-controller="toggleChapterCtrl">
-    <div id="ui-tree-container" ng-if="listItems.length > 0 && nodeEnd">
+
+    <div id="tutorial-action-buttons" ng-if="$root.help" ng-hide="$root.tutorialActionButtonSeen" ng-click="$root.tutorialActionButtonOpen = true; $event.stopPropagation(); $root.setHelp()">
+      <span class="tutorial-round" ng-hide="$root.tutorialActionButtonOpen"></span>
+      <span id="tutorial-text-box-action-button" class="tutorial-text-box" ng-show="$root.tutorialActionButtonOpen">{{ 'TUTO_4' | translate }}</span>
+    </div>
+
+    <div id="tutorial-right-tree" ng-if="$root.help" ng-hide="$root.tutorialRightTreeSeen" ng-click="$root.tutorialRightTreeOpen = true; $event.stopPropagation(); $root.setHelp()">
+      <span class="tutorial-round" ng-hide="$root.tutorialRightTreeOpen"></span>
+      <span id="tutorial-text-box-right-tree" class="tutorial-text-box" ng-show="$root.tutorialRightTreeOpen">{{ 'TUTO_3' | translate }}</span>
+    </div>
+
+    <div id="ui-tree-container" ng-if="$root.listItems.length > 0 && $root.nodeEnd">
       <div ui-tree="options" data-drag-enabled="false"  id="tree-root">
-        <ol ui-tree-nodes ng-model="listItems" >
-          <li ng-repeat="item in listItems" ui-tree-node ng-include="'items_renderer.html'"></li>
+        <ol ui-tree-nodes ng-model="$root.listItems" >
+          <li ng-repeat="item in $root.listItems" ui-tree-node ng-include="'items_renderer.html'"></li>
         </ol>
       </div>
     </div>
 
-    <div id="select-leaf" class="full-size-circle-container" ng-show="!nodeEnd || listItems.length == 0 && !admin">
+    <div id="select-leaf" class="full-size-circle-container" ng-if="!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin">
       <div class="full-size-circle">!</div>
     </div>
 
-    <div id="dropzone-circle" class="full-size-circle-container" ng-show="nodeEnd && listItems.length == 0 && admin">
+    <div id="dropzone-circle" class="full-size-circle-container" ng-if="$root.nodeEnd && $root.listItems.length == 0 && $root.admin">
       <div class="full-size-circle" >
         <div id="dropzone-text">DROP ZONE</div>
       </div>
     </div>
 
     <div class="tip" >
-      <i class="fa fa-lightbulb-o" ng-show="admin && nodeEnd"></i>
-      <span id="tip-chrome" ng-show="admin && nodeEnd && !isChrome " >{{ 'TIP' | translate }}</span>
-      <span id="tip-chrome" ng-show="admin && nodeEnd && isChrome">{{ 'TIP_CHROME' | translate }}</span>
+      <i class="fa fa-lightbulb-o" ng-show="$root.admin && $root.nodeEnd"></i>
+      <span id="tip-chrome" ng-show="$root.admin && $root.nodeEnd && !isChrome " >{{ 'TIP' | translate }}</span>
+      <span id="tip-chrome" ng-show="$root.admin && $root.nodeEnd && isChrome">{{ 'TIP_CHROME' | translate }}</span>
 
-      <div ng-show="listItems.length == 0 && nodeEnd && !admin">{{ 'NEW_SUBJECT' | translate }}</div>
-      <div ng-show="!nodeEnd">{{ 'SELECT_LEAF' | translate }}</div>
+      <div ng-show="$root.listItems.length == 0 && $root.nodeEnd && !$root.admin">{{ 'NEW_SUBJECT' | translate }}</div>
+      <div ng-show="!$root.nodeEnd">{{ 'SELECT_LEAF' | translate }}</div>
     </div>
 
   </div>

@@ -44,8 +44,9 @@ class ChaptersController < ApplicationController
 
   def destroy
     Action.create(name: 'destroyed', obj_id: current_chapter.id, object_type: 'chapter', object: current_chapter.title, organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
+    @tree = []
     destroy_with_children(current_chapter.id)
-    head 204
+    render json: {tree: @tree}.to_json, status: 200
   end
 
   def index
@@ -86,6 +87,7 @@ class ChaptersController < ApplicationController
         destroy_with_children(chapter.id)
       end
     end
+    @tree << id
     Chapter.where(archived: false).find(id).archive
   end
 

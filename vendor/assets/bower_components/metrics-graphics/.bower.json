@@ -50,6 +50,5 @@
   },
   "_source": "git://github.com/mozilla/metrics-graphics.git",
   "_target": "~2.4.0",
-  "_originalSource": "metrics-graphics",
-  "_direct": true
+  "_originalSource": "metrics-graphics"
 }

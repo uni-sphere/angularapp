@@ -91,22 +91,22 @@ body {
 }
 
 .presentation-image{
-  background-image: url(image-path('wallpaper.png'));
+  background-image: image-url('wallpaper.png');
 }
 
 .share-image{
-  background-image: url(image-path('exchange.png'));
+  background-image: image-url('exchange.png');
   margin-top: 30px;
   margin-bottom: 20px;
 }
 
 .statistic-image{
-  background-image: url(image-path('statistics.png'));
+  background-image: image-url('statistics.png');
   margin-bottom: 10px;
 }
 
 .plugin-image{
-  background-image: url(image-path('connector.png'));
+  background-image: image-url('connector.png');
   margin-bottom: 20px;
 }
 

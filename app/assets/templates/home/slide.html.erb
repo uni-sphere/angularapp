@@ -1,23 +1,29 @@
 <div class="slide" id="slide" ng-click="looseFocusItem()">
 
   <div id='welcome-wrapper'>
-    <h1 id="welcome-title">UNISPHERE</h1>
-    <h2 id="welcome-comment">{{ 'WEB_WELCOME_COMMENT' | translate }}</h2>
+    <h1 id="welcome-title" itemprop="name">UNISPHERE</h1>
+    <h2 id="welcome-comment" itemprop="description">{{ 'WEB_WELCOME_COMMENT' | translate }}</h2>
   </div>
 
   <div id='test-app'>
-    <sidebar ng-show="admin" home = 'true' deconnection = 'deconnection' superadmin = 'superadmin' viewdashboard = 'viewdashboard' viewhome = 'viewhome' admin='admin' reload-nodes = 'reloadNodes' reload-graph = 'reloadGraph'></sidebar>
-    <admin-co ng-hide="admin" get-basic-info = 'getBasicInfo' admin = 'admin' home = 'true' superadmin = 'superadmin'></admin-co>
+    <sidebar ng-show="$root.admin" deconnection = 'deconnection' superadmin = 'superadmin' viewdashboard = 'viewdashboard' viewhome = 'viewhome'></sidebar>
+    <admin-co ng-hide="$root.admin" get-basic-info = 'getBasicInfo'></admin-co>
     <div id='test-app-buttons-1'></div>
     <div id='test-app-buttons-2'></div>
     <div id='test-app-buttons-3'></div>
     <div class="test-app-content">
-      <left-tree ng-show = "viewhome" id="view-tree" node-end = 'nodeEnd' active-nodes = 'activeNodes' admin = 'admin'  home ='true' sandbox = 'sandbox' help = 'help' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' nodes = 'nodes' folded-nodes= 'foldedNodes' cookie-gestion = 'cookieGestion' user-id = 'userId' reload-nodes ='reloadNodes' view-news = 'viewNews' superadmin = 'superadmin' viewhome = 'viewhome'></left-tree>
+      
+      <div id="tutorial-left-tree" ng-if="$root.help" ng-hide="$root.tutorialLeftTreeSeen" ng-click="$root.tutorialLeftTreeOpen = true; $event.stopPropagation(); $root.setHelp()">
+        <span id="tutorial-text-box-left-tree" class="tutorial-text-box" ng-show="$root.tutorialLeftTreeOpen">{{ 'TUTO_5' | translate }}</span>
+        <span class="tutorial-round" ng-hide="$root.tutorialLeftTreeOpen"></span>
+      </div>
+      
+      <left-tree ng-show = "$root.viewhome" id="view-tree" active-nodes = 'activeNodes' active-chapter = 'activeChapter' view-news = 'viewNews' viewhome = 'viewhome'></left-tree>
 
-      <right-tree ng-show = "viewhome" active-nodes='activeNodes' node-end='nodeEnd' files = 'files' admin = 'admin' sandbox = 'false' home = 'true' chapter-folded = 'chapterFolded' active-chapter = 'activeChapter' breadcrumb = 'breadcrumb' reload-nodes ='reloadNodes' user-id = 'userId' loose-focus-item = 'looseFocusItem' superadmin = 'superadmin' home = 'true'></right-tree>
+      <right-tree ng-show = "$root.viewhome" files = 'files' active-chapter = 'activeChapter' loose-focus-item = 'looseFocusItem' is-chrome = 'isChrome'></right-tree>
 
-      <div ng-show="viewdashboard">
-        <metrics university = 'university' id="metrics" viewdashboard = 'viewdashboard' reload-graph = 'reloadGraph'></metrics>
+      <div ng-show="$root.viewdashboard">
+        <metrics id="metrics" viewdashboard = 'viewdashboard'></metrics>
       </div>
     </div>
 
@@ -25,46 +31,44 @@
   </div>
 
   <div id="separation-banner" class="banner">
-    <span>{{ 'WEB_SEPARATION_BANNER' | translate }}</span>
+    <span >{{ 'WEB_SEPARATION_BANNER' | translate }}</span>
   </div>
-
-
 
   <div id='features-wrapper'>
 
-    <div class='feature'>
+    <div class='feature' itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
       <div class='feature-content feature-left'>
-        <h2 class='content-title'>{{ 'WEB_FEATURE_1' | translate }}</h2>
+        <h3 class='content-title' itemprop="decription">{{ 'WEB_FEATURE_1' | translate }}</h3>
         <p>{{ 'WEB_FEATURE_2' | translate }}</br>
         {{ 'WEB_FEATURE_3' | translate }}</p>
       </div>
-      <%= image_tag "tree.png", class: "feature-image feature-right" %>
+      <%= image_tag "treeView.png", class: "feature-image feature-right" %>
     </div>
 
-    <div class='feature '>
+    <div class='feature' itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
       <%= image_tag "documents.png", class: "feature-image feature-left"  %>
       <div class='feature-content feature-right'>
-        <h2 class='content-title'>{{ 'WEB_FEATURE_4' | translate }}</h2>
+        <h3 class='content-title' itemprop="decription">{{ 'WEB_FEATURE_4' | translate }}</h3>
         <p>{{ 'WEB_FEATURE_5' | translate }}</p>
       </div>
     </div>
 
-    <div class='feature'>
+    <div class='feature' itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
       <div class='feature-content feature-left'>
-        <h2 class='content-title'>{{ 'WEB_FEATURE_6' | translate }}</h2>
+        <h3 class='content-title' itemprop="decription">{{ 'WEB_FEATURE_6' | translate }}</h3>
         <p>{{ 'WEB_FEATURE_7' | translate }}</p>
       </div>
-      <%= image_tag "metrics.png", class: "feature-right feature-image"  %>
+      <%= image_tag "metrics.png", class: "feature-right feature-image" %>
     </div>
 
-    <div class='feature'>
+    <div class='feature' itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
       <div class="feature-left feature-content feature-center">
         <div class="subdomain ">
           <i class="fa fa-search"></i><span>{{ 'WEB_FEATURE_8' | translate }}</span>
         </div>
       </div>
       <div class='feature-content feature-right'>
-        <h2 class='content-title'>{{ 'WEB_FEATURE_9' | translate }}</h2>
+        <h3 class='content-title' itemprop="decription">{{ 'WEB_FEATURE_9' | translate }}</h3>
         <p>{{ 'WEB_FEATURE_10' | translate }}</br>
         {{ 'WEB_FEATURE_11' | translate }}</p>
       </div>
@@ -85,9 +89,9 @@
     <a class="university-item" href="http://fseg.unisphere.eu">Faculté des sciences économiques et de gestion - Strasbourg</a>
   </div> -->
 
-  <div id="contact-wrapper">
+  <div id="contact-wrapper" itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
     <div id="contact-form">
-      <h2 class='contact-form-title'>{{ 'WEB_CONTACT_1' | translate }}</h2>
+      <h3 class='contact-form-title' itemprop="description">{{ 'WEB_CONTACT_1' | translate }}</h3>
       <div class="contact-input-wrapper-left">
         <input class="contact-input contact-input-margin" type="email" ng-model="webEmail" placeholder='Email'>
         <input class="contact-input" type="text" ng-model="webUniversity" placeholder='University'>
@@ -97,7 +101,7 @@
     </div>
   </div>
 
-  <slide5 id="slide5"></slide5>
+  <slide5 id="slide5" itemprop="manufacturer" itemscope itemtype="http://schema.org/Organization"></slide5>
 
 </div>
 

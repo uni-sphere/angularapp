@@ -24,28 +24,30 @@ module ApplicationHelper
   def archive_children(id)
     if Node.where(archived: false).exists?(parent_id: id)
       Node.where(parent_id: id, archived: false).each do |node|
+        @node_sons << node.id
         node.chapters.where(archived: false).each do |chapter|
           chapter.awsdocuments.where(archived: false).each do |document|
             document.archive
           end
+          @chapter_sons << chapter.id
           chapter.archive
         end
         archive_children(node.id)
       end
     end
-    Node.find(id).archive
   end
   
   def pull_children(id, parent_id)
     if Node.where(archived: false).exists?(parent_id: id)
       Node.where(parent_id: id, archived: false).each do |node|
+        @node_sons << node.id
         node.chapters.where(archived: false).each do |chapter|
+          @chapter_sons << chapter.id
           chapter.update(node_id: parent_id)
         end
         pull_children(node.id, parent_id)
       end
     end
-    Node.find(id).archive
   end
   
 end

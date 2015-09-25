@@ -1,20 +1,18 @@
 <div id="grey-background"></div>
 
-<first-co help = 'help' sandbox = 'sandbox' id="first-connection"></first-co>
-
 <span us-spinner="{radius:50, width:12, length: 16, color: 'white', position: 'fixed', 'z-index': 999}" spinner-key="spinner-1"></span>
 
-<div ng-if="home" id="home-container">
-  <slide deconnection = 'deconnection' superadmin = 'superadmin' admin = 'admin' university = 'university'></slide>
+<div ng-if="$root.home" id="home-container">
+  <slide deconnection = 'deconnection' ng-click="looseFocusItem()"></slide>
 </div>
 
-<div ng-if="!home" id="application-container">
+<div ng-if="!$root.home" id="application-container">
 
-  <navbar account-email='accountEmail' university='university'></navbar>
+  <navbar></navbar>
 
-  <admin-co ng-hide="admin" get-basic-info = 'getBasicInfo' admin = 'admin' sandbox='sandbox' superadmin = 'superadmin'></admin-co>
+  <admin-co ng-hide="$root.admin" get-basic-info = 'getBasicInfo'></admin-co>
 
-  <sidebar sandbox = 'sandbox' ng-show="admin" deconnection = 'deconnection' superadmin = 'superadmin'></sidebar>
+  <sidebar ng-show="$root.admin" deconnection = 'deconnection'></sidebar>
 
   <div ui-view id="main-view-container"></div>
 

@@ -10,11 +10,15 @@
     /*----------  Functions run on each items to have their initial position (closed / open)  ----------*/
     $scope.collapseItems = function(node) {
       // If we have no cookies we close all
-      if($scope.chapterFolded == undefined){
+      // console.log($rootScope.foldedChapters)
+      // console.log(node.$modelValue.id)
+      // console.log($rootScope.foldedChapters)
+      if($rootScope.foldedChapters == undefined){
         node.collapse()
       } else{
         // If we have cookies, we close only the nodes that are not in chapter folded and have no items
-        if(node.chapterFolded.indexOf(node.$modelValue.id) == -1 && node.$modelValue.items.length != 0){
+        if($rootScope.foldedChapters.indexOf(node.$modelValue.id) == -1 && node.$modelValue.items.length != 0){
+          // console.log(node)
           node.collapse();
         }
       }
@@ -44,6 +48,7 @@
 
         // We toggle the node & and check if we need to add or remove it from cookies
         if(node.$modelValue.items.length != 0){
+          // console.log(node.$modelValue.items.length)
           node.toggle();
           chapterFoldedCookiesGestion(node.$modelValue.id);
         }
@@ -56,17 +61,14 @@
     =            Functions            =
     =================================*/
 
-    /*----------  Gestion of chapterFolded cookies  ----------*/
+    /*----------  Gestion of foldedChapters cookies  ----------*/
     function chapterFoldedCookiesGestion(nb){
-      if($scope.chapterFolded == undefined){
-        $scope.chapterFolded = [nb];
-      } else if($scope.chapterFolded.indexOf(nb) > -1){
-        var index = $scope.chapterFolded.indexOf(nb);
-        $scope.chapterFolded.splice(index, 1);
+      if($rootScope.foldedChapters.indexOf(nb) > -1){
+        $rootScope.foldedChapters.splice($rootScope.foldedChapters.indexOf(nb), 1);
       } else{
-        $scope.chapterFolded.push(nb);
+        $rootScope.foldedChapters.push(nb);
       };
-      ipCookie('chapterFolded', $scope.chapterFolded);
+      ipCookie('foldedChapters', $rootScope.foldedChapters);
     }
   }
 

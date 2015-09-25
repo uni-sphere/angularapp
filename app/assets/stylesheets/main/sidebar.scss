@@ -3,7 +3,7 @@
   top: 40px;
   bottom: 0;
   width: 200px;
-  z-index: 1;
+  z-index: 10;
   width: 70px;
 }
 
@@ -22,7 +22,7 @@
   list-style-type: none;
 }
 
-.siderbar-item{
+.sidebar-item{
   position: relative;
   line-height: 40px;
 }
@@ -58,7 +58,7 @@
   margin-bottom: 3px;
 }
 
-.sidebar-item:hover, .menu-link-active{
+.menu-link:hover, .menu-link-active{
   .fa{
     color: white;
     background: $blue;

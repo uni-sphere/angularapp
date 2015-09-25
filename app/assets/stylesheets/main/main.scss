@@ -44,6 +44,30 @@ body{
   overflow-x: hidden;
 }
 
+#app-container{
+  transition: ease-in all;
+}
+
+.zoom-in{
+  animation: appflyin .5s;
+}
+
+@keyframes appflyin {
+  0% {
+    opacity: 0;
+  }
+
+  25%{
+    opacity: 0;
+//    transform: scale(2);
+  }
+
+  100% {
+    opacity: 1;
+//    transform: scale(1);
+  }
+}
+
 *:focus{
   outline: none;
 }
@@ -64,9 +88,8 @@ body{
   position: absolute;
 
   height: calc(100% - 50px);
-
-  margin-top: 50px;
-  margin-left: 70px;
+  top: 50px;
+  left: 70px;
   width: calc(100% - 70px);
 }
 
@@ -117,7 +140,7 @@ body{
   background: black;
   opacity: 0.3;
   display: none;
-  z-index: 100;
+  z-index: 9999;
 }
 
 

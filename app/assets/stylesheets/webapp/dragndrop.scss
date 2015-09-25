@@ -1,4 +1,4 @@
-.dragoverAccept #dragndrop-view{
+.dragover #dragndrop-view, .dragoverAccept #dragndrop-view{
   display: block;
 }
 
@@ -6,6 +6,7 @@
   position: fixed;
   z-index: 100;
   display: none;
+  animation: appflyin .5s;
 
   height: 100%;
   width: 100%;
@@ -21,6 +22,7 @@
   background: black;
   opacity: 0.2;
 }
+
 #dragndrop-container{
   position: absolute;
 
@@ -29,6 +31,7 @@
   top: 25%;
   left: 25%;
 }
+
 
 #dragndrop-content{
   position: absolute;

@@ -2,31 +2,36 @@
 
   <ul class="sidebar-container">
 
-    <li class="sidebar-item home-item">
-      <a ng-show="!home" ui-sref="main.application"  ui-sref-active="menu-link-active" class="menu-link" title="Home">
+    <li class="sidebar-item $root.home-item">
+      <a ng-show="!$root.home" ui-sref="main.application"  ui-sref-active="menu-link-active" class="menu-link" title="$root.home">
         <i class="menu-icon fa fa-fw fa-share-alt"></i>
       </a>
-      <a ng-show="home" ng-click="showHome()" ng-class="{'menu-link-active' : viewhome}" class="menu-link" title="Home">
+      <a ng-show="$root.home" ng-click="show$root.home()" ng-class="{'menu-link-active' : view$root.home}" class="menu-link" title="$root.home">
         <i class="menu-icon fa fa-fw fa-share-alt"></i>
       </a>
     </li>
 
     <li class="sidebar-item dashboard-item">
-      <a ng-show="!home" ui-sref="main.dashboard" ui-sref-active="menu-link-active" class="menu-link" title="Dashboard">
+      <a ng-show="!$root.home" ui-sref="main.dashboard" ui-sref-active="menu-link-active" class="menu-link" title="Dashboard">
         <i class="menu-icon fa fa-fw fa-bar-chart-o"></i>
       </a>
-      <a ng-show="home" ng-click="showDashboard()" ng-class="{'menu-link-active' : viewdashboard}" class="menu-link" title="Dashboard">
+      <a ng-show="$root.home" ng-click="showDashboard()" ng-class="{'menu-link-active' : viewdashboard}" class="menu-link" title="Dashboard">
         <i class="menu-icon fa fa-fw fa-bar-chart-o"></i>
       </a>
+
+      <div id="tutorial-dashboard" ng-if="$root.help" ng-hide="$root.tutorialDashboardSeen" ng-click="$root.tutorialDashboardOpen = true; $event.stopPropagation(); $root.setHelp()">
+        <span class="tutorial-round" ng-hide="$root.tutorialDashboardOpen"></span>
+        <span id="tutorial-text-box-dashboard" class="tutorial-text-box" ng-show="$root.tutorialDashboardOpen">{{ 'TUTO_1' | translate }}</span>
+      </div>
     </li>
 
-    <li class="sidebar-item account-item" ng-hide="sandbox || home">
+    <li class="sidebar-item account-item" ng-hide="sandbox || $root.home">
       <a ui-sref="main.account" class="menu-link" ui-sref-active="menu-link-active" title="Account">
         <i class="menu-icon fa fa-fw fa-user"></i>
       </a>
     </li>
 
-    <li class="sidebar-item account-item" ng-show="superadmin && !home && !sandbox">
+    <li class="sidebar-item account-item" ng-show="$root.superadmin && !$root.home && !sandbox">
       <a ui-sref="main.superadmin" class="menu-link" ui-sref-active="menu-link-active" title="Super admin">
         <i class="menu-icon fa fa-fw fa-rocket"></i>
       </a>

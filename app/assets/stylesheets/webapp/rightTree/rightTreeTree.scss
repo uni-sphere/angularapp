@@ -1,0 +1,199 @@
+/*===============================
+=            UI Tree            =
+===============================*/
+
+.angular-ui-tree-nodes{
+  margin:0;
+  padding:0;
+  list-style:none
+}
+
+.angular-ui-tree-nodes .angular-ui-tree-nodes{
+  padding-left:20px
+}
+
+#document-tree{
+  position: relative;
+  width: 100%;
+  height: calc(100% - 130px);
+}
+
+#ui-tree-container{
+  font-size: 16px;
+  position: relative;
+  height: calc(100% - 70px);
+  margin-bottom: 20px;
+  width: 90%;
+  margin-left: 5%;
+  overflow-y: auto;
+}
+
+.angular-ui-tree-handle {
+  font-size: .9em;
+  display: table;
+  table-layout: fixed;
+  width: calc(100% - 18px);
+  margin-bottom: 1px;
+  opacity: 1;
+  font-weight: 500;
+  height: 40px;
+  line-height: 40px;
+  padding: 0px 9px;
+  color: $document-color;
+  cursor: pointer;
+
+  &:hover{
+    background: $document-hover;
+
+    .input-rename-item{
+      background: $document-hover
+    }
+  }
+}
+
+.itemSelected{
+  background: #C1CCE5 !important;
+
+  .btn-options{
+    visibility: visible !important;
+  }
+}
+
+.angular-ui-tree-placeholder {
+  background: #f0f9ff;
+  border: 2px dashed #bed2db;
+  box-sizing: border-box;
+}
+
+.isdocument{
+  &:hover{background: $document-hover;}
+  .item-name{margin-left: 4px;}
+  .item-name, .file-icon{color: #0054AD;}
+}
+
+
+/*----------  Collapse button  ----------*/
+
+.empty-space{
+  display: table-cell;
+  width: 24px;
+}
+
+.btn-collapse{
+  display: table-cell;
+  width: 24px;
+  cursor: pointer;
+  font-size: 1.5em;
+  color: #007CCE;
+
+  .fa{
+    margin-bottom: 0px;
+    vertical-align: middle;
+  }
+
+  &:hover,&:focus {
+    color: #0065A8;
+  }
+
+  .fa{
+    transition: all .1s ease-out;
+  }
+}
+
+.expanded{
+  transform: translate(0, 3px) rotate(90deg) ;
+}
+
+.angle-right-hidden{
+  visibility: hidden;
+}
+
+/*----------  Chapters  ----------*/
+
+.chapter-number{
+  width: 18px;
+  padding-top: 2px;
+  display: table-cell;
+}
+
+.depth1{width: 30px !important;}
+.depth2{width: 40px !important;}
+.depth3{width: 50px !important;}
+.depth4{width: 60px !important;}
+
+/*----------  File icons  ----------*/
+
+.file-icon{
+  display: table-cell;
+  width: 24px;
+  text-align: center;
+  // margin-left: 10px;
+  color: $fa-color;
+}
+
+/*----------  Item name  ----------*/
+
+.item-name{
+  position: relative;
+  height: 40px !important;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: table-cell;
+
+}
+
+/*----------  Buttons  ----------*/
+
+.btn {
+  display: table-cell;
+  width: 35px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 1.1em;
+  margin-right: 8px;
+  line-height: 40px;
+  .fa{
+    width: 100%;
+    height: 100%;
+    line-height: 40px;
+  }
+
+  &:hover, &:focus,{
+    color: #0065A8 !important;
+    text-decoration: none;
+  }
+}
+
+.angular-ui-tree-handle .btn-options{
+  visibility: hidden;
+}
+
+.angular-ui-tree-handle:hover {
+  .btn-options{
+    visibility: visible;
+    color: $fa-color;
+    &:hover{
+      color: $fa-hover;
+    }
+  }
+}
+
+/*----------  Dropdown  ----------*/
+
+#document-tree{
+  .dropdown{
+    right: 10px;
+    top: 40px;
+  }
+
+  .dropdown:before{
+    right: 9px;
+  }
+
+  .dropdown:after{
+    right: 11px;
+  }
+}

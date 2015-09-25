@@ -1,7 +1,10 @@
 (function(){
 angular
   .module('mainApp.controllers')
-  .controller('DeleteNodeModalCtrl', ['$scope', 'close', 'allowTransfer', '$timeout', 'name', 'Notification', function ($scope, close, allowTransfer, $timeout, name, Notification) {
+  .controller('DeleteNodeModalCtrl', DeleteNodeModalCtrl)
+
+  DeleteNodeModalCtrl.$inject = ['$scope', 'close', 'allowTransfer', '$timeout', 'name', 'Notification'];
+  function DeleteNodeModalCtrl($scope, close, allowTransfer, $timeout, name, Notification){
 
     Notification.clearAll()
     $scope.allowTransfer = allowTransfer
@@ -24,5 +27,5 @@ angular
       $scope.dismissModal(true)
     };
 
-  }])
+  }
 })()

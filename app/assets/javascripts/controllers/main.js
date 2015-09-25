@@ -3,10 +3,85 @@
     .module('mainApp.controllers')
     .controller('MainCtrl', MainCtrl);
 
-  MainCtrl.$inject = ['ipCookie', '$rootScope', '$scope','$timeout', 'Restangular', '$translate', '$auth', '$state', 'usSpinnerService', 'Notification', '$q', 'makeNestedService']
-  function MainCtrl(ipCookie, $rootScope, $scope, $timeout, Restangular, $translate, $auth, $state, usSpinnerService, Notification, $q, makeNestedService){
+  MainCtrl.$inject = ['$window', '$rootScope', '$scope','$timeout', 'Restangular', '$auth', '$state', 'Notification', '$translate']
+  function MainCtrl($window, $rootScope, $scope, $timeout, Restangular, $auth, $state, Notification, $translate){
 
+    var error;
+
+    $translate(['ERROR']).then(function (translations) {
+      error = translations.ERROR;
+    });
+
+    // We initialise the upload form
+    $scope.setForm = function(form){
+      $rootScope.uploadForm = form
+    }
+
+    // Function to set the help (tutorial) to false
+    $rootScope.setHelp = function(){
+      if(!$rootScope.home && !$rootScope.sandbox){
+        $auth.updateAccount({help: false})
+        .then(function(resp) {
+          console.log('Ok: Help set to false')
+        })
+        .catch(function(resp) {
+          console.log(resp)
+        });
+      }
+    }
+
+    // We notify the application when the javascript is ready
+    // var everythingLoaded = setInterval(function() {
+    //   if (/loaded|complete/.test(document.readyState)) {
+    //     clearInterval(everythingLoaded);
+    //     console.log("INITIALISED")
+    //     $rootScope.contentLoaded = true;
+    //     $scope.$apply();
+
+    //   }
+    // }, 50);
+
+    // We initialise the size of the circle
+    var initializeCircle = setInterval(function() {
+      if($('.full-size-circle-container').height() != null && $('.full-size-circle-container').height() != 0){
+        clearInterval(initializeCircle);
+        resizeCircle();
+      }
+    }, 50);
+
+    function resizeCircle(){
+      if($('.full-size-circle-container').height() < 320 || $('.full-size-circle-container').width() < 320){
+        var mini = Math.min($('.full-size-circle-container').height(), $('.full-size-circle-container').width()) - 20
+        $('.full-size-circle').css("height", mini)
+        $('.full-size-circle').css("width", mini)
+        $('.full-size-circle').css("border-radius", mini/2)
+        $('.full-size-circle').css("margin-left", $('.full-size-circle-container').width()/2 - mini/2)
+      }
+    }
+
+    angular.element($window).bind('resize', function() {
+      if(window.location.pathname == '/' || (window.location.pathname == '/home' && $rootScope.viewhome)){
+        resizeCircle()
+      }
+    });
+
+    // We watch every click to un focus some elements
     $scope.looseFocusItem = function(){
+      if($rootScope.tutorialDashboardOpen){
+        $rootScope.tutorialDashboardSeen = true
+      }
+      if($rootScope.tutorialPadlockOpen){
+        $rootScope.tutorialPadlockSeen = true
+      }
+      if($rootScope.tutorialActionButtonOpen){
+        $rootScope.tutorialActionButtonSeen = true
+      }
+      if($rootScope.tutorialLeftTreeOpen){
+        $rootScope.tutorialLeftTreeSeen = true
+      }
+      if($rootScope.tutorialRightTreeOpen){
+        $rootScope.tutorialRightTreeSeen = true
+      }
       if($rootScope.activeChapter != undefined){
         $rootScope.activeChapter.$modelValue.selectedItem = false;
         $rootScope.activeChapter = undefined
@@ -19,26 +94,27 @@
     }
 
     $scope.deconnection = function(){
-      if($scope.sandbox){
-        $scope.admin = false;
-        $scope.superadmin = false
+      if($rootScope.sandbox){
+        $rootScope.admin = false;
+        $rootScope.superadmin = false
         $state.transitionTo('main.application');
       } else{
         $auth.signOut().then(function(resp) {
           console.log("OK: deconnection successful")
-          $scope.admin = false;
+          $rootScope.admin = false;
           $state.transitionTo('main.application');
 
-          $scope.accountEmail = undefined;
-          $scope.accountName = undefined;
-          $scope.userId = undefined;
-          $scope.superadmin = false;
-          $scope.university = "My university"
+          $rootScope.accountEmail = undefined;
+          $rootScope.accountName = undefined;
+          $rootScope.userId = undefined;
+          $rootScope.superadmin = false;
+          $rootScope.university = "My university"
+          $rootScope.help = false
 
         }, function(d){
           console.log(d)
           console.log("Impossible to deco")
-          Notification.error('Error during deconnection. Please refresh.')
+          Notification.error(error)
         });
       }
     }
@@ -46,40 +122,37 @@
     if(window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home' || window.location.host == 'www.sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
     // if(window.location.host == 'localhost:3000' || window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home' || window.location.host == 'www.sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
       if(window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home'){
-        $scope.home = true;
+        $rootScope.home = true;
         console.log("HOME")
       } else{
-        $scope.sandbox = true;
+        $rootScope.sandbox = true;
         console.log("SANDBOX")
       }
-      $scope.admin = true
-      $scope.university = "My university"
+      $rootScope.help = true
+      $rootScope.admin = true
+      $rootScope.university = "My university"
 
-      $scope.accountEmail = "user@unisphere.eu"
-      $scope.userId = 1
-      $scope.superadmin = true
-      $scope.testVersion = true
-      $scope.listUser = ["user@unisphere.eu"]
+      $rootScope.accountEmail = "user@unisphere.eu"
+      $rootScope.userId = 1
+      $rootScope.superadmin = true
+      $rootScope.listUser = ["user@unisphere.eu"]
     } else{
       console.log("NORMAL APP")
-      // $('#first-connection').fadeIn()
       // We get the actual uni
       Restangular.one('organization').get().then(function (university) {
-        $scope.university = university.organization.name;
-        $scope.universityId = university.organization.id;
+        $rootScope.university = university.organization.name;
+        $rootScope.universityId = university.organization.id;
         console.log("Ok: Uni name")
       }, function(d){
         console.log("Error: Get uni name");
         console.log(d)
-        Notification.error("Can you please refresh the page, there was an error");
+        Notification.error(error);
       });
 
 
       // We authentificated the user
       $auth.validateUser().then(function(){
         console.log("Ok: admin connected")
-        // Notification({message: 'Hello', delay: 10000, templateUrl: 'main/notification-template.html'})
-
 
         // Help Center
         // if(window.location.host != 'localhost:3000'){
@@ -95,14 +168,12 @@
         $scope.getBasicInfo()
       }, function(d){
         console.log("Ok: Student co")
-        $scope.admin = false
+        $rootScope.admin = false
       })
-
-
     }
 
     if(window.location.host == 'localhost:3000'){
-      $scope.local = true
+      $rootScope.local = true
     }
 
     /*==========  Function  ==========*/
@@ -112,16 +183,16 @@
       // We get the user email and name to display them
       Restangular.one('user').get().then(function (user) {
         // console.log(user.plain());
-        $scope.accountEmail = user.email
-        $scope.accountName = user.name
-        $scope.help = user.help
-        $scope.superadmin = user.superadmin
-        $scope.userId = user.id
-        $scope.admin = true
+        $rootScope.accountEmail = user.email
+        $rootScope.accountName = user.name
+        $rootScope.help = user.help
+        $rootScope.superadmin = user.superadmin
+        $rootScope.userId = user.id
+        $rootScope.admin = true
         console.log("Ok: User info")
 
-        if($scope.help) {
-          // $('#first-connection').fadeIn(2000)
+        if($rootScope.help) {
+          console.log("OK: first connection")
         }
 
         if(user.news){
@@ -137,8 +208,8 @@
           });
         }
 
-        if(!$scope.superadmin && !$scope.local){
-          Restangular.one('users/connection').put({id: $scope.universityId, user_id: $scope.userId}).then(function(d) {
+        if(!$rootScope.superadmin && !$rootScope.local){
+          Restangular.one('users/connection').put({id: $rootScope.universityId, user_id: $rootScope.userId}).then(function(d) {
             console.log("Ok: admin tracked")
           }, function(d){
             console.log("Error: track admin")
@@ -148,13 +219,13 @@
 
         // We get the list of user in the organization
         Restangular.one('users').get().then(function (listUser) {
-          $scope.listUser = listUser.users
+          $rootScope.listUser = listUser.users
           console.log("Ok: List of all user")
 
-          if($scope.superadmin){
+          if($rootScope.superadmin){
             Restangular.one('organization/actions').get().then(function (timeline) {
               console.log("Ok: Timeline aquired")
-              $scope.timeline = timeline.actions;
+              $rootScope.timeline = timeline.actions;
             }, function(d){
               console.log("Error: Timeline")
             });
@@ -162,13 +233,13 @@
 
         }, function(d){
           console.log("Error: List of all user");
-          Notification.error('Error while getting institution infos. Please refresh')
+          Notification.error(error)
           console.log(d)
         });
 
       }, function(d){
         console.log("Error: User info");
-        Notification.error('Error while getting user infos. Please refresh')
+        Notification.error(error)
         console.log(d)
       });
 

@@ -1,16 +1,17 @@
 {
-  "name": "unisphere",
-  "version": "0.0.0",
+  "name": "Unisphere",
+  "version": "1.0.0",
   "dependencies": {
     "angular": "~1.4.1",
     "angular-animate": "~1.4.0",
     "angular-devise": "~1.1.0",
     "angular-dropdowns": "~1.1.0",
+    "angular-load": "~0.3.0",
     "angular-modal-service": "~0.6.7",
     "angular-resource": "~1.4.0",
     "angular-spinner": "~0.6.1",
-    "angular-translate": "~2.6.1",
-    "angular-translate-loader-url": "~2.7.2",
+    "angular-translate": "~2.8.0",
+    "angular-translate-loader-url": "~2.8.0",
     "angular-ui-notification": "~0.0.14",
     "angular-ui-router": "~0.2.15",
     "angular-ui-tree": "latest",
@@ -19,12 +20,11 @@
     "fontawesome": "~4.3.0",
     "jquery": "~2.1.3",
     "metrics-graphics": "~2.4.0",
-    "ng-file-upload": "~7.3.8",
     "ng-token-auth": "~0.0.25",
     "ngmap": "~1.7.11",
-    "normalize.css": "~3.0.3",
     "restangular": "~1.5.1",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "ng-file-upload": "~8.0.4"
   },
   "resolutions": {
     "angular": "^1.2.0"

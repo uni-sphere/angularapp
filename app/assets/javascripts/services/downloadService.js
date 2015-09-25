@@ -3,11 +3,18 @@
     .module('mainApp.services')
     .service('downloadService', downloadService)
 
-  downloadService.$inject = ['Restangular', 'ModalService', 'Notification']
-  function downloadService(Restangular, ModalService, Notification){
+  downloadService.$inject = ['Restangular', 'ModalService', 'Notification', '$translate']
+  function downloadService(Restangular, ModalService, Notification, $translate){
+    
     var service = {
       download: download
     };
+    
+    var error;
+    
+    $translate(['ERROR']).then(function (translations) {
+      error = translations.error;
+    });
 
     return service;
 
@@ -55,8 +62,8 @@
             callModalLocked()
           } else{
             console.log(d);
-            console.log("Error: download doc")
-            Notification.error("Error while getting download link")
+            console.log("Error: download link")
+            Notification.error(error)
           }
         });
       } else{

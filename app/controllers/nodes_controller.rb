@@ -69,26 +69,31 @@ class NodesController < ApplicationController
   end
 
   def destroy
+    @node_sons = []
+    @chapter_sons = []
     if current_node.parent_id != 0 and current_organization.nodes.where(archived: false).count > 2
       Action.create(name: 'archived', obj_id: current_node.id, object_type: 'node', object: current_node.name, organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
       parent = current_organization.nodes.where(archived: false).find current_node.parent_id
       if params[:pull] == 'true' and current_organization.nodes.where(archived: false, parent_id: parent.id).count < 2 and parent.user_id == current_user.id
         current_node.chapters.where(archived: false).each do |chapter|
+          @chapter_sons << chapter.id
           chapter.update(node_id: parent.id)
         end
         pull_children(current_node.id, parent.id)
+        current_node.archive
       else
         current_node.chapters.where(archived: false).each do |chapter|
           chapter.awsdocuments.where(archived: false).each do |document|
             document.archive
           end
+          @chapter_sons << chapter.id
           chapter.archive
         end
         archive_children(current_node.id)
+        current_node.archive
         parent.chapters.create(title: 'main', parent_id: 0, user_id: parent.user_id) if current_organization.nodes.where(parent_id: parent.id, archived: false).count == 0
       end
-      current_node.archive
-      render json: {deleted: true}.to_json, status: 200
+      render json: {deleted: true, node_sons: @node_sons, chapter_sons: @chapter_sons}.to_json, status: 200
     else
       Action.create(name: 'destroyed', error: true, object_type: 'node', organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
       send_error('You can not destroy the root of your tree', 400)
@@ -98,7 +103,21 @@ class NodesController < ApplicationController
   def index
     nodes = []
     current_organization.nodes.where(archived: false).each do |node|
-      nodes << {name: node.name, num: node.id, parent: node.parent_id, user_id: node.user_id, superadmin: node.superadmin}
+      node_data = []
+      if node.chapters.exists?
+        queue = [node.chapters.first]
+        while queue != [] do
+          chapter = queue.pop
+          node_data << chapter
+          Awsdocument.where(chapter_id: chapter.id, archived: false).reverse_order.select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).each do |document|
+            node_data << (document) if !document.archived
+          end
+          Chapter.where(archived: false, parent_id: chapter.id).reverse_order.each do |chap|
+            queue << chap
+          end
+        end
+      end
+      nodes << {name: node.name, num: node.id, parent: node.parent_id, user_id: node.user_id, superadmin: node.superadmin, node_data: node_data, locked: node.locked}
     end
     render json: nodes, status: 200
   end

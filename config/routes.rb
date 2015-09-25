@@ -57,4 +57,5 @@ Rails.application.routes.draw do
   post '/user/invite', to: 'users#invite'
   get '/user/welcome', to: 'users#welcome'
 
+  get '/translate', to: 'translations#index'
 end

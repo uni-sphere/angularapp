@@ -14,6 +14,7 @@
 //= require	angulartics/dist/angulartics-ga.min
 //= require	angulartics/dist/angulartics-gtm.min
 //= require	angular-translate/angular-translate.min
+//= require angular-translate-loader-url/angular-translate-loader-url.min
 //= require	angular-dropdowns/dist/angular-dropdowns
 //= require	metrics-graphics/dist/metricsgraphics.min
 //= require	ng-token-auth/dist/ng-token-auth
@@ -23,6 +24,7 @@
 //= require angular-spinner/angular-spinner
 //= require angular-ui-notification/dist/angular-ui-notification.min
 //= require angular-modal-service/dst/angular-modal-service.min.js
+//= require angular-load/angular-load.js
 
 //= require angular-rails-templates
 //= require app
