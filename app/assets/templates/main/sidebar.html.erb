@@ -6,7 +6,7 @@
       <a ng-show="!$root.home" ui-sref="main.application"  ui-sref-active="menu-link-active" class="menu-link" title="$root.home">
         <i class="menu-icon fa fa-fw fa-share-alt"></i>
       </a>
-      <a ng-show="$root.home" ng-click="show$root.home()" ng-class="{'menu-link-active' : view$root.home}" class="menu-link" title="$root.home">
+      <a ng-show="$root.home" ng-click="showHome()" ng-class="{'menu-link-active' : viewhome}" class="menu-link" title="$root.home">
         <i class="menu-icon fa fa-fw fa-share-alt"></i>
       </a>
     </li>
@@ -19,7 +19,7 @@
         <i class="menu-icon fa fa-fw fa-bar-chart-o"></i>
       </a>
 
-      <div id="tutorial-dashboard" ng-if="$root.help" ng-hide="$root.tutorialDashboardSeen" ng-click="$root.tutorialDashboardOpen = true; $event.stopPropagation(); $root.setHelp()">
+      <div id="tutorial-dashboard" class="tutorial" ng-hide="!$root.help || $root.tutorialDashboardSeen" ng-click="$root.tutorialDashboardOpen = true; $event.stopPropagation(); $root.setHelp()">
         <span class="tutorial-round" ng-hide="$root.tutorialDashboardOpen"></span>
         <span id="tutorial-text-box-dashboard" class="tutorial-text-box" ng-show="$root.tutorialDashboardOpen">{{ 'TUTO_1' | translate }}</span>
       </div>
@@ -42,6 +42,7 @@
         <i class="menu-icon  fa fa-fw fa-sign-out" ></i>
       </a>
     </li>
+
 
   </ul>
 </nav>

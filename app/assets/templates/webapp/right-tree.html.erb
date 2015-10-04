@@ -40,7 +40,7 @@
 
       <button ng-show="!$root.nodeProtected" type="button" class="fa fa-unlock-alt round-button protection-file-off" ng-click="toggleProtection()" title="{{ 'NODE_UNLOCKED' | translate}}"></button>
 
-      <div id="tutorial-padlock" ng-if="$root.help" ng-hide="$root.tutorialPadlockSeen" ng-click="$root.tutorialPadlockOpen = true; $event.stopPropagation(); $root.setHelp()">
+      <div id="tutorial-padlock" ng-hide="!$root.help || $root.tutorialPadlockSeen" ng-click="$root.tutorialPadlockOpen = true; $event.stopPropagation(); $root.setHelp()">
         <span class="tutorial-round" ng-hide="$root.tutorialPadlockOpen"></span>
         <span id="tutorial-text-box-padlock" class="tutorial-text-box" ng-show="$root.tutorialPadlockOpen">{{ 'TUTO_2' | translate }}</span>
       </div>
@@ -63,12 +63,12 @@
 
   <div id="document-tree" ng-controller="toggleChapterCtrl">
 
-    <div id="tutorial-action-buttons" ng-if="$root.help" ng-hide="$root.tutorialActionButtonSeen" ng-click="$root.tutorialActionButtonOpen = true; $event.stopPropagation(); $root.setHelp()">
+    <div id="tutorial-action-buttons" ng-hide="!$root.help || $root.tutorialActionButtonSeen" ng-click="$root.tutorialActionButtonOpen = true; $event.stopPropagation(); $root.setHelp()">
       <span class="tutorial-round" ng-hide="$root.tutorialActionButtonOpen"></span>
       <span id="tutorial-text-box-action-button" class="tutorial-text-box" ng-show="$root.tutorialActionButtonOpen">{{ 'TUTO_4' | translate }}</span>
     </div>
 
-    <div id="tutorial-right-tree" ng-if="$root.help" ng-hide="$root.tutorialRightTreeSeen" ng-click="$root.tutorialRightTreeOpen = true; $event.stopPropagation(); $root.setHelp()">
+    <div id="tutorial-right-tree" ng-hide="!$root.help || $root.tutorialRightTreeSeen" ng-click="$root.tutorialRightTreeOpen = true; $event.stopPropagation(); $root.setHelp()">
       <span class="tutorial-round" ng-hide="$root.tutorialRightTreeOpen"></span>
       <span id="tutorial-text-box-right-tree" class="tutorial-text-box" ng-show="$root.tutorialRightTreeOpen">{{ 'TUTO_3' | translate }}</span>
     </div>
@@ -81,11 +81,11 @@
       </div>
     </div>
 
-    <div id="select-leaf" class="full-size-circle-container" ng-if="!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin">
+    <div id="select-leaf" class="full-size-circle-container" ng-init ="$root.resizeCircle" ng-if="!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin">
       <div class="full-size-circle">!</div>
     </div>
 
-    <div id="dropzone-circle" class="full-size-circle-container" ng-if="$root.nodeEnd && $root.listItems.length == 0 && $root.admin">
+    <div id="dropzone-circle" class="full-size-circle-container" ng-init ="$root.resizeCircle" ng-if="$root.nodeEnd && $root.listItems.length == 0 && $root.admin">
       <div class="full-size-circle" >
         <div id="dropzone-text">DROP ZONE</div>
       </div>

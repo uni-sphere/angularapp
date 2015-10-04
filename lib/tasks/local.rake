@@ -23,9 +23,9 @@ namespace :local do
     organization = Organization.create(name: 'Sandbox', website: 'http://sandbox.unisphere.eu', created_at: Time.now-12*7.days)
     # Create a user
     organization.users.create!(email: "hello@unisphere.eu", name: "Hello", uid: "foo", provider: 'email', password: 'gabgabgab', help: false, superadmin: true)
-    organization.users.create!(email: "gabriel.muller@unisphere.eu", name: "Gab", uid: "bar", provider: 'email', password: 'gabgabgab', help: false, superadmin: false)
+    organization.users.create!(email: "gabriel.muller@unisphere.eu", name: "Gab", uid: "bar", provider: 'email', password: 'gabgabgab', help: true, superadmin: false, news: true)
     organization.users.create!(email: "user@unisphere.eu", name: "User", uid: "foo", provider: 'email', password: 'gabgabgab', help: false, superadmin: true)
-    
+
     #create initial data
     user = User.find_by_email('hello@unisphere.eu')
     node = organization.nodes.create(name: 'University', parent_id: 0, user_id: user.id)
@@ -87,7 +87,7 @@ namespace :local do
     parent_22 = node_chap.chapters.create(title: "Annexes", parent_id: parent_chap.id, user_id: user.id)
     node_chap.chapters.create(title: "Cours", parent_id: parent_22.id, user_id: user.id)
     node_chap.chapters.create(title: "Annexes", parent_id: parent_22.id, user_id: user.id)
-    
+
     #ifma
     user = User.find_by_email('hello@unisphere.eu')
     # organization = Organization.create(name: 'IFMA', website: 'https://www.ifma.fr', latitude: "45.757656", longitude: "3.112736000000041", place_id: "ChIJzTllBHAc90cRUtUbHjJFpl0")

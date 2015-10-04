@@ -24,7 +24,8 @@
     "ngmap": "~1.7.11",
     "restangular": "~1.5.1",
     "underscore": "~1.8.3",
-    "ng-file-upload": "~8.0.4"
+    "ng-file-upload": "~8.0.4",
+    "scrollmagic": "~2.0.5"
   },
   "resolutions": {
     "angular": "^1.2.0"

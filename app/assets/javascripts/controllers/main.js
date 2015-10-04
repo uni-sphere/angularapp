@@ -18,7 +18,7 @@
     }
 
     // Function to set the help (tutorial) to false
-    $rootScope.setHelp = function(){
+    function setHelp(){
       if(!$rootScope.home && !$rootScope.sandbox){
         $auth.updateAccount({help: false})
         .then(function(resp) {
@@ -30,26 +30,15 @@
       }
     }
 
-    // We notify the application when the javascript is ready
-    // var everythingLoaded = setInterval(function() {
-    //   if (/loaded|complete/.test(document.readyState)) {
-    //     clearInterval(everythingLoaded);
-    //     console.log("INITIALISED")
-    //     $rootScope.contentLoaded = true;
-    //     $scope.$apply();
-
-    //   }
-    // }, 50);
-
     // We initialise the size of the circle
     var initializeCircle = setInterval(function() {
       if($('.full-size-circle-container').height() != null && $('.full-size-circle-container').height() != 0){
         clearInterval(initializeCircle);
-        resizeCircle();
+        $rootScope.resizeCircle();
       }
     }, 50);
 
-    function resizeCircle(){
+    $rootScope.resizeCircle = function(){
       if($('.full-size-circle-container').height() < 320 || $('.full-size-circle-container').width() < 320){
         var mini = Math.min($('.full-size-circle-container').height(), $('.full-size-circle-container').width()) - 20
         $('.full-size-circle').css("height", mini)
@@ -60,8 +49,8 @@
     }
 
     angular.element($window).bind('resize', function() {
-      if(window.location.pathname == '/' || (window.location.pathname == '/home' && $rootScope.viewhome)){
-        resizeCircle()
+      if(window.location.pathname == '/' || window.location.pathname == '/home'){
+        $rootScope.resizeCircle();
       }
     });
 
@@ -69,18 +58,23 @@
     $scope.looseFocusItem = function(){
       if($rootScope.tutorialDashboardOpen){
         $rootScope.tutorialDashboardSeen = true
+        setHelp();
       }
       if($rootScope.tutorialPadlockOpen){
         $rootScope.tutorialPadlockSeen = true
+        setHelp();
       }
       if($rootScope.tutorialActionButtonOpen){
         $rootScope.tutorialActionButtonSeen = true
+        setHelp();
       }
       if($rootScope.tutorialLeftTreeOpen){
         $rootScope.tutorialLeftTreeSeen = true
+        setHelp();
       }
       if($rootScope.tutorialRightTreeOpen){
         $rootScope.tutorialRightTreeSeen = true
+        setHelp();
       }
       if($rootScope.activeChapter != undefined){
         $rootScope.activeChapter.$modelValue.selectedItem = false;
@@ -94,29 +88,23 @@
     }
 
     $scope.deconnection = function(){
-      if($rootScope.sandbox){
+      $auth.signOut().then(function(resp) {
+        console.log("OK: deconnection successful")
         $rootScope.admin = false;
-        $rootScope.superadmin = false
         $state.transitionTo('main.application');
-      } else{
-        $auth.signOut().then(function(resp) {
-          console.log("OK: deconnection successful")
-          $rootScope.admin = false;
-          $state.transitionTo('main.application');
 
-          $rootScope.accountEmail = undefined;
-          $rootScope.accountName = undefined;
-          $rootScope.userId = undefined;
-          $rootScope.superadmin = false;
-          $rootScope.university = "My university"
-          $rootScope.help = false
+        $rootScope.accountEmail = undefined;
+        $rootScope.accountName = undefined;
+        $rootScope.userId = undefined;
+        $rootScope.superadmin = false;
+        $rootScope.university = "My university"
+        $rootScope.help = false
 
-        }, function(d){
-          console.log(d)
-          console.log("Impossible to deco")
-          Notification.error(error)
-        });
-      }
+      }, function(d){
+        console.log(d)
+        console.log("Impossible to deco")
+        Notification.error(error)
+      });
     }
 
     if(window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home' || window.location.host == 'www.sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
@@ -129,6 +117,7 @@
         console.log("SANDBOX")
       }
       $rootScope.help = true
+
       $rootScope.admin = true
       $rootScope.university = "My university"
 
@@ -191,14 +180,11 @@
         $rootScope.admin = true
         console.log("Ok: User info")
 
-        if($rootScope.help) {
-          console.log("OK: first connection")
-        }
-
         if(user.news){
           $timeout(function() {
             Notification({templateUrl: 'main/new-version-notification.html', delay: 100000})
           }, 1000);
+
           // update user to remove notification
           Restangular.one('users/news').put().then(function(d) {
             console.log("Ok: set news to false")

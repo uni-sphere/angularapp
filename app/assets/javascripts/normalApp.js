@@ -25,6 +25,10 @@
 //= require angular-ui-notification/dist/angular-ui-notification.min
 //= require angular-modal-service/dst/angular-modal-service.min.js
 //= require angular-load/angular-load.js
+//= require scrollmagic/scrollmagic/minified/ScrollMagic.min.js
+//= require scrollmagic/scrollmagic/minified/plugins/animation.gsap.min.js
+//= require scrollmagic/scrollmagic/minified/plugins/animation.velocity.min.js
+//= require scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min.js
 
 //= require angular-rails-templates
 //= require app

@@ -11,8 +11,8 @@
       templateUrl: 'main/sidebar.html',
       scope:{
         deconnection: '=',
-        viewhome: '=',
-        viewdashboard: '='
+        viewHome: '=',
+        viewDashboard: '='
       }
     };
 
@@ -20,26 +20,25 @@
 
     function link(scope) {
       scope.triggerDeco = function(){
-        if(scope.home){
-          $rootScope.viewhome = true;
-          $rootScope.viewdashboard = false;
-          scope.admin = false;
-          scope.superadmin = false;
+        if($rootScope.home || $rootScope.sandbox){
+          scope.viewHome = true;
+          scope.viewDashboard = false;
+          $rootScope.admin = false;
+          $rootScope.superadmin = false;
         } else{
           scope.deconnection()
         }
       }
 
       scope.showHome = function(){
-        $rootScope.viewdashboard = false;
-        $rootScope.viewhome = true;
-        // cookiesService.reload()
+        scope.viewDashboard = false;
+        scope.viewHome = true;
       }
 
       scope.showDashboard = function(){
-        $rootScope.viewdashboard = true;
-        $rootScope.viewhome = false;
-        // scope.reloadGraph($('.test-app-content').width(), $('.test-app-content').height());
+        scope.viewDashboard = true;
+        scope.viewHome = false;
+        $rootScope.help = false;
       }
     }
   }

@@ -5,24 +5,25 @@
     <h2 id="welcome-comment" itemprop="description">{{ 'WEB_WELCOME_COMMENT' | translate }}</h2>
   </div>
 
+  <div id='test-app-advise'>This is a live test version</div>
   <div id='test-app'>
-    <sidebar ng-show="$root.admin" deconnection = 'deconnection' superadmin = 'superadmin' viewdashboard = 'viewdashboard' viewhome = 'viewhome'></sidebar>
-    <admin-co ng-hide="$root.admin" get-basic-info = 'getBasicInfo'></admin-co>
     <div id='test-app-buttons-1'></div>
     <div id='test-app-buttons-2'></div>
     <div id='test-app-buttons-3'></div>
+
+    <sidebar ng-show="$root.admin" view-dashboard = 'viewDashboard' view-home = 'viewHome'></sidebar>
+    <admin-co ng-hide="$root.admin"></admin-co>
     <div class="test-app-content">
-      
-      <div id="tutorial-left-tree" ng-if="$root.help" ng-hide="$root.tutorialLeftTreeSeen" ng-click="$root.tutorialLeftTreeOpen = true; $event.stopPropagation(); $root.setHelp()">
+      <div id="tutorial-left-tree" ng-hide="!$root.help || $root.tutorialLeftTreeSeen" ng-click="$root.tutorialLeftTreeOpen = true; $event.stopPropagation(); $root.setHelp()">
         <span id="tutorial-text-box-left-tree" class="tutorial-text-box" ng-show="$root.tutorialLeftTreeOpen">{{ 'TUTO_5' | translate }}</span>
         <span class="tutorial-round" ng-hide="$root.tutorialLeftTreeOpen"></span>
       </div>
-      
-      <left-tree ng-show = "$root.viewhome" id="view-tree" active-nodes = 'activeNodes' active-chapter = 'activeChapter' view-news = 'viewNews' viewhome = 'viewhome'></left-tree>
 
-      <right-tree ng-show = "$root.viewhome" files = 'files' active-chapter = 'activeChapter' loose-focus-item = 'looseFocusItem' is-chrome = 'isChrome'></right-tree>
+      <left-tree ng-show = "viewHome" id="view-tree" active-nodes = 'activeNodes' active-chapter = 'activeChapter' view-news = 'viewNews' viewhome = 'viewhome'></left-tree>
 
-      <div ng-show="$root.viewdashboard">
+      <right-tree ng-show = "viewHome" files = 'files' active-chapter = 'activeChapter' loose-focus-item = 'looseFocusItem' is-chrome = 'isChrome'></right-tree>
+
+      <div ng-show="viewDashboard">
         <metrics id="metrics" viewdashboard = 'viewdashboard'></metrics>
       </div>
     </div>
@@ -36,7 +37,7 @@
 
   <div id='features-wrapper'>
 
-    <div class='feature' itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
+    <div id="feature-collaborate" class='feature' itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
       <div class='feature-content feature-left'>
         <h3 class='content-title' itemprop="decription">{{ 'WEB_FEATURE_1' | translate }}</h3>
         <p>{{ 'WEB_FEATURE_2' | translate }}</br>
@@ -45,7 +46,7 @@
       <%= image_tag "treeView.png", class: "feature-image feature-right" %>
     </div>
 
-    <div class='feature' itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
+    <div id="feature-share" class='feature' itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
       <%= image_tag "documents.png", class: "feature-image feature-left"  %>
       <div class='feature-content feature-right'>
         <h3 class='content-title' itemprop="decription">{{ 'WEB_FEATURE_4' | translate }}</h3>
@@ -53,7 +54,7 @@
       </div>
     </div>
 
-    <div class='feature' itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
+    <div id="feature-analyse" class='feature' itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
       <div class='feature-content feature-left'>
         <h3 class='content-title' itemprop="decription">{{ 'WEB_FEATURE_6' | translate }}</h3>
         <p>{{ 'WEB_FEATURE_7' | translate }}</p>
@@ -61,7 +62,7 @@
       <%= image_tag "metrics.png", class: "feature-right feature-image" %>
     </div>
 
-    <div class='feature' itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
+    <div id="feature-deploy" class='feature' itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
       <div class="feature-left feature-content feature-center">
         <div class="subdomain ">
           <i class="fa fa-search"></i><span>{{ 'WEB_FEATURE_8' | translate }}</span>
