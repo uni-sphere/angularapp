@@ -56,9 +56,9 @@
 
   <div id="button-row" ng-class="{'button-hidden' : !$root.nodeEnd || !$root.admin}" ng-click="$event.stopPropagation()">
 
-    <button type="file" class="submit-button dual-submit" ngf-multiple="true" name="firstFiles" ngf-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>
+    <button type="file" class="dual-submit" ngf-multiple="true" name="firstFiles" ngf-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>
 
-    <button ng-click="newChapter()" ng-controller="createChapterCtrl" class="submit-button dual-submit"  >{{ 'CHAPTER' | translate }}</button>
+    <button ng-click="newChapter()" ng-controller="createChapterCtrl" class="dual-submit"  >{{ 'CHAPTER' | translate }}</button>
   </div>
 
   <div id="document-tree" ng-controller="toggleChapterCtrl">
@@ -93,8 +93,8 @@
 
     <div class="tip" >
       <i class="fa fa-lightbulb-o" ng-show="$root.admin && $root.nodeEnd"></i>
-      <span id="tip-chrome" ng-show="$root.admin && $root.nodeEnd && !isChrome " >{{ 'TIP' | translate }}</span>
-      <span id="tip-chrome" ng-show="$root.admin && $root.nodeEnd && isChrome">{{ 'TIP_CHROME' | translate }}</span>
+      <span id="tip-chrome" ng-show="$root.admin && $root.nodeEnd && !$root.isChrome " >{{ 'TIP' | translate }}</span>
+      <span id="tip-chrome" ng-show="$root.admin && $root.nodeEnd && $root.isChrome">{{ 'TIP_CHROME' | translate }}</span>
 
       <div ng-show="$root.listItems.length == 0 && $root.nodeEnd && !$root.admin">{{ 'NEW_SUBJECT' | translate }}</div>
       <div ng-show="!$root.nodeEnd">{{ 'SELECT_LEAF' | translate }}</div>

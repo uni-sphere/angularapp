@@ -325,6 +325,7 @@
       ======================================*/
 
       function toggleNode(node) {
+        $rootScope.resizeCircle()
         nodeCrudService.toggle(node).then(function(){
           update(node , 750);
         })

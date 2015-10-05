@@ -39,6 +39,8 @@
     }, 50);
 
     $rootScope.resizeCircle = function(){
+      // console.log("RESIZE CIRCLE")
+      // console.log($('.full-size-circle-container').height())
       if($('.full-size-circle-container').height() < 320 || $('.full-size-circle-container').width() < 320){
         var mini = Math.min($('.full-size-circle-container').height(), $('.full-size-circle-container').width()) - 20
         $('.full-size-circle').css("height", mini)
@@ -171,7 +173,6 @@
 
       // We get the user email and name to display them
       Restangular.one('user').get().then(function (user) {
-        // console.log(user.plain());
         $rootScope.accountEmail = user.email
         $rootScope.accountName = user.name
         $rootScope.help = user.help

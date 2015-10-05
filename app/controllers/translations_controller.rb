@@ -40,8 +40,8 @@ class TranslationsController < ApplicationController
         CONFIRM_PSW: 'Confirmation du mot de passe',
         UPDATE_PSW: 'Modifier mot de passe',
         USERS_INVITED: 'Utilisateurs ajoutés',
-        TIP_CHROME: 'Astuce: Cliquez glissez vos documents ou dossiers!',
-        TIP: 'Astuce: Cliquez glissez des documents! (dossiers sous Chrome)',
+        TIP_CHROME: 'Cliquez glissez vos documents ou dossiers!',
+        TIP: 'Cliquez glissez des documents! (dossiers sous Chrome)',
         LENGTH: 'Au minimum 6 charactères',
         SECURITY: 'Sécurité',
         SHORT: 'trop court',
@@ -112,7 +112,7 @@ class TranslationsController < ApplicationController
         TUTO_2: "Vous pouvez protéger vos documents à l'aide d'un mot de passe",
         TUTO_3: "Cette zone contient les données du noeud sélectionné. Vous pouvez importer des fichiers, créer des chapitres, partager des contenus à l'aide d'un lien et cliquer glisser des documents (dossier sur Google Chrome!).",
         TUTO_4: "Ces boutons vous permettent de créer des sous-chapitres et d'importer des documents dans le chapitre séléctionné.",
-        TUTO_5: "Cette zone représente votre établissement sous la forme d'un arbre. C'est un espace commun à tous les enseignants. A chaque extrémité de l'arbre est associée un gestionnaire de données.",        
+        TUTO_5: "Cette zone représente votre établissement sous la forme d'un arbre. C'est un espace commun à tous les enseignants. A chaque extrémité de l'arbre est associée un gestionnaire de données.",
         NE_EMAIL: "Cette adresse n'est pas référencée dans votre établissement",
         NW_RENAME: "Ce nom est trop court",
         PSW_UPDATE: "Ce mot de passe est trop court",
@@ -137,7 +137,8 @@ class TranslationsController < ApplicationController
         DD_RENAME: 'Renommer',
         DD_DESTROY: 'Supprimer',
         DD_DOWNLOAD: 'Télécharger',
-        NEW_CHAPTER_NAME: 'Nouveau chapitre'
+        NEW_CHAPTER_NAME: 'Nouveau chapitre',
+        WEB_TEST_VERSION: 'Ceci est une version test, essayez-la!'
       }
     else
       translation = {
@@ -275,7 +276,8 @@ class TranslationsController < ApplicationController
         DD_RENAME: 'Rename',
         DD_DESTROY: 'Remove',
         DD_DOWNLOAD: 'Download',
-        NEW_CHAPTER_NAME: 'New chapter'
+        NEW_CHAPTER_NAME: 'New chapter',
+        WEB_TEST_VERSION: 'This is a live test version, try it!'
       }
     end
     render json: translation.to_json, status: 200

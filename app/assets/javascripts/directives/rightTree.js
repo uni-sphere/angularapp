@@ -73,7 +73,11 @@
             }
 
             // Removes the main chapter & saves the items
-            $rootScope.listItems = makeNestedService.item(res.tree);
+            if(res.tree.length > 0){
+              $rootScope.listItems = makeNestedService.item(res.tree);
+            } else{
+              $rootScope.listItems = []
+            }
 
             // We index the chapters
             createIndexChaptersService.create($rootScope.listItems)

@@ -21,86 +21,29 @@
 }
 
 .dual-submit{
-  border: 1px solid $blue;
-  color: #EEEEEE;
-  cursor: pointer;
+  display: inline-block;
   background: $blue;
-  border-radius: 1px;
-  margin: 0px 30px;
-  padding: 10px 20px;
+  color: white;
+  border: 2px solid $blue;
   cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px 0px;
   font-family: 'Open Sans', sans-serif;
-  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 1px 1px rgba(0,0,0,.1);
+  font-size: .9em;
   text-decoration: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 2px 0px;
 
-  @media (max-width: 1500px) {
-    margin: 0px 18px;
-  }
-
-  @media (max-width: 1200px) {
-    margin: 0px 10px;
-    padding: 10px 10px;
-    font-size: 1em;
-  }
-
-  .fa{
-    margin-right: 5px;
-  }
-
-   &:hover{
-    border-color: #66A4FA;
-    background: #66A4FA;
-  }
-
-  &:active {
-    border-color: #2a65a0;
-    border-bottom-color: #3884cd;
-    background: linear-gradient(#4991F5, #66A4FA);
-    box-shadow: rgba(0, 0, 0, 0.258824) 0px 1px 2px 1px;
-  }
-}
-
-.default-submit{
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  display: table;
-  border: 1px solid #d4d4d4;
-  color: #EEEEEE;
-  cursor: pointer;
-  background: #0087E0;
-  border-radius: 0.2em;
-  padding: 10px 0px;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 20px;
-  text-decoration: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  display: table;
+  padding: 4px 15px;
+  border-radius: 4px;
+  margin: 0px 10px;
 
   &:hover{
-    border-color: #008EEC;
-    border-bottom-color: #0084DC;
-    background: #008DEB;
+    border-bottom-color: #4B71B3;
   }
 
-  &:active {
-    border-color: #2a65a0;
-    border-bottom-color: #3884cd;
-    background-color: #3072b3;
-    background-image: linear-gradient(#3072b3, #599bdc);
+  &:active{
+    border-bottom-color: #2E68CD;
+    border-top-color: #2B58A6;
   }
 }
 

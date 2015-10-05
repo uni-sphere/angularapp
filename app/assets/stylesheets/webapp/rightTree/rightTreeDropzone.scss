@@ -35,7 +35,13 @@
 /*----------  select leaf  ----------*/
 
 #select-leaf .full-size-circle{
-  font-size: 14em;
+  font-size: 12em;
+  @media (max-width: 1500px) {
+    font-size: 11em;
+  }
+  @media (max-width: 1200px) {
+    font-size: 10em;
+  }
 }
 
 /*----------  dropzone  ----------*/

@@ -26,10 +26,6 @@
       /*----------  Scroll animation for the test app  ----------*/
 
       var timeLineTestApp = new TimelineLite()
-      .from('#test-app-advise', .5, {
-        left: -400,
-        opacity: 0
-      })
       .fromTo('#test-app', .1, {
         left: - 10,
       },{
@@ -69,7 +65,8 @@
 
         // make scene
         new ScrollMagic.Scene({
-          triggerElement: '#' + trigger
+          triggerElement: '#' + trigger,
+          offset: -175
           // reverse: false
         })
         .setTween(timeLineFeature)
@@ -80,12 +77,13 @@
       /*----------  Scroll animation for the form  ----------*/
 
       var tweenMaxContact = new TweenMax.from('#contact-wrapper', .5, {
-        bottom: -50,
+        bottom: -100,
         opacity: 0
       })
 
       new ScrollMagic.Scene({
-        triggerElement: "#contact-wrapper"
+        triggerElement: "#contact-wrapper",
+        offset: -250
         // reverse: false
       })
       .setTween(tweenMaxContact)
