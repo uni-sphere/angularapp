@@ -40,7 +40,7 @@
       } else if($scope.dropdownSelected.value == 'download'){
         downloadFile(item)
       }
-      $scope.looseFocusItem()
+      $rootScope.looseFocusItem()
     }
 
     /*----------  Color and selects an item after we click on the options button  ----------*/
@@ -144,7 +144,7 @@
           }
         });
       }
-      $scope.looseFocusItem()
+      $rootScope.looseFocusItem()
     }
 
     /*----------  Download file  ----------*/

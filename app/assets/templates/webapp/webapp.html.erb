@@ -1,4 +1,4 @@
-<form ngf-drop="" name = "uploadForm"  ngf-drop-disabled="!nodeEnd || !admin" ngf-drag-over-class="{accept:'dragover', delay:100}" ngf-multiple = "true" ng-model = "files" id="application-view" ngf-max-size="20MB" ng-click="looseFocusItem()">
+<form ngf-drop="" name = "uploadForm"  ngf-drop-disabled="!nodeEnd || !admin" ngf-drag-over-class="{accept:'dragover', delay:100}" ngf-multiple = "true" ng-model = "files" id="application-view" ngf-max-size="20MB" ng-click="$root.looseFocusItem()">
 
   <div id="tutorial-left-tree" ng-if="$root.help" ng-hide="$root.tutorialLeftTreeSeen" ng-click="$root.tutorialLeftTreeOpen = true; $event.stopPropagation(); $root.setHelp()">
     <span id="tutorial-text-box-left-tree" class="tutorial-text-box" ng-show="$root.tutorialLeftTreeOpen">{{ 'TUTO_5' | translate }}</span>

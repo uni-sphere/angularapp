@@ -123,8 +123,10 @@
         tempActiveNodes.unshift([nodes.num, nodes.name])
 
         if(($rootScope.home && ipCookie('foldedChapters') == undefined )|| ($rootScope.sandbox && ipCookie('foldedChapters') == undefined )){
-          $rootScope.foldedChapters = [nodes.items[2].id]
-          ipCookie('foldedChapters', $rootScope.foldedChapters);
+          if(nodes.items[2]){
+             $rootScope.foldedChapters = [nodes.items[2].id]
+             ipCookie('foldedChapters', $rootScope.foldedChapters);
+          }
         }
 
         findAndSetNode($rootScope.nodes, nodes.num)
@@ -132,9 +134,6 @@
         // We save the active scope and the nodeEnd to the rootScope
         $rootScope.activeNodes = tempActiveNodes
         $rootScope.nodeEnd = [nodes.num, nodes.name, nodes.user_id]
-
-        console.log($rootScope.nodeEnd)
-
 
         resolve();
 

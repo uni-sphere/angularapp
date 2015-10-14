@@ -5,19 +5,19 @@
 
   nodeCrudService.$inject = ['nodeService', '$rootScope', 'Restangular', 'Notification', '$q', 'ModalService', 'ipCookie', '$translate']
   function nodeCrudService(nodeService, $rootScope, Restangular, Notification, $q, ModalService, ipCookie, $translate){
-    
+
     var cancel_warning,
       error,
       forbidden,
       success;
-    
+
     $translate(['SUCCESS', 'ERROR', 'NW_CANCEL', 'FORBIDDEN']).then(function (translations) {
       cancel_warning = translations.NW_CANCEL;
       error = translations.ERROR;
       forbidden = translations.FORBIDDEN;
       success = translations.SUCCESS;
     });
-    
+
     service = {
       toggle: toggle,
       add: add,

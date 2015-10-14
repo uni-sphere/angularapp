@@ -10,7 +10,6 @@
       templateUrl: 'webapp/right-tree.html',
       scope:{
         files: '=',
-        looseFocusItem: '=',
         activeChapter: '=',
       }
     };

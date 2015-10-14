@@ -81,13 +81,10 @@
       </div>
     </div>
 
-    <div id="select-leaf" class="full-size-circle-container" ng-init ="$root.resizeCircle" ng-if="!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin">
-      <div class="full-size-circle">!</div>
-    </div>
-
-    <div id="dropzone-circle" class="full-size-circle-container" ng-init ="$root.resizeCircle" ng-if="$root.nodeEnd && $root.listItems.length == 0 && $root.admin">
-      <div class="full-size-circle" >
-        <div id="dropzone-text">DROP ZONE</div>
+    <div id="dropzone-circle" class="full-size-circle-container" ng-show="($root.nodeEnd && $root.listItems.length == 0 && $root.admin) || (!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin)">
+      <div class="full-size-circle">
+        <span ng-show="!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin" id="explamation-point">!</span>
+        <span ng-show="$root.nodeEnd && $root.listItems.length == 0 && $root.admin" id="dropzone-text">DROP ZONE</span>
       </div>
     </div>
 

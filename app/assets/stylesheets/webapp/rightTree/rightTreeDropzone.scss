@@ -10,8 +10,6 @@
 }
 
 .full-size-circle{
-  height: 300px;
-  width: 300px;
   margin-left: calc(50% - 150px);
   border-radius: 150px;
   display: flex;
@@ -23,18 +21,20 @@
   text-align: center;
   color: white;
 
-  @media (max-width: 1200px) {
+  // &:ng-enter{
+  //   transition: 0.5 linear all;
+  //   opacity: 1;
+  // }
 
-  }
-
-  @media (max-width: 900px) {
-
-  }
+  // &:ng-leave{
+  //   transition: 0.5 linear all;
+  //   opacity: 0;
+  // }
 }
 
 /*----------  select leaf  ----------*/
 
-#select-leaf .full-size-circle{
+#explamation-point{
   font-size: 12em;
   @media (max-width: 1500px) {
     font-size: 11em;
@@ -46,7 +46,7 @@
 
 /*----------  dropzone  ----------*/
 
-#dropzone-circle .full-size-circle{
+#dropzone-text{
   font-size: 2em;
   font-weight: bold;
   letter-spacing: 2px;

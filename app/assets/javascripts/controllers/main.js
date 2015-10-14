@@ -31,23 +31,26 @@
     }
 
     // We initialise the size of the circle
-    var initializeCircle = setInterval(function() {
-      if($('.full-size-circle-container').height() != null && $('.full-size-circle-container').height() != 0){
-        clearInterval(initializeCircle);
-        $rootScope.resizeCircle();
-      }
-    }, 50);
-
     $rootScope.resizeCircle = function(){
-      // console.log("RESIZE CIRCLE")
-      // console.log($('.full-size-circle-container').height())
-      if($('.full-size-circle-container').height() < 320 || $('.full-size-circle-container').width() < 320){
-        var mini = Math.min($('.full-size-circle-container').height(), $('.full-size-circle-container').width()) - 20
-        $('.full-size-circle').css("height", mini)
-        $('.full-size-circle').css("width", mini)
-        $('.full-size-circle').css("border-radius", mini/2)
-        $('.full-size-circle').css("margin-left", $('.full-size-circle-container').width()/2 - mini/2)
-      }
+      var initializeCircle = setInterval(function() {
+        if($('.full-size-circle-container').height() != null && $('.full-size-circle-container').height() != 0){
+          clearInterval(initializeCircle);
+          $rootScope.mini = Math.min($('.full-size-circle-container').height(), $('.full-size-circle-container').width()) - 20
+          changeCircle()
+        }
+      }, 50);
+    }
+
+    $rootScope.resizeCircle();
+
+    function changeCircle(){
+      $rootScope.mini = Math.min($('.full-size-circle-container').height(), $('.full-size-circle-container').width()) * .6
+      $('.full-size-circle').each(function(){
+        $(this).css("height", $rootScope.mini)
+        $(this).css("width", $rootScope.mini)
+        $(this).css("border-radius", $rootScope.mini/2)
+        $(this).css("margin-left", $('.full-size-circle-container').width()/2 - $rootScope.mini/2)
+      });
     }
 
     angular.element($window).bind('resize', function() {
@@ -57,7 +60,7 @@
     });
 
     // We watch every click to un focus some elements
-    $scope.looseFocusItem = function(){
+    $rootScope.looseFocusItem = function(){
       if($rootScope.tutorialDashboardOpen){
         $rootScope.tutorialDashboardSeen = true
         setHelp();
@@ -173,8 +176,6 @@
 
     $scope.getBasicInfo = function(){
 
-
-
       // We get the user email and name to display them
       Restangular.one('user').get().then(function (user) {
         $rootScope.accountEmail = user.email
@@ -185,12 +186,9 @@
         $rootScope.admin = true
         console.log("Ok: User info")
 
-
         olark('api.visitor.updateEmailAddress', {emailAddress: $rootScope.accountEmail});
         olark('api.visitor.updateFullName', {fullName: $rootScope.accountName});
         olark('api.box.show');
-
-        $rootScope.olarkSet = true;
 
         if(user.news){
           $timeout(function() {
