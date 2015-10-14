@@ -102,6 +102,8 @@
         $rootScope.university = "My university"
         $rootScope.help = false
 
+        olark('api.box.hide');
+
       }, function(d){
         console.log(d)
         console.log("Impossible to deco")
@@ -171,6 +173,8 @@
 
     $scope.getBasicInfo = function(){
 
+
+
       // We get the user email and name to display them
       Restangular.one('user').get().then(function (user) {
         $rootScope.accountEmail = user.email
@@ -180,6 +184,13 @@
         $rootScope.userId = user.id
         $rootScope.admin = true
         console.log("Ok: User info")
+
+
+        olark('api.visitor.updateEmailAddress', {emailAddress: $rootScope.accountEmail});
+        olark('api.visitor.updateFullName', {fullName: $rootScope.accountName});
+        olark('api.box.show');
+
+        $rootScope.olarkSet = true;
 
         if(user.news){
           $timeout(function() {
