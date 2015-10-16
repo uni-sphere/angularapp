@@ -29,8 +29,6 @@
         <metrics id="metrics" viewdashboard = 'viewdashboard'></metrics>
       </div>
     </div>
-
-
   </div>
 
   <div id="separation-banner" class="banner">
@@ -45,11 +43,11 @@
         <p>{{ 'WEB_FEATURE_2' | translate }}</br>
         {{ 'WEB_FEATURE_3' | translate }}</p>
       </div>
-      <%= image_tag "treeView.png", class: "feature-image feature-right" %>
+      <%= image_tag "treeView.png", class: "feature-image feature-right", alt: 'Collaborative work' %>
     </div>
 
     <div id="feature-share" class='feature' itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
-      <%= image_tag "documents.png", class: "feature-image feature-left"  %>
+      <%= image_tag "documents.png", class: "feature-image feature-left" , alt: 'Easy to share files'%>
       <div class='feature-content feature-right'>
         <h3 class='content-title' itemprop="decription">{{ 'WEB_FEATURE_4' | translate }}</h3>
         <p>{{ 'WEB_FEATURE_5' | translate }}</p>
@@ -61,7 +59,7 @@
         <h3 class='content-title' itemprop="decription">{{ 'WEB_FEATURE_6' | translate }}</h3>
         <p>{{ 'WEB_FEATURE_7' | translate }}</p>
       </div>
-      <%= image_tag "metrics.png", class: "feature-right feature-image" %>
+      <%= image_tag "metrics.png", class: "feature-right feature-image", alt: 'Students behavior' %>
     </div>
 
     <div id="feature-deploy" class='feature' itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
