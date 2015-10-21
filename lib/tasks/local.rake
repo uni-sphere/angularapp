@@ -20,7 +20,7 @@ namespace :local do
     # reset domains
     # dev_reset_pointers
     # create sandbox
-    organization = Organization.create(name: 'Sandbox', website: 'http://sandbox.unisphere.eu', created_at: Time.now-12*7.days)
+    organization = Organization.create(name: 'Sandbox', website: 'http://sandbox.unisphere.eu', created_at: Time.now-12*7.days, latitude: "43.556970", longitude: "1.466526", place_id: "ChIJyVSeITu8rhIRaGQ-9pEcoL8")
     # Create a user
     organization.users.create!(email: "hello@unisphere.eu", name: "Hello", uid: "foo", provider: 'email', password: 'gabgabgab', help: false, superadmin: true)
     organization.users.create!(email: "gabriel.muller@unisphere.eu", name: "Gab", uid: "bar", provider: 'email', password: 'gabgabgab', help: true, superadmin: false, news: true)
