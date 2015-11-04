@@ -3,8 +3,8 @@ angular
   .module('mainApp.controllers')
   .controller('RenameModalCtrl', RenameModalCtrl)
 
-  RenameModalCtrl.$inject = ['$scope', 'close', 'name', '$timeout', 'length', 'Notification', '$translate'];
-  function RenameModalCtrl($scope, close, name, $timeout, length, Notification, $translate){
+  RenameModalCtrl.$inject = ['$scope', 'close', 'name', '$timeout', 'length', 'Notification', '$translate', 'file'];
+  function RenameModalCtrl($scope, close, name, $timeout, length, Notification, $translate, file){
 
     var rename;
 
@@ -14,7 +14,7 @@ angular
 
     Notification.clearAll()
     $scope.length = length
-    if(name.indexOf('.') > -1){
+    if(name.indexOf('.') > -1 && file){
       var fileName = name.split('.')[0];
       var fileExtension = name.split('.')[1];
     } else{

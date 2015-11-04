@@ -3,11 +3,12 @@
     .module('mainApp.controllers')
     .controller('DownloadDocModalCtrl', DownloadDocModalCtrl)
 
-  DownloadDocModalCtrl.$inject = ['$scope', 'close', 'url', '$timeout', 'preview']
-  function DownloadDocModalCtrl($scope, close, url, $timeout, preview){
+  DownloadDocModalCtrl.$inject = ['$scope', 'close', 'url', '$timeout', 'preview', 'download']
+  function DownloadDocModalCtrl($scope, close, url, $timeout, preview, download){
 
     $scope.documentUrl = url
     $scope.preview = preview
+    $scope.download = download
 
     $timeout(function() {
       $('.modal-container').removeClass("modal-ready-to-appear")

@@ -2,7 +2,6 @@
 <html ng-app="mainApp">
   <head>
     <meta name="description" property='og:description' translate translate-attr-content="DESCRIPTION"/>
-    <meta name="keywords" translate translate-attr-content="KEYWORDS"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <meta charset="utf-8"/>
@@ -29,6 +28,7 @@
   </head>
   <body>
     <%= yield %>
+
 
     <%= javascript_include_tag 'normalApp', media: 'all', defer: 'defer'%>
     <script async src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>

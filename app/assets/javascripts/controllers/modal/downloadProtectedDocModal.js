@@ -3,8 +3,8 @@
     .module('mainApp.controllers')
     .controller('DownloadProtectedProtectedDocModal', DownloadProtectedProtectedDocModal)
 
-  DownloadProtectedProtectedDocModal.$inject = ['$scope', 'Restangular', 'close', 'node_id', 'chapter_id', '$timeout', 'Notification', 'preview', 'doc_id', '$translate'];
-  function DownloadProtectedProtectedDocModal($scope, Restangular, close, node_id, chapter_id, $timeout, Notification, preview, doc_id, $translate){
+  DownloadProtectedProtectedDocModal.$inject = ['$scope', 'Restangular', 'close', 'node_id', 'chapter_id', '$timeout', 'Notification', 'preview', 'doc_id', '$translate', 'download'];
+  function DownloadProtectedProtectedDocModal($scope, Restangular, close, node_id, chapter_id, $timeout, Notification, preview, doc_id, $translate, download){
 
     var error,
       forbidden;
@@ -20,6 +20,7 @@
     $scope.chapter_id = chapter_id;
     $scope.preview = preview;
     $scope.doc_id = doc_id
+    $scope.download = download
 
     $timeout(function() {
       $('.modal-container').removeClass("modal-ready-to-appear")

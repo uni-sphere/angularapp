@@ -5,13 +5,13 @@
 
   downloadService.$inject = ['Restangular', 'ModalService', 'Notification', '$translate']
   function downloadService(Restangular, ModalService, Notification, $translate){
-    
+
     var service = {
       download: download
     };
-    
+
     var error;
-    
+
     $translate(['ERROR']).then(function (translations) {
       error = translations.error;
     });
@@ -26,6 +26,15 @@
         var preview = false
       }
 
+      // if(['pdf'].indexOf(title.substr(title.lastIndexOf('.') + 1).toLowerCase()) > -1){
+      //   var download = false
+      // } else{
+      //   var download = true
+      // }
+
+      var download = true
+
+
       function callModalLocked(){
         ModalService.showModal({
           templateUrl: "webapp/download-protected-doc-modal.html",
@@ -34,7 +43,8 @@
             node_id: node_id,
             chapter_id: chapter_id,
             preview: preview,
-            doc_id: doc_id
+            doc_id: doc_id,
+            download: download
           }
         }).then(function(modal) {
           modal.close.then(function(result) {
@@ -49,7 +59,8 @@
             controller: "DownloadDocModalCtrl",
             inputs:{
               url: mydoc,
-              preview: preview
+              preview: preview,
+              download: download
             }
           }).then(function(modal) {
             modal.close.then(function(result) {

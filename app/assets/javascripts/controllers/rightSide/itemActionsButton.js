@@ -224,7 +224,8 @@
         controller: "RenameModalCtrl",
         inputs:{
           name: item.$modelValue.title,
-          length: 0
+          length: 0,
+          file: item.$modelValue.document
         }
       }).then(function(modal) {
         modal.close.then(function(result) {
