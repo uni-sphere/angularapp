@@ -38,7 +38,7 @@
   font-weight: 500;
   height: 40px;
   line-height: 40px;
-  padding: 0px 9px;
+  // padding: 0px 9px;
   color: $document-color;
   cursor: pointer;
 
@@ -76,19 +76,22 @@
 
 .empty-space{
   display: table-cell;
-  width: 24px;
+  width: 34px;
 }
 
 .btn-collapse{
+  // background: red;
   display: table-cell;
-  width: 24px;
+  width: 34px;
   cursor: pointer;
   font-size: 1.5em;
   color: #007CCE;
+  text-align: center;
 
   .fa{
-    margin-bottom: 0px;
-    vertical-align: middle;
+    // margin-bottom: 0px;
+    // vertical-align: middle;
+    // text-align: center;
   }
 
   &:hover,&:focus {

@@ -71,7 +71,7 @@
               showNodeActions()
             }
 
-            // Removes the main chapter & saves the items
+            // Saves the items
             if(res.tree.length > 0){
               $rootScope.listItems = makeNestedService.item(res.tree);
             } else{

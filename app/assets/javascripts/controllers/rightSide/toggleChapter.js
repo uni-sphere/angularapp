@@ -4,21 +4,25 @@
     .module('mainApp.controllers')
     .controller('toggleChapterCtrl', toggleChapterCtrl);
 
-  toggleChapterCtrl.$inject = ['$rootScope', '$scope', 'Notification', 'ipCookie']
-  function toggleChapterCtrl($rootScope, $scope, Notification, ipCookie){
+  toggleChapterCtrl.$inject = ['$rootScope', '$scope', 'Notification', 'ipCookie', 'createIndexChaptersService']
+  function toggleChapterCtrl($rootScope, $scope, Notification, ipCookie, createIndexChaptersService){
+
+    $scope.treeOptions = {
+      dropped: function(event) {
+        createIndexChaptersService.create($rootScope.listItems)
+        $scope.selectChapter(event.source.nodeScope)
+      },
+    };
+
 
     /*----------  Functions run on each items to have their initial position (closed / open)  ----------*/
     $scope.collapseItems = function(node) {
       // If we have no cookies we close all
-      // console.log($rootScope.foldedChapters)
-      // console.log(node.$modelValue.id)
-      // console.log($rootScope.foldedChapters)
       if($rootScope.foldedChapters == undefined){
         node.collapse()
       } else{
         // If we have cookies, we close only the nodes that are not in chapter folded and have no items
         if($rootScope.foldedChapters.indexOf(node.$modelValue.id) == -1 && node.$modelValue.items.length != 0){
-          // console.log(node)
           node.collapse();
         }
       }
@@ -28,6 +32,21 @@
     $scope.toggleChapter = function(node){
 
       // Only applies on chapters
+      if(!node.$modelValue.document){
+
+        $scope.selectChapter(node)
+
+        // We toggle the node & and check if we need to add or remove it from cookies
+        if(node.$modelValue.items.length != 0){
+          // console.log(node.$modelValue.items.length)
+          node.toggle();
+          chapterFoldedCookiesGestion(node.$modelValue.id);
+        }
+
+      }
+    }
+
+    $scope.selectChapter = function(node){
       if(!node.$modelValue.document){
 
         // We remove colors on files and chapters
@@ -46,17 +65,13 @@
           $rootScope.activeChapter = node;
         }
 
-        // We toggle the node & and check if we need to add or remove it from cookies
-        if(node.$modelValue.items.length != 0){
-          // console.log(node.$modelValue.items.length)
-          node.toggle();
-          chapterFoldedCookiesGestion(node.$modelValue.id);
-        }
-
         // We hide the dropdown
         $('.dropdown.active').removeClass('active')
       }
+
     }
+
+
     /*=================================
     =            Functions            =
     =================================*/

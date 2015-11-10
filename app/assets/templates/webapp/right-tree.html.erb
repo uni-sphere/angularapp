@@ -3,9 +3,9 @@
   <script type="text/ng-template" id="items_renderer.html">
     <div ui-tree-handle ng-class="{isdocument: item.document, itemSelected : item.selectedItem}" ng-click="$event.stopPropagation(); toggleChapter(this)">
 
-      <a class="btn-collapse" nodrag ng-if="!item.document" ng-init="collapseItems(this)"><span class="fa fa-angle-right" ng-class="{'expanded': !collapsed, 'angle-right-hidden' : this.$modelValue.items.length == 0}"></span></a>
+      <a class="btn-collapse" data-nodrag ng-if="!item.document" ng-init="collapseItems(this)"><span class="fa fa-angle-right" ng-class="{'expanded': !collapsed, 'angle-right-hidden' : this.$modelValue.items.length == 0}"></span></a>
 
-      <div class="empty-space" nodrag ng-if="item.document"></div>
+      <div class="empty-space" data-nodrag ng-if="item.document"></div>
 
       <div class="chapter-number" ng-if="!item.document" ng-class="{depth1 : item.depth == 1, depth2 : item.depth == 2, depth3 : item.depth == 3, depth4 : item.depth == 4}">{{item.chapter}} </div>
 
@@ -15,7 +15,7 @@
 
       <div class="item-name"><span>{{item.title}}</span></div>
 
-      <div class="btn btn-options" ng-controller="itemActionsButtonCtrl" nodrag ng-click="$event.stopPropagation()">
+      <div class="btn btn-options" ng-controller="itemActionsButtonCtrl" data-nodrag ng-click="$event.stopPropagation()">
         <div dropdown-menu="dropdownOptions" dropdown-model="dropdownSelected" dropdown-onchange="actionItem(this)" >
           <span class="fa fa-ellipsis-v" ng-click="selectItem(this)"></span>
         </div>
@@ -74,7 +74,7 @@
     </div>
 
     <div id="ui-tree-container" ng-if="$root.listItems.length > 0 && $root.nodeEnd">
-      <div ui-tree="options" data-drag-enabled="false"  id="tree-root">
+      <div ui-tree="treeOptions" id="tree-root">
         <ol ui-tree-nodes ng-model="$root.listItems" >
           <li ng-repeat="item in $root.listItems" ui-tree-node ng-include="'items_renderer.html'"></li>
         </ol>

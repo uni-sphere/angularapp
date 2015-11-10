@@ -150,17 +150,6 @@
       $auth.validateUser().then(function(){
         console.log("Ok: admin connected")
 
-        // Help Center
-        // if(window.location.host != 'localhost:3000'){
-        //   FHChat = {product_id: "6227bca7722d"};
-        //   FHChat.properties={};
-        //   FHChat.set=function(key,data){this.properties[key]=data};
-        //   !function(){
-        //     var a,b;
-        //     return b=document.createElement("script"),a=document.getElementsByTagName("script")[0],b.src="https://chat-client-js.firehoseapp.com/chat-min.js",b.async=!0,a.parentNode.insertBefore(b,a)
-        //   }();
-        // }
-
         $scope.getBasicInfo()
       }, function(d){
         console.log("Ok: Student co")
@@ -186,9 +175,11 @@
         $rootScope.admin = true
         console.log("Ok: User info")
 
-        olark('api.visitor.updateEmailAddress', {emailAddress: $rootScope.accountEmail});
-        olark('api.visitor.updateFullName', {fullName: $rootScope.accountName});
-        olark('api.box.show');
+        if(!$rootScope.local && !$rootScope.admin){
+          olark('api.visitor.updateEmailAddress', {emailAddress: $rootScope.accountEmail});
+          olark('api.visitor.updateFullName', {fullName: $rootScope.accountName});
+          olark('api.box.show');
+        }
 
         if(user.news){
           $timeout(function() {
