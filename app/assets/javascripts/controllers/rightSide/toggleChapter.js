@@ -9,8 +9,32 @@
 
     $scope.treeOptions = {
       dropped: function(event) {
+
+
+        // We change the depth of the node
+        if(event.dest.nodesScope.$nodeScope != null){
+          event.source.nodeScope.$modelValue.depth = event.dest.nodesScope.$nodeScope.$modelValue.depth + 1
+        } else{
+          event.source.nodeScope.$modelValue.depth = 0
+        }
+
+
         createIndexChaptersService.create($rootScope.listItems)
         $scope.selectChapter(event.source.nodeScope)
+
+
+        // console.log($rootScope.listItems)
+        // order
+        // var chapterNumber = event.source.nodeScope.$modelValue.chapter
+        // console.log(chapterNumber.substr(0,chapterNumber.indexOf('.')))
+
+        //source
+        // console.log(event.source.nodeScope.$modelValue.id)
+
+        //parent
+        // console.log(event.dest.nodesScope.$nodeScope.$modelValue.id)
+
+        // console.log(event.source.nodeScope.$modelValue)
       },
     };
 
