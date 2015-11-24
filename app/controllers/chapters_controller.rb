@@ -42,7 +42,11 @@ class ChaptersController < ApplicationController
         render json: current_chapter.errors, status: 422
       end
     elsif params[:dropped] and params[:parent] and params[:position]
-      dropped = Chapter.find(params[:dropped])
+      if params[:dropped] != 0
+        dropped = Chapter.find(params[:dropped])
+      else
+        dropped = current_node.chapters.where(parent_id: 0, archived: false).last
+      end
       old_parent = Chapter.find(chapter.parent_id)
       old_pos = chapter.position
       new_parent = Chapter.find(params[:parent])
