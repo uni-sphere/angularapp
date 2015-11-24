@@ -29,6 +29,8 @@
         createIndexChaptersService.create($rootScope.listItems)
         $scope.selectChapter(event.source.nodeScope)
 
+        console.log(event.dest.nodesScope.$nodeScope)
+
         // chapter
         if(!event.source.nodeScope.$modelValue.document){
           var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
