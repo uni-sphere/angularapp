@@ -55,7 +55,7 @@ class AwsdocumentsController < ApplicationController
       end
     else 
       dropped = Awsdocument.find params[:id]
-      old_parent = dropped.parent_id
+      old_parent = dropped.chapter_id
       old_pos = dropped.position
       if params[:parent] == '0'
         new_parent = current_node.chapters.where(archived: false, parent_id: 0).last.id
@@ -63,9 +63,9 @@ class AwsdocumentsController < ApplicationController
         new_parent = params[:parent]
       end
       new_pos = params[:position].to_i
-      if dropped.update_attributes(position: new_pos, parent_id: new_parent)
-        docs_to_up = Awsdocument.where(archived: false, parent_id: old_parent).where("position >= ? AND id != ?", old_pos, dropped.id)
-        docs_to_down = Awsdocument.where(archived: false, parent_id: new_parent).where("position >= ? AND id != ?", new_pos, dropped.id)
+      if dropped.update_attributes(position: new_pos, chapter_id: new_parent)
+        docs_to_up = Awsdocument.where(archived: false, chapter_id: old_parent).where("position >= ? AND id != ?", old_pos, dropped.id)
+        docs_to_down = Awsdocument.where(archived: false, chapter_id: new_parent).where("position >= ? AND id != ?", new_pos, dropped.id)
         docs_to_up.each do |doc|
           doc.update(position: doc.position - 1)
         end
