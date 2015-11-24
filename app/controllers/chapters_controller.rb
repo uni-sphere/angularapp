@@ -25,7 +25,7 @@ class ChaptersController < ApplicationController
       Awsdocument.where(chapter_id: chapter.id, archived: false).order('position ASC').select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).each do |document|
         tree << (document) if !document.archived
       end
-      Chapter.where(archived: false, parent_id: chapter.id)..order('position ASC').each do |chap|
+      Chapter.where(archived: false, parent_id: chapter.id).order('position ASC').each do |chap|
         queue << chap
       end
     end
@@ -76,9 +76,9 @@ class ChaptersController < ApplicationController
 
   def index
     tree = []
-    current_node.chapters.where(archived: false).each do |chapter|
+    current_node.chapters.where(archived: false).order('position ASC').each do |chapter|
       tree << chapter
-      Awsdocument.where(chapter_id: chapter.id, archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).each do |document|
+      Awsdocument.where(chapter_id: chapter.id, archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).order('position ASC').each do |document|
         tree << (document) if !document.archived
       end
     end
