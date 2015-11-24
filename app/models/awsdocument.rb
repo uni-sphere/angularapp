@@ -7,10 +7,20 @@ class Awsdocument < ActiveRecord::Base
   mount_uploader :content, DocumentUploader
   
   after_save :fill_url
+  before_save :add_position
   
   validates :title, :content, :organization_id, :user_id, :chapter_id, presence: true
   validate :check_size, on: :create
-    
+  
+  def add_position
+    if current_chapter.awsdocuments.count == 0
+      last_position = 0
+    else
+      last_position = current_chapter.awsdocuments.order('position DESC').first
+    end
+    self.position = last_position + 1
+  end
+  
   def check_size
     errors.add(:content, "too large") if self.content.file.size >= 20000000
   end

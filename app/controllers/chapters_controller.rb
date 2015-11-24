@@ -33,12 +33,32 @@ class ChaptersController < ApplicationController
   end
 
   def update
-    if current_chapter.update(title: params[:title])
-      Action.create(name: 'renamed', obj_id: current_chapter.id, object_type: 'chapter', object: current_chapter.title, organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
-      render json: current_chapter, status: 200
-    else
-      Action.create(name: 'renamed', error: true, object_type: 'chapter', organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
-      render json: current_chapter.errors, status: 422
+    if params[:title]
+      if current_chapter.update(title: params[:title])
+        Action.create(name: 'renamed', obj_id: current_chapter.id, object_type: 'chapter', object: current_chapter.title, organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
+        render json: current_chapter, status: 200
+      else
+        Action.create(name: 'renamed', error: true, object_type: 'chapter', organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
+        render json: current_chapter.errors, status: 422
+      end
+    elsif params[:dropped] and params[:parent] and params[:position]
+      dropped = Chapter.find(params[:dropped])
+      old_parent = Chapter.find(chapter.parent_id)
+      old_pos = chapter.position
+      new_parent = Chapter.find(params[:parent])
+      new_pos = params[:position]
+      chapters_to_push = Chapter.where(archived: false, parent_id: new_parent.id).where("position >= ?", new_pos)
+      chapters_to_pull = Chapter.where(archived: false, parent_id: old_parent.id).where("position > ?", old_pos)
+      if dropped.update_attributes(position: new_pos, parent_id: new_parent.id)
+        chapters_to_push.each do |chapter|
+          chapter.update(position: chapter.position + 1)
+        end
+        chapters_to_pull.each do |chapter|
+          chapter.update(position: chapter.position - 1)
+        end
+      else
+        render json: dropped.errors, status: 422
+      end
     end
   end
 
