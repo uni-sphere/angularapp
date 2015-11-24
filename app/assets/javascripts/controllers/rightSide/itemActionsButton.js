@@ -206,7 +206,7 @@
           if(d.status == 404){
             console.log(d)
             console.log("Ok: chapter archived | cannot get share link")
-             Notification.warning(cancel_warning)
+            Notification.warning(cancel_warning)
             cookiesService.reload()
           } else{
             console.log(d);

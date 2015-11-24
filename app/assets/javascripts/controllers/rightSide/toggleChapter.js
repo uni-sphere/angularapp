@@ -4,8 +4,8 @@
     .module('mainApp.controllers')
     .controller('toggleChapterCtrl', toggleChapterCtrl);
 
-  toggleChapterCtrl.$inject = ['$rootScope', '$scope', 'Notification', 'ipCookie', 'createIndexChaptersService']
-  function toggleChapterCtrl($rootScope, $scope, Notification, ipCookie, createIndexChaptersService){
+  toggleChapterCtrl.$inject = ['$rootScope', '$scope', 'Notification', 'ipCookie', 'createIndexChaptersService', 'Restangular']
+  function toggleChapterCtrl($rootScope, $scope, Notification, ipCookie, createIndexChaptersService, Restangular){
 
     $scope.treeOptions = {
       dropped: function(event) {
@@ -23,18 +23,28 @@
         $scope.selectChapter(event.source.nodeScope)
 
 
-        // console.log($rootScope.listItems)
         // order
-        // var chapterNumber = event.source.nodeScope.$modelValue.chapter
-        // console.log(chapterNumber.substr(0,chapterNumber.indexOf('.')))
+        var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
+        var chapNumber = chapterNumberStr.substr(0,chapterNumberStr.indexOf('.'))
 
-        //source
-        // console.log(event.source.nodeScope.$modelValue.id)
+        var source_id = event.source.nodeScope.$modelValue.id
 
         //parent
-        // console.log(event.dest.nodesScope.$nodeScope.$modelValue.id)
+        if(event.dest.nodesScope.$nodeScope != null){
+          parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
+        } else{
+          parent_id = 0
+        }
 
-        // console.log(event.source.nodeScope.$modelValue)
+
+        Restangular.one('chapters/' + source_id).put({parent: parent_id, pos: chapNumber}).then(function(res) {
+          console.log("Ok: Item moved");
+        }, function(d) {
+          console.log("Error: Item not moved");
+          console.log(d);
+          Notification.error(forbidden);
+        });
+
       },
     };
 
