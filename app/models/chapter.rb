@@ -16,12 +16,15 @@ class Chapter < ActiveRecord::Base
   end
   
   def add_position
-    if current_node.chapters.count == 0
-      last_position = 0
-    else
-      last_position = current_node.chapters.order('position DESC').first
+    if !self.position 
+      brothers = Chapter.where(node_id: self.node_id, archived: false, parent_id: self.parent_id)
+      if brothers.count == 0
+        last_position = 0
+      else
+        last_position = brothers.order('position DESC').first.position
+      end
+      self.position = last_position + 1
     end
-    self.position = last_position + 1
   end
   
 end

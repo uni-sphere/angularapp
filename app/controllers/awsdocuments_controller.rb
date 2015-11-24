@@ -53,8 +53,8 @@ class AwsdocumentsController < ApplicationController
         Action.create(name: 'renamed', error: true, object_type: 'document', organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
         render json: current_awsdocument.errors, status: 422
       end
-    elsif params[:dropped] and params[:parent] and params[:position]
-      dropped = Awsdocument.find(params[:dropped])
+    elsif params[:id] and params[:parent] and params[:position]
+      dropped = Awsdocument.find(params[:id])
       old_parent = Awsdocument.find(chapter.parent_id)
       old_pos = chapter.position
       new_parent = Awsdocument.find(params[:parent])

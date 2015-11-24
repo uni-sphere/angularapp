@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150907081215) do
+ActiveRecord::Schema.define(version: 20151101010001) do
 
   create_table "actions", force: :cascade do |t|
     t.integer  "user_id"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20150907081215) do
     t.boolean  "archived",        default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "position"
   end
 
   create_table "chapters", force: :cascade do |t|
@@ -46,6 +47,7 @@ ActiveRecord::Schema.define(version: 20150907081215) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "archived",   default: false
+    t.integer  "position"
   end
 
   create_table "connexions", force: :cascade do |t|

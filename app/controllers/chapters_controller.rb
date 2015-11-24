@@ -41,25 +41,29 @@ class ChaptersController < ApplicationController
         Action.create(name: 'renamed', error: true, object_type: 'chapter', organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
         render json: current_chapter.errors, status: 422
       end
-    elsif params[:dropped] and params[:parent] and params[:position]
-      if params[:dropped] != 0
-        dropped = Chapter.find(params[:dropped])
+    else
+      dropped = Chapter.find params[:id]
+      old_parent = dropped.parent_id
+      old_pos = dropped.position
+      if params[:parent] == '0'
+        new_parent = current_node.chapters.where(archived: false, parent_id: 0).last.id
       else
-        dropped = current_node.chapters.where(parent_id: 0, archived: false).last
+        new_parent = params[:parent]
       end
-      old_parent = Chapter.find(chapter.parent_id)
-      old_pos = chapter.position
-      new_parent = Chapter.find(params[:parent])
-      new_pos = params[:position]
-      chapters_to_push = Chapter.where(archived: false, parent_id: new_parent.id).where("position >= ?", new_pos)
-      chapters_to_pull = Chapter.where(archived: false, parent_id: old_parent.id).where("position > ?", old_pos)
-      if dropped.update_attributes(position: new_pos, parent_id: new_parent.id)
-        chapters_to_push.each do |chapter|
-          chapter.update(position: chapter.position + 1)
-        end
-        chapters_to_pull.each do |chapter|
+      new_pos = params[:position].to_i
+      if dropped.update_attributes(position: new_pos, parent_id: new_parent)
+        logger.info Chapter.last 5
+        chapters_to_up = Chapter.where(archived: false, parent_id: old_parent).where("position >= ? AND id != ?", old_pos, dropped.id)
+        chapters_to_down = Chapter.where(archived: false, parent_id: new_parent).where("position >= ? AND id != ?", new_pos, dropped.id)
+        chapters_to_up.each do |chapter|
           chapter.update(position: chapter.position - 1)
         end
+        logger.info Chapter.last 5
+        chapters_to_down.each do |chapter|
+          chapter.update(position: chapter.position + 1)
+        end
+        logger.info Chapter.last 5
+        render json: {success: true}, status: 200
       else
         render json: dropped.errors, status: 422
       end
@@ -112,6 +116,13 @@ class ChaptersController < ApplicationController
       end
     end
     @tree << id
+    if !Chapter.where(archived: false).exists?(parent_id: id)
+      chapter = Chapter.where(archived: false).find(id)
+      chapters_to_pull = Chapter.where(archived: false, parent_id: chapter.parent_id).where("position > ?", chapter.position)
+      chapters_to_pull.each do |chapter|
+        chapter.update(position: chapter.position - 1)
+      end
+    end
     Chapter.where(archived: false).find(id).archive
   end
 
