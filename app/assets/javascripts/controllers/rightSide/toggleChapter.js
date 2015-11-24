@@ -57,8 +57,7 @@
         // file
         else{
           // order
-          var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
-          var chapNumber = chapterNumberStr.substr(0,chapterNumberStr.indexOf('.'))
+          var chapNumber = event.source.nodeScope.$modelValue.chapter
 
           var source_id = event.source.nodeScope.$modelValue.doc_id
 
