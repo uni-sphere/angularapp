@@ -22,7 +22,7 @@ class ChaptersController < ApplicationController
     while queue != [] do
       chapter = queue.pop
       tree << chapter
-      Awsdocument.where(chapter_id: chapter.id, archived: false).reverse_order.select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).each do |document|
+      Awsdocument.where(chapter_id: chapter.id, archived: false).order('position ASC').select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).each do |document|
         tree << (document) if !document.archived
       end
       Chapter.where(archived: false, parent_id: chapter.id).reverse_order.each do |chap|
@@ -52,17 +52,14 @@ class ChaptersController < ApplicationController
       end
       new_pos = params[:position].to_i
       if dropped.update_attributes(position: new_pos, parent_id: new_parent)
-        logger.info Chapter.last 5
         chapters_to_up = Chapter.where(archived: false, parent_id: old_parent).where("position >= ? AND id != ?", old_pos, dropped.id)
         chapters_to_down = Chapter.where(archived: false, parent_id: new_parent).where("position >= ? AND id != ?", new_pos, dropped.id)
         chapters_to_up.each do |chapter|
           chapter.update(position: chapter.position - 1)
         end
-        logger.info Chapter.last 5
         chapters_to_down.each do |chapter|
           chapter.update(position: chapter.position + 1)
         end
-        logger.info Chapter.last 5
         render json: {success: true}, status: 200
       else
         render json: dropped.errors, status: 422

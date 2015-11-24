@@ -53,21 +53,26 @@ class AwsdocumentsController < ApplicationController
         Action.create(name: 'renamed', error: true, object_type: 'document', organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
         render json: current_awsdocument.errors, status: 422
       end
-    elsif params[:id] and params[:parent] and params[:position]
-      dropped = Awsdocument.find(params[:id])
-      old_parent = Awsdocument.find(chapter.parent_id)
-      old_pos = chapter.position
-      new_parent = Awsdocument.find(params[:parent])
-      new_pos = params[:position]
-      documents_to_push = Awsdocument.where(archived: false, parent_id: new_parent.id).where("position >= ?", new_pos)
-      documents_to_pull = Awsdocument.where(archived: false, parent_id: old_parent.id).where("position > ?", old_pos)
-      if dropped.update_attributes(position: new_pos, parent_id: new_parent.id)
-        documents_to_push.each do |document|
-          document.update(position: document.position + 1)
+    else 
+      dropped = Awsdocument.find params[:id]
+      old_parent = dropped.parent_id
+      old_pos = dropped.position
+      if params[:parent] == '0'
+        new_parent = current_node.chapters.where(archived: false, parent_id: 0).last.id
+      else
+        new_parent = params[:parent]
+      end
+      new_pos = params[:position].to_i
+      if dropped.update_attributes(position: new_pos, parent_id: new_parent)
+        docs_to_up = Awsdocument.where(archived: false, parent_id: old_parent).where("position >= ? AND id != ?", old_pos, dropped.id)
+        docs_to_down = Awsdocument.where(archived: false, parent_id: new_parent).where("position >= ? AND id != ?", new_pos, dropped.id)
+        docs_to_up.each do |doc|
+          doc.update(position: doc.position - 1)
         end
-        documents_to_pull.each do |document|
-          document.update(position: chapter.position - 1)
+        docs_to_down.each do |doc|
+          doc.update(position: doc.position + 1)
         end
+        render json: {success: true}, status: 200
       else
         render json: dropped.errors, status: 422
       end

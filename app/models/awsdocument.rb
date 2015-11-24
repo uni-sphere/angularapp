@@ -13,12 +13,15 @@ class Awsdocument < ActiveRecord::Base
   validate :check_size, on: :create
   
   def add_position
-    if current_chapter.awsdocuments.count == 0
-      last_position = 0
-    else
-      last_position = current_chapter.awsdocuments.order('position DESC').first
+    if !self.position 
+      brothers = Chapter.where(id: self.chapter_id, archived: false).first.awsdocuments
+      if brothers.count == 0
+        last_position = 0
+      else
+        last_position = brothers.order('position DESC').first.position
+      end
+      self.position = last_position + 1
     end
-    self.position = last_position + 1
   end
   
   def check_size
