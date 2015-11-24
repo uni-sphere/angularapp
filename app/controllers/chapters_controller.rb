@@ -25,7 +25,7 @@ class ChaptersController < ApplicationController
       Awsdocument.where(chapter_id: chapter.id, archived: false).order('position ASC').select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).each do |document|
         tree << (document) if !document.archived
       end
-      Chapter.where(archived: false, parent_id: chapter.id).reverse_order.each do |chap|
+      Chapter.where(archived: false, parent_id: chapter.id)..order('position ASC').each do |chap|
         queue << chap
       end
     end
