@@ -2,7 +2,7 @@
 
   angular
     .module('mainApp.controllers')
-    .controller('toggleChapterCtrl', toggleChapterCtrl);
+    .controller('itemHandlingCtrl', toggleChapterCtrl);
 
   toggleChapterCtrl.$inject = ['$translate', '$rootScope', '$scope', 'Notification', 'ipCookie', 'createIndexChaptersService', 'Restangular']
   function toggleChapterCtrl($translate, $rootScope, $scope, Notification, ipCookie, createIndexChaptersService, Restangular){
@@ -15,28 +15,16 @@
     });
 
     $scope.treeOptions = {
-      dropped: function(event) {
-
-
-        // We change the depth of the node
-        if(event.dest.nodesScope.$nodeScope != null){
-          event.source.nodeScope.$modelValue.depth = event.dest.nodesScope.$nodeScope.$modelValue.depth + 1
-        } else{
-          event.source.nodeScope.$modelValue.depth = 0
-        }
-
-
-        createIndexChaptersService.create($rootScope.listItems)
-        $scope.selectChapter(event.source.nodeScope)
-
-        console.log(event.dest.nodesScope.$nodeScope)
+      beforeDrop: function(event) {
 
         // chapter
         if(!event.source.nodeScope.$modelValue.document){
           var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
           var chapNumber = chapterNumberStr.substr(0,chapterNumberStr.indexOf('.'))
+          console.log(chapNumber)
+          console.log(event.source.nodeScope.$modelValue.position)
 
-          var source_id = event.source.nodeScope.$modelValue.id
+          var source = event.source.nodeScope.$modelValue
 
           //parent
           if(event.dest.nodesScope.$nodeScope != null){
@@ -46,7 +34,9 @@
             parent_id = 0
           }
 
-          Restangular.one('chapters/' + source_id).put({parent: parent_id, position: chapNumber, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
+          Restangular.one('chapters/' + source.id).put({parent: parent_id, position: chapNumber, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
+            // source.position =
+            console.log(res)
             console.log("Ok: Item moved");
           }, function(d) {
             console.log("Error: Item not moved");
@@ -78,9 +68,25 @@
           });
         }
 
-
-
       },
+
+      dropped: function(event) {
+
+
+        // We change the depth of the node
+        if(event.dest.nodesScope.$nodeScope != null){
+          event.source.nodeScope.$modelValue.depth = event.dest.nodesScope.$nodeScope.$modelValue.depth + 1
+        } else{
+          event.source.nodeScope.$modelValue.depth = 0
+        }
+
+
+        createIndexChaptersService.create($rootScope.listItems)
+        $scope.selectChapter(event.source.nodeScope)
+
+        // console.log(event.dest.nodesScope.$nodeScope)
+
+      }
     };
 
 
