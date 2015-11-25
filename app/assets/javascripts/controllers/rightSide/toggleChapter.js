@@ -29,6 +29,8 @@
         createIndexChaptersService.create($rootScope.listItems)
         $scope.selectChapter(event.source.nodeScope)
 
+        console.log(event.dest.nodesScope.$nodeScope)
+
         // chapter
         if(!event.source.nodeScope.$modelValue.document){
           var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
@@ -55,8 +57,7 @@
         // file
         else{
           // order
-          var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
-          var chapNumber = chapterNumberStr.substr(0,chapterNumberStr.indexOf('.'))
+          var chapNumber = event.source.nodeScope.$modelValue.chapter
 
           var source_id = event.source.nodeScope.$modelValue.doc_id
 

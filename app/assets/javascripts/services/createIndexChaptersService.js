@@ -18,46 +18,52 @@
       var chap = [];
       var savedValueByDepth = [];
       var previousDepth = 0;
+      var filePos = 1;
 
       function createChap(d){
         var newValueByDepth = savedValueByDepth;
 
-        // If we have a sibling chapter
-        if(d.depth == previousDepth){
-          // console.log("==");
-          if(savedValueByDepth[[d.depth]] != undefined){
-            newValueByDepth[d.depth] = savedValueByDepth[[d.depth]] + 1;
-          } else{
-            newValueByDepth[d.depth] = 1;
-          }
-          savedValueByDepth = newValueByDepth;
-        }
-
-        // If we have a sibling higher in the organization
-        if(d.depth > previousDepth){
-          // console.log(">");
-          if(savedValueByDepth[[d.depth]] == undefined){
-            newValueByDepth[d.depth] = 1;
-          } else{
-            newValueByDepth[d.depth] = savedValueByDepth[[d.depth]] + 1;
-          }
-          savedValueByDepth = newValueByDepth;
-        }
-
-        // If we have a child
-        if(d.depth < previousDepth){
-          // console.log("<")
-          var diff = previousDepth - d.depth;
-          newValueByDepth[d.depth] = savedValueByDepth[d.depth] + 1;
-          for(var i= 0; i < diff; i++){
-            newValueByDepth.pop();
+        if(d.document){
+          d.chapter = filePos;
+          filePos += 1;
+        } else{
+          // If we have a sibling chapter
+          if(d.depth == previousDepth){
+            // console.log("==");
+            if(savedValueByDepth[[d.depth]] != undefined){
+              newValueByDepth[d.depth] = savedValueByDepth[[d.depth]] + 1;
+            } else{
+              newValueByDepth[d.depth] = 1;
+            }
+            savedValueByDepth = newValueByDepth;
           }
 
-          savedValueByDepth[d.depth] = savedValueByDepth[d.depth];
-        }
+          // If we have a sibling higher in the organization
+          if(d.depth > previousDepth){
+            // console.log(">");
+            if(savedValueByDepth[[d.depth]] == undefined){
+              newValueByDepth[d.depth] = 1;
+            } else{
+              newValueByDepth[d.depth] = savedValueByDepth[[d.depth]] + 1;
+            }
+            savedValueByDepth = newValueByDepth;
+          }
 
-        previousDepth = d.depth;
-        d.chapter = newValueByDepth.join('.') + ".";
+          // If we have a child
+          if(d.depth < previousDepth){
+            // console.log("<")
+            var diff = previousDepth - d.depth;
+            newValueByDepth[d.depth] = savedValueByDepth[d.depth] + 1;
+            for(var i= 0; i < diff; i++){
+              newValueByDepth.pop();
+            }
+
+            savedValueByDepth[d.depth] = savedValueByDepth[d.depth];
+          }
+
+          previousDepth = d.depth;
+          d.chapter = newValueByDepth.join('.') + ".";
+        }
       }
 
       function iterate(d){
