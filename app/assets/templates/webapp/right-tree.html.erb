@@ -1,6 +1,7 @@
 <div id="right-tree">
 
   <script type="text/ng-template" id="items_renderer.html">
+    <div right-click>
     <div ui-tree-handle ng-class="{isdocument: item.document, itemSelected : item.selectedItem}" ng-click="$event.stopPropagation(); toggleChapter(this)">
 
       <a class="btn-collapse" data-nodrag ng-if="!item.document" ng-init="collapseItems(this)"><span class="fa fa-angle-right" ng-class="{'expanded': !collapsed, 'angle-right-hidden' : this.$modelValue.items.length == 0}"></span></a>
@@ -21,6 +22,7 @@
         </div>
       </div>
 
+    </div>
     </div>
 
     <ol ui-tree-nodes="options" ng-model="item.items" ng-class="{hidden: collapsed, containerSelected : this.$modelValue.activeItem}" ng-init="initCounter()">

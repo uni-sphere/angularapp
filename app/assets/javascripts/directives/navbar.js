@@ -28,7 +28,7 @@
       scope.languageUsed = $translate.use()
 
       var listener = scope.$watch('languageUsed', function (newVals, oldVals) {
-        console.log(scope.languageUsed)
+        // console.log(scope.languageUsed)
         if(scope.languageUsed != undefined){
           listener();
           // Set the default language

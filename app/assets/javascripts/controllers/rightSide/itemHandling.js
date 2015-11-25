@@ -15,8 +15,24 @@
     });
 
     $scope.treeOptions = {
-      beforeDrop: function(event) {
 
+      beforeDrag: function(sourceNodeScope){
+        // console.log(sourceNodeScope)
+        return true
+      },
+
+      accept: function(sourceNodeScope, destIndex, destNodesScope){
+        // console.log(sourceNodeScope)
+        // console.log(destIndex)
+        // console.log(destNodesScope)
+        if(destIndex.$parent.$modelValue == undefined || !destIndex.$parent.$modelValue.document){
+          return true
+        } else{
+          return false
+        }
+      },
+
+      dropped: function(event) {
         // We change the depth of the node
         if(event.dest.nodesScope.$nodeScope != null){
           event.source.nodeScope.$modelValue.depth = event.dest.nodesScope.$nodeScope.$modelValue.depth + 1
@@ -24,68 +40,65 @@
           event.source.nodeScope.$modelValue.depth = 0
         }
 
-        // we change the index
-        createIndexChaptersService.create($rootScope.listItems)
-
-        // chapter
-        if(!event.source.nodeScope.$modelValue.document){
-          var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
-          var chapNumber = chapterNumberStr.substr(0,chapterNumberStr.indexOf('.'))
-          // console.log(chapNumber)
-          // console.log(event.source.nodeScope.$modelValue.position)
-
-          var source = event.source.nodeScope.$modelValue
-
-          // console.log(event.dest.nodesScope)
-          //parent
-          if(event.dest.nodesScope.$nodeScope != null){
-            parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
-            chapterFoldedCookiesGestion(parent_id)
-          } else{
-            parent_id = 0
-          }
-
-          Restangular.one('chapters/' + source.id).put({parent: parent_id, position: chapNumber, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
-            source.position = chapNumber
-            console.log("Ok: Item moved");
-          }, function(d) {
-            cookiesService.reload()
-            console.log("Error: Item not moved");
-            console.log(d);
-            Notification.error(move);
-          });
-        }
-        // file
-        else{
-          // order
-          var chapNumber = event.source.nodeScope.$modelValue.chapter
-
-          var source_id = event.source.nodeScope.$modelValue.doc_id
-
-          //parent
-          if(event.dest.nodesScope.$nodeScope != null){
-            parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
-            chapterFoldedCookiesGestion(parent_id)
-          } else{
-            parent_id = 0
-          }
-
-          Restangular.one('awsdocuments/' + source_id).put({parent: parent_id, position: chapNumber, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
-            console.log("Ok: Item moved");
-          }, function(d) {
-            console.log("Error: Item not moved");
-            console.log(d);
-            Notification.error(move);
-          });
-        }
-
-      },
-
-      dropped: function(event) {
-
-
-
         $scope.selectChapter(event.source.nodeScope)
+
+        // we change the index
+        createIndexChaptersService.create($rootScope.listItems).then(function() {
+          // chapter
+          if(!event.source.nodeScope.$modelValue.document){
+            var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
+            var chapNumber = chapterNumberStr.substr(0,chapterNumberStr.indexOf('.'))
+            // console.log(chapNumber)
+            // console.log(event.source.nodeScope.$modelValue.position)
+
+            var source = event.source.nodeScope.$modelValue
+
+            // console.log(event.dest.nodesScope)
+            //parent
+            if(event.dest.nodesScope.$nodeScope != null){
+              parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
+              chapterFoldedCookiesGestion(parent_id)
+            } else{
+              parent_id = 0
+            }
+
+            Restangular.one('chapters/' + source.id).put({parent: parent_id, position: chapNumber, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
+              source.position = chapNumber
+              console.log("Ok: Item moved");
+            }, function(d) {
+              cookiesService.reload()
+              console.log("Error: Item not moved");
+              console.log(d);
+              Notification.error(move);
+            });
+          }
+          // file
+          else{
+            // order
+            var chapNumber = event.source.nodeScope.$modelValue.chapter
+
+            var source_id = event.source.nodeScope.$modelValue.doc_id
+
+            //parent
+            if(event.dest.nodesScope.$nodeScope != null){
+              parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
+              chapterFoldedCookiesGestion(parent_id)
+            } else{
+              parent_id = 0
+            }
+
+            Restangular.one('awsdocuments/' + source_id).put({parent: parent_id, position: chapNumber, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
+              console.log("Ok: Item moved");
+            }, function(d) {
+              console.log("Error: Item not moved");
+              console.log(d);
+              Notification.error(move);
+            });
+          }
+        })
+
+
+
 
         // console.log(event.dest.nodesScope.$nodeScope)
 
