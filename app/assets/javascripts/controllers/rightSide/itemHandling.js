@@ -36,7 +36,7 @@
 
           Restangular.one('chapters/' + source.id).put({parent: parent_id, position: chapNumber, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
             // source.position =
-            console.log(res)
+            console.log(res.plain())
             console.log("Ok: Item moved");
           }, function(d) {
             console.log("Error: Item not moved");

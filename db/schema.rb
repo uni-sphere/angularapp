@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151101010001) do
+ActiveRecord::Schema.define(version: 20151101010002) do
 
   create_table "actions", force: :cascade do |t|
     t.integer  "user_id"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20151101010001) do
     t.string   "website"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "paying",     default: false
   end
 
   create_table "organizationsuserslinks", force: :cascade do |t|
