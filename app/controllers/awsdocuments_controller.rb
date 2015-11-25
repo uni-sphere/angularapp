@@ -72,7 +72,7 @@ class AwsdocumentsController < ApplicationController
         docs_to_down.each do |doc|
           doc.update(position: doc.position + 1)
         end
-        render json: {document: Awsdocument.find params[:id]}, status: 200
+        render json: {document: Awsdocument.find(params[:id])}, status: 200
       else
         render json: dropped.errors, status: 422
       end
