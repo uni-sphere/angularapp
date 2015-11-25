@@ -21,8 +21,8 @@
         if(!event.source.nodeScope.$modelValue.document){
           var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
           var chapNumber = chapterNumberStr.substr(0,chapterNumberStr.indexOf('.'))
-          console.log(chapNumber)
-          console.log(event.source.nodeScope.$modelValue.position)
+          // console.log(chapNumber)
+          // console.log(event.source.nodeScope.$modelValue.position)
 
           var source = event.source.nodeScope.$modelValue
 
