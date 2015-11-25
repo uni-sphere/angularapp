@@ -42,7 +42,15 @@ module AuthenticationHelper
       return false
     end
   end
-
+  
+  def is_admin?
+    return current_user.admin
+  end
+  
+  def is_superadmin?
+    return current_user.superadmin
+  end
+  
   def user_nodes
     if Chapter.exists?(user_id: current_user.id, archived: false)
       chapters = current_user.chapters.where(archived: false)
