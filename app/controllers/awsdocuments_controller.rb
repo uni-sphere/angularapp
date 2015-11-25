@@ -82,6 +82,12 @@ class AwsdocumentsController < ApplicationController
   def destroy
     Action.create(name: 'archived', obj_id: current_awsdocument.id, object_type: 'document', object: current_awsdocument.title, organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
     current_awsdocument.archive
+    if !Awsdocument.where(archived: false).exists?(chapter_id: current_awsdocument.id)
+      doc_to_pull = Awsdocument.where(archived: false, chapter_id: current_awsdocument.chapter_id).where("position > ?", current_awsdocument.position)
+      docs_to_pull.each do |doc|
+        doc.update(position: doc.position - 1)
+      end
+    end
     head 204
   end
   
