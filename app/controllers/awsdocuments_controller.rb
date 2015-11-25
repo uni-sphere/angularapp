@@ -72,7 +72,7 @@ class AwsdocumentsController < ApplicationController
         docs_to_down.each do |doc|
           doc.update(position: doc.position + 1)
         end
-        render json: {success: true}, status: 200
+        render json: {document: dropped}, status: 200
       else
         render json: dropped.errors, status: 422
       end
