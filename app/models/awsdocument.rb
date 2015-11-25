@@ -16,7 +16,7 @@ class Awsdocument < ActiveRecord::Base
     if !self.position 
       brothers = Chapter.where(id: self.chapter_id, archived: false).first.awsdocuments
       if brothers.count == 0
-        last_position = 0
+        last_position = -1
       else
         last_position = brothers.order('position DESC').first.position
       end

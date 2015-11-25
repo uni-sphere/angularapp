@@ -60,7 +60,7 @@ class ChaptersController < ApplicationController
         chapters_to_down.each do |chapter|
           chapter.update(position: chapter.position + 1)
         end
-        render json: {success: true}, status: 200
+        render json: {chapter: dropped}, status: 200
       else
         render json: dropped.errors, status: 422
       end
