@@ -61,7 +61,7 @@
     <button ng-click="newChapter()" ng-controller="createChapterCtrl" class="dual-submit"  >{{ 'CHAPTER' | translate }}</button>
   </div>
 
-  <div id="document-tree" ng-controller="toggleChapterCtrl">
+  <div id="document-tree" ng-controller="itemHandlingCtrl">
 
     <div id="tutorial-action-buttons" ng-hide="!$root.help || $root.tutorialActionButtonSeen" ng-click="$root.tutorialActionButtonOpen = true; $event.stopPropagation(); $root.setHelp()">
       <span class="tutorial-round" ng-hide="$root.tutorialActionButtonOpen"></span>

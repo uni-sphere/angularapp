@@ -2,10 +2,10 @@
 
   angular
     .module('mainApp.controllers')
-    .controller('toggleChapterCtrl', toggleChapterCtrl);
+    .controller('itemHandlingCtrl', toggleChapterCtrl);
 
-  toggleChapterCtrl.$inject = ['$translate', '$rootScope', '$scope', 'Notification', 'ipCookie', 'createIndexChaptersService', 'Restangular']
-  function toggleChapterCtrl($translate, $rootScope, $scope, Notification, ipCookie, createIndexChaptersService, Restangular){
+  toggleChapterCtrl.$inject = ['$translate', '$rootScope', '$scope', 'Notification', 'ipCookie', 'createIndexChaptersService', 'Restangular', 'cookiesService']
+  function toggleChapterCtrl($translate, $rootScope, $scope, Notification, ipCookie, createIndexChaptersService, Restangular, cookiesService){
     var move,
       cancel_warning
 
@@ -15,8 +15,7 @@
     });
 
     $scope.treeOptions = {
-      dropped: function(event) {
-
+      beforeDrop: function(event) {
 
         // We change the depth of the node
         if(event.dest.nodesScope.$nodeScope != null){
@@ -25,19 +24,19 @@
           event.source.nodeScope.$modelValue.depth = 0
         }
 
-
+        // we change the index
         createIndexChaptersService.create($rootScope.listItems)
-        $scope.selectChapter(event.source.nodeScope)
-
-        console.log(event.dest.nodesScope.$nodeScope)
 
         // chapter
         if(!event.source.nodeScope.$modelValue.document){
           var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
           var chapNumber = chapterNumberStr.substr(0,chapterNumberStr.indexOf('.'))
+          // console.log(chapNumber)
+          // console.log(event.source.nodeScope.$modelValue.position)
 
-          var source_id = event.source.nodeScope.$modelValue.id
+          var source = event.source.nodeScope.$modelValue
 
+          // console.log(event.dest.nodesScope)
           //parent
           if(event.dest.nodesScope.$nodeScope != null){
             parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
@@ -46,9 +45,11 @@
             parent_id = 0
           }
 
-          Restangular.one('chapters/' + source_id).put({parent: parent_id, position: chapNumber, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
+          Restangular.one('chapters/' + source.id).put({parent: parent_id, position: chapNumber, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
+            source.position = chapNumber
             console.log("Ok: Item moved");
           }, function(d) {
+            cookiesService.reload()
             console.log("Error: Item not moved");
             console.log(d);
             Notification.error(move);
@@ -78,9 +79,17 @@
           });
         }
 
-
-
       },
+
+      dropped: function(event) {
+
+
+
+        $scope.selectChapter(event.source.nodeScope)
+
+        // console.log(event.dest.nodesScope.$nodeScope)
+
+      }
     };
 
 
