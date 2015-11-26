@@ -46,14 +46,14 @@
         createIndexChaptersService.create($rootScope.listItems).then(function() {
           // chapter
           if(!event.source.nodeScope.$modelValue.document){
+            console.log("chapter move requested")
+            //order
             var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
             var chapNumber = chapterNumberStr.substr(0,chapterNumberStr.indexOf('.'))
-            // console.log(chapNumber)
-            // console.log(event.source.nodeScope.$modelValue.position)
 
+            // source
             var source = event.source.nodeScope.$modelValue
 
-            // console.log(event.dest.nodesScope)
             //parent
             if(event.dest.nodesScope.$nodeScope != null){
               parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
@@ -74,9 +74,11 @@
           }
           // file
           else{
+            console.log("File move requested")
             // order
             var chapNumber = event.source.nodeScope.$modelValue.chapter
 
+            // source
             var source_id = event.source.nodeScope.$modelValue.doc_id
 
             //parent

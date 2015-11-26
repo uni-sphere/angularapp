@@ -26,7 +26,6 @@
 
         function createChap(d){
           var newValueByDepth = savedValueByDepth;
-          // console.log(d)
 
           if(d.document){
             d.chapter = filePos;
@@ -68,10 +67,12 @@
 
             previousDepth = d.depth;
             d.chapter = newValueByDepth.join('.') + ".";
-            length += 1;
-            if(length == lengthItem){
-              resolve()
-            }
+          }
+
+          // We check how many items have been order to resolve at the good time :)
+          length += 1;
+          if(length == lengthItem){
+            resolve()
           }
         }
 
