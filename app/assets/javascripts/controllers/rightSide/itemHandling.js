@@ -17,14 +17,10 @@
     $scope.treeOptions = {
 
       beforeDrag: function(sourceNodeScope){
-        // console.log(sourceNodeScope)
         return true
       },
 
       accept: function(sourceNodeScope, destIndex, destNodesScope){
-        // console.log(sourceNodeScope)
-        // console.log(destIndex)
-        // console.log(destNodesScope)
         if(destIndex.$parent.$modelValue == undefined || !destIndex.$parent.$modelValue.document){
           return true
         } else{
@@ -46,7 +42,6 @@
         createIndexChaptersService.create($rootScope.listItems).then(function() {
           // chapter
           if(!event.source.nodeScope.$modelValue.document){
-            console.log("chapter move requested")
             //order
             var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
             var chapNumber = chapterNumberStr.substr(0,chapterNumberStr.indexOf('.'))
@@ -74,7 +69,6 @@
           }
           // file
           else{
-            console.log("File move requested")
             // order
             var chapNumber = event.source.nodeScope.$modelValue.chapter
 
@@ -92,17 +86,17 @@
             Restangular.one('awsdocuments/' + source_id).put({parent: parent_id, position: chapNumber, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
               console.log("Ok: Item moved");
             }, function(d) {
+              cookiesService.reload()
               console.log("Error: Item not moved");
               console.log(d);
               Notification.error(move);
             });
           }
+        }, function(d){
+          cookiesService.reload()
+          console.log("Error: Item not moved");
+          Notification.error(move);
         })
-
-
-
-
-        // console.log(event.dest.nodesScope.$nodeScope)
 
       }
     };

@@ -4,8 +4,8 @@
     .module('mainApp.services')
     .service('createIndexChaptersService', createIndexChaptersService)
 
-  createIndexChaptersService.$inject = ['$q']
-  function createIndexChaptersService($q){
+  createIndexChaptersService.$inject = ['$q', '$timeout']
+  function createIndexChaptersService($q, $timeout){
     var service = {
       create: create
     }
@@ -14,6 +14,12 @@
 
     function create(treeData){
       return $q(function(resolve, reject){
+
+        // We timeout the promise after one second
+        var timeoutPromise = $timeout(function() {
+          console.log("creation of index timed out");
+          reject();
+        }, 1000);
 
         var lengthItem = findLengthObject(treeData)
         var length = 0
@@ -72,6 +78,7 @@
           // We check how many items have been order to resolve at the good time :)
           length += 1;
           if(length == lengthItem){
+            $timeout.cancel(timeoutPromise)
             resolve()
           }
         }
