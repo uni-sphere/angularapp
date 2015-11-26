@@ -111,18 +111,6 @@
       else{
         Restangular.all('chapters/' + item.$modelValue.id).remove({node_id: $rootScope.nodeEnd[0]}).then(function(res) {
 
-          // // Remove from cookies the chapter folded deleted
-          // if($rootScope.foldedChapters && $rootScope.foldedChapters.indexOf(item.$modelValue.id) > -1){
-          //   $rootScope.foldedChapters.splice($rootScope.foldedChapters.indexOf(item.$modelValue.id), 1);
-          // }
-
-          // // We remove from cookies all the sub chapters of the chapter we delete
-          // angular.forEach(item.$modelValue.items, function(value,key){
-          //   if(!value.document && $rootScope.foldedChapters && $rootScope.foldedChapters.indexOf(value.id) > -1){
-          //     $rootScope.foldedChapters.splice($rootScope.foldedChapters.indexOf(value.id), 1);
-          //   }
-          // });
-
           item.remove();
           console.log("Ok: Chapter deleted");
           Notification.success(success)
@@ -149,11 +137,6 @@
 
     /*----------  Download file  ----------*/
     function downloadFile(file){
-      // console.log($scope.nodeProtected)
-      // console.log(file.$modelValue.title)
-      // console.log(file.$modelValue.doc_id)
-      // console.log(file.$modelValue.parent)
-      // console.log($rootScope.nodeEnd[0])
       downloadService.download($rootScope.nodeProtected, file.$modelValue.title, file.$modelValue.doc_id, file.$modelValue.parent, $rootScope.nodeEnd[0])
     }
 

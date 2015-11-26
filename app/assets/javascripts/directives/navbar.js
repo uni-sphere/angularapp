@@ -25,12 +25,22 @@
         }
       ];
 
-      // Set the default language
-      if($translate.use().indexOf("fr") > -1){
-        scope.ddSelectSelected = {text: 'French', value: 'fr'};
-      } else{
-        scope.ddSelectSelected = {text: 'English', value: 'en'};
-      }
+      scope.languageUsed = $translate.use()
+
+      var listener = scope.$watch('languageUsed', function (newVals, oldVals) {
+        // console.log(scope.languageUsed)
+        if(scope.languageUsed != undefined){
+          listener();
+          // Set the default language
+          if($translate.use().indexOf("fr") > -1){
+            scope.ddSelectSelected = {text: 'French', value: 'fr'};
+          } else{
+            scope.ddSelectSelected = {text: 'English', value: 'en'};
+          }
+        }
+      });
+
+
 
       scope.changeLanguage = function() {
         if (scope.ddSelectSelected.value == 'fr') {

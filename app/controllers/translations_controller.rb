@@ -141,7 +141,8 @@ class TranslationsController < ApplicationController
         DD_DESTROY: 'Supprimer',
         DD_DOWNLOAD: 'Télécharger',
         NEW_CHAPTER_NAME: 'Nouveau chapitre',
-        WEB_TEST_VERSION: 'Ceci est une version test, essayez-la!'
+        WEB_TEST_VERSION: 'Ceci est une version test, essayez-la!',
+        MOVE: 'Impossible de déplacer cet item.'
       }
     else
       translation = {
@@ -283,7 +284,8 @@ class TranslationsController < ApplicationController
         DD_DESTROY: 'Remove',
         DD_DOWNLOAD: 'Download',
         NEW_CHAPTER_NAME: 'New chapter',
-        WEB_TEST_VERSION: 'This is a live test version, try it!'
+        WEB_TEST_VERSION: 'This is a live test version, try it!',
+        MOVE: 'There was an error while moving this item'
       }
     end
     render json: translation.to_json, status: 200

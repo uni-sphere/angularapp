@@ -45,18 +45,49 @@ class AwsdocumentsController < ApplicationController
   end
 
   def update
-    if current_awsdocument.update(title: params[:title])
-      Action.create(name: 'renamed', obj_id: current_awsdocument.id, object_type: 'document', object: current_awsdocument.title, organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
-      render json: current_awsdocument, status: 200
-    else
-      Action.create(name: 'renamed', error: true, object_type: 'document', organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
-      render json: current_awsdocument.errors, status: 422
+    if params[:title]
+      if current_awsdocument.update(title: params[:title])
+        Action.create(name: 'renamed', obj_id: current_awsdocument.id, object_type: 'document', object: current_awsdocument.title, organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
+        render json: current_awsdocument, status: 200
+      else
+        Action.create(name: 'renamed', error: true, object_type: 'document', organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
+        render json: current_awsdocument.errors, status: 422
+      end
+    else 
+      dropped = Awsdocument.find params[:id]
+      old_parent = dropped.chapter_id
+      old_pos = dropped.position
+      if params[:parent] == '0'
+        new_parent = current_node.chapters.where(archived: false, parent_id: 0).last.id
+      else
+        new_parent = params[:parent]
+      end
+      new_pos = params[:position].to_i
+      if dropped.update_attributes(position: new_pos, chapter_id: new_parent)
+        docs_to_up = Awsdocument.where(archived: false, chapter_id: old_parent).where("position >= ? AND id != ?", old_pos, dropped.id)
+        docs_to_down = Awsdocument.where(archived: false, chapter_id: new_parent).where("position >= ? AND id != ?", new_pos, dropped.id)
+        docs_to_up.each do |doc|
+          doc.update(position: doc.position - 1)
+        end
+        docs_to_down.each do |doc|
+          doc.update(position: doc.position + 1)
+        end
+        render json: {document: params[:position]}, status: 200
+      else
+        render json: dropped.errors, status: 422
+      end
     end
   end
 
   def destroy
     Action.create(name: 'archived', obj_id: current_awsdocument.id, object_type: 'document', object: current_awsdocument.title, organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
     current_awsdocument.archive
+    if !Awsdocument.where(archived: false).exists?(chapter_id: current_awsdocument.id)
+      doc_to_pull = Awsdocument.where(archived: false, chapter_id: current_awsdocument.chapter_id).where("position > ?", current_awsdocument.position)
+      docs_to_pull.each do |doc|
+        doc.update(position: doc.position - 1)
+      end
+    end
     head 204
   end
   
