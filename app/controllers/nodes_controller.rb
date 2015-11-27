@@ -57,7 +57,7 @@ class NodesController < ApplicationController
           render json: current_node.errors, status: 422
         end
       end
-    else
+    elsif params[:name]
       if current_node.update(name: params[:name])
         Action.create(name: 'renamed', obj_id: current_node.id, object_type: 'node', object: current_node.name, organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
         render json: current_node, status: 200
@@ -65,6 +65,30 @@ class NodesController < ApplicationController
         Action.create(name: 'renamed', error: true, object_type: 'node', organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
         render json: current_node.errors, status: 422
       end
+    elsif params[:parent]
+      if Node.where(archived: false, parent_id: current_node.parent_id).count == 1
+        parent_node = Node.find(current_node.parent_id)
+        parent_node.chapters.create(title: 'main', parent_id: 0, user_id: parent_node.user_id)
+      end
+      if Node.where(archived: false, parent_id: params[:parent]).count > 0
+        if current_node.update(parent_id: params[:parent])
+          render json: current_node, status: 200
+        else
+          render json: current_node.errors, status: 422
+        end
+      else
+        if Node.find(params[:parent]).chapters.count > 1
+          send_error('Forbidden', 403)
+        else
+          if Node.find(params[:parent]).chapters.first.destroy and current_node.update(parent_id: params[:parent])
+            render json: current_node, status: 200
+          else
+            render json: current_node.errors, status: 422
+          end
+        end
+      end
+    else
+      send_error('Bad request', 400)
     end
   end
 

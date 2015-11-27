@@ -3,6 +3,7 @@ class TranslationsController < ApplicationController
   def index
     if params[:lang] == 'fr'
       translation = {
+        DRAG_NODE: 'Impossible de glisser ce neoud',
         TITLE: "Unisphere - Echange de documents pour les établissements d'éducation supérieur",
         DESCRIPTION: "Unisphere est une application web d'échange de documents pour les établissements d'enseignement supérieur. Elle vous fournit les outils necessaire pour améliorer les méthodes d'éducation collaboratives.",
         KEYWORDS: "Unisphere,unisphere,file sharing,university",
@@ -146,6 +147,7 @@ class TranslationsController < ApplicationController
       }
     else
       translation = {
+        DRAG_NODE: 'Impossible to drag this node',
         TITLE: 'Unisphere - File sharing for educational institutions',
         DESCRIPTION: 'Unisphere is a file sharing solution within educational institutions. We provide you with the tools to bring collaborative teaching methods to the next level.',
         KEYWORDS: "Unisphere,unisphere,lycée,école,universitée,échange de documents,collaboration",

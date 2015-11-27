@@ -32,4 +32,21 @@
 }
 
 
+.templink {
+  fill: none;
+  stroke: red;
+  stroke-width: 3px;
+}
+
+.overlay{
+    background-color:#EEE;
+}
+
+.ghostCircle.show{
+  display:block;
+}
+
+.ghostCircle, .activeDrag .ghostCircle{
+  display: none;
+}
 

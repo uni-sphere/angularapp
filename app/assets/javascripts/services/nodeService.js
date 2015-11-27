@@ -19,6 +19,7 @@
     return service;
 
     function changeNode(node){
+      // console.log(node)
       findNodeEnd(node);
       findActiveNodes(node);
       colorActiveNodes($rootScope.nodes);
@@ -90,6 +91,7 @@
 
     function colorActiveNodes(node){
       node.active = false;
+      // console.log($rootScope.activeNodes)
       if(isInDoubleArray(node.num, $rootScope.activeNodes)){
         node.active = true;
       }

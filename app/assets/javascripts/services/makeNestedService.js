@@ -36,11 +36,14 @@
         var treeData = [];
 
         flatData.forEach(function(node) {
-          node.children = []
 
           var parent = dataMap[node.parent];
           if (parent) {
-            parent.children.push(node);
+            if(parent.children == undefined){
+              parent.children = [node]
+            } else{
+              parent.children.push(node);
+            }
           } else {
             treeData.push(node);
           }

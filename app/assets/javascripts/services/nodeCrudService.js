@@ -51,10 +51,13 @@
           for(var i=0; i<node.parent.children.length; i++){
             if(node.parent.children[i].id == node.id){
               node.parent.children.splice(i,1)
+              if(node.parent.children == null){
+                node.parent.children = []
+              }
             }
           }
 
-          Notification.success(success)
+          // Notification.success(success)
           console.log("Ok: Node deleted");
 
           if(node.active){
@@ -90,7 +93,7 @@
           // We allow the transfer if there are chapters, if the the node is a leaf,
           //if the parent will become a leaf once this node is deleted,
           //if the parent node and the current node belong to the same user
-          if(listChapters.tree.length > 1 && !node.children && !node._children && node.parent.children.length == 1 && node.user_id == node.parent.user_id || superadmin){
+          if(listChapters.tree.length > 1 && !node.children && !node._children && node.parent.children.length == 1 && (node.user_id == node.parent.user_id || superadmin)){
             var allowTransfer = true
           } else{
             var allowTransfer = false
@@ -170,7 +173,7 @@
                 }
 
                 resolve();
-                Notification.success(success)
+                // Notification.success(success)
                 console.log("Ok: Node renamed");
 
               }, function(d) {
@@ -225,7 +228,7 @@
           nodeService.changeNode(childNode)
 
           resolve();
-          Notification.success(success)
+          // Notification.success(success)
           console.log("Ok: node added");
 
         }, function(d) {

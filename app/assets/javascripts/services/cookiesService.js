@@ -116,7 +116,7 @@
         // We find select all the node of the top branch to be active
         var tempActiveNodes = []
         var nodes = $rootScope.nodes
-        while(nodes.children.length != 0){
+        while(nodes.children && nodes.children.length != 0){
           tempActiveNodes.unshift([nodes.num, nodes.name])
           nodes = nodes.children[0]
         }
