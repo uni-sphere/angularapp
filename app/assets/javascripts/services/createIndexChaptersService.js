@@ -15,25 +15,31 @@
     function create(treeData){
       return $q(function(resolve, reject){
 
-        // We timeout the promise after one second
-        var timeoutPromise = $timeout(function() {
-          console.log("creation of index timed out");
-          reject();
-        }, 1000);
-
         var lengthItem = findLengthObject(treeData)
         var length = 0
-
         var j = 1;
         var chap = [];
         var savedValueByDepth = [];
         var previousDepth = 0;
+        var parent = 0;
         var filePos = 1;
+
+        // We timeout the promise after one second
+        if(lengthItem > 0){
+          var timeoutPromise = $timeout(function() {
+            console.log("creation of index timed out");
+            reject();
+          }, 1000);
+        }
 
         function createChap(d){
           var newValueByDepth = savedValueByDepth;
-
           if(d.document){
+            if(d.chapter_id != parent){
+              filePos = 1
+              parent = d.chapter_id
+            }
+
             d.chapter = filePos;
             filePos += 1;
           } else{

@@ -6,6 +6,10 @@ class AwsdocumentsController < ApplicationController
   def create
     awsdocument = current_chapter.awsdocuments.new(title: params[:title], content: params[:file], organization_id: current_organization.id, user_id: current_user.id)
     if awsdocument.save
+      docs_to_down = Awsdocument.where(archived: false, chapter_id: current_chapter.id).where("id != ?", awsdocument.id)
+      docs_to_down.each do |doc|
+        doc.update(position: doc.position + 1)
+      end
       Action.create(name: 'created', obj_id: current_chapter.awsdocuments.last.id, object_type: 'document', object: current_chapter.awsdocuments.last.title, organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
       render json: awsdocument, status: 201, location: awsdocument
     else
@@ -28,7 +32,7 @@ class AwsdocumentsController < ApplicationController
       end
     else
       node = Node.find(Chapter.find(Awsdocument.where(id: params[:id], archived: false).first.chapter_id).node_id)
-      render json: {document: Awsdocument.where(id: params[:id], archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived), node_id: node.id, locked: node.locked}.to_json, status: 200
+      render json: {document: Awsdocument.where(id: params[:id], archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived, :position), node_id: node.id, locked: node.locked}.to_json, status: 200
     end
   end
 
@@ -82,8 +86,9 @@ class AwsdocumentsController < ApplicationController
   def destroy
     Action.create(name: 'archived', obj_id: current_awsdocument.id, object_type: 'document', object: current_awsdocument.title, organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
     current_awsdocument.archive
-    if !Awsdocument.where(archived: false).exists?(chapter_id: current_awsdocument.id)
-      doc_to_pull = Awsdocument.where(archived: false, chapter_id: current_awsdocument.chapter_id).where("position > ?", current_awsdocument.position)
+    if Awsdocument.where(archived: false).exists?(chapter_id: current_awsdocument.chapter_id)
+      clear_logs Awsdocument.where(archived: false, chapter_id: current_awsdocument.chapter_id).last.position
+      docs_to_pull = Awsdocument.where(archived: false, chapter_id: current_awsdocument.chapter_id).where("position > ?", current_awsdocument.position)
       docs_to_pull.each do |doc|
         doc.update(position: doc.position - 1)
       end

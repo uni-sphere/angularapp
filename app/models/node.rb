@@ -10,8 +10,20 @@ class Node < ActiveRecord::Base
 
   validates :name, :parent_id, :user_id, presence: true
 
-  before_save :set_superadmin
-
+  before_save :set_superadmin, :add_position
+  
+  def add_position
+    if !self.position 
+      brothers = Node.where(parent_id: self.parent_id, archived: false)
+      if brothers.count == 0
+        last_position = 0  
+      else
+        last_position = brothers.order('position DESC').first.position
+      end
+      self.position = last_position + 1
+    end
+  end
+  
   def set_superadmin
     self.superadmin = true if User.find(self.user_id).superadmin
   end

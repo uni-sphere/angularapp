@@ -66,24 +66,41 @@ class NodesController < ApplicationController
         render json: current_node.errors, status: 422
       end
     elsif params[:parent]
-      if Node.where(archived: false, parent_id: current_node.parent_id).count == 1
+      if Node.where(archived: false, parent_id: current_node.parent_id).count == 1 # if parent becomes leaf, create initial chapter
         parent_node = Node.find(current_node.parent_id)
         parent_node.chapters.create(title: 'main', parent_id: 0, user_id: parent_node.user_id)
       end
-      if Node.where(archived: false, parent_id: params[:parent]).count > 0
-        if current_node.update(parent_id: params[:parent])
-          render json: current_node, status: 200
+      dropped = current_node
+      old_parent = dropped.parent_id
+      old_pos = dropped.position
+      new_parent = params[:parent]
+      new_pos = params[:position].to_i + 1
+      if Node.where(archived: false).exists?(parent_id: params[:parent]) # not leaf
+        if dropped.update(parent_id: params[:parent], position: new_pos)
+          nodes_to_up = Node.where(archived: false, parent_id: old_parent).where("position >= ? AND id != ?", old_pos, dropped.id)
+          nodes_to_down = Node.where(archived: false, parent_id: new_parent).where("position >= ? AND id != ?", new_pos, dropped.id)
+          nodes_to_up.each do |node|
+            node.update(position: node.position - 1)
+          end
+          nodes_to_down.each do |node|
+            node.update(position: node.position + 1)
+          end
+          render json: dropped, status: 200
         else
-          render json: current_node.errors, status: 422
+          render json: dropped.errors, status: 422
         end
-      else
-        if Node.find(params[:parent]).chapters.count > 1
+      else # leaf
+        if Node.find(params[:parent]).chapters.count > 1 # if brothers node, forbidden
           send_error('Forbidden', 403)
         else
-          if Node.find(params[:parent]).chapters.first.destroy and current_node.update(parent_id: params[:parent])
-            render json: current_node, status: 200
+          if Node.find(params[:parent]).chapters.first.destroy and dropped.update(parent_id: params[:parent], position: 1)
+            nodes_to_up = Node.where(archived: false, parent_id: old_parent).where("position >= ? AND id != ?", old_pos, dropped.id)
+            nodes_to_up.each do |node|
+              node.update(position: node.position - 1)
+            end
+            render json: dropped, status: 200
           else
-            render json: current_node.errors, status: 422
+            render json: dropped.errors, status: 422
           end
         end
       end
@@ -115,6 +132,12 @@ class NodesController < ApplicationController
         end
         archive_children(current_node.id)
         current_node.archive
+        if Node.where(archived: false).exists?(parent_id: current_node.parent_id)
+          nodes_to_pull = Node.where(archived: false, parent_id: current_node.parent_id).where("position > ?", current_node.position)
+          nodes_to_pull.each do |node|
+            node.update(position: node.position - 1)
+          end
+        end
         parent.chapters.create(title: 'main', parent_id: 0, user_id: parent.user_id) if current_organization.nodes.where(parent_id: parent.id, archived: false).count == 0
       end
       render json: {deleted: true, node_sons: @node_sons, chapter_sons: @chapter_sons}.to_json, status: 200
@@ -126,33 +149,33 @@ class NodesController < ApplicationController
 
   def index
     nodes = []
-    current_organization.nodes.where(archived: false).each do |node|
+    current_organization.nodes.where(archived: false).order('position ASC').each do |node|
       node_data = []
       if node.chapters.exists?
         queue = [node.chapters.first]
         while queue != [] do
           chapter = queue.pop
           node_data << chapter
-          Awsdocument.where(chapter_id: chapter.id, archived: false).reverse_order.select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).each do |document|
+          Awsdocument.where(chapter_id: chapter.id, archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived, :position).order('position DESC').each do |document|
             node_data << (document) if !document.archived
           end
-          Chapter.where(archived: false, parent_id: chapter.id).reverse_order.each do |chap|
+          Chapter.where(archived: false, parent_id: chapter.id).order('position ASC').each do |chap|
             queue << chap
           end
         end
       end
-      nodes << {name: node.name, num: node.id, parent: node.parent_id, user_id: node.user_id, superadmin: node.superadmin, node_data: node_data, locked: node.locked}
+      nodes << {name: node.name, num: node.id, parent: node.parent_id, user_id: node.user_id, superadmin: node.superadmin, node_data: node_data, locked: node.locked, position: node.position}
     end
     render json: nodes, status: 200
   end
 
   def index_for_mobile
     @tree = []
-    current_user.nodes.where(archived: false).each do |node|
+    current_user.nodes.where(archived: false).order('position ASC').each do |node|
       @tree << node
-      node.chapters.where(archived: false).each do |chapter|
+      node.chapters.where(archived: false).order('position ASC').each do |chapter|
         @tree << chapter
-        chapter.awsdocuments.each do |document|
+        chapter.awsdocuments.order('position DESC').each do |document|
           @tree << document if !document.archived
         end
       end

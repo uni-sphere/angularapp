@@ -18,10 +18,11 @@
 
     function link(scope){
 
-      var drag_node;
+      var drag_node,drag_node_forbidden;
 
-      $translate(['DRAG_NODE']).then(function (translations) {
+      $translate(['DRAG_NODE','DRAG_NODE_F']).then(function (translations) {
         drag_node = translations.DRAG_NODE;
+        drag_node_forbidden = translations.DRAG_NODE_F
       });
 
       $rootScope.$watch('admin', function(newVals, oldVals){
@@ -37,11 +38,10 @@
 
       /*==========  Svg creation  ==========*/
       var margin = {top: 20, right: 20, bottom: 10, left: 30};
-      // var panBoundary = 20;
       var selectedNode = null;
+      var inBetweenNode = null;
       var draggingNode = null;
-      // var dragStarted = false;
-      // var panSpeed = 200;
+      var inBetweenNodeTop = false;
 
       var leftTreeSvg = d3.select($('#view-tree')[0])
         .append("svg")
@@ -63,13 +63,19 @@
       function initiateDrag(d, domNode) {
         draggingNode = d;
         d3.select(domNode).select('.ghostCircle').attr('pointer-events', 'none');
+        d3.select(domNode).select('.ghostInBetweenCircle').attr('pointer-events', 'none');
+        d3.select(domNode).select('.ghostExtremityCircle').attr('pointer-events', 'none');
         d3.selectAll('.ghostCircle').attr('class', 'ghostCircle show');
+        d3.selectAll('.ghostInBetweenCircle').attr('class', 'ghostInBetweenCircle show');
+        d3.selectAll('.ghostExtremityCircle').attr('class', 'ghostExtremityCircle show');
         d3.select(domNode).attr('class', 'node activeDrag');
 
         leftTreeSvg.selectAll("g.node").sort(function(a, b) { // select the parent and sort the path's
+          // console.log(a)
           if (a.id != draggingNode.id) return 1; // a is not the hovered element, send "a" to the back
           else return -1; // a is the hovered element, bring "a" to the front
         });
+
         // if nodes has children, remove the links and nodes
         if (nodes.length > 1) {
           // remove link paths
@@ -120,6 +126,28 @@
         updateTempConnector();
       };
 
+      var overInBetweenCircle = function(d){
+        inBetweenNode = d
+        updateTempConnectorParent();
+      }
+
+      var overInBetweenCircleTop = function(d){
+        inBetweenNode = d
+        inBetweenNodeTop = true
+        updateTempConnectorParent();
+      }
+
+      var overInBetweenCircleBottom = function(d){
+        inBetweenNode = d.parent.children[d.parent.children.length - 1]
+        updateTempConnectorParent();
+      }
+
+      var outInBetweenCircle = function(d){
+        inBetweenNodeTop = false
+        inBetweenNode = null
+        updateTempConnectorParent();
+      }
+
       var updateTempConnector = function() {
         var data = [];
         if (draggingNode !== null && selectedNode !== null) {
@@ -147,10 +175,36 @@
         link.exit().remove();
       };
 
+      var updateTempConnectorParent = function() {
+        var data = [];
+        if (draggingNode !== null && inBetweenNode !== null) {
+          // have to flip the source coordinates since we did this for the existing connectors on the original tree
+          data = [{
+            source: {
+              x: inBetweenNode.parent.y0,
+              y: inBetweenNode.parent.x0
+            },
+            target: {
+              x: draggingNode.y0,
+              y: draggingNode.x0
+            }
+          }];
+        }
+        var link = leftTreeSvg.selectAll(".templinkParent").data(data);
+
+        link.enter().append("path")
+          .attr("class", "templinkParent")
+          .attr("d", d3.svg.diagonal())
+          .attr('pointer-events', 'none');
+
+        link.attr("d", d3.svg.diagonal());
+
+        link.exit().remove();
+      };
+
       // Define the drag listeners for drag/drop behaviour of nodes.
       dragListener = d3.behavior.drag()
         .on("dragstart", function(d) {
-          console.log("drag")
           // Only admin and user who created the node can move it
           if (d == scope.root || (!$rootScope.superadmin && d.user_id != $rootScope.userId)) {
             return;
@@ -167,7 +221,6 @@
             return;
           }
           if (dragStarted) {
-            // console.("hey")
             domNode = this;
             initiateDrag(d, domNode);
           }
@@ -177,6 +230,7 @@
           var node = d3.select(this);
           node.attr("transform", "translate(" + d.y0 + "," + d.x0 + ")");
           updateTempConnector();
+          updateTempConnectorParent();
         }).on("dragend", function(d) {
           if (d == scope.root || (!$rootScope.superadmin && d.user_id != $rootScope.userId)) {
             return;
@@ -191,43 +245,89 @@
             if(typeof selectedNode.children !== 'undefined' || typeof selectedNode._children !== 'undefined') {
               if (typeof selectedNode.children !== 'undefined') {
                 selectedNode.children.push(draggingNode);
-                // draggingNode.parent = selectedNode
               } else {
                 selectedNode._children = [draggingNode];
-                // draggingNode.parent = selectedNode
               }
             } else {
               selectedNode.children = [draggingNode];
-              // draggingNode.parent = selectedNode
             }
 
             // Make sure that the node being added to is expanded so user can see added node is correctly moved
             expand(selectedNode);
 
             // We send all to the backend
-            Restangular.one('nodes/'+ draggingNode.id).put({parent: selectedNode.id}).then(function(res) {
+            Restangular.one('nodes/'+ draggingNode.id).put({parent: selectedNode.id, position: selectedNode.id}).then(function(res) {
               console.log("Ok: node drag and dropped")
             }, function(error) {
-              console.log("Error: Impossible to drag and drop this node")
-              console.log(error)
-              Notification.error(drag_node)
-              cookiesService.reload()
+              if(error.status == 403){
+                console.log("Ok: can't dragndrop here")
+                Notification.error(drag_node_forbidden)
+                cookiesService.reload()
+              } else{
+                console.log("Error: Impossible to drag and drop this node")
+                console.log(error)
+                Notification.error(drag_node)
+                cookiesService.reload()
+              }
             })
 
             endDrag();
-          } else {
+          } else if(inBetweenNode) {
+
+            // We remove the dragging node from its position
+            var index = draggingNode.parent.children.indexOf(draggingNode);
+            draggingNode.parent.children.splice(index, 1);
+
+            // If the node is not on top
+            if(!inBetweenNodeTop){
+
+              // We insert it at the required position
+              var indexBetweenNode = inBetweenNode.parent.children.indexOf(inBetweenNode) + 1;
+              inBetweenNode.parent.children.splice(indexBetweenNode,0,draggingNode)
+
+              // We send all to the backend
+              Restangular.one('nodes/'+ draggingNode.id).put({parent: inBetweenNode.parent.id, position: indexBetweenNode}).then(function(res) {
+                console.log("Ok: node drag and dropped")
+              }, function(error) {
+                console.log("Error: Impossible to drag and drop this node")
+                console.log(error)
+                Notification.error(drag_node)
+                cookiesService.reload()
+              })
+            } else{
+              // We insert it at the beggining
+              inBetweenNode.parent.children.unshift(draggingNode)
+
+              Restangular.one('nodes/'+ draggingNode.id).put({parent: inBetweenNode.parent.id, position: 0}).then(function(res) {
+                console.log("Ok: node drag and dropped")
+              }, function(error) {
+                console.log("Error: Impossible to drag and drop this node")
+                console.log(error)
+                Notification.error(drag_node)
+                cookiesService.reload()
+              })
+            }
+            endDrag();
+          } else{
             endDrag();
           }
         });
 
       function endDrag() {
         selectedNode = null;
+        inBetweenNode = null;
+        inBetweenNodeTop = false;
         d3.selectAll('.ghostCircle').attr('class', 'ghostCircle');
+        d3.selectAll('.ghostInBetweenCircle').attr('class', 'ghostInBetweenCircle');
+        d3.selectAll('.ghostExtremityCircle').attr('class', 'ghostExtremityCircle');
         d3.select(domNode).attr('class', 'node');
 
         // now restore the mouseover event or we won't be able to drag a 2nd time
         d3.select(domNode).select('.ghostCircle').attr('pointer-events', '');
+        d3.select(domNode).select('.ghostInBetweenCircle').attr('pointer-events', '');
+        d3.select(domNode).select('.ghostExtremityCircle').attr('pointer-events', '');
         updateTempConnector();
+        updateTempConnectorParent();
         if (draggingNode !== null) {
 
           // We need to first do the animation ( to update parents ) than change the colors
@@ -322,9 +422,35 @@
           d.y = d.depth * lengthLink
         });
 
+        // ellipseArray = [];
+        nodes.forEach(function(d) {
+          if(d.children != undefined){
+            if(d.children.length == 1){
+              d.children[0].extremity = 2
+              d.children[0].x1 = null
+              d.children[0].y1 = null
+            } else if (d.children.length > 1) {
+              d.children[0].extremity = 0
+              d.children[d.children.length - 1].extremity = 1
+              d.children[d.children.length - 1].x1 = null
+               d.children[d.children.length - 1].y1 = null
+              for(i=d.children.length -1; i>0; i--){
+                if(i <d.children.length - 1){
+                  d.children[i].extremity = null
+                }
+                d.children[i-1].x1 = d.children[i].x
+                d.children[i-1].y1 = d.children[i].y
+                d.children[i-1].topSibling = d.children[i]
+              }
+            }
+          }
+        });
+
         /*====================================
         =            Update nodes            =
         ====================================*/
+
+
 
         var node = leftTreeSvg.selectAll("g.node")
           .data(nodes, function(d) { return d.id || (d.id = d.num); });
@@ -347,8 +473,6 @@
           .style("stroke", "cornflowerblue")
           .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff" })
           .on('click', toggleNode)
-          // .call(dragListener)
-          // .on("click", toggleNode)
 
 
         // We have a different display when the user is an admin or not
@@ -359,7 +483,7 @@
           nodeEnter.append("text")
             // .call(dragListener)
             .attr("class", function(d){
-              if(typeof d.parent != 'object'){
+              if(d.parent == 0){
                 return ""
               } else if(d.user_id == $rootScope.userId || $rootScope.superadmin){
                 return "renameNode"
@@ -367,7 +491,7 @@
                 return "justDisplayNode"
               }
             })
-            .text(function(d) { return d.name; })
+            .text(function(d) { return d.parent == 0 ? '' : d.name ; })
             .on("click", renameNode)
             .attr("y", function(d) { return d.children ? 25 : 5; })
             .attr("text-anchor", function(d){
@@ -409,52 +533,91 @@
             .on("click", deleteNode)
 
           nodeEnter.append("circle")
+            .attr('class', 'ghostInBetweenCircle')
+            .attr("opacity", 0.2) // change this to zero to hide the target area
+            .style("fill", "blue")
+            .attr("cy", function(node){
+               if(node.y1){
+                var offset = Math.abs(node.x1 - node.x)*.5
+                return offset
+              }
+            })
+            .attr('r', function(node){
+              if(node.y1){
+                return 10
+              } else{
+                return 0
+              }
+            })
+            .attr('pointer-events', 'mouseover')
+            .on("mouseover", overInBetweenCircle)
+            .on("mouseout", outInBetweenCircle)
+
+          nodeEnter.append("circle")
+            .attr('class', 'ghostExtremityCircle')
+            .attr('r', function(node){
+              if(node.extremity == 0 || node.extremity == 1 || node.extremity == 2){
+                return "10"
+              } else{
+                return ""
+              }
+            })
+            .attr("opacity", 0.2) // change this to zero to hide the target area
+            .style("fill", "blue")
+            .attr("cy", function(node){
+              if(node.extremity == 0 || node.extremity == 2){
+                return -24
+              } else{
+                return 24
+              }
+            })
+            .attr("cx", function(node){
+              if(node.extremity == 0 || node.extremity == 2){
+                return -10
+              } else{
+                return 10
+              }
+            })
+            .attr('pointer-events', 'mouseover')
+            .on("mouseover", function(node){
+              if(node.extremity == 0 || node.extremity == 2){
+                overInBetweenCircleTop(node)
+              } else{
+                overInBetweenCircleBottom(node)
+              }
+            })
+            .on("mouseout", outInBetweenCircle)
+
+          // We create a second layer to make all red element higher than blue ones!!
+          nodeEnter
+            .append("circle")
             .attr('class', 'ghostCircle')
-            .attr("r", 25)
+            .attr("r", function(node){
+              if(!node.children){
+                return 15
+              } else{
+                return 0
+              }
+            })
             .attr("opacity", 0.2) // change this to zero to hide the target area
             .style("fill", "red")
             .attr('pointer-events', 'mouseover')
-            .on("mouseover", function(node) {
-              overCircle(node);
-            })
-            .on("mouseout", function(node) {
-              outCircle(node);
-            });
-
-          // nodeEnter.append("circle")
-          //   .attr('class', 'ghostInBetweenCircle')
-          //   .attr('display', function(node){
-          //     if(node.parent.children && node.parent.children.length > 1){
-          //       console.log(node.parent)
-          //       return 'block'
-          //     } else{
-          //       return 'none'
-          //     }
-          //   })
-          //   .attr("opacity", 0.2) // change this to zero to hide the target area
-          //   .style("fill", "blue")
-          //   .attr("r", 5)
-          //   .attr("cy", -35)
-
-            // .attr('pointer-events', 'mouseover')
-            // .on("mouseover", function(node) {
-            //   overInBetweenCircle(node);
-            // })
-            // .on("mouseout", function(node) {
-            //   overInBetweenCircle(node);
-            // });
+            .on("mouseover", overCircle)
+            .on("mouseout", outCircle)
         }
+
+
         // NOT admin
         else{
            // Label of the node. When clicked it opens the node
           nodeEnter.append("text")
-            .attr("class", function(d){return typeof d.parent === 'object' ? "nameNode" : ""})
+            .attr("class", function(d){return d.parent == 0 ? "" : "nameNode"})
             .attr("x", function(d) { return d.children ? 0 : 15; })
             .attr("y", function(d) { return d.children ? 25 : 5; })
             .attr("text-anchor", function(d) { return d.children ? "middle" : "start"; })
-            .text(function(d) { return d.name; })
+            .text(function(d) { return d.parent == 0 ? '' : d.name ; })
             .style("fill-opacity", 1e-6)
-            // .on("click", toggleNode)
+            .on("click", toggleNode)
         }
 
         /*========================================
@@ -493,6 +656,7 @@
         // We change the position of the text if it is an leaf or not
         nodeUpdate.select("text.nameNode, text.justDisplayNode, text.renameNode")
           .style("fill-opacity", 1)
+          .text(function(d) { return d.parent == 0 ? '' : d.name ; })
           .attr("y", function(d) { return d.children ? 25 : 5; })
           .attr("text-anchor", function(d){
             if(d.children){
@@ -504,6 +668,44 @@
           .attr("x", function(d){
             if(!d.children){
               return 15
+            }
+          })
+
+        nodeUpdate.select("circle.ghostInBetweenCircle")
+          .attr("cy", function(node){
+            if(node.x1){
+              var offset = Math.abs(node.x1 - node.x)*.5
+              return offset
+            }
+          })
+          .attr("r", function(node){
+            if(node.y1){
+              return 10
+            }
+          })
+
+        nodeUpdate.select("circle.ghostExtremityCircle")
+          .attr("cy", function(node){
+            if(node.extremity == 0 || node.extremity == 2){
+              return -24
+            } else if(node.extremity == 1){
+              return 24
+            }
+          })
+          .attr("r", function(node){
+            if(node.extremity == 0 || node.extremity == 1 || node.extremity == 2){
+              return 10
+            } else{
+              return 0
+            }
+          })
+
+       nodeUpdate.select("circle.ghostCircle")
+          .attr("r", function(node){
+            if(!node._children ){
+              return 15
+            } else{
+              return 0
             }
           })
 
@@ -575,23 +777,25 @@
       }
 
       function deleteNode(node){
+        if (d3.event.defaultPrevented) return;
         nodeCrudService.deleteNode(node, $rootScope.superadmin).then(function(){
           update(node.parent, 750);
         })
       }
 
       function addNode(node){
-        if (d3.event.defaultPrevented) return; // click suppressed
+        if (d3.event.defaultPrevented) return;
         nodeCrudService.add(node).then(function(){
           update(node, 750)
         })
       }
 
       function renameNode(node){
+        if (d3.event.defaultPrevented) return;
         // In case this node belongs to the user or if he is super user
         if(node.user_id == $rootScope.userId || $rootScope.superadmin){
           nodeCrudService.rename(node).then(function(){
-            update(node, 750)
+            update(scope.root, 1)
           })
         }
       }

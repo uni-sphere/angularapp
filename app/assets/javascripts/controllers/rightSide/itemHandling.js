@@ -36,6 +36,17 @@
           event.source.nodeScope.$modelValue.depth = 0
         }
 
+        // we change the chapter_id of the files
+        if(event.source.nodeScope.$modelValue.document){
+          if(event.dest.nodesScope.$nodeScope != null){
+            parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
+            event.source.nodeScope.$modelValue.chapter_id = parent_id
+          } else{
+            event.source.nodeScope.$modelValue.chapter_id = event.source.nodeScope.$modelValue.main
+          }
+          // console.log(event.source.nodeScope.$modelValue.chapter_id)
+        }
+
         $scope.selectChapter(event.source.nodeScope)
 
         // we change the index
@@ -44,7 +55,8 @@
           if(!event.source.nodeScope.$modelValue.document){
             //order
             var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
-            var chapNumber = chapterNumberStr.substr(0,chapterNumberStr.indexOf('.'))
+            var parts = chapterNumberStr.split('.')
+            var chapNumber = parts[parts.length - 2]
 
             // source
             var source = event.source.nodeScope.$modelValue
@@ -147,10 +159,10 @@
         }
 
         // If the chapters is getting opened and has item, we color it
-        if(node.collapsed || node.$modelValue.items.length == 0){
+        // if(node.collapsed || node.$modelValue.items.length == 0){
           node.$modelValue.selectedItem = true;
           $rootScope.activeChapter = node;
-        }
+        // }
 
         // We hide the dropdown
         $('.dropdown.active').removeClass('active')

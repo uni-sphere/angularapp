@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151101010003) do
+ActiveRecord::Schema.define(version: 20151101010004) do
 
   create_table "actions", force: :cascade do |t|
     t.integer  "user_id"
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 20151101010003) do
     t.string   "password_hash"
     t.boolean  "locked",          default: false
     t.boolean  "superadmin",      default: false
+    t.integer  "position"
   end
 
   create_table "organizations", force: :cascade do |t|

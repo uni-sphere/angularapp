@@ -76,15 +76,16 @@
             node.extension = node.title.split('.')[1].toLowerCase();
           }
           delete node.id
-          delete node.chapter_id
+          // delete node.chapter_id
           delete node.url
         } else{
           node.parent = node.parent_id
-          delete node.parent_id
+          // delete node.parent_id
         }
 
         if(node.parent == mainId){
           delete node.parent
+          node.main = mainId
         }
 
       });

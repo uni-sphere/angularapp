@@ -22,10 +22,10 @@ class ChaptersController < ApplicationController
     while queue != [] do
       chapter = queue.pop
       tree << chapter
-      Awsdocument.where(chapter_id: chapter.id, archived: false).order('position ASC').order('position ASC').select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).each do |document|
+      Awsdocument.where(chapter_id: chapter.id, archived: false).order('position DESC').select(:title, :user_id, :chapter_id, :organization_id, :id, :archived, :position).each do |document|
         tree << (document) if !document.archived
       end
-      Chapter.where(archived: false, parent_id: chapter.id).order('position ASC').order('position ASC').each do |chap|
+      Chapter.where(archived: false, parent_id: chapter.id).order('position ASC').each do |chap|
         queue << chap
       end
     end
@@ -71,6 +71,12 @@ class ChaptersController < ApplicationController
     Action.create(name: 'destroyed', obj_id: current_chapter.id, object_type: 'chapter', object: current_chapter.title, organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
     @tree = []
     destroy_with_children(current_chapter.id)
+    if Chapter.where(archived: false).exists?(parent_id: current_chapter.parent_id)
+      chapters_to_pull = Chapter.where(archived: false, parent_id: current_chapter.parent_id).where("position > ?", current_chapter.position)
+      chapters_to_pull.each do |chapter|
+        chapter.update(position: chapter.position - 1)
+      end
+    end
     render json: {tree: @tree}.to_json, status: 200
   end
 
@@ -78,7 +84,7 @@ class ChaptersController < ApplicationController
     tree = []
     current_node.chapters.where(archived: false).order('position ASC').each do |chapter|
       tree << chapter
-      Awsdocument.where(chapter_id: chapter.id, archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived).order('position ASC').each do |document|
+      Awsdocument.where(chapter_id: chapter.id, archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived, :position).order('position ASC').each do |document|
         tree << (document) if !document.archived
       end
     end
@@ -113,13 +119,6 @@ class ChaptersController < ApplicationController
       end
     end
     @tree << id
-    if !Chapter.where(archived: false).exists?(parent_id: id)
-      chapter = Chapter.where(archived: false).find(id)
-      chapters_to_pull = Chapter.where(archived: false, parent_id: chapter.parent_id).where("position > ?", chapter.position)
-      chapters_to_pull.each do |chapter|
-        chapter.update(position: chapter.position - 1)
-      end
-    end
     Chapter.where(archived: false).find(id).archive
   end
 

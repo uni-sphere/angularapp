@@ -38,7 +38,6 @@
   font-weight: 500;
   height: 40px;
   line-height: 40px;
-  // padding: 0px 9px;
   color: $document-color;
   cursor: pointer;
 
@@ -62,7 +61,12 @@
 .angular-ui-tree-placeholder {
   background: #f0f9ff;
   border: 2px dashed #bed2db;
+  color: white;
   box-sizing: border-box;
+}
+
+.angular-ui-tree-drag{
+  display: none !important;
 }
 
 .isdocument{
@@ -87,12 +91,6 @@
   font-size: 1.5em;
   color: #007CCE;
   text-align: center;
-
-  .fa{
-    // margin-bottom: 0px;
-    // vertical-align: middle;
-    // text-align: center;
-  }
 
   &:hover,&:focus {
     color: #0065A8;
@@ -130,7 +128,6 @@
   display: table-cell;
   width: 24px;
   text-align: center;
-  // margin-left: 10px;
   color: $fa-color;
 }
 
@@ -145,7 +142,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: table-cell;
-
 }
 
 /*----------  Buttons  ----------*/

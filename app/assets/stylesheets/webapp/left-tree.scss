@@ -32,21 +32,28 @@
 }
 
 
-.templink {
+.templink{
   fill: none;
   stroke: red;
   stroke-width: 3px;
 }
 
-.overlay{
-    background-color:#EEE;
+.templinkParent{
+  fill: none;
+  stroke: blue;
+  stroke-width: 3px;
 }
 
-.ghostCircle.show{
+.overlay{
+  background-color:#EEE;
+}
+
+.ghostCircle.show, .ghostInBetweenCircle.show, .ghostExtremityCircle.show{
   display:block;
 }
 
-.ghostCircle, .activeDrag .ghostCircle{
+.ghostCircle, .activeDrag .ghostCircle, .ghostInBetweenCircle, .activeDrag .ghostInBetweenCircle, .ghostExtremityCircle, .activeDrag .ghostExtremityCircle{
   display: none;
 }
+
 
