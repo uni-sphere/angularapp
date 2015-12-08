@@ -258,20 +258,23 @@
             // We send all to the backend
             Restangular.one('nodes/'+ draggingNode.id).put({parent: selectedNode.id, position: selectedNode.id}).then(function(res) {
               console.log("Ok: node drag and dropped")
+              endDrag();
             }, function(error) {
               if(error.status == 403){
                 console.log("Ok: can't dragndrop here")
                 Notification.error(drag_node_forbidden)
                 cookiesService.reload()
+                draggingNode = null;
+                endDrag();
               } else{
                 console.log("Error: Impossible to drag and drop this node")
                 console.log(error)
                 Notification.error(drag_node)
                 cookiesService.reload()
+                draggingNode = null;
+                endDrag();
               }
             })
-
-            endDrag();
           } else if(inBetweenNode) {
 
             // We remove the dragging node from its position
@@ -288,18 +291,21 @@
               // We send all to the backend
               Restangular.one('nodes/'+ draggingNode.id).put({parent: inBetweenNode.parent.id, position: indexBetweenNode}).then(function(res) {
                 console.log("Ok: node drag and dropped")
+                endDrag();
               }, function(error) {
                 console.log("Error: Impossible to drag and drop this node")
                 console.log(error)
                 Notification.error(drag_node)
                 cookiesService.reload()
+                draggingNode = null;
+                endDrag();
               })
             } else{
               // We insert it at the beggining
               inBetweenNode.parent.children.unshift(draggingNode)
-
               Restangular.one('nodes/'+ draggingNode.id).put({parent: inBetweenNode.parent.id, position: 0}).then(function(res) {
                 console.log("Ok: node drag and dropped")
+                endDrag();
               }, function(error) {
                 console.log("Error: Impossible to drag and drop this node")
                 console.log(error)
@@ -307,7 +313,6 @@
                 cookiesService.reload()
               })
             }
-            endDrag();
           } else{
             endDrag();
           }

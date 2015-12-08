@@ -359,7 +359,7 @@ DEPENDENCIES
   font-awesome-rails
   geokit-rails
   guard-rspec
-  mysql2
+  mysql2 (= 0.3.18)
   ng-rails-csrf
   omniauth
   puma
@@ -378,3 +378,6 @@ DEPENDENCIES
   sqlite3
   therubyracer
   uglifier
+
+BUNDLED WITH
+   1.10.6

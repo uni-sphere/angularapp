@@ -22,6 +22,7 @@
       Restangular.one('nodes').get().then(function (nodes) {
         console.log("Ok: node retrieved")
         var flatNode = nodes.plain();
+        $rootScope.flatNode = flatNode
         makeNestedService.node(flatNode).then(function(treeNodes){
           $rootScope.nodes = treeNodes
           cookieGestion(flatNode).then(function(){

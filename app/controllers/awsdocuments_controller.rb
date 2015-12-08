@@ -4,7 +4,7 @@ class AwsdocumentsController < ApplicationController
   before_action :is_allowed?, only: [:update, :destroy, :archives]
 
   def create
-    awsdocument = current_chapter.awsdocuments.new(title: params[:title], content: params[:file], organization_id: current_organization.id, user_id: current_user.id)
+    awsdocument = current_chapter.awsdocuments.new(title: params[:title], content: params[:file], organization_id: current_organization.id, user_id: current_user.id, position: 1)
     if awsdocument.save
       docs_to_down = Awsdocument.where(archived: false, chapter_id: current_chapter.id).where("id != ?", awsdocument.id)
       docs_to_down.each do |doc|
@@ -87,9 +87,8 @@ class AwsdocumentsController < ApplicationController
     Action.create(name: 'archived', obj_id: current_awsdocument.id, object_type: 'document', object: current_awsdocument.title, organization_id: current_organization.id, user_id: current_user.id, user: current_user.email)
     current_awsdocument.archive
     if Awsdocument.where(archived: false).exists?(chapter_id: current_awsdocument.chapter_id)
-      clear_logs Awsdocument.where(archived: false, chapter_id: current_awsdocument.chapter_id).last.position
-      docs_to_pull = Awsdocument.where(archived: false, chapter_id: current_awsdocument.chapter_id).where("position > ?", current_awsdocument.position)
-      docs_to_pull.each do |doc|
+      docs_to_up = Awsdocument.where(archived: false, chapter_id: current_awsdocument.chapter_id).where("position > ?", current_awsdocument.position)
+      docs_to_up.each do |doc|
         doc.update(position: doc.position - 1)
       end
     end

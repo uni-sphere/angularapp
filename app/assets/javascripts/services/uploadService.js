@@ -2,16 +2,12 @@
   angular
     .module('mainApp.services')
     .service('uploadService', uploadService);
-
   uploadService.$inject = ['$rootScope', 'Restangular', 'Notification', 'ipCookie', 'spinnerService', 'Upload', 'createIndexChaptersService', 'cookiesService', '$translate', '$q'];
   function uploadService($rootScope, Restangular, Notification, ipCookie, spinnerService, Upload, createIndexChaptersService, cookiesService, $translate, $q){
-
     var service = {
       upload: upload
     }
-
     return service;
-
     var dragndrop,
       nodeId,
       listItems,
@@ -26,13 +22,11 @@
       file_warning,
       chapter_success,
       chapter_error,
-      chapter_warning;
-
-
-
-
-    function upload(files, position_chapter, node_id, list_items){
-      spinnerService.begin()
+      chapter_warning,
+      error,
+      success,
+      cancel_warning,
+      forbidden;
 
       $translate(['ERROR', 'SUCCESS', 'NW_CANCEL', 'FORBIDDEN']).then(function (translations) {
         error = translations.ERROR;
@@ -41,13 +35,15 @@
         forbidden = translations.FORBIDDEN;
       });
 
+    function upload(files, position_chapter, node_id, list_items){
+      spinnerService.begin()
       nodeId = node_id;
       listItems = list_items;
       foldersArray = [];
       filesArray = [];
       chapterUploadedArray = [];
-      chapterUploaded = false;
-      numberOfRequest = 0;
+      // chapterUploaded = false;
+      numberOfRequest = files.length;
 
       // If give the position of the parent.
       if(position_chapter == undefined){
@@ -68,14 +64,14 @@
       // There are folder to upload
       if(foldersArray.length != 0){
         uploadAllFolder(parentChapter).then(function(){
-           // We go through all the chapter we uploaded.
+          // We go through all the chapter we uploaded.
           // We look if the path of our files are the same than the chapters
           // If we found some we save them in filesToUpload to send them all at onces
+
           for(i=0; i< chapterUploadedArray.length; i++){
             var filesToUpload = []
             for(j=0; j<filesArray.length; j++){
               if(filesArray[j].path.substring(0, filesArray[j].path.lastIndexOf('/')) == chapterUploadedArray[i].path){
-
                 filesToUpload.push(filesArray[j])
               }
             }
@@ -94,38 +90,62 @@
 
     function uploadAllFolder(positionChapter){
       return $q(function(resolve, reject){
-        uploadFolder(foldersArray[0], positionChapter).then(function(){
+        uploadFolder(foldersArray[0], positionChapter).then(function(chapterUploaded){
           // We watch each time a folder has been uploaded.
           // If the upload of this folder allows to upload another one than we do it.
-          stopWatchingFolders = $rootScope.$watch(function() {
-            return chapterUploaded;
-          }, function watchCallback(newValue, oldValue) {
-            if(chapterUploaded){
-              for (i=0; i<foldersArray.length; i++){
-                if(foldersArray[i].path.substring(0, foldersArray[i].path.lastIndexOf('/')) == chapterUploaded.path){
-                  uploadFolder(foldersArray[i], chapterUploaded).then(function(){
-                    if(foldersArray.length == 0){
-                      resolve();
-                      stopWatchingFolders();
-                    }
-                  })
+
+          plop(chapterUploaded)
+
+          function plop(chapterUploaded){
+            // var copyFoldersArray = foldersArray
+            var copyFoldersArray = (JSON.parse(JSON.stringify(foldersArray)));
+            lookForFolderToUpload(chapterUploaded)
+
+            function lookForFolderToUpload(chapterUploaded){
+
+              var folder = copyFoldersArray.pop()
+              // console.log(copyFoldersArray)
+              // console.log(folder)
+
+              // console.log(folder.path.substring(0, folder.path.lastIndexOf('/')))
+              // console.log(chapterUploaded.path)
+              // console.log(copyChapterUploaded.path + "!!!!!!!!1")
+              if(folder && folder.path.substring(0, folder.path.lastIndexOf('/')) == chapterUploaded.path){
+                // console.log("cool " + folder.path)
+                uploadFolder(folder, chapterUploaded).then(function(chapterJustUploaded){
+
+                  console.log(foldersArray)
+                  if(foldersArray.length == 0){
+                    resolve();
+                  }
+
+                  plop(chapterJustUploaded)
+                  // console.log(copyFoldersArray)
+                  if(copyFoldersArray.length != 0){
+                    lookForFolderToUpload(chapterUploaded)
+                  }
+
+
+                })
+              } else{
+                if(copyFoldersArray.length != 0){
+                  // console.log("anyway " + folder.path)
+                  lookForFolderToUpload(chapterUploaded)
                 }
               }
-            }
-          }, true);
-        })
 
+
+            }
+
+          }
+
+
+        })
       })
     }
 
-    function uploadFiles(files, parentChapter){
-      // console.log(files)
-      // console.log(parentChapter)
-
-      for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        numberOfRequest += 1;
-
+    function uploadOneFile(file, parentChapter){
+      return $q(function(resolve, reject){
         Upload.upload({
           url: getEnvironment() + '/awsdocuments',
           file: file,
@@ -137,29 +157,27 @@
           }
         }).then(function(fileUploaded) {
           var fileToAdd = {parent: fileUploaded.chapter_id, title: fileUploaded.data.title, doc_id: fileUploaded.data.id, document: true, user_id: fileUploaded.data.user_id, extension: fileUploaded.data.title.split('.').pop()}
-
-          numberOfRequest -= 1;
-          if(numberOfRequest == 0){
-            spinnerService.stop();
-          }
+          resolve();
+          // numberOfRequest -= 1;
+          // if(numberOfRequest == 0){
+          //   spinnerService.stop();
+          // }
           // Notification
           console.log("OK document uploaded: " + fileUploaded.data.title);
-          Notification.success(success)
-
+          // Notification.success(success)
           // We add the file to listItem
           if(parentChapter.id == 0){
             listItems.unshift(fileToAdd);
           } else{
             parentChapter.items.unshift(fileToAdd);
           }
-
           // If the parent chapter was not already folded we fold it.
           if(parentChapter.id !=0 && $rootScope.foldedChapters.indexOf(parentChapter.id) == -1){
             $rootScope.foldedChapters.push(parentChapter.id);
             ipCookie('foldedChapters', $rootScope.foldedChapters);
           }
-
         }, function(d) {
+          reject()
           spinnerService.stop()
           if (d.status == 403) {
             console.log("Ok: Upload documents forbidden");
@@ -175,15 +193,40 @@
             console.log("Error: Upload document failed :" +  file.name + ". Please refresh.");
           }
         });
+      })
+    }
+
+
+    function uploadFiles(files, parentChapter){
+      // for (var i = 0; i < files.length; i++) {
+      // var file = files[i];
+      // numberOfRequest += 1;
+
+      function IterateUploadFiles(){
+        file = files.pop()
+        uploadOneFile(file,parentChapter).then(function(){
+          numberOfRequest -= 1;
+          if(numberOfRequest == 0){
+            spinnerService.stop();
+          }
+          if(files.length > 0){
+            IterateUploadFiles()
+          }
+        });
       }
 
+      IterateUploadFiles()
     }
 
     function uploadFolder(folder, parentChapter){
+      // console.log(parentChapter)
       return $q(function(resolve, reject){
         var chapterToCreate ={title: folder.name, node_id: nodeId, parent_id: parentChapter.id}
-
         Restangular.all('chapters').post(chapterToCreate).then(function(chapter) {
+          numberOfRequest -= 1;
+          if(numberOfRequest == 0){
+            spinnerService.stop();
+          }
 
           // We find the depth of the chapter
           if(parentChapter.id == 0){
@@ -191,36 +234,29 @@
           } else{
             var depth = parentChapter.depth + 1;
           }
-
           // We add the chapter to listItem
           chapterToAdd = {path: folder.path, title: folder.name, id: chapter.id, items: [], depth: depth, user_id: chapter.user_id}
           chapterUploadedArray.push(chapterToAdd)
-
           // We remove the current folder froms the folders and save it chapterUploaded
           removeFolderFromFolders(folder).then(function(){
-            resolve();
+            resolve(chapterToAdd);
           })
-          chapterUploaded = chapterToAdd;
-
+          // chapterUploaded = chapterToAdd;
           if(parentChapter.id == 0){
             listItems.push(chapterToAdd);
           } else{
             parentChapter.items.push(chapterToAdd);
           }
-
           // Notifications
-          Notification.success(success)
+          // Notification.success(success)
           console.log("OK chapter created: " + folder.name);
-
           // If we had a chapter in a chapter. We fold the parent
           if(parentChapter.id !=0 && $rootScope.foldedChapters.indexOf(parentChapter.id) == -1){
             $rootScope.foldedChapters.push(parentChapter.id);
             ipCookie('foldedChapters', $rootScope.foldedChapters);
           }
-
           // We index the chapters
           createIndexChaptersService.create(listItems)
-
         }, function(d) {
           removeFolderFromFolders(folder).then(function(){
             resolve();
@@ -235,6 +271,7 @@
             $rootScope.reloadNodes()
           } else{
             console.log("Chapter creation problem")
+            console.log(d)
             Notification.error(error)
           }
         });
@@ -263,6 +300,6 @@
         return "http://api.unisphere.eu"
       }
     }
-
   }
+
 })();

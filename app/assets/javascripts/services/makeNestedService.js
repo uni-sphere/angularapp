@@ -53,14 +53,15 @@
     }
 
     function item(flatData){
-      // console.log(flatData)
+      console.log(flatData)
       var dataMap = flatData.reduce(function(map, node) {
         map[node.id] = node;
         return map;
       }, {});
 
       var treeData = [];
-      var mainId = flatData.shift().id
+      var mainId = flatData.shift()
+      var mainId = mainId.id
       flatData.forEach(function(node) {
 
         node.depth = 0;
@@ -100,6 +101,7 @@
         }
       });
 
+      // console.log(treeData)
       return treeData;
     }
   }

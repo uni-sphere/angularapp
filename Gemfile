@@ -54,7 +54,7 @@ end
 gem 'railroady'
 
 group :production do
-  gem 'mysql2'
+  gem 'mysql2', '0.3.18'
   gem 'therubyracer'
 end
 

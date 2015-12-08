@@ -14,6 +14,7 @@
       collapseSelectively: collapseSelectively,
       colorActiveNodes: colorActiveNodes,
       findBreadCrumb: findBreadCrumb,
+      findNode: findNode
     }
 
     return service;
@@ -24,6 +25,16 @@
       findActiveNodes(node);
       colorActiveNodes($rootScope.nodes);
       findBreadCrumb();
+    }
+
+    function findNode(id){
+      res = false
+      angular.forEach($rootScope.flatNode, function(value, key) {
+        if(value.id == id){
+          res = value
+        }
+      });
+      return res
     }
 
     /*----------  Find nodeEnd  ----------*/

@@ -156,11 +156,11 @@ class NodesController < ApplicationController
         while queue != [] do
           chapter = queue.pop
           node_data << chapter
-          Awsdocument.where(chapter_id: chapter.id, archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived, :position).order('position DESC').each do |document|
+          Awsdocument.where(chapter_id: chapter.id, archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived, :position).order('position ASC').each do |document|
             node_data << (document) if !document.archived
           end
-          Chapter.where(archived: false, parent_id: chapter.id).order('position ASC').each do |chap|
-            queue << chap
+          Chapter.where(archived: false, parent_id: chapter.id).order('position ASC, created_at ASC').each do |chap|
+            queue.unshift(chap)
           end
         end
       end
@@ -175,7 +175,7 @@ class NodesController < ApplicationController
       @tree << node
       node.chapters.where(archived: false).order('position ASC').each do |chapter|
         @tree << chapter
-        chapter.awsdocuments.order('position DESC').each do |document|
+        chapter.awsdocuments.order('position ASC').each do |document|
           @tree << document if !document.archived
         end
       end

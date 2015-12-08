@@ -2,8 +2,8 @@
   angular
     .module('mainApp.directives')
     .directive('rightTree', rightTree);
-  rightTree.$inject = ['$window', '$rootScope', 'Restangular', 'Notification', 'ipCookie', 'makeNestedService', 'createIndexChaptersService', 'browserService', 'uploadService', 'cookiesService', '$translate']
-  function rightTree($window, $rootScope, Restangular, Notification, ipCookie, makeNestedService, createIndexChaptersService, browserService, uploadService, cookiesService, $translate){
+  rightTree.$inject = ['nodeService', '$window', '$rootScope', 'Restangular', 'Notification', 'ipCookie', 'makeNestedService', 'createIndexChaptersService', 'browserService', 'uploadService', 'cookiesService', '$translate']
+  function rightTree(nodeService, $window, $rootScope, Restangular, Notification, ipCookie, makeNestedService, createIndexChaptersService, browserService, uploadService, cookiesService, $translate){
 
     var directive = {
       link: link,
@@ -73,7 +73,11 @@
 
             // Saves the items
             if(res.tree.length > 0){
+              // We save it in the $rootScope to see the modif  and in the actual object
+              // so it doesn't need to be changed again
+              node = nodeService.findNode($rootScope.nodeEnd[0])
               $rootScope.listItems = makeNestedService.item(res.tree);
+              node.items = $rootScope.listItems
             } else{
               $rootScope.listItems = []
             }

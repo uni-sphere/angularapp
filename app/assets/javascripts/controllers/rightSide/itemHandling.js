@@ -64,7 +64,7 @@
             //parent
             if(event.dest.nodesScope.$nodeScope != null){
               parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
-              chapterFoldedCookiesGestion(parent_id)
+              addToFoldedChapters(parent_id)
             } else{
               parent_id = 0
             }
@@ -83,6 +83,7 @@
           else{
             // order
             var chapNumber = event.source.nodeScope.$modelValue.chapter
+            console.log(chapNumber)
 
             // source
             var source_id = event.source.nodeScope.$modelValue.doc_id
@@ -90,7 +91,7 @@
             //parent
             if(event.dest.nodesScope.$nodeScope != null){
               parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
-              chapterFoldedCookiesGestion(parent_id)
+              addToFoldedChapters(parent_id)
             } else{
               parent_id = 0
             }
@@ -139,9 +140,8 @@
         if(node.$modelValue.items.length != 0){
           // console.log(node.$modelValue.items.length)
           node.toggle();
-          chapterFoldedCookiesGestion(node.$modelValue.id);
+          AddOrRemoveFromFoldedChapters(node.$modelValue.id);
         }
-
       }
     }
 
@@ -176,10 +176,17 @@
     =================================*/
 
     /*----------  Gestion of foldedChapters cookies  ----------*/
-    function chapterFoldedCookiesGestion(nb){
+    function AddOrRemoveFromFoldedChapters(nb){
       if($rootScope.foldedChapters.indexOf(nb) > -1){
         $rootScope.foldedChapters.splice($rootScope.foldedChapters.indexOf(nb), 1);
       } else{
+        $rootScope.foldedChapters.push(nb);
+      };
+      ipCookie('foldedChapters', $rootScope.foldedChapters);
+    }
+
+    function addToFoldedChapters(nb){
+      if($rootScope.foldedChapters.indexOf(nb) == -1){
         $rootScope.foldedChapters.push(nb);
       };
       ipCookie('foldedChapters', $rootScope.foldedChapters);

@@ -7,16 +7,9 @@ class Awsdocument < ActiveRecord::Base
   mount_uploader :content, DocumentUploader
   
   after_save :fill_url
-  before_save :add_position
   
   validates :title, :content, :organization_id, :user_id, :chapter_id, presence: true
   validate :check_size, on: :create
-  
-  def add_position
-    if !self.position
-      self.position = 1
-    end
-  end
   
   def check_size
     errors.add(:content, "too large") if self.content.file.size >= 20000000
