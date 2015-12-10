@@ -1,19 +1,19 @@
 #admin-co{
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   left: 30px;
   width: 300px;
   height: 30px;
-  background: #f6f6f6;
+  background: #F6F6F6;
   z-index: 100;
-  transition: all 0.3s ease-out;
+  transition: all .3s ease-out;
 }
 
 .admin-co-open{
   height: inherit !important;
 
   #admin-co-image{
-    transform:rotate(180deg);
+    transform: rotate(180deg);
   }
 }
 
@@ -38,7 +38,6 @@
   margin: 0;
 }
 
-
 //Body
 #admin-co-body{
   height: 100%;
@@ -58,20 +57,14 @@
   border-radius: 5px;
   font-size: .9em;
   border: 2px solid #383838;
-   // box-shadow: 0px 0px 0px 2px #383838,inset 0 0 0 0 #000;
-  // box-shadow: none;
 
   &.ng-valid, &:focus{
     border: 2px solid #44AB52;
-    // box-shadow: none
   }
 
   &.ng-touched.ng-invalid{
     border: 2px solid red;
-    // box-shadow: 0px 0px 0px 2px #FF7F7F,inset 0 0 0 0 #000;
-    // box-shadow: none
   }
-
 }
 
 
@@ -80,7 +73,6 @@
   position: relative;
   width: 100%;
   height: 20px;
-
 }
 
 #admin-co-password-forgotten, #admin-co-sign-up{

@@ -37,6 +37,7 @@
       </div>
     </div>
 
+
     <div id="protection-node-container" ng-show="$root.nodeEnd && $root.listItems.length != 0">
       <button ng-show="$root.nodeProtected" type="button" class="fa fa-lock round-button protection-file-on" ng-click="toggleProtection()" title="{{ 'NODE_LOCKED' | translate}}" ></button>
 
@@ -56,6 +57,9 @@
     </div>
   </div>
 
+  <div id="node-admin">
+    <span  ng-show="nodeAdmin">node admin: {{$rootScope.nodeAdmin}}</span>
+  </div>
   <div id="button-row" ng-class="{'button-hidden' : !$root.nodeEnd || !$root.admin}" ng-click="$event.stopPropagation()">
 
     <button type="file" class="dual-submit" ngf-multiple="true" name="firstFiles" ngf-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>

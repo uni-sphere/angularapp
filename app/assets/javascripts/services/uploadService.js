@@ -36,55 +36,63 @@
       });
 
     function upload(files, position_chapter, node_id, list_items){
-      spinnerService.begin()
-      nodeId = node_id;
-      listItems = list_items;
-      foldersArray = [];
-      filesArray = [];
-      chapterUploadedArray = [];
-      // chapterUploaded = false;
-      numberOfRequest = files.length;
+      return $q(function(resolve, reject){
+        
+        nodeId = node_id;
+        listItems = list_items;
+        foldersArray = [];
+        filesArray = [];
+        chapterUploadedArray = [];
+        numberOfRequest = files.length;
 
-      // If give the position of the parent.
-      if(position_chapter == undefined){
-        parentChapter = {id: 0}
-      } else{
-        parentChapter = position_chapter.$modelValue
-      }
+        // Begin the spinner
+        spinnerService.begin()
 
-      // If we have folder to upload
-      angular.forEach(files, function(value, key) {
-        if(value.type == 'directory'){
-          foldersArray.push(value)
-        } else if (value.name.charAt(0) != '.') {
-          filesArray.push(value)
+        // If give the position of the parent.
+        if(position_chapter == undefined){
+          parentChapter = {id: 0}
+        } else{
+          parentChapter = position_chapter.$modelValue
         }
-      });
 
-      // There are folder to upload
-      if(foldersArray.length != 0){
-        uploadAllFolder(parentChapter).then(function(){
-          // We go through all the chapter we uploaded.
-          // We look if the path of our files are the same than the chapters
-          // If we found some we save them in filesToUpload to send them all at onces
+        // If we have folder to upload
+        angular.forEach(files, function(value, key) {
+          if(value.type == 'directory'){
+            foldersArray.push(value)
+          } else if (value.name.charAt(0) != '.') {
+            filesArray.push(value)
+          }
+        });
 
-          for(i=0; i< chapterUploadedArray.length; i++){
-            var filesToUpload = []
-            for(j=0; j<filesArray.length; j++){
-              if(filesArray[j].path.substring(0, filesArray[j].path.lastIndexOf('/')) == chapterUploadedArray[i].path){
-                filesToUpload.push(filesArray[j])
+        // There are folder to upload
+        if(foldersArray.length != 0){
+          uploadAllFolder(parentChapter).then(function(){
+            // We go through all the chapter we uploaded.
+            // We look if the path of our files are the same than the chapters
+            // If we found some we save them in filesToUpload to send them all at onces
+
+            for(i=0; i< chapterUploadedArray.length; i++){
+              var filesToUpload = []
+              for(j=0; j<filesArray.length; j++){
+                if(filesArray[j].path.substring(0, filesArray[j].path.lastIndexOf('/')) == chapterUploadedArray[i].path){
+                  filesToUpload.push(filesArray[j])
+                }
+              }
+              if(filesToUpload.length !=0 ){
+                uploadFiles(filesToUpload, chapterUploadedArray[i]).then(function(){
+                  resolve()
+                })
               }
             }
-            if(filesToUpload.length !=0 ){
-              uploadFiles(filesToUpload, chapterUploadedArray[i])
-            }
-          }
-        })
-      }
-      // There is only files to upload
-      else{
-        uploadFiles(files, parentChapter)
-      }
+          })
+        }
+        // There is only files to upload
+        else{
+          uploadFiles(files, parentChapter).then(function(){
+            resolve()
+          })
+        }
+      })
 
     }
 
@@ -97,49 +105,29 @@
           plop(chapterUploaded)
 
           function plop(chapterUploaded){
-            // var copyFoldersArray = foldersArray
             var copyFoldersArray = (JSON.parse(JSON.stringify(foldersArray)));
             lookForFolderToUpload(chapterUploaded)
 
             function lookForFolderToUpload(chapterUploaded){
-
               var folder = copyFoldersArray.pop()
-              // console.log(copyFoldersArray)
-              // console.log(folder)
-
-              // console.log(folder.path.substring(0, folder.path.lastIndexOf('/')))
-              // console.log(chapterUploaded.path)
-              // console.log(copyChapterUploaded.path + "!!!!!!!!1")
               if(folder && folder.path.substring(0, folder.path.lastIndexOf('/')) == chapterUploaded.path){
-                // console.log("cool " + folder.path)
                 uploadFolder(folder, chapterUploaded).then(function(chapterJustUploaded){
-
-                  console.log(foldersArray)
                   if(foldersArray.length == 0){
+                    createIndexChaptersService.create(listItems)
                     resolve();
                   }
-
                   plop(chapterJustUploaded)
-                  // console.log(copyFoldersArray)
                   if(copyFoldersArray.length != 0){
                     lookForFolderToUpload(chapterUploaded)
                   }
-
-
                 })
               } else{
                 if(copyFoldersArray.length != 0){
-                  // console.log("anyway " + folder.path)
                   lookForFolderToUpload(chapterUploaded)
                 }
               }
-
-
             }
-
           }
-
-
         })
       })
     }
@@ -156,15 +144,15 @@
             content: file
           }
         }).then(function(fileUploaded) {
-          var fileToAdd = {parent: fileUploaded.chapter_id, title: fileUploaded.data.title, doc_id: fileUploaded.data.id, document: true, user_id: fileUploaded.data.user_id, extension: fileUploaded.data.title.split('.').pop()}
+          if(parentChapter.id == 0){
+            var fileDepth = 1
+          } else{
+            var fileDepth = parentChapter.depth + 1
+          }
+          var fileToAdd = {chapter: fileDepth, parent: fileUploaded.chapter_id, title: fileUploaded.data.title, doc_id: fileUploaded.data.id, document: true, user_id: fileUploaded.data.user_id, extension: fileUploaded.data.title.split('.').pop()}
           resolve();
-          // numberOfRequest -= 1;
-          // if(numberOfRequest == 0){
-          //   spinnerService.stop();
-          // }
           // Notification
           console.log("OK document uploaded: " + fileUploaded.data.title);
-          // Notification.success(success)
           // We add the file to listItem
           if(parentChapter.id == 0){
             listItems.unshift(fileToAdd);
@@ -198,24 +186,23 @@
 
 
     function uploadFiles(files, parentChapter){
-      // for (var i = 0; i < files.length; i++) {
-      // var file = files[i];
-      // numberOfRequest += 1;
+      return $q(function(resolve, reject){
+        function IterateUploadFiles(){
+          file = files.pop()
+          uploadOneFile(file,parentChapter).then(function(){
+            numberOfRequest -= 1;
+            if(numberOfRequest == 0){
+              resolve()
+              spinnerService.stop();
+            }
+            if(files.length > 0){
+              IterateUploadFiles()
+            }
+          });
+        }
 
-      function IterateUploadFiles(){
-        file = files.pop()
-        uploadOneFile(file,parentChapter).then(function(){
-          numberOfRequest -= 1;
-          if(numberOfRequest == 0){
-            spinnerService.stop();
-          }
-          if(files.length > 0){
-            IterateUploadFiles()
-          }
-        });
-      }
-
-      IterateUploadFiles()
+        IterateUploadFiles()
+      })
     }
 
     function uploadFolder(folder, parentChapter){
@@ -255,8 +242,7 @@
             $rootScope.foldedChapters.push(parentChapter.id);
             ipCookie('foldedChapters', $rootScope.foldedChapters);
           }
-          // We index the chapters
-          createIndexChaptersService.create(listItems)
+         
         }, function(d) {
           removeFolderFromFolders(folder).then(function(){
             resolve();
@@ -287,7 +273,6 @@
         }
         resolve();
       })
-      // chapterUploaded = chapterToAdd
     }
 
     function getEnvironment(){

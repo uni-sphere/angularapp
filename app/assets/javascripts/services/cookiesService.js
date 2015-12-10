@@ -94,6 +94,7 @@
       $rootScope.foldedNodes = tempFoldedNodes;
     }
 
+
     /*----------  Folded chapters  ----------*/
 
     function foldedChaptersGestion(){

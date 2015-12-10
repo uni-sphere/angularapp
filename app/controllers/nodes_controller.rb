@@ -90,10 +90,10 @@ class NodesController < ApplicationController
           render json: dropped.errors, status: 422
         end
       else # leaf
-        if Node.find(params[:parent]).chapters.count > 1 # if brothers node, forbidden
+        if Node.find(params[:parent]).chapters.where(archived: false).count > 1 # if brothers node, forbidden
           send_error('Forbidden', 403)
         else
-          if Node.find(params[:parent]).chapters.first.destroy and dropped.update(parent_id: params[:parent], position: 1)
+          if Node.find(params[:parent]).chapters.where(archived: false).first.destroy and dropped.update(parent_id: params[:parent], position: 1)
             nodes_to_up = Node.where(archived: false, parent_id: old_parent).where("position >= ? AND id != ?", old_pos, dropped.id)
             nodes_to_up.each do |node|
               node.update(position: node.position - 1)
@@ -160,7 +160,7 @@ class NodesController < ApplicationController
             node_data << (document) if !document.archived
           end
           Chapter.where(archived: false, parent_id: chapter.id).order('position ASC, created_at ASC').each do |chap|
-            queue.unshift(chap)
+            queue << chap
           end
         end
       end

@@ -1,10 +1,10 @@
 scalingo -a angularapp run bash
 
 //DUMP
-mysqldump -u hoplageiss --password=Les3unisphere -h angularapp-85.mysql.dbs.appsdeck.eu -P 30265 angularapp_85 > /tmp/dumped_db.sql
+mysqldump -u hoplageiss --password=Les3unisphere -h angularapp-85.mysql.dbs.appsdeck.eu -P 30265 angularapp_85 > /tmp/unisphere_db.sql
 
 //RESTAURE
-mysql -u hoplageiss --password=Les3unisphere -h angularapp-85.mysql.dbs.appsdeck.eu -P 30265 angularapp_85 < /tmp/dumped_db.sql
+mysql -u hoplageiss --password=Les3unisphere -h angularapp-85.mysql.dbs.appsdeck.eu -P 30265 angularapp_85 < /tmp/unisphere_db.sql
 
 
 

@@ -33,11 +33,6 @@
   vertical-align: top;
   position: relative;
   display: inline-block;
-//  background: #FCFCFC;
-  // .round-button{
-  //   margin-top: 4px;
-  //   font-size: 1em;
-  // }
 }
 
 .round-button{
@@ -108,4 +103,16 @@
   .dropdown:after{
     right: 9px;
   }
+}
+
+/*==================================
+=            node admin            =
+==================================*/
+
+#node-admin{
+  margin-top: 5px;
+  font-size: .8em;
+  line-height: 20px;
+  color: grey;
+  text-align: center;
 }

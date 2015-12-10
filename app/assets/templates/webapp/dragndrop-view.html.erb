@@ -20,16 +20,4 @@
   <div class="black-background"></div>
 </div>
 
-<div id="fileDropped">
-  <div class="popup-header">{{ 'DROP_FILE' | translate }}</div>
-  <div class="popup-body">
-    <div id="file-dropped-position">{{ 'WHERE_DROP' | translate }}</div>
-    <div id="root-object" ng-click="rootSelected()">{{ 'ROOT' | translate }}</div>
-    <div id="small-ui-tree" ui-tree="options" data-drag-enabled="false">
-      <ol ui-tree-nodes ng-model="$root.listItems" >
-        <li ng-repeat="item in $root.listItems" ui-tree-node ng-include="'specific_renderer.html'" ng-if="!item.document"></li>
-      </ol>
-    </div>
-    <button class="submit-button default-submit" ng-click="cancelDrop()">{{ 'CANCEL' | translate }}</button>
-  </div>
-</div>
+

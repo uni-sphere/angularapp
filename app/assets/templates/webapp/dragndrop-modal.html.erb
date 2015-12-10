@@ -1,0 +1,30 @@
+<script type="text/ng-template" id="specific_renderer.html">
+  <div ui-tree-handle ng-click="selectDrop(this)">
+    <div class="chapter-number" ng-if="!item.document" ng-class="{depth1 : item.depth == 1, depth2 : item.depth == 2, depth3 : item.depth == 3, depth4 : item.depth == 4}">{{item.chapter}} </div>
+    <div class="item-name">{{item.title}}</div>
+  </div>
+
+  <ol ui-tree-nodes="options" ng-model="item.items">
+    <li ng-repeat="item in item.items" ui-tree-node ng-include="'specific_renderer.html'" ng-if="!item.document"></li>
+  </ol>
+</script>
+
+<div class="outer-modal-container">
+  <div class="modal-container modal-ready-to-appear">
+    <div class="modal-header">
+      <span class="modal-title">{{ 'DROP_FILE' | translate }}</span>
+      <span class="fa fa-times close-modal" ng-click="dismissModal('')"></span>
+    </div>
+    <div class="modal-body" id="dragndropContainer">
+      <div id="file-dropped-position">{{ 'WHERE_DROP' | translate }}</div>
+      <div id="root-object" ng-click="rootSelected()">{{ 'ROOT' | translate }}</div>
+      <div id="small-ui-tree" ui-tree="options" data-drag-enabled="false">
+        <ol ui-tree-nodes ng-model="$root.listItems" >
+          <li ng-repeat="item in $root.listItems" ui-tree-node ng-include="'specific_renderer.html'" ng-if="!item.document"></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-background"></div>

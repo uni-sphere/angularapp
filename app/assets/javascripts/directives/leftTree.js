@@ -4,8 +4,8 @@
     .module('mainApp.directives')
     .directive('leftTree', leftTree)
 
-  leftTree.$inject = ['$translate', '$rootScope', 'ipCookie', '$timeout', 'Restangular', 'Notification', 'ModalService', 'cookiesService', 'nodeService', 'nodeCrudService'];
-  function leftTree($translate, $rootScope, ipCookie, $timeout, Restangular, Notification, ModalService, cookiesService, nodeService, nodeCrudService){
+  leftTree.$inject = ['$translate', '$rootScope', 'ipCookie', '$timeout', 'Restangular', 'Notification', 'cookiesService', 'nodeService', 'nodeCrudService'];
+  function leftTree($translate, $rootScope, ipCookie, $timeout, Restangular, Notification, cookiesService, nodeService, nodeCrudService){
     var directive = {
       link: link,
       scope:{
@@ -475,7 +475,13 @@
         nodeEnter.append("circle")
           .attr("class", "circleCollapse")
           .attr("r", 1e-6)
-          .style("stroke", "cornflowerblue")
+          .style("stroke", function(d){
+            if(d.user_id == $rootScope.userId || $rootScope.superadmin){
+              return "cornflowerblue"
+            } else{
+              return "#ccc"
+            }
+          })
           .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff" })
           .on('click', toggleNode)
 

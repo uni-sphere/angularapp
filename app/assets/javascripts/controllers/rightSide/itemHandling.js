@@ -4,8 +4,8 @@
     .module('mainApp.controllers')
     .controller('itemHandlingCtrl', toggleChapterCtrl);
 
-  toggleChapterCtrl.$inject = ['$translate', '$rootScope', '$scope', 'Notification', 'ipCookie', 'createIndexChaptersService', 'Restangular', 'cookiesService']
-  function toggleChapterCtrl($translate, $rootScope, $scope, Notification, ipCookie, createIndexChaptersService, Restangular, cookiesService){
+  toggleChapterCtrl.$inject = ['$q', '$translate', '$rootScope', '$scope', 'Notification', 'ipCookie', 'createIndexChaptersService', 'Restangular', 'cookiesService']
+  function toggleChapterCtrl($q, $translate, $rootScope, $scope, Notification, ipCookie, createIndexChaptersService, Restangular, cookiesService){
     var move,
       cancel_warning
 
@@ -29,81 +29,16 @@
       },
 
       dropped: function(event) {
-        // We change the depth of the node
-        if(event.dest.nodesScope.$nodeScope != null){
-          event.source.nodeScope.$modelValue.depth = event.dest.nodesScope.$nodeScope.$modelValue.depth + 1
-        } else{
-          event.source.nodeScope.$modelValue.depth = 0
-        }
 
-        // we change the chapter_id of the files
-        if(event.source.nodeScope.$modelValue.document){
-          if(event.dest.nodesScope.$nodeScope != null){
-            parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
-            event.source.nodeScope.$modelValue.chapter_id = parent_id
-          } else{
-            event.source.nodeScope.$modelValue.chapter_id = event.source.nodeScope.$modelValue.main
-          }
-          // console.log(event.source.nodeScope.$modelValue.chapter_id)
-        }
-
-        $scope.selectChapter(event.source.nodeScope)
-
-        // we change the index
+        preliminaryActions()
         createIndexChaptersService.create($rootScope.listItems).then(function() {
           // chapter
           if(!event.source.nodeScope.$modelValue.document){
-            //order
-            var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
-            var parts = chapterNumberStr.split('.')
-            var chapNumber = parts[parts.length - 2]
-
-            // source
-            var source = event.source.nodeScope.$modelValue
-
-            //parent
-            if(event.dest.nodesScope.$nodeScope != null){
-              parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
-              addToFoldedChapters(parent_id)
-            } else{
-              parent_id = 0
-            }
-
-            Restangular.one('chapters/' + source.id).put({parent: parent_id, position: chapNumber, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
-              source.position = chapNumber
-              console.log("Ok: Item moved");
-            }, function(d) {
-              cookiesService.reload()
-              console.log("Error: Item not moved");
-              console.log(d);
-              Notification.error(move);
-            });
+            handleDropChapter()
           }
           // file
           else{
-            // order
-            var chapNumber = event.source.nodeScope.$modelValue.chapter
-            console.log(chapNumber)
-
-            // source
-            var source_id = event.source.nodeScope.$modelValue.doc_id
-
-            //parent
-            if(event.dest.nodesScope.$nodeScope != null){
-              parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
-              addToFoldedChapters(parent_id)
-            } else{
-              parent_id = 0
-            }
-
-            Restangular.one('awsdocuments/' + source_id).put({parent: parent_id, position: chapNumber, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
-              console.log("Ok: Item moved");
-            }, function(d) {
-              cookiesService.reload()
-              console.log("Error: Item not moved");
-              console.log(d);
-              Notification.error(move);
-            });
+            handleDropFile()
           }
         }, function(d){
           cookiesService.reload()
@@ -111,9 +46,88 @@
           Notification.error(move);
         })
 
+        function preliminaryActions(){
+          // We check if a file has been missplaced. In this case we move it up
+          if(event.dest.nodesScope.$nodeScope != null){
+            var items = event.dest.nodesScope.$nodeScope.$modelValue.items
+          } else{
+            var items = $rootScope.listItems
+          }
+          for(i = items.length -1; i>0; i--){
+            if(items[i].chapter_id && !items[i-1].chapter_id){
+              var element = items[i];
+              items.splice(i, 1);
+              items.splice(i-1, 0, element);
+            }
+          }
+
+          // we change the chapter_id of the files
+          if(event.source.nodeScope.$modelValue.document){
+            if(event.dest.nodesScope.$nodeScope != null){
+              parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
+              event.source.nodeScope.$modelValue.chapter_id = parent_id
+            } else{
+              event.source.nodeScope.$modelValue.chapter_id = event.source.nodeScope.$modelValue.main
+            }
+          }
+          $scope.selectChapter(event.source.nodeScope)
+        }
+
+        function handleDropChapter(){
+          //order
+          var chapterNumberStr = event.source.nodeScope.$modelValue.chapter
+          var parts = chapterNumberStr.split('.')
+          var chapNumber = parts[parts.length - 2]
+
+          // source
+          var source = event.source.nodeScope.$modelValue
+
+          //parent
+          if(event.dest.nodesScope.$nodeScope != null){
+            parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
+            addToFoldedChapters(parent_id)
+          } else{
+            parent_id = 0
+          }
+
+          Restangular.one('chapters/' + source.id).put({parent: parent_id, position: chapNumber, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
+            source.position = chapNumber
+            console.log("Ok: Item moved");
+          }, function(d) {
+            cookiesService.reload()
+            console.log("Error: Item not moved");
+            console.log(d);
+            Notification.error(move);
+          });
+        }
+
+        function handleDropFile(){
+          // order
+          var chapNumber = event.source.nodeScope.$modelValue.chapter
+
+          // source
+          var source_id = event.source.nodeScope.$modelValue.doc_id
+
+          //parent
+          if(event.dest.nodesScope.$nodeScope != null){
+            parent_id = event.dest.nodesScope.$nodeScope.$modelValue.id
+            addToFoldedChapters(parent_id)
+          } else{
+            parent_id = 0
+          }
+
+          Restangular.one('awsdocuments/' + source_id).put({parent: parent_id, position: chapNumber, node_id: $rootScope.nodeEnd[0]}).then(function(res) {
+            console.log("Ok: Item moved");
+          }, function(d) {
+            cookiesService.reload()
+            console.log("Error: Item not moved");
+            console.log(d);
+            Notification.error(move);
+          });
+        }
+
       }
     };
-
 
     /*----------  Functions run on each items to have their initial position (closed / open)  ----------*/
     $scope.collapseItems = function(node) {
@@ -177,12 +191,16 @@
 
     /*----------  Gestion of foldedChapters cookies  ----------*/
     function AddOrRemoveFromFoldedChapters(nb){
+      // console.log($rootScope.foldedChapters)
       if($rootScope.foldedChapters.indexOf(nb) > -1){
+        // console.log("found")
         $rootScope.foldedChapters.splice($rootScope.foldedChapters.indexOf(nb), 1);
       } else{
+        // console.log("not found")
         $rootScope.foldedChapters.push(nb);
       };
       ipCookie('foldedChapters', $rootScope.foldedChapters);
+      // console.log($rootScope.foldedChapters)
     }
 
     function addToFoldedChapters(nb){

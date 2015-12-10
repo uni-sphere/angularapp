@@ -3,8 +3,8 @@
     .module('mainApp.services')
     .service('makeNestedService', makeNestedService)
 
-  makeNestedService.$inject = ['$q','$rootScope']
-  function makeNestedService($q,$rootScope){
+  makeNestedService.$inject = ['$q','$rootScope','Notification']
+  function makeNestedService($q,$rootScope,Notification){
     service = {
       item : item,
       node: node
@@ -13,19 +13,17 @@
     return service
 
     function node(flatData){
+      // console.log(flatData)
       return $q(function(resolve, reject){
         $rootScope.chaptersId = []
-        angular.forEach(flatData, function(key, value){
-          if(key.node_data.length > 1){
-            key.items = item(key.node_data)
-            angular.forEach(key.node_data, function(value, key){
-              if(!value.document){
+        angular.forEach(flatData, function(value, key){
+          if(value.node_data.length > 1){
+            angular.forEach(value.node_data, function(value, key){
+              if(!value.chapter_id){
                 $rootScope.chaptersId.push(value.id)
               }
             })
-          } else{
-            key.items = []
-          }
+          } 
         })
 
         var dataMap = flatData.reduce(function(map, node) {
@@ -53,15 +51,22 @@
     }
 
     function item(flatData){
-      console.log(flatData)
       var dataMap = flatData.reduce(function(map, node) {
         map[node.id] = node;
         return map;
       }, {});
 
       var treeData = [];
-      var mainId = flatData.shift()
-      var mainId = mainId.id
+      var main = flatData.shift()
+
+      if(main.title != "main"){
+        Notification.error(severeError)
+        Notification.error("Nous avons detectés un problème avec votre application. Contactez-nous s'il vous plait.")
+      }
+      var mainId = main.id
+      var flatChapter = []
+      var flatDocument = []
+
       flatData.forEach(function(node) {
 
         node.depth = 0;
@@ -79,8 +84,11 @@
           delete node.id
           // delete node.chapter_id
           delete node.url
+          flatChapter.push(node)
+
         } else{
           node.parent = node.parent_id
+          flatDocument.push(node)
           // delete node.parent_id
         }
 
@@ -91,15 +99,27 @@
 
       });
 
-      flatData.forEach(function(node) {
+      flatChapter.forEach(function(node) {
         var parent = dataMap[node.parent];
         if(parent) {
-          node.depth = node.depth + 1;
+          // node.depth = node.depth + 1;
           parent.items.push(node);
         } else {
           treeData.push(node)
         }
       });
+
+      flatDocument.forEach(function(node) {
+        var parent = dataMap[node.parent];
+        if(parent) {
+          // node.depth = node.depth + 1;
+          parent.items.push(node);
+        } else {
+          treeData.push(node)
+        }
+      });
+
+
 
       // console.log(treeData)
       return treeData;

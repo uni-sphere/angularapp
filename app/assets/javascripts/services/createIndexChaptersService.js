@@ -89,14 +89,20 @@
           }
         }
 
-        function iterate(d){
+        function iterate(d, depth){
+          d.depth = depth
+          depth += 1
           createChap(d);
           if(d.items){
-            d.items.forEach(iterate);
+            angular.forEach(d.items, function(value, key){
+              iterate(value, depth)
+            })
           }
         }
 
-        treeData.forEach(iterate);
+        angular.forEach(treeData, function(value, key){
+          iterate(value, 0)
+        })
       })
     }
 

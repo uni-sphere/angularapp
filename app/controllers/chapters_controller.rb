@@ -22,7 +22,7 @@ class ChaptersController < ApplicationController
     while queue != [] do
       chapter = queue.pop
       tree << chapter
-      Awsdocument.where(chapter_id: chapter.id, archived: false).order('position ASC').select(:title, :user_id, :chapter_id, :organization_id, :id, :archived, :position).each do |document|
+      Awsdocument.where(chapter_id: chapter.id, archived: false).order('parent_id ASC, position ASC').select(:title, :user_id, :chapter_id, :organization_id, :id, :archived, :position).each do |document|
         tree << (document) if !document.archived
       end
       Chapter.where(archived: false, parent_id: chapter.id).order('position ASC').each do |chap|
@@ -81,11 +81,12 @@ class ChaptersController < ApplicationController
   end
 
   def index
-    tree = []
-    current_node.chapters.where(archived: false).order('position ASC, created_at ASC').each do |chapter|
-      tree << chapter
+    main = current_node.chapters.where(title: 'main', archived: false).last
+    tree = [main]
+    current_node.chapters.where(archived: false).order('parent_id ASC, position ASC').each do |chapter|
+      tree << chapter if chapter != main
       Awsdocument.where(chapter_id: chapter.id, archived: false).select(:title, :user_id, :chapter_id, :organization_id, :id, :archived, :position).order('position ASC').each do |document|
-        tree << (document) if !document.archived
+        tree << (document)
       end
     end
     render json: {tree: tree, locked: current_node.locked}.to_json, status: 200

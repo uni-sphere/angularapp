@@ -4,34 +4,6 @@
 
 /*----------  Popup  ----------*/
 
-#fileDropped{
-  position: fixed;
-  width: 40%;
-  top: 100px;
-  left: calc(50% - 300px);
-  z-index: 9999;
-  max-height: 80%;
-  width: 600px;
-  display: none;
-  animation: fileDropped-flyin .5s;
-}
-
-.popup-body{
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  padding: 20px;
-  background: white;
-}
-
-.popup-header{
-  line-height: 50px;
-  background: #0087E0;
-  color: white;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  padding-left: 20px;
-}
-
 #file-dropped-position{
   margin-bottom: 20px;
   color: $document-color;
@@ -40,7 +12,7 @@
 /*----------  Tree displayed while drop  ----------*/
 
 #small-ui-tree{
-  overflow-y: auto;
+  // overflow-y: auto;
   margin-left: 15px;
   .angular-ui-tree-handle {
     cursor: pointer;
@@ -55,20 +27,6 @@
   font-size: .9em;
   &:hover{
     background: $document-hover;
-  }
-}
-
-/*----------  Animation  ----------*/
-
-@keyframes fileDropped-flyin {
-  0% {
-    opacity: 0;
-    transform: translateY(-300px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 
