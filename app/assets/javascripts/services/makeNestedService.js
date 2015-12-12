@@ -3,12 +3,16 @@
     .module('mainApp.services')
     .service('makeNestedService', makeNestedService)
 
-  makeNestedService.$inject = ['$q','$rootScope','Notification']
-  function makeNestedService($q,$rootScope,Notification){
+  makeNestedService.$inject = ['$translate', '$q','$rootScope','Notification']
+  function makeNestedService($translate, $q,$rootScope,Notification){
     service = {
       item : item,
       node: node
     }
+
+    $translate(['SEVERE_ERROR']).then(function (translations) {
+      severeError = translations.SEVERE_ERROR;
+    });
 
     return service
 
@@ -59,10 +63,6 @@
       var treeData = [];
       var main = flatData.shift()
 
-      if(main.title != "main"){
-        Notification.error(severeError)
-        Notification.error("Nous avons detectés un problème avec votre application. Contactez-nous s'il vous plait.")
-      }
       var mainId = main.id
       var flatChapter = []
       var flatDocument = []
@@ -118,8 +118,6 @@
           treeData.push(node)
         }
       });
-
-
 
       // console.log(treeData)
       return treeData;

@@ -3,6 +3,7 @@ class TranslationsController < ApplicationController
   def index
     if params[:lang] == 'fr'
       translation = {
+        SEVERE_ERROR: "Nous avons detectés un problème avec votre application. Contactez-nous s'il vous plait.",
         DRAG_NODE_F: 'Il est interdit de glisser un noeud sur un noeud qui contient des chapitres',
         DRAG_NODE: 'Impossible de glisser ce noeud',
         TITLE: "Unisphere - Echange de documents pour les établissements d'éducation supérieur",
@@ -148,6 +149,7 @@ class TranslationsController < ApplicationController
       }
     else
       translation = {
+        SEVERE_ERROR: "We detected a severe error, please contact us!",
         DRAG_NODE_F: 'It is forbidden to drop a node on a node containing chapters',
         DRAG_NODE: 'Impossible to drag this node',
         TITLE: 'Unisphere - File sharing for educational institutions',

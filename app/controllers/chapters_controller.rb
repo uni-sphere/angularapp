@@ -22,10 +22,10 @@ class ChaptersController < ApplicationController
     while queue != [] do
       chapter = queue.pop
       tree << chapter
-      Awsdocument.where(chapter_id: chapter.id, archived: false).order('parent_id ASC, position ASC').select(:title, :user_id, :chapter_id, :organization_id, :id, :archived, :position).each do |document|
+      Awsdocument.where(chapter_id: chapter.id, archived: false).order('position ASC').select(:title, :user_id, :chapter_id, :organization_id, :id, :archived, :position).each do |document|
         tree << (document) if !document.archived
       end
-      Chapter.where(archived: false, parent_id: chapter.id).order('position ASC').each do |chap|
+      Chapter.where(archived: false, parent_id: chapter.id).order('parent_id ASC, position ASC').each do |chap|
         queue.unshift(chap)
       end
     end

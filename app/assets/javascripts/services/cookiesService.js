@@ -125,8 +125,8 @@
         tempActiveNodes.unshift([nodes.num, nodes.name])
 
         if(($rootScope.home && ipCookie('foldedChapters') == undefined )|| ($rootScope.sandbox && ipCookie('foldedChapters') == undefined )){
-          if(nodes.items[2]){
-            $rootScope.foldedChapters = [nodes.items[2].id]
+          if(nodes.node_data[2]){
+            $rootScope.foldedChapters = [nodes.node_data[2].id]
             ipCookie('foldedChapters', $rootScope.foldedChapters);
           }
         }
