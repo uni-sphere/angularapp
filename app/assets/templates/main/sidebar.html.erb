@@ -3,10 +3,10 @@
   <ul class="sidebar-container">
 
     <li class="sidebar-item $root.home-item">
-      <a ng-show="!$root.home" ui-sref="main.application"  ui-sref-active="menu-link-active" class="menu-link" title="$root.home">
+      <a ng-show="!$root.home" ui-sref="main.application"  ui-sref-active="menu-link-active" class="menu-link" title="Home">
         <i class="menu-icon fa fa-fw fa-share-alt"></i>
       </a>
-      <a ng-show="$root.home" ng-click="showHome()" ng-class="{'menu-link-active' : viewhome}" class="menu-link" title="$root.home">
+      <a ng-show="$root.home" ng-click="showHome()" ng-class="{'menu-link-active' : $root.viewHome}" class="menu-link" title="Home">
         <i class="menu-icon fa fa-fw fa-share-alt"></i>
       </a>
     </li>
@@ -15,7 +15,7 @@
       <a ng-show="!$root.home" ui-sref="main.dashboard" ui-sref-active="menu-link-active" class="menu-link" title="Dashboard">
         <i class="menu-icon fa fa-fw fa-bar-chart-o"></i>
       </a>
-      <a ng-show="$root.home" ng-click="showDashboard()" ng-class="{'menu-link-active' : viewdashboard}" class="menu-link" title="Dashboard">
+      <a ng-show="$root.home" ng-click="showDashboard()" ng-class="{'menu-link-active' : $root.viewDashboard}" class="menu-link" title="Dashboard">
         <i class="menu-icon fa fa-fw fa-bar-chart-o"></i>
       </a>
 
@@ -23,6 +23,15 @@
         <span class="tutorial-round" ng-hide="$root.tutorialDashboardOpen"></span>
         <span id="tutorial-text-box-dashboard" class="tutorial-text-box" ng-show="$root.tutorialDashboardOpen">{{ 'TUTO_1' | translate }}</span>
       </div>
+    </li>
+
+    <li class="sidebar-item dashboard-item">
+      <a ng-show="!$root.home" ui-sref="main.assignment" ui-sref-active="menu-link-active" class="menu-link" title="Assignment">
+        <i class="menu-icon fa fa-fw fa-send-o"></i>
+      </a>
+      <a ng-show="$root.home" ng-click="showAssignment()" ng-class="{'menu-link-active' : viewAssignment}" class="menu-link" title="Assignment">
+        <i class="menu-icon fa fa-fw fa-send-o"></i>
+      </a>
     </li>
 
     <li class="sidebar-item account-item" ng-hide="sandbox || $root.home">

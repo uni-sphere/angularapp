@@ -13,7 +13,7 @@
     <div id='test-app-buttons-2'></div>
     <div id='test-app-buttons-3'></div>
 
-    <sidebar ng-show="$root.admin" view-dashboard = 'viewDashboard' view-home = 'viewHome'></sidebar>
+    <sidebar ng-show="$root.admin"></sidebar>
     <admin-co ng-hide="$root.admin"></admin-co>
     <div class="test-app-content">
       <div id="tutorial-left-tree" ng-hide="!$root.help || $root.tutorialLeftTreeSeen" ng-click="$root.tutorialLeftTreeOpen = true; $event.stopPropagation(); $root.setHelp()">
@@ -21,12 +21,12 @@
         <span class="tutorial-round" ng-hide="$root.tutorialLeftTreeOpen"></span>
       </div>
 
-      <left-tree ng-show = "viewHome" id="view-tree" active-nodes = 'activeNodes' active-chapter = 'activeChapter' view-news = 'viewNews' viewhome = 'viewhome'></left-tree>
+      <left-tree ng-show = "$root.viewHome" id="view-tree" active-nodes = 'activeNodes' active-chapter = 'activeChapter' view-news = 'viewNews'></left-tree>
 
-      <right-tree ng-show = "viewHome" files = 'files' active-chapter = 'activeChapter' loose-focus-item = 'looseFocusItem' is-chrome = 'isChrome'></right-tree>
+      <right-tree ng-show = "$root.viewHome" files = 'files' active-chapter = 'activeChapter' loose-focus-item = 'looseFocusItem' is-chrome = 'isChrome'></right-tree>
 
-      <div ng-show="viewDashboard">
-        <metrics id="metrics" viewdashboard = 'viewdashboard'></metrics>
+      <div ng-show="$root.viewDashboard">
+        <metrics id="metrics"></metrics>
       </div>
     </div>
   </div>

@@ -17,6 +17,7 @@
     return directive;
 
     function link(scope) {
+      $rootScope.contentLoaded = true;
       $rootScope.$watch('viewdashboard', function(newVals, oldVals){
         if(oldVals == false && newVals == true){
           reloadGraph($('.test-app-content').width(),$('.test-app-content').height())

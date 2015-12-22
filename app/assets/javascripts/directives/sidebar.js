@@ -11,8 +11,6 @@
       templateUrl: 'main/sidebar.html',
       scope:{
         deconnection: '=',
-        viewHome: '=',
-        viewDashboard: '='
       }
     };
 
@@ -31,15 +29,27 @@
       }
 
       scope.showHome = function(){
-        scope.viewDashboard = false;
-        scope.viewHome = true;
+        allViewFalse()
+        $rootScope.viewHome = true;
       }
 
       scope.showDashboard = function(){
-        scope.viewDashboard = true;
-        scope.viewHome = false;
+        allViewFalse()
         $rootScope.help = false;
+        $rootScope.viewDashboard = true;
       }
+
+      scope.showAssignment = function(){
+        allViewFalse()
+        $rootScope.viewAssignment = true;
+      }
+
+      function allViewFalse(){
+        $rootScope.viewAssignment = false;
+        $rootScope.viewHome = false;
+        $rootScope.viewDashboard = false;
+      }
+
     }
   }
 })();

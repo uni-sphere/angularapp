@@ -1,0 +1,194 @@
+#handIn{
+  float: left;
+  position: relative;
+  width: 50%;
+  padding-top: 55px;
+  width: calc(50% - 80px);
+}
+
+#handInHeader{
+  height: 120px;
+}
+
+#handInHeaderTop{
+  margin-bottom: 20px;
+}
+
+#handInHeaderText{
+  float: left;
+  margin-right: 20px;
+}
+
+#handInHeaderLeft{
+  float: left;
+}
+
+#handInHeaderTitle{
+  font-size: 1.2em;
+  font-weight: bold;
+  color: $grey800;
+}
+
+#handInHeaderRight{
+  float: right;
+}
+
+
+
+
+/*==============================
+=            Header            =
+==============================*/
+
+#downloadAllButton{
+  display: inline-block;
+  background: $blue;
+  color: white;
+  border: 2px solid $blue;
+  cursor: pointer;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  text-shadow: 0 1px 1px rgba(0,0,0,.1);
+  font-size: .9em;
+  text-decoration: none;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+  padding: 4px 15px;
+  border-radius: 4px;
+  margin: 0px 10px;
+
+  &:hover{
+    border-bottom-color: #4B71B3;
+  }
+
+  &:active{
+    border-bottom-color: #2E68CD;
+    border-top-color: #2B58A6;
+  }
+}
+
+/*====================================
+=            Pane Header             =
+====================================*/
+
+.handInPaneHeader{
+  position: relative;
+  font-size: 1em;
+  color: $grey700;
+  font-weight: bold;
+  border-bottom: 1px solid $grey400;
+  height: 25px;
+  padding-bottom: 5px;
+}
+
+.handInPaneHeaderStudent{
+  position: relative;
+  padding-left: 80px;
+  float: left;
+  width: calc(60% - 110px);
+}
+
+.handInPaneHeaderDate{
+  float: left;
+}
+
+.handInPaneHeaderGrade{
+  float: right;
+  padding-right: 25px;
+}
+
+/*=============================
+=            Table            =
+=============================*/
+
+#handInStudentTable{
+  list-style-type: none;
+  padding: 0;
+  margin-top: 5px;
+}
+
+.studentRow{
+  border-bottom: 1px solid $grey200;
+  height: 60px;
+  position: relative;
+}
+
+// First cell
+.handInStudent{
+  width: 60%;
+  float: left;
+  position: relative
+}
+
+.handInStudentPic{
+  font-size: 1.6em;
+  width: 46px;
+  text-align: center;
+  line-height: 46px;
+  border-radius: 23px;
+  background: $blue;
+  margin: 7px;
+  float: left;
+  color: white;
+}
+
+.handInStudentInfos{
+  position: relative;
+  float: left;
+  height: 100%;
+}
+
+.handInStudentName{
+  font-weight: bold;
+  color: $grey700;
+  font-size: 1em;
+  display: block;
+  line-height: 40px;
+  padding-bottom: 20px;
+
+  // word-break: break-all;
+  // word-wrap: break-word;
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+}
+
+.handInStudentView{
+  position: absolute;
+  bottom: 5px;
+  left: 3px;
+  font-size: .8em;
+  color: $grey700;
+}
+
+// second cell
+.handInDate{
+  display: inline-block;
+  width: calc(40% - 100px);
+  // text-align: ce;
+  // background: red;
+  float: left;
+  line-height: 60px;
+}
+
+// third cell
+.handInGrade{
+  width: 100px;
+  text-align: center;
+  // width: calc(50% - 100px);
+  // background: green;
+  float: left;
+  line-height: 60px;
+}
+
+.noGrade{
+  display: inline-block;
+}
+
+.graded{
+  display: inline-block;
+}
+
+.fixedPartGrade{
+  display: inline-block;
+}

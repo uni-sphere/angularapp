@@ -1,0 +1,97 @@
+#assignment{
+  float: left;
+  position: relative;
+  width: 50%;
+  // height: 100%;
+  padding-top: 20px;
+  // background: red;
+}
+
+.assignementPanel{
+  padding: 20px;
+  margin: 30px 80px;
+  position: relative;
+  background: $grey50;
+  // width: calc(100% - 160px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.assignmentPanelSelected{
+  background: $blue;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.02), 0 6px 6px rgba(0,0,0,0.23);
+
+  &, #assignmentDueDate, #assignmentTitle, #assignmentOption, #assignmentStats{
+    color: white;
+  }
+
+  #assignmentTurnedIn{
+  border-right: 1px solid white;
+  }
+}
+
+/*----------  Header  ----------*/
+
+#assignmentHeader{
+  margin-bottom: 20px;
+}
+
+#assignmentDueDate{
+  color: $grey500;
+  margin-left: 20px;
+}
+
+#assignmentOption{
+  display: inline-block;
+  float: right;
+  cursor: pointer;
+  color: $grey700;
+  margin-right: 5px;
+}
+
+/*----------  Body  ----------*/
+
+#assignmentInfos{
+  width: calc( 100% - 120px);
+  display: inline-block;
+  min-height: 80px;
+}
+
+#assignmentTitle{
+  font-size: 1.2em;
+  color: $grey800;
+  font-weight: bold;
+}
+
+#assignmentSubject{
+  display: block;
+  font-size: 1em;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+
+#assignmentStatsContainer{
+  float: right;
+  border-bottom: 20px;
+  text-align: center;
+}
+
+#assignmentTurnedIn{
+  padding-right: 10px;
+  border-right: 1px solid $grey500;
+}
+
+#assignmentTotalStudent{
+}
+
+
+#assignmentStats{
+  font-size: 2em;
+  font-weight: bold;
+  color: $grey800;
+}
+
+#assignmentTurnedInText{
+  margin-top: 5px;
+  display: block;
+}

@@ -3,8 +3,8 @@
     .module('mainApp.controllers')
     .controller('accountCtrl', accountCtrl)
 
-  accountCtrl.$digest = ['$scope', 'Restangular', '$auth', 'Notification', 'spinnerService', '$translate'];
-  function accountCtrl($scope, Restangular, $auth, Notification, spinnerService, $translate){
+  accountCtrl.$digest = ['$rootScope', '$scope', 'Restangular', '$auth', 'Notification', 'spinnerService', '$translate'];
+  function accountCtrl($rootScope, $scope, Restangular, $auth, Notification, spinnerService, $translate){
 
     var success,
       error,
@@ -25,6 +25,8 @@
       psw_short = translations.PSW_UPDATE;
       psw_inputs_error = translations.PSW_INPUTS_ERROR;
     });
+
+    $rootScope.contentLoaded = true;
 
     /*======================================
     =            Update profile            =

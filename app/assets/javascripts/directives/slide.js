@@ -96,8 +96,9 @@
         error = translations.ERROR;
       });
 
-      scope.viewHome = true
-      scope.viewDashboard = false
+      $rootScope.viewHome = true
+      $rootScope.viewDashboard = false
+      $rootScope.viewAssignment = false
 
       scope.newContact = function() {
         if(scope.webEmail == undefined){

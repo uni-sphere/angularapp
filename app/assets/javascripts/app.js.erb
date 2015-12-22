@@ -36,13 +36,18 @@
     configureRestangular()
 
     function configureRoute(){
+
+      // SPECIAL STUFF FOR ADMIN
       if(window.location.host == "admin.unisphere.eu" || window.location.host == "admin.dev.unisphere.eu"){
         $stateProvider
         .state('admin', {
           url: '/',
           templateUrl: 'admin/admin.html',
         })
-      } else {
+      } 
+
+      // ALL OTHER CASES
+      else {
         $stateProvider
         .state('main', {
           url: '/',
@@ -141,8 +146,26 @@
             }
           })
         }
+
+        if(window.location.host == "sandbox.unisphere.eu" || window.location.host == "sandbox.dev.unisphere.eu" || window.location.host == "www.sandbox.unisphere.eu"){
+          $stateProvider.state('main.assignment', {
+            url: 'assignment',
+            templateUrl: 'assignment/assignment.html',
+          })
+        } else{
+          $stateProvider.state('main.assignment', {
+            url: 'assignment',
+            templateUrl: 'assignment/assignment.html',
+            resolve:{
+              auth: ['$auth', function($auth){
+                return $auth.validateUser();
+              }]
+            }
+          })
+        }
       }
 
+      // SPECIAL STATE FOR LOCALHOST
       if(window.location.host == 'localhost:3000'){
         $stateProvider.state('home', {
           url: '/home',
