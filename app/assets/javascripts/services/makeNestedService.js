@@ -19,6 +19,8 @@
     function node(flatData){
       // console.log(flatData)
       return $q(function(resolve, reject){
+
+        // We save all the chaptersId to use them later on in the cookies 
         $rootScope.chaptersId = []
         angular.forEach(flatData, function(value, key){
           if(value.node_data.length > 1){
@@ -40,7 +42,8 @@
         flatData.forEach(function(node) {
 
           var parent = dataMap[node.parent];
-          if (parent) {
+          if(parent) {
+            node.parentName = parent.name
             if(parent.children == undefined){
               parent.children = [node]
             } else{
@@ -51,6 +54,20 @@
           }
         });
         resolve(treeData[0]);
+
+        // We find all leafs
+        function findLeaf(nodes){
+          angular.forEach(nodes, function(value, key){
+            if(value.children){
+              findLeaf(value.children)
+            } else{
+              $rootScope.leafs.push(value)
+            }
+          })
+        }
+
+        $rootScope.leafs = [];
+        findLeaf(treeData)
       })
     }
 

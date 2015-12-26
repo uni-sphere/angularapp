@@ -29,6 +29,7 @@
 //= require scrollmagic/scrollmagic/minified/plugins/animation.gsap.min.js
 //= require scrollmagic/scrollmagic/minified/plugins/animation.velocity.min.js
 //= require scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min.js
+//= require angularjs-datetime-picker/angularjs-datetime-picker.js
 
 //= require angular-rails-templates
 //= require app

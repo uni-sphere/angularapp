@@ -20,13 +20,15 @@
       var error,
         cancel_warning,
         share,
+        assignment,
         edit;
 
-      $translate(['ERROR', 'NW_CANCEL', 'DD_SHARE', 'DD_PSW']).then(function (translations) {
+      $translate(['ERROR', 'NW_CANCEL', 'DD_SHARE', 'DD_PSW', 'CREATE_ASSIGNMENT']).then(function (translations) {
         error = translations.ERROR;
         cancel_warning = translations.NW_CANCEL;
         share = translations.DD_SHARE;
         edit = translations.DD_PSW;
+        createAssignment = translations.CREATE_ASSIGNMENT;
       });
 
       scope.$watch('firstFiles', function (newVals, oldVals) {
@@ -42,10 +44,10 @@
       }
 
       function showNodeActions(){
-        if($rootScope.nodeEnd[2] == $rootScope.userId || $rootScope.superadmin && $rootScope.nodeProtected){
-          scope.nodeDropdownOptions = [{text: share, value: 'share'}, {text: edit, value: 'change'}];
+        if(($rootScope.nodeEnd[2] == $rootScope.userId || $rootScope.superadmin) && $rootScope.nodeProtected){
+          scope.nodeDropdownOptions = [{text: share, value: 'share'}, {text: createAssignment, value: 'assignment'}, {text: edit, value: 'change'}];
         } else{
-          scope.nodeDropdownOptions = [{text: share, value: 'share'}];
+          scope.nodeDropdownOptions = [{text: share, value: 'share'}, {text: createAssignment, value: 'assignment'}];
         }
       }
 

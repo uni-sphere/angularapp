@@ -11,7 +11,7 @@
       </a>
     </li>
 
-    <li class="sidebar-item dashboard-item">
+    <!-- <li class="sidebar-item dashboard-item">
       <a ng-show="!$root.home" ui-sref="main.dashboard" ui-sref-active="menu-link-active" class="menu-link" title="Dashboard">
         <i class="menu-icon fa fa-fw fa-bar-chart-o"></i>
       </a>
@@ -23,13 +23,13 @@
         <span class="tutorial-round" ng-hide="$root.tutorialDashboardOpen"></span>
         <span id="tutorial-text-box-dashboard" class="tutorial-text-box" ng-show="$root.tutorialDashboardOpen">{{ 'TUTO_1' | translate }}</span>
       </div>
-    </li>
+    </li> -->
 
     <li class="sidebar-item dashboard-item">
-      <a ng-show="!$root.home" ui-sref="main.assignment" ui-sref-active="menu-link-active" class="menu-link" title="Assignment">
+      <a ng-show="!$root.home" ui-sref="main.exam" ui-sref-active="menu-link-active" class="menu-link" title="Assignment">
         <i class="menu-icon fa fa-fw fa-send-o"></i>
       </a>
-      <a ng-show="$root.home" ng-click="showAssignment()" ng-class="{'menu-link-active' : viewAssignment}" class="menu-link" title="Assignment">
+      <a ng-show="$root.home" ng-click="showExam()" ng-class="{'menu-link-active' : viewExam}" class="menu-link" title="Assignment">
         <i class="menu-icon fa fa-fw fa-send-o"></i>
       </a>
     </li>

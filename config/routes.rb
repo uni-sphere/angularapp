@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   get '/home', to: 'angular#index'
   get '/dashboard', to: 'angular#index'
   get '/account', to: 'angular#index'
-  get '/assignment', to: 'angular#index'
+  get '/exam', to: 'angular#index'
   get '/superadmin', to: 'angular#index'
   get '/view', to: 'angular#index'
   get '/view/chapters/:id', to: 'angular#index'

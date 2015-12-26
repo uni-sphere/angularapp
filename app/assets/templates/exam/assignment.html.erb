@@ -1,0 +1,75 @@
+<div id="assignment" ng-controller="assignmentCtrl">
+
+
+  <div ng-show="newAssignment" class="assignementPanel newAssignment">
+ <!--    <div class="assignmentHeader">
+      <span>{{ 'CREATE_NEW_ASSIGNMENT' | translate | uppercase}}</span>
+    </div> -->
+   
+    <input id="newAssignmentTitle" class="inputAssignment" ng-model="newAssignmentTitle" placeholder="{{'ASSIGNMENT_TITLE' | translate}}">
+    <!-- <pre class="formErrorLabel">Required</pre> -->
+
+    <input id="newAssignmentSubject" class="inputAssignment " ng-model="newAssignmentSubject" placeholder="{{'ASSIGNMENT_SUBJECT' | translate}}">
+
+
+    <div id="newAssignmentClassSelection">
+      <div class="newAssignmentLabel">{{'ASSIGNMENT_CLASS' | translate }}</div>
+
+     
+      <div class="newAssignmentSelection">
+        <div dropdown-menu="ddAssignmentClassOptions" dropdown-model="ddAssignmentClassModel">
+          <span class="newAssignmentValue" ng-click="showClassSelection()">{{ddAssignmentClassModel.text}}</span>
+          <i class="fa fa-caret-down"></i>
+        </div>
+      </div>
+    </div>
+
+    <div id="newAssignmentDateSelection">
+      <span class="newAssignmentLabel">{{'ASSIGNMENT_DATE' | translate}}</span>
+
+      <!-- <div class="newAssignmentValue">{{ddAssignmentNodeModel.text}}</div> -->
+
+      <div class="newAssignmentValue" id="newAssignmentDateValue" datetime-picker ng-model="newAssignmentTime" future-only date-format="dd MMMM, HH:mm">
+        {{newAssignmentTime}}
+        <span class="fa fa-caret-down"></span>
+      </div>
+      
+
+      <!-- <div class="newAssignmentSelection">
+        <div dropdown-menu="ddAssignmentDateOptions" dropdown-model="ddAssignmentDateModel">
+          <span class="fa fa-caret-down"></span>
+        </div>
+      </div> -->
+    </div>
+
+    <div id="newAssignmentSubmitButtonWrapper">
+      <div class="defaultBlueButton" id="newAssignmentSubmitButton" ng-click="submitAssignment()">Create assignment</div>
+    </div>
+  </div>
+
+
+  <div ng-repeat="assignment in assignmentArray" class="assignementPanel" ng-click = "selectAssignment(assignment)" ng-class="{assignmentPanelSelected : assignmentSelected == assignment.id}">
+    <div class="assignmentHeader">
+      <span>{{ 'ASSIGNMENT' | translate }}</span>
+      <span class="assignmentDueDate">{{assignment.date | date:'dd MMMM, HH:mm'}}</span>
+      <span class="assignmentOption" class="fa fa-ellipsis-v"></span>
+    </div>
+    <div class="assignmentBody">
+      <div class="assignmentInfos">
+        <span class="assignmentTitle">{{assignment.title}}</span>
+        <span class="assignmentSubject">{{assignment.subject}}</span>
+      </div>
+      <div class="assignmentStatsContainer">
+        <div class="assignmentStats">
+          <span class="assignmentTurnedIn">{{assignment.count}}</span>
+        </div>
+        <span class="assignmentTurnedInText">{{'TURNED_IN' | translate }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="createNewAssignment" ng-class="{createNewAssignmentDesactivated : newAssignment}" title="{{ 'CREATE_NEW_ASSIGNMENT' | translate }}" ng-click="createNewAssignment()">+</div>
+
+</div>
+
+

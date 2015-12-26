@@ -39,13 +39,13 @@
         $rootScope.viewDashboard = true;
       }
 
-      scope.showAssignment = function(){
+      scope.showExam = function(){
         allViewFalse()
-        $rootScope.viewAssignment = true;
+        $rootScope.viewExam = true;
       }
 
       function allViewFalse(){
-        $rootScope.viewAssignment = false;
+        $rootScope.viewExam = false;
         $rootScope.viewHome = false;
         $rootScope.viewDashboard = false;
       }

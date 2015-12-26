@@ -3,6 +3,14 @@ class TranslationsController < ApplicationController
   def index
     if params[:lang] == 'fr'
       translation = {
+        NEW_ASSIGNMENT_NO_CLASS: "Vous n'avez pas sélectionnez la classe où vous voulez publier votre devoir",
+        NEW_ASSIGNMENT_NO_TITLE: "Vous n'avez pas donnez de titre à votre devoir",
+        ASSIGNMENT_CLASS: "Classe:",
+        ASSIGNMENT_DATE: 'Date:',
+        ASSIGNMENT_TITLE: 'Titre du devoir',
+        ASSIGNMENT_SUBJECT: 'Sujet du devoir (optionnel)',
+        CREATE_NEW_ASSIGNMENT: "Créer un nouveau devoir",
+        CREATE_ASSIGNMENT: "Créer un devoir",
         ASSIGNMENT: "DEVOIR",
         TURNED_IN: "DEPOSES",
         SEVERE_ERROR: "Nous avons detectés un problème avec votre application. Contactez-nous s'il vous plait.",
@@ -151,6 +159,14 @@ class TranslationsController < ApplicationController
       }
     else
       translation = {
+        NEW_ASSIGNMENT_NO_CLASS: "Please select a class to publish your assignment in",
+        NEW_ASSIGNMENT_NO_TITLE: "Please select a title for your assignment",
+        ASSIGNMENT_CLASS: "Class:",
+        ASSIGNMENT_DATE: 'Due date:',
+        ASSIGNMENT_TITLE: 'Assignment title',
+        ASSIGNMENT_SUBJECT: 'Assignment subject (optional)',
+        CREATE_NEW_ASSIGNMENT: "Create a new assignment",
+        CREATE_ASSIGNMENT: "create an assignment",
         ASSIGNMENT: "ASSIGNMENT",
         TURNED_IN: "TURNED IN",
         SEVERE_ERROR: "We detected a severe error, please contact us!",

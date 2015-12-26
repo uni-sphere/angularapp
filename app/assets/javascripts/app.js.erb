@@ -24,6 +24,7 @@
     'ui-notification',
     'angularModalService',
     'angularLoad',
+    'angularjs-datetime-picker'
   ])
   .config(configuration)
 
@@ -148,14 +149,14 @@
         }
 
         if(window.location.host == "sandbox.unisphere.eu" || window.location.host == "sandbox.dev.unisphere.eu" || window.location.host == "www.sandbox.unisphere.eu"){
-          $stateProvider.state('main.assignment', {
-            url: 'assignment',
-            templateUrl: 'assignment/assignment.html',
+          $stateProvider.state('main.exam', {
+            url: 'exam',
+            templateUrl: 'exam/exam.html',
           })
         } else{
-          $stateProvider.state('main.assignment', {
-            url: 'assignment',
-            templateUrl: 'assignment/assignment.html',
+          $stateProvider.state('main.exam', {
+            url: 'exam',
+            templateUrl: 'exam/exam.html',
             resolve:{
               auth: ['$auth', function($auth){
                 return $auth.validateUser();

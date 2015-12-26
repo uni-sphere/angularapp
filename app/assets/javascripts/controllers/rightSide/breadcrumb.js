@@ -4,8 +4,8 @@
     .module('mainApp.controllers')
     .controller('breadcrumbCtrl', breadcrumbCtrl);
 
-  breadcrumbCtrl.$inject = ['$rootScope', '$scope', 'Restangular', 'Notification', 'ModalService', '$translate', 'cookiesService']
-  function breadcrumbCtrl($rootScope, $scope, Restangular, Notification, ModalService, $translate, cookiesService){
+  breadcrumbCtrl.$inject = ['assignmentService', '$location', '$rootScope', '$scope', 'Restangular', 'Notification', 'ModalService', '$translate', 'cookiesService']
+  function breadcrumbCtrl(assignmentService, $location, $rootScope, $scope, Restangular, Notification, ModalService, $translate, cookiesService){
 
     var error,
       cancel_warning,
@@ -34,6 +34,9 @@
         ChangePasswordNode()
       } else if($scope.nodeDropdownSelected.value == 'share'){
         shareNode()
+      } else if($scope.nodeDropdownSelected.value == 'assignment'){
+        $location.url('/assignment')
+        assignmentService.newAssignment()
       }
       $('.dropdown.active').removeClass('active')
     }
