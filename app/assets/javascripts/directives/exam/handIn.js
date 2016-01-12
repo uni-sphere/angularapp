@@ -1,10 +1,10 @@
 (function () {
   angular.module('mainApp.directives')
-    .directive('assignment', assignment)
+    .directive('handIn', handIn)
 
-  function assignment(){
+  function handIn(){
     var directive = {
-      templateUrl: 'exam/assignment.html',
+      templateUrl: 'exam/handIn.html',
       scope: {
       },
       link: link

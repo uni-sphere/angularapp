@@ -3,6 +3,7 @@ class TranslationsController < ApplicationController
   def index
     if params[:lang] == 'fr'
       translation = {
+        CREATE_ASSIGNMENT_BUTTON: 'Créer devoir',
         NEW_ASSIGNMENT_NO_CLASS: "Vous n'avez pas sélectionnez la classe où vous voulez publier votre devoir",
         NEW_ASSIGNMENT_NO_TITLE: "Vous n'avez pas donnez de titre à votre devoir",
         ASSIGNMENT_CLASS: "Classe:",
@@ -159,6 +160,7 @@ class TranslationsController < ApplicationController
       }
     else
       translation = {
+        CREATE_ASSIGNMENT_BUTTON: "Create assignment",
         NEW_ASSIGNMENT_NO_CLASS: "Please select a class to publish your assignment in",
         NEW_ASSIGNMENT_NO_TITLE: "Please select a title for your assignment",
         ASSIGNMENT_CLASS: "Class:",

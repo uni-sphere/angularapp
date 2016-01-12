@@ -10,29 +10,26 @@
   margin: 30px 80px;
   position: relative;
   background: $grey50;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 10px 20px rgba(0,0,0,.19), 0 6px 6px rgba(0,0,0,.23);
 }
 
 .assignmentPanelSelected{
   background: $blue;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.02), 0 6px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 10px 20px rgba(0,0,0,.02), 0 6px 6px rgba(0,0,0,.23);
 
-  &, .assignmentDueDate, .assignmentTitle, .assignmentOption, .assignmentStats{
+  &, .assignmentNodeName, .assignmentDueDate, .assignmentTitle, .assignmentOption, .assignmentStats{
     color: white;
   }
-
 }
 
 /*======================================
 =            New assignment            =
 ======================================*/
 .newAssignment:after{
-  content: "";
+  content: '';
   display: table;
   clear: both;
 }
-
-
 
 .inputAssignment{
   background: $grey50;
@@ -108,7 +105,6 @@
   color: $grey700;
 
   i{
-    // float: left;
     margin-left: 8px;
     line-height: 24px;
     margin-top: 6px;
@@ -136,13 +132,12 @@
 }
 
 #newAssignmentSubmitButton{
-  margin: 0px;
+  margin: 0;
 }
 
 /*==================================
 =            Assignment            =
 ==================================*/
-
 
 /*----------  Header  ----------*/
 
@@ -153,6 +148,11 @@
 .assignmentDueDate{
   color: $grey500;
   margin-left: 20px;
+}
+
+.assignmentNodeName{
+  color: $grey500;
+  float: right;
 }
 
 .assignmentOption{
@@ -176,8 +176,6 @@
   color: $grey800;
   font-weight: bold;
 }
-
-
 
 .assignmentSubject{
   display: block;
@@ -203,7 +201,6 @@
   display: block;
 }
 
-
 .createAssignmentDate{
   margin-top: 20px;
   font-size: 1em;
@@ -226,10 +223,9 @@
   font-size: 4.8em;
   right: calc(50% + 20px);
   cursor: pointer;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 10px 20px rgba(0,0,0,.19), 0 6px 6px rgba(0,0,0,.23);
 }
 
 .createNewAssignmentDesactivated{
   background: $grey200 !important;
 }
-
