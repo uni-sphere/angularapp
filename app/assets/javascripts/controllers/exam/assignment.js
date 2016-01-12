@@ -31,7 +31,8 @@
     tomorrow.setMinutes(0)
     tomorrow.setDate(today.getDate() + 1)
 
-    $scope.newAssignmentTime =  dateFilter(tomorrow, "dd MMMM, HH:mm")
+    $scope.newAssignmentTime = tomorrow
+    $scope.newAssignmentTimeFormated =  dateFilter(tomorrow, "dd MMMM, HH:mm")
 
 
     /*----------  GET ASSIGNMENT  ----------*/
@@ -73,7 +74,7 @@
         var assignment = {
           title: $scope.newAssignmentTitle, 
           subject: $scope.newAssignmentSubject, 
-          date: $scope.newAssignmentTime, 
+          due_date: $scope.newAssignmentTime, 
           node_name: $scope.ddAssignmentClassModel.text,
           node_id: $scope.ddAssignmentClassModel.value
         }
@@ -95,7 +96,8 @@
       $scope.newAssignmentTitle = undefined
       $scope.newAssignmentSubject = undefined
       $scope.ddAssignmentClassModel = {text: 'undefined', value: 0}
-      $scope.newAssignmentTime =  dateFilter(tomorrow, "dd MMMM, HH:mm")
+      $scope.newAssignmentTime = tomorrow
+      $scope.newAssignmentTimeFormated =  dateFilter(tomorrow, "dd MMMM, HH:mm")
     }
 
     function addNodeToDd(node){

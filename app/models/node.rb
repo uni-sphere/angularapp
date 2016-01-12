@@ -7,6 +7,7 @@ class Node < ActiveRecord::Base
 
   has_many :chapters
   has_many :reports
+  has_many :assignments
 
   validates :name, :parent_id, :user_id, presence: true
 
