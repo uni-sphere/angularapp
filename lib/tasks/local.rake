@@ -20,11 +20,14 @@ namespace :local do
     # reset domains
     # dev_reset_pointers
     # create sandbox
-    organization = Organization.create(name: 'Sandbox', website: 'http://sandbox.unisphere.eu', created_at: Time.now-12*7.days, latitude: "43.556970", longitude: "1.466526", place_id: "ChIJyVSeITu8rhIRaGQ-9pEcoL8")
+    organization = Organization.create(name: 'Sandbox', website: 'http://sandbox.unisphere.eu', created_at: Time.now-12*7.days, latitude: "43.556970", longitude: "1.466526", place_id: "ChIJyVSeITu8rhIRaGQ-9pEcoL8", full_version: true)
     # Create a user
-    organization.users.create!(email: "hello@unisphere.eu", name: "Hello", uid: "foo", provider: 'email', password: 'gabgabgab', help: false, superadmin: true)
-    organization.users.create!(email: "gabriel.muller@unisphere.eu", name: "Gab", uid: "bar", provider: 'email', password: 'gabgabgab', help: true, superadmin: false, news: true)
-    organization.users.create!(email: "user@unisphere.eu", name: "User", uid: "foo", provider: 'email', password: 'gabgabgab', help: false, superadmin: true)
+    organization.users.create!(email: "superadmin@unisphere.eu", name: "Super admin", uid: "foggod", provider: 'email', password: 'gabgabgab', help: false, admin: true, superadmin: true)
+    organization.users.create!(email: "teacher@unisphere.eu", name: "Teacher", uid: "foggo", provider: 'email', password: 'gabgabgab', help: false, admin: true)
+    organization.users.create!(email: "student@unisphere.eu", name: "Student", uid: "gggg", provider: 'email', password: 'gabgabgab', help: false, admin: false)
+    organization.users.create!(email: "hello@unisphere.eu", name: "Hello", uid: "foo", provider: 'email', password: 'gabgabgab', help: false, superadmin: true, admin: true)
+    organization.users.create!(email: "gabriel.muller@unisphere.eu", name: "Gab", uid: "bar", provider: 'email', password: 'gabgabgab', help: false, superadmin: false, news: false, admin: true)
+    organization.users.create!(email: "student2@unisphere.eu", name: "Student 2", uid: "gggg", provider: 'email', password: 'gabgabgab', help: false, admin: false)
 
     #create initial data
     user = User.find_by_email('hello@unisphere.eu')
@@ -87,9 +90,15 @@ namespace :local do
     parent_22 = node_chap.chapters.create(title: "Annexes", parent_id: parent_chap.id, user_id: user.id)
     node_chap.chapters.create(title: "Cours", parent_id: parent_22.id, user_id: user.id)
     node_chap.chapters.create(title: "Annexes", parent_id: parent_22.id, user_id: user.id)
+    assignment1 = node_chap.assignments.create(organization_id: 1, title: "Second world war", subject: "Please write a one page summary of last lesson", due_date: "Wed 12 Dec", node_name: "S > Histoire", user_id: 2)
+    assignment1.handins.create(organization_id: 1, user_id: 3, node_id: 5, name_user: "Student")
+    assignment1.handins.create(organization_id: 1, user_id: 6, node_id: 5, name_user: "Student 2")
+    assignment2 = node_chap.assignments.create(organization_id: 1, title: "Cold war", subject: "Please write a one page summary of last lesson", due_date: "Wed 8 Mar", node_name: "S > Histoire", user_id: 2)
+    assignment2.handins.create(organization_id: 1, user_id: 3, node_id: 5, name_user: "Student", grade: 80)
+    node_chap.assignments.create(organization_id: 1, title: "Financial crisis", subject: "Please write a one page summary of last lesson", due_date: "Fri 18 Apr", node_name: "S > Histoire", user_id: 2)
 
     #ifma
-    user = User.find_by_email('hello@unisphere.eu')
+    # user = User.find_by_email('hello@unisphere.eu')
     # organization = Organization.create(name: 'IFMA', website: 'https://www.ifma.fr', latitude: "45.757656", longitude: "3.112736000000041", place_id: "ChIJzTllBHAc90cRUtUbHjJFpl0")
     # organization.organizationsuserslinks.create(user_id: User.find_by_email('gabriel.muller@unisphere.eu'))
     # organization.organizationsuserslinks.create(user_id: user.id)

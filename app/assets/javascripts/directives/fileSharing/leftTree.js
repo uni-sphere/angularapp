@@ -28,6 +28,7 @@
       $rootScope.$watch('admin', function(newVals, oldVals){
         if(newVals != undefined){
           cookiesService.reload()
+          // $rootScope.reloadRightTree()
         }
       });
 

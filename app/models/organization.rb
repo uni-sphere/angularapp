@@ -7,6 +7,8 @@ class Organization < ActiveRecord::Base
   has_many :users, through: :organizationsuserslinks
   has_many :awsdocuments
   has_many :connexions
+  has_many :handins
+  has_many :assignments
   
   validates :name, presence: true
   validates :subdomain, uniqueness: true

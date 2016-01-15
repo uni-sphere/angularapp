@@ -1,14 +1,14 @@
 class CreateAssignments < ActiveRecord::Migration
   def change
     create_table :assignments do |t|
+      t.integer :organization_id
+      t.integer :node_id
+      t.integer :user_id
       t.string :title
       t.string :subject, default: ''
-      t.integer :count, default: 0
-      t.integer :due_date, default: 0
-      t.integer :node_id
+      t.string :due_date
       t.string :node_name
-      t.integer :user_id
-
+      t.boolean :archived, default: false
       t.timestamps
     end
   end

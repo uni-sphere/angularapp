@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   end
 
   def invite
-    user = User.new(email: params[:email], name: params[:email], uid: "foo", provider: 'email', password: params[:password], help: false)
+    user = User.new(email: params[:email], name: params[:email], uid: "foo", provider: 'email', password: params[:password], help: false, admin: true)
     if user.save
       link = Organizationsuserslink.new(user_id: User.find_by_email(params[:email]).id, organization_id: current_organization.id)
       if link.save

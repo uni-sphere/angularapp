@@ -14,6 +14,8 @@
       move = translations.MOVE;
     });
 
+
+
     $scope.treeOptions = {
 
       beforeDrag: function(sourceNodeScope){

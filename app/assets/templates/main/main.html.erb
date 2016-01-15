@@ -10,9 +10,9 @@
 
   <navbar></navbar>
 
-  <admin-co ng-hide="$root.admin" get-basic-info = 'getBasicInfo'></admin-co>
+  <admin-co ng-show="!$root.admin && (!$root.fullVersion || $root.sandbox )" get-basic-info = 'getBasicInfo'></admin-co>
 
-  <sidebar ng-show="$root.admin" deconnection = 'deconnection'></sidebar>
+  <sidebar deconnection = 'deconnection'></sidebar>
 
   <div ui-view id="main-view-container"></div>
 

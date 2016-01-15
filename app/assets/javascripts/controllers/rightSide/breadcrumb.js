@@ -4,8 +4,8 @@
     .module('mainApp.controllers')
     .controller('breadcrumbCtrl', breadcrumbCtrl);
 
-  breadcrumbCtrl.$inject = ['assignmentService', '$location', '$rootScope', '$scope', 'Restangular', 'Notification', 'ModalService', '$translate', 'cookiesService']
-  function breadcrumbCtrl(assignmentService, $location, $rootScope, $scope, Restangular, Notification, ModalService, $translate, cookiesService){
+  breadcrumbCtrl.$inject = ['$location', '$rootScope', '$scope', 'Restangular', 'Notification', 'ModalService', '$translate', 'cookiesService']
+  function breadcrumbCtrl($location, $rootScope, $scope, Restangular, Notification, ModalService, $translate, cookiesService){
 
     var error,
       cancel_warning,

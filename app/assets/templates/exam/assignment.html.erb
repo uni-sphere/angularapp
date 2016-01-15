@@ -1,6 +1,6 @@
 <div id="assignment" ng-controller="assignmentCtrl">
 
-  <div ng-show="newAssignment" class="assignementPanel newAssignment">
+  <div ng-show="$root.newAssignment" class="assignementPanel newAssignment">
    
     <input id="newAssignmentTitle" class="inputAssignment" ng-model="newAssignmentTitle" placeholder="{{'ASSIGNMENT_TITLE' | translate}}">
 
@@ -22,8 +22,8 @@
     <div id="newAssignmentDateSelection">
       <span class="newAssignmentLabel">{{'ASSIGNMENT_DATE' | translate}}</span>
 
-      <div class="newAssignmentValue" id="newAssignmentDateValue" datetime-picker ng-model="newAssignmentTimeFormated" future-only date-format="dd MMMM, HH:mm">
-        {{newAssignmentTimeFormated}}
+      <div class="newAssignmentValue" id="newAssignmentDateValue" datetime-picker ng-model="newAssignmentTime" future-only date-format="EEE dd MMM, HH:mm">
+        {{newAssignmentTime}}
         <span class="fa fa-caret-down"></span>
       </div>
  
@@ -35,10 +35,10 @@
   </div>
 
 
-  <div ng-repeat="assignment in assignmentArray" class="assignementPanel" ng-click = "selectAssignment(assignment)" ng-class="{assignmentPanelSelected : assignmentSelected == assignment.id}">
+  <div ng-repeat="assignment in $root.assignmentArray" class="assignementPanel" ng-click = "selectAssignment(assignment)" ng-class="{assignmentPanelSelected : $root.assignmentSelected == assignment}">
     <div class="assignmentHeader">
       <span>{{ 'ASSIGNMENT' | translate }}</span>
-      <span class="assignmentDueDate">{{assignment.date | date:'dd MMMM, HH:mm'}}</span>
+      <span class="assignmentDueDate">{{assignment.due_date}}</span>
       <span class="assignmentNodeName">{{assignment.node_name}}</span>
       <span class="assignmentOption" class="fa fa-ellipsis-v"></span>
     </div>

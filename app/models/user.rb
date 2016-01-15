@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   has_many :nodes
   has_many :chapters
   has_many :assignments
+  has_many :handins
   has_many :organizationsuserslinks
   has_many :organizations, through: :organizationsuserslinks
 

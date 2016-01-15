@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160112085220) do
+ActiveRecord::Schema.define(version: 20160115084615) do
 
   create_table "actions", force: :cascade do |t|
     t.integer  "user_id"
@@ -27,12 +27,14 @@ ActiveRecord::Schema.define(version: 20160112085220) do
   end
 
   create_table "assignments", force: :cascade do |t|
-    t.string   "title"
-    t.string   "subject",    default: ""
-    t.integer  "count",      default: 0
-    t.integer  "date"
+    t.integer  "organization_id"
     t.integer  "node_id"
+    t.integer  "user_id"
+    t.string   "title"
+    t.string   "subject",         default: ""
+    t.string   "due_date"
     t.string   "node_name"
+    t.boolean  "archived",        default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -70,6 +72,18 @@ ActiveRecord::Schema.define(version: 20160112085220) do
     t.datetime "updated_at"
   end
 
+  create_table "handins", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "node_id"
+    t.integer  "assignment_id"
+    t.integer  "organization_id"
+    t.string   "name_user"
+    t.integer  "grade",           default: -1
+    t.boolean  "archived",        default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "nodes", force: :cascade do |t|
     t.string   "name"
     t.integer  "parent_id"
@@ -93,7 +107,8 @@ ActiveRecord::Schema.define(version: 20160112085220) do
     t.string   "website"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "paying",     default: false
+    t.boolean  "paying",       default: false
+    t.boolean  "full_version"
   end
 
   create_table "organizationsuserslinks", force: :cascade do |t|

@@ -4,16 +4,16 @@
     <i id="admin-co-image" class="fa fa-caret-up"></i>
   </div>
   <form id="admin-co-body" ng-class="{ hidden : !open}" novalidate>
-    <input type="email" id="admin-co-email" placeholder="Type your email" class="admin-co-input" ng-model="admincoEmail" required>
+    <input type="email" id="admin-co-email" placeholder="Type your email" class="admin-co-input" ng-model="$root.signInEmail" required>
 
-    <input type="password" placeholder="Type your password" class="admin-co-input" ng-model="admincoPassword" id="admin-co-password" required>
+    <input type="password" placeholder="Type your password" class="admin-co-input" ng-model="$root.signInPassword" id="admin-co-password" required>
 
-    <button id="admin-co-sign-in" class="button-green-black" ng-click="adminCoAttempt()">{{ 'VALIDATE' | translate }}</button>
+    <button id="admin-co-sign-in" class="button-green-black" ng-click="$root.adminCoAttempt()">{{ 'VALIDATE' | translate }}</button>
 
 
     <div id="admin-co-secondary-options">
-      <div id="admin-co-password-forgotten" ng-click="passwordForgotten()">{{ 'PSW_FORGOTTEN' | translate }}</div>
-      <div id="admin-co-sign-up" ng-click="signupRequest()">{{ 'SIGN_UP' | translate }}</div>
+      <div id="admin-co-password-forgotten" ng-click="$root.passwordForgotten()">{{ 'PSW_FORGOTTEN' | translate }}</div>
+      <div id="admin-co-sign-up" ng-click="$root.signupRequest()">{{ 'SIGN_UP' | translate }}</div>
     </div>
   </form>
 </div>

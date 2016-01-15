@@ -15,7 +15,7 @@
     });
 
     $rootScope.contentLoaded = true;
-    cookiesService.reload()
+    // cookiesService.reload()
     
 
   }

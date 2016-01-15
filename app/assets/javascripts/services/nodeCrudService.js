@@ -67,6 +67,7 @@
           resolve();
 
         }, function(d) {
+          reject()
           if(d.status == 403){
             console.log("Ok: Deletion forbidden")
             Notification.warning(node_warning);
@@ -120,6 +121,7 @@
         }, function(d){
           console.log("Error: Delete node | get document");
           console.log(d)
+          reject()
         });
       })
     }

@@ -20,7 +20,7 @@
 
     function reload(){
       Restangular.one('nodes').get().then(function (nodes) {
-        console.log("Ok: node retrieved")
+        console.log("Ok: get node")
         var flatNode = nodes.plain();
         $rootScope.flatNode = flatNode
         makeNestedService.node(flatNode).then(function(treeNodes){

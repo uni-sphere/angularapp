@@ -3,8 +3,8 @@
     .module('mainApp.controllers')
     .controller('assignmentCtrl', assignmentCtrl)
 
-  assignmentCtrl.$digest = ['dateFilter', '$timeout', '$rootScope', '$scope', 'Restangular', 'Notification', '$translate'];
-  function assignmentCtrl(dateFilter, $timeout, $rootScope, $scope, Restangular, Notification, $translate){
+  assignmentCtrl.$digest = ['assignmentService', 'handInService', 'dateFilter', '$timeout', '$rootScope', '$scope', 'Restangular', 'Notification', '$translate'];
+  function assignmentCtrl(assignmentService, handInService, dateFilter, $timeout, $rootScope, $scope, Restangular, Notification, $translate){
     var newAssignmentNoClass,
       newAssignmentNoTitle;
 
@@ -31,25 +31,48 @@
     tomorrow.setMinutes(0)
     tomorrow.setDate(today.getDate() + 1)
 
-    $scope.newAssignmentTime = tomorrow
-    $scope.newAssignmentTimeFormated =  dateFilter(tomorrow, "dd MMMM, HH:mm")
+    $scope.newAssignmentTime =  dateFilter(tomorrow, "EEE dd MMM, HH:mm")
 
 
     /*----------  GET ASSIGNMENT  ----------*/
+    // If we are a lecturer we get all assignments of this lecturer
+    var watchAdmin = $rootScope.$watch('admin', function(newVals, oldVals){
+      if(newVals != undefined){
+        watchAdmin()
+        if($rootScope.admin){
+          assignmentService.getIndex()
+        }
+      }
+    })
     
-    $scope.assignmentArray = [
-      {id: 0, title: "What did I do this summer", subject: "Tell me in 1 paragraph what you did this summer.", count: 3, date: 1288323623006, node_id: 1, node_name: "Terminal > L"},
-      {id: 1, title: "What did I do this summer", subject: "Tell me in 1 paragraph what you did this summer.", count: 3, date: 1288323623006, node_id: 2, node_name: "Première > S"}
-    ]
+    // If we are a student we get all assignments we have given back
+    // else{
+    //   Restangular.one('assignments').get({user_id: $rootScope.userId}).then(function (res) {
+    //     console.log("Ok: get assignments")
+    //     res.assignment_array.forEach(function(assignment){
+    //       assignment.count = 0
+    //     })
+    //     $rootScope.assignmentArray = res.assignment_array
 
-    // If there are no assignment we propose to create a new one
-    if($scope.assignmentArray.length == 0){
-      $scope.newAssignment = true;
-    } 
-    // If there are assignments, we select the first one
-    else{
-      $scope.assignmentSelected = $scope.assignmentArray[0].id
-    }
+    //     // If there are no assignment we propose to create a new one
+    //     if($rootScope.assignmentArray.length == 0){
+    //       $scope.newAssignment = true;
+    //     }
+
+    //     // If there are assignments, we select the first one
+    //     else{
+    //       $rootScope.assignmentSelected = $rootScope.assignmentArray[0]
+    //       handInService.getAllHandIn().then(function(){
+    //         handInService.getHandin()
+    //       })
+    //     }
+    //   }, function(d){
+    //     Notification.error($rootScope.errorMessage)
+    //     console.log("Error: get assignments");
+    //     console.log(d)
+    //   });
+    // }
+
 
     /*----------  scope functions  ----------*/
 
@@ -61,7 +84,8 @@
     }
 
     $scope.selectAssignment = function(assignment){
-      $scope.assignmentSelected = assignment.id
+      $rootScope.assignmentSelected = assignment
+      handInService.getHandin()
       $scope.newAssignment = false
     }
 
@@ -71,6 +95,7 @@
       } else if($scope.ddAssignmentClassModel.value == 0){
         Notification.error(newAssignmentNoClass)
       } else{
+        console.log($rootScope.userId)
         var assignment = {
           title: $scope.newAssignmentTitle, 
           subject: $scope.newAssignmentSubject, 
@@ -80,7 +105,7 @@
         }
         Restangular.all('assignments').post(assignment).then(function(newAssignment) {
           assignment.id = newAssignment.id
-          $scope.assignmentArray.unshift(assignment)
+          $rootScope.assignmentArray.unshift(assignment)
           resetNewAssignment()
           console.log("Ok: New assignment created")
         }, function(d) {
@@ -96,8 +121,7 @@
       $scope.newAssignmentTitle = undefined
       $scope.newAssignmentSubject = undefined
       $scope.ddAssignmentClassModel = {text: 'undefined', value: 0}
-      $scope.newAssignmentTime = tomorrow
-      $scope.newAssignmentTimeFormated =  dateFilter(tomorrow, "dd MMMM, HH:mm")
+      $scope.newAssignmentTime =  dateFilter(tomorrow, "EEE dd MMM, HH:mm")
     }
 
     function addNodeToDd(node){

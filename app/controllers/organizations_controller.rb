@@ -13,7 +13,7 @@ class OrganizationsController < ApplicationController
   
   def create
     user = User.find params[:user_id]
-    organization = Organization.new(name: params[:name], latitude: params[:latitude], longitude: params[:longitude], place_id: params[:place_id], website: params[:website])
+    organization = Organization.new(name: params[:name], latitude: params[:latitude], longitude: params[:longitude], place_id: params[:place_id], website: params[:website], full_version: false)
     organization.nodes.build(name: params[:name], parent_id: 0, user_id: user.id)
     organization.organizationsuserslinks.build(user_id: user.id)
     organization.organizationsuserslinks.build(user_id: User.find_by_email('hello@unisphere.eu').id)

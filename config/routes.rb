@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :organizations, only: [:create, :index, :update, :destroy]
     resources :chapters, only: [:create, :show, :index, :update, :destroy]
     resources :assignments, only: [:create, :show, :index, :update, :destroy]
+    resources :handins, only: [:create, :show, :index, :update, :destroy]
     resources :awsdocuments, only: [:create, :show, :update, :destroy] do
       member do
         put 'unarchive'
@@ -40,7 +41,9 @@ Rails.application.routes.draw do
     put 'users/news', to: 'users#update_news'
     
     get '/new_contact', to: 'application#new_contact'
-    
+
+    get '/index_node', to: 'assignments#index_node'
+    get '/index_assignment', to: 'handins#index_assignment'
   end
 
   root 'angular#index'

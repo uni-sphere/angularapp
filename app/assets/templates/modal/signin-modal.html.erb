@@ -1,0 +1,28 @@
+<div class="outer-modal-container ">
+  <div class="modal-container modal-ready-to-appear">
+    <div class="modal-header">
+      <span class="modal-title">{{ 'POPUP_SIGNIN' | translate }}</span>
+    </div>
+    <div class="modal-body">
+      <div class="modal-row-center">
+        <form novalidate>
+          <div class="modal-text">{{ 'NEW_SIGNUP' | translate }}</div>
+
+          <input type="email" placeholder="Type your email" class="signin-input" ng-model="$root.signInEmail" required>
+
+          <input type="password" placeholder="Type your password" class="signin-input" ng-model="$root.signInPassword" required>
+
+          <button class="signin-button" ng-click="$root.adminCoAttempt()">{{ 'VALIDATE' | translate }}</button>
+
+          <div id="signin-secondary-options">
+            <div id="signin-password-forgotten" ng-click="$root.passwordForgotten()">{{ 'PSW_FORGOTTEN' | translate }}</div>
+            <div id="signin-signup" ng-click="$root.signupRequest()">{{ 'SIGN_UP' | translate }}</div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-background"></div>
+

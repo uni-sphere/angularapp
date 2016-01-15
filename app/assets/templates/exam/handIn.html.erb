@@ -1,110 +1,43 @@
 <div id="handIn" ng-controller="handInCtrl">
 
-<!--   <div id="handInHeaderRight">
-    <div id="downloadAllButton">Download all assignments</div>
-  </div> -->
+  <div ng-hide="!$root.admin" id="handInAdminView">
+    <!--   <div id="handInHeaderRight">
+      <div id="downloadAllButton">Download all assignments</div>
+    </div> -->
 
-  <div class="handInPaneHeader">
-    <span class="handInPaneHeaderStudent">Student</span>
-    <span class="handInPaneHeaderDate">Hand-in date</span>
-    <span class="handInPaneHeaderGrade">Grade</span>
+    <div class="handInPaneHeader">
+      <span class="handInPaneHeaderStudent">Student</span>
+      <span class="handInPaneHeaderDate">Hand-in date</span>
+      <span class="handInPaneHeaderGrade">Grade</span>
+    </div>
+
+    <ul id="handInStudentTable">
+      <li class="studentRow" ng-repeat="handIn in $root.handInArray">
+        <div class="handInStudent">
+          <span class="fa fa-user handInStudentPic"></span>
+          <div class="handInStudentInfos">
+            <span class="handInStudentName">{{handIn.name_user}}</span>
+            <span class="handInStudentAssignment" ng-click="downloadHandIn(handIn)">View assignment</span>
+          </div>
+        </div>
+        <div class="handInDate">{{handIn.created_at | date:'EEE dd MMM, HH:mm'}}</div>
+        <div class="handInGrade">
+          <div class="noGrade" ng-show="handIn.grade == -1">No grade</div>
+          <div class="graded" ng-show="handIn.grade != -1">{{handIn.grade}}</div>
+          <div class="fixedPartGrade" ng-show="handIn.grade != -1">/100</div>
+        </div>
+      </li>
+    </ul>
   </div>
 
-  <ul id="handInStudentTable">
-    <li class="studentRow">
-      <div class="handInStudent">
-        <span class="fa fa-user handInStudentPic"></span>
-        <div class="handInStudentInfos">
-          <span class="handInStudentName">Gabriel Muller</span>
-          <span class="handInStudentView">View assignment</span>
-        </div>
-      </div>
-      <div class="handInDate">Sep 16</div>
-      <div class="handInGrade">
-        <!-- <div class="noGrade">No grade</div> -->
-        <div class="graded">89</div>
-        <div class="fixedPartGrade">/100</div>
-      </div>
-    </li>
+  <div ng-hide="$root.admin" id="handInStudentView">
+<!--     <div id="handInUploadButton">
+      Upload your assigment
+    </div> -->
 
-    <li class="studentRow">
-      <div class="handInStudent">
-        <span class="fa fa-user handInStudentPic"></span>
-        <div class="handInStudentInfos">
-          <span class="handInStudentName">Gabriel Muller</span>
-          <span class="handInStudentView">View assignment</span>
-        </div>
-      </div>
-      <div class="handInDate">Sep 16</div>
-      <div class="handInGrade">
-        <!-- <div class="noGrade">No grade</div> -->
-        <div class="graded">89</div>
-        <div class="fixedPartGrade">/100</div>
-      </div>
-    </li>
+    <div type="file" class="circleplop" name="handInFile" ngf-select ng-model="handInFile" > 
+      <span>Upload your assignment</span>
+    </div>
+  </div>
 
-    <li class="studentRow">
-      <div class="handInStudent">
-        <span class="fa fa-user handInStudentPic"></span>
-        <div class="handInStudentInfos">
-          <span class="handInStudentName">Gabriel Muller</span>
-          <span class="handInStudentView">View assignment</span>
-        </div>
-      </div>
-      <div class="handInDate">Sep 16</div>
-      <div class="handInGrade">
-        <!-- <div class="noGrade">No grade</div> -->
-        <div class="graded">89</div>
-        <div class="fixedPartGrade">/100</div>
-      </div>
-    </li>
-
-    <li class="studentRow">
-      <div class="handInStudent">
-        <span class="fa fa-user handInStudentPic"></span>
-        <div class="handInStudentInfos">
-          <span class="handInStudentName">Gabriel Muller</span>
-          <span class="handInStudentView">View assignment</span>
-        </div>
-      </div>
-      <div class="handInDate">Sep 16</div>
-      <div class="handInGrade">
-        <!-- <div class="noGrade">No grade</div> -->
-        <div class="graded">89</div>
-        <div class="fixedPartGrade">/100</div>
-      </div>
-    </li>
-
-    <li class="studentRow">
-      <div class="handInStudent">
-        <span class="fa fa-user handInStudentPic"></span>
-        <div class="handInStudentInfos">
-          <span class="handInStudentName">Gabriel Muller</span>
-          <span class="handInStudentView">View assignment</span>
-        </div>
-      </div>
-      <div class="handInDate">Sep 16</div>
-      <div class="handInGrade">
-        <!-- <div class="noGrade">No grade</div> -->
-        <div class="graded">89</div>
-        <div class="fixedPartGrade">/100</div>
-      </div>
-    </li>
-
-    <li class="studentRow">
-      <div class="handInStudent">
-        <span class="fa fa-user handInStudentPic"></span>
-        <div class="handInStudentInfos">
-          <span class="handInStudentName">Gabriel Muller</span>
-          <span class="handInStudentView">View assignment</span>
-        </div>
-      </div>
-      <div class="handInDate">Sep 16</div>
-      <div class="handInGrade">
-        <!-- <div class="noGrade">No grade</div> -->
-        <div class="graded">89</div>
-        <div class="fixedPartGrade">/100</div>
-      </div>
-    </li>
-  </ul>
 </div>

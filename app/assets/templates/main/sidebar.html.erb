@@ -3,7 +3,7 @@
   <ul class="sidebar-container">
 
     <li class="sidebar-item $root.home-item">
-      <a ng-show="!$root.home" ui-sref="main.application"  ui-sref-active="menu-link-active" class="menu-link" title="Home">
+      <a ng-show="!$root.home" ui-sref="main.application" ng-click="loadHomeView()" ui-sref-active="menu-link-active" class="menu-link" title="Home">
         <i class="menu-icon fa fa-fw fa-share-alt"></i>
       </a>
       <a ng-show="$root.home" ng-click="showHome()" ng-class="{'menu-link-active' : $root.viewHome}" class="menu-link" title="Home">
@@ -27,14 +27,14 @@
 
     <li class="sidebar-item dashboard-item">
       <a ng-show="!$root.home" ui-sref="main.exam" ui-sref-active="menu-link-active" class="menu-link" title="Assignment">
-        <i class="menu-icon fa fa-fw fa-send-o"></i>
+        <i class="menu-icon fa fa-fw fa-bolt"></i>
       </a>
       <a ng-show="$root.home" ng-click="showExam()" ng-class="{'menu-link-active' : viewExam}" class="menu-link" title="Assignment">
-        <i class="menu-icon fa fa-fw fa-send-o"></i>
+        <i class="menu-icon fa fa-fw fa-bolt"></i>
       </a>
     </li>
 
-    <li class="sidebar-item account-item" ng-hide="sandbox || $root.home">
+    <li class="sidebar-item account-item" ng-hide="!$root.admin || sandbox || $root.home">
       <a ui-sref="main.account" class="menu-link" ui-sref-active="menu-link-active" title="Account">
         <i class="menu-icon fa fa-fw fa-user"></i>
       </a>
@@ -46,7 +46,7 @@
       </a>
     </li>
 
-    <li class="sidebar-item deco-button">
+    <li ng-hide="$root.sandbox && !$root.admin" class="sidebar-item deco-button">
       <a class="menu-link" title="Sign out" ng-click="triggerDeco()">
         <i class="menu-icon  fa fa-fw fa-sign-out" ></i>
       </a>

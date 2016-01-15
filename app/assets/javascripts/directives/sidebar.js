@@ -10,21 +10,22 @@
       link: link,
       templateUrl: 'main/sidebar.html',
       scope:{
-        deconnection: '=',
       }
     };
 
     return directive;
 
     function link(scope) {
+
       scope.triggerDeco = function(){
+        // $rootScope.stopWatch()
         if($rootScope.home || $rootScope.sandbox){
           scope.viewHome = true;
           scope.viewDashboard = false;
           $rootScope.admin = false;
           $rootScope.superadmin = false;
         } else{
-          scope.deconnection()
+          $rootScope.deconnection()
         }
       }
 

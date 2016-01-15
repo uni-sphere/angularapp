@@ -111,8 +111,10 @@
 
 
 .modal-text{
+  width: 400px;
   display: block;
   padding-bottom: 20px;
+  // text-align: justify;
 }
 
 .modal-text-disabled{
@@ -139,14 +141,17 @@
   padding: 4px 12px;
   border-radius: 4px;
 
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.24);
+  transition: all 0.2s ease-in-out;
+
   &:hover{
-    border-bottom-color: #26976A;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.40), 0 3px 5px rgba(0,0,0,0.23);
   }
 
   &:active{
-    border-bottom-color: #2ab27b;
-    border-top-color: #26976A;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.24);
   }
+
 }
 
 .modal-button-disabled{

@@ -1,0 +1,70 @@
+$colorButton: #237DE4;
+
+#rightTreeAssignmentContainer{
+  width: 100%;
+  text-align: center;
+  height: 60px;
+  margin: 10px 0px;
+}
+
+.rightTreeAssignmentPanel{
+  position: relative;
+  display: inline-block;
+  margin: 0px 20px;
+  cursor: pointer;
+  border: 1px solid $colorButton;
+  padding-right: 10px;
+  border-radius: 20px;
+
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.24);
+  transition: all 0.2s ease-in-out;
+  &:hover{
+    box-shadow: 0 5px 10px rgba(0,0,0,0.20), 0 3px 5px rgba(0,0,0,0.23);
+  }
+  &:active{
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.24);
+  }
+}
+
+.rightTreeAssignmentPic{
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  margin: 10px 0px;
+  text-align: center;
+  font-size: 2em;
+  float: left;
+  color: $colorButton;
+}
+
+.rightTreeAssignmentInfos{
+  float: left;
+  display: block;
+  line-height: 40px;
+}
+
+.rightTreeAssignmentTitle{
+  float: left;
+  font-weight: bold;
+  color: $colorButton;
+  font-size: .9em;
+  // background: green;
+  height: 30px;
+  line-height: 30px;
+  margin-top: 5px;
+}
+
+.rightTreeAssignmentDate{
+  height: 20px;
+  font-size: .9em;
+  // background: blue;
+  line-height: 20px;
+  // position: absolute;
+  // bottom: 5px;
+  // left: 3px;
+  float: left;
+  clear: left;
+  font-size: .8em;
+  color: $grey600;
+  white-space: nowrap;
+}

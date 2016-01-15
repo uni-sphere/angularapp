@@ -60,11 +60,24 @@
   <div id="node-admin">
     <span  ng-show="nodeAdmin">node admin: {{$rootScope.nodeAdmin}}</span>
   </div>
-  <div id="button-row" ng-class="{'button-hidden' : !$root.nodeEnd || !$root.admin}" ng-click="$event.stopPropagation()">
 
-    <button type="file" class="dual-submit" ngf-multiple="true" name="firstFiles" ngf-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>
 
-    <button ng-click="newChapter()" ng-controller="createChapterCtrl" class="dual-submit"  >{{ 'CHAPTER' | translate }}</button>
+
+  <div id="button-row" ng-class="{'button-hidden' : !$root.nodeEnd}" ng-click="$event.stopPropagation()">
+
+    <button ng-show="$root.admin" type="file" class="dual-submit" ngf-multiple="true" name="firstFiles" ngf-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>
+
+    <button ng-show="$root.admin" ng-click="newChapter()" ng-controller="createChapterCtrl" class="dual-submit"  >{{ 'CHAPTER' | translate }}</button>
+
+    <div ng-hide="$root.admin" id="rightTreeAssignmentContainer">
+      <div ng-click="selectAssignment(assignment)" ng-repeat="assignment in $root.nodesAssignment" class="rightTreeAssignmentPanel" title="Upload your assignment">
+        <i class="fa fa-bolt rightTreeAssignmentPic"></i>
+        <div class="rightTreeAssignmentInfos">
+          <span class="rightTreeAssignmentTitle">ASSIGNMENT</span>
+          <span class="rightTreeAssignmentDate">{{assignment.due_date}}</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="document-tree" ng-controller="itemHandlingCtrl">
@@ -79,6 +92,7 @@
       <span id="tutorial-text-box-right-tree" class="tutorial-text-box" ng-show="$root.tutorialRightTreeOpen">{{ 'TUTO_3' | translate }}</span>
     </div>
 
+   
     <div id="ui-tree-container" ng-if="$root.listItems.length > 0 && $root.nodeEnd">
       <div ui-tree="treeOptions" id="tree-root">
         <ol ui-tree-nodes ng-model="$root.listItems" >

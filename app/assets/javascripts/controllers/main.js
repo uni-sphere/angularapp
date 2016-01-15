@@ -3,32 +3,22 @@
     .module('mainApp.controllers')
     .controller('MainCtrl', MainCtrl);
 
-  MainCtrl.$inject = ['$window', '$rootScope', '$scope','$timeout', 'Restangular', '$auth', '$state', 'Notification', '$translate']
-  function MainCtrl($window, $rootScope, $scope, $timeout, Restangular, $auth, $state, Notification, $translate){
-
-    var error;
+  MainCtrl.$inject = ['$q', 'ModalService', 'cookiesService', '$window', '$rootScope', '$scope','$timeout', 'Restangular', '$auth', '$state', 'Notification', '$translate']
+  function MainCtrl($q, ModalService, cookiesService, $window, $rootScope, $scope, $timeout, Restangular, $auth, $state, Notification, $translate){
 
     $translate(['ERROR']).then(function (translations) {
-      error = translations.ERROR;
+      $rootScope.errorMessage = translations.ERROR;
     });
 
-    // We initialise the upload form
-    $scope.setForm = function(form){
-      $rootScope.uploadForm = form
-    }
+    // // We initialise the upload form
+    // $scope.setForm = function(form){
+    //   $rootScope.uploadForm = form
+    // }
 
-    // Function to set the help (tutorial) to false
-    function setHelp(){
-      if(!$rootScope.home && !$rootScope.sandbox){
-        $auth.updateAccount({help: false})
-        .then(function(resp) {
-          console.log('Ok: Help set to false')
-        })
-        .catch(function(resp) {
-          console.log(resp)
-        });
-      }
-    }
+    // $rootScope.stopWatch = function(){
+    //   console.log("Stop Watch")
+    //   $rootScope.watchNodeEnd()
+    // }
 
     // We initialise the size of the circle
     $rootScope.resizeCircle = function(){
@@ -59,61 +49,6 @@
       }
     });
 
-    // We watch every click to un focus some elements
-    $rootScope.looseFocusItem = function(){
-      if($rootScope.tutorialDashboardOpen){
-        $rootScope.tutorialDashboardSeen = true
-        setHelp();
-      }
-      if($rootScope.tutorialPadlockOpen){
-        $rootScope.tutorialPadlockSeen = true
-        setHelp();
-      }
-      if($rootScope.tutorialActionButtonOpen){
-        $rootScope.tutorialActionButtonSeen = true
-        setHelp();
-      }
-      if($rootScope.tutorialLeftTreeOpen){
-        $rootScope.tutorialLeftTreeSeen = true
-        setHelp();
-      }
-      if($rootScope.tutorialRightTreeOpen){
-        $rootScope.tutorialRightTreeSeen = true
-        setHelp();
-      }
-      if($rootScope.activeChapter != undefined){
-        $rootScope.activeChapter.$modelValue.selectedItem = false;
-        $rootScope.activeChapter = undefined
-      }
-      if($rootScope.activeFile != undefined){
-        $rootScope.activeFile.$modelValue.selectedItem = false;
-        $rootScope.activeFile = undefined
-      }
-      $('.dropdown.active').removeClass('active')
-    }
-
-    $scope.deconnection = function(){
-      $auth.signOut().then(function(resp) {
-        console.log("OK: deconnection successful")
-        $rootScope.admin = false;
-        $state.transitionTo('main.application');
-
-        $rootScope.accountEmail = undefined;
-        $rootScope.accountName = undefined;
-        $rootScope.userId = undefined;
-        $rootScope.superadmin = false;
-        $rootScope.university = "My university"
-        $rootScope.help = false
-
-        olark('api.box.hide');
-
-      }, function(d){
-        console.log(d)
-        console.log("Impossible to deco")
-        Notification.error(error)
-      });
-    }
-
     if(window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home' || window.location.host == 'www.sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
     // if(window.location.host == 'localhost:3000' || window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home' || window.location.host == 'www.sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
       if(window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home'){
@@ -134,26 +69,8 @@
       $rootScope.listUser = ["user@unisphere.eu"]
     } else{
       console.log("NORMAL APP")
-      // We get the actual uni
-      Restangular.one('organization').get().then(function (university) {
-        $rootScope.university = university.organization.name;
-        $rootScope.universityId = university.organization.id;
-        console.log("Ok: Uni name")
-      }, function(d){
-        console.log("Error: Get uni name");
-        console.log(d)
-        Notification.error(error);
-      });
-
-
-      // We authentificated the user
-      $auth.validateUser().then(function(){
-        console.log("Ok: admin connected")
-
-        $scope.getBasicInfo()
-      }, function(d){
-        console.log("Ok: Student co")
-        $rootScope.admin = false
+      getUniInfo().then(function(){
+        userAuth()
       })
     }
 
@@ -163,51 +80,103 @@
 
     /*==========  Function  ==========*/
 
-    $scope.getBasicInfo = function(){
+    function userAuth(){
+      $auth.validateUser().then(function(userInfo){
+        // Ok we found cookies
+        console.log("Ok: user signed in")
+        $rootScope.signin(userInfo)
+      }, 
+      // We didn't find cookies. We will show the signin modal
+      function(d){
+        console.log("Ok: Signin in progress....")
 
-      // We get the user email and name to display them
-      Restangular.one('user').get().then(function (user) {
-        $rootScope.accountEmail = user.email
-        $rootScope.accountName = user.name
-        $rootScope.help = user.help
-        $rootScope.superadmin = user.superadmin
-        $rootScope.userId = user.id
-        $rootScope.admin = true
-        console.log("Ok: User info")
+        // We load the tree
+        cookiesService.reload()
 
-        if(!$rootScope.local && !$rootScope.admin){
-          olark('api.visitor.updateEmailAddress', {emailAddress: $rootScope.accountEmail});
-          olark('api.visitor.updateFullName', {fullName: $rootScope.accountName});
-          olark('api.box.show');
+        if($rootScope.fullVersion){
+          $rootScope.callSignInModal()
         }
+      })
+    }
 
-        if(user.news){
-          $timeout(function() {
-            Notification({templateUrl: 'main/new-version-notification.html', delay: 100000})
-          }, 1000);
+    function getUniInfo(){
+      return $q(function(resolve, reject){
+        Restangular.one('organization').get().then(function (university) {
+          // console.log(university.organization)
+          $rootScope.fullVersion = university.organization.full_version
+          $rootScope.university = university.organization.name
+          $rootScope.universityId = university.organization.id
+          console.log("Ok: get organization")
+          resolve();
+        }, function(d){
+          reject()
+          console.log("Error: get organization");
+          console.log(d)
+          Notification.error($rootScope.errorMessage);
+        });
+      })
+    }
 
-          // update user to remove notification
-          Restangular.one('users/news').put().then(function(d) {
-            console.log("Ok: set news to false")
-          }, function(d){
-            console.log("Error: cannot set news to false")
-            console.log(d)
-          });
+    $rootScope.callSignInModal = function(){
+      ModalService.showModal({
+        templateUrl: "modal/signin-modal.html",
+        controller: "SigninModalCtrl",
+        inputs:{
         }
+      }).then(function(modal) {
+        modal.close.then(function(result){
+          if(result){
+          }
+        });
+      });
+    }
 
-        if(!$rootScope.superadmin && !$rootScope.local){
-          Restangular.one('users/connection').put({id: $rootScope.universityId, user_id: $rootScope.userId}).then(function(d) {
-            console.log("Ok: admin tracked")
-          }, function(d){
-            console.log("Error: track admin")
-            console.log(d)
-          });
-        }
+    function getUserInfo(user){ 
+      $rootScope.accountEmail = user.email
+      $rootScope.accountName = user.name
+      $rootScope.help = user.help
+      $rootScope.superadmin = user.superadmin
+      $rootScope.userId = user.id
+      $rootScope.admin = user.admin
+      $rootScope.news = user.news
+    }
 
-        // We get the list of user in the organization
+    $rootScope.signin = function(userInfo){
+      getUserInfo(userInfo)
+      olarkConfig()
+      handleNews()
+      getAllUserFromOrganization()
+    }
+
+    function olarkConfig(){
+      if(!$rootScope.local && !$rootScope.admin){
+        olark('api.visitor.updateEmailAddress', {emailAddress: $rootScope.accountEmail});
+        olark('api.visitor.updateFullName', {fullName: $rootScope.accountName});
+        olark('api.box.show');
+      }
+    }
+
+    function handleNews(){
+      if($rootScope.news){
+        $timeout(function() {
+          Notification({templateUrl: 'main/new-version-notification.html', delay: 100000})
+        }, 1000);
+
+        // update user to remove notification
+        Restangular.one('users/news').put().then(function(d) {
+          console.log("Ok: set news to false")
+        }, function(d){
+          console.log("Error: cannot set news to false")
+          console.log(d)
+        });
+      }
+    }
+
+    function getAllUserFromOrganization(){
+      if($rootScope.admin){
         Restangular.one('users').get().then(function (listUser) {
           $rootScope.listUser = listUser.users
-          console.log("Ok: List of all user")
+          console.log("Ok: get all user")
 
           if($rootScope.superadmin){
             Restangular.one('organization/actions').get().then(function (timeline) {
@@ -220,16 +189,22 @@
 
         }, function(d){
           console.log("Error: List of all user");
-          Notification.error(error)
+          Notification.error($rootScope.errorMessage)
           console.log(d)
         });
+      }
+    }
 
-      }, function(d){
-        console.log("Error: User info");
-        Notification.error(error)
-        console.log(d)
-      });
-
+    function setHelp(){
+      if(!$rootScope.home && !$rootScope.sandbox){
+        $auth.updateAccount({help: false})
+        .then(function(resp) {
+          console.log('Ok: Help set to false')
+        })
+        .catch(function(resp) {
+          console.log(resp)
+        });
+      }
     }
 
   }

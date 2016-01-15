@@ -20,7 +20,6 @@
     return service;
 
     function changeNode(node){
-      // console.log(node)
       findNodeEnd(node);
       findActiveNodes(node);
       colorActiveNodes($rootScope.nodes);
@@ -54,6 +53,9 @@
         $rootScope.listItems = []
       }
       ipCookie('nodeEnd', $rootScope.nodeEnd);
+
+      // The nodeEnd has changed so we change the right Tree
+      $rootScope.reloadRightTree()
     }
 
     /*----------  Active nodes  ----------*/
