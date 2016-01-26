@@ -73,7 +73,6 @@
         node.savedTitle = node.title
         node.items = [];
 
-
         if(node.chapter_id){
           node.parent = node.chapter_id
           node.doc_id = node.id

@@ -26,14 +26,7 @@
         var preview = false
       }
 
-      // if(['pdf'].indexOf(title.substr(title.lastIndexOf('.') + 1).toLowerCase()) > -1){
-      //   var download = false
-      // } else{
-      //   var download = true
-      // }
-
       var download = true
-
 
       function callModalLocked(){
         ModalService.showModal({

@@ -8,7 +8,7 @@
 
     var error;
 
-    $translate(['ERROR', ]).then(function (translations) {
+    $translate(['ERROR']).then(function (translations) {
       error = translations.ERROR;
     });
 

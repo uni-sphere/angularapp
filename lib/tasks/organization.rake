@@ -1,12 +1,16 @@
 require "#{Rails.root}/app/helpers/subdomain_helper"
 include SubdomainHelper
 
+# use case
+# rake organization:create["ifma", "http://ifma.unisphere.eu", 29.778004, -95.544143]
+
 namespace :organization do
   desc "create organization"
-  task :create, [:name, :website, :latitude, :longitude, :place_id] => :environment do |t, args|
-    organization = Organization.new(name: args.name, latitude: args.latitude, longitude: args.longitude, place_id: args.place_id, website: args.website)
-    organization.organizationsuserslinks.build(user_id: User.find_by_email('gabriel.muller@unisphere.eu').id)
+  task :create, [:name, :website, :latitude, :longitude] => :environment do |t, args|
+    organization = Organization.new(name: args.name, latitude: args.latitude, longitude: args.longitude, website: args.website)
     organization.organizationsuserslinks.build(user_id: User.find_by_email('hello@unisphere.eu').id)
+    organization.organizationsuserslinks.build(user_id: User.find_by_email('superadmin@unisphere.eu').id)
+    organization.organizationsuserslinks.build(user_id: User.find_by_email('teacher@unisphere.eu').id)
     user = User.find_by_email('hello@unisphere.eu')
     organization.nodes.new(name: args.name, parent_id: 0, user_id: user.id)
     if organization.save

@@ -117,7 +117,7 @@
     // SANDBOX
     if(window.location.host == 'www.sandbox.unisphere.eu' || window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
       $rootScope.sandbox = true;
-      $rootScope.help = true
+      $rootScope.help = false
 
       $rootScope.admin = true
       $rootScope.university = "My university"
@@ -163,7 +163,7 @@
       Restangular.one('user').get().then(function (user) {
         $rootScope.accountEmail = user.email
         $rootScope.accountName = user.name
-        $rootScope.help = user.help
+        $rootScope.help = false
         $rootScope.superadmin = user.superadmin
         $rootScope.userId = user.id
         $rootScope.admin = true
