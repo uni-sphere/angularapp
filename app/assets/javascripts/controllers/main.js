@@ -54,7 +54,7 @@
     }
 
     angular.element($window).bind('resize', function() {
-      if(window.location.pathname == '/' || window.location.pathname == '/home'){
+      if(window.location.pathname == '/'){
         $rootScope.resizeCircle();
       }
     });
@@ -114,15 +114,9 @@
       });
     }
 
-    if(window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home' || window.location.host == 'www.sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
-    // if(window.location.host == 'localhost:3000' || window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home' || window.location.host == 'www.sandbox.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
-      if(window.location.host == 'www.unisphere.eu' || window.location.host == 'dev.unisphere.eu' || window.location.pathname == '/home'){
-        $rootScope.home = true;
-        console.log("HOME")
-      } else{
-        $rootScope.sandbox = true;
-        console.log("SANDBOX")
-      }
+    // SANDBOX
+    if(window.location.host == 'www.sandbox.unisphere.eu' || window.location.host == 'sandbox.unisphere.eu' || window.location.host == 'sandbox.dev.unisphere.eu'){
+      $rootScope.sandbox = true;
       $rootScope.help = true
 
       $rootScope.admin = true
@@ -132,8 +126,9 @@
       $rootScope.userId = 1
       $rootScope.superadmin = true
       $rootScope.listUser = ["user@unisphere.eu"]
-    } else{
-      console.log("NORMAL APP")
+    } 
+    // NORMAL APP
+    else{
       // We get the actual uni
       Restangular.one('organization').get().then(function (university) {
         $rootScope.university = university.organization.name;
@@ -144,7 +139,6 @@
         console.log(d)
         Notification.error(error);
       });
-
 
       // We authentificated the user
       $auth.validateUser().then(function(){
@@ -231,9 +225,6 @@
       });
 
     }
-
-
-
 
   }
 })();
