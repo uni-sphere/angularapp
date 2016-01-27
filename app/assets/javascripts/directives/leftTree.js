@@ -496,14 +496,12 @@
             .attr("class", function(d){
               if(d.parent == 0){
                 return ""
-              } else if(d.user_id == $rootScope.userId || $rootScope.superadmin){
-                return "renameNode"
               } else{
-                return "justDisplayNode"
+                return "nodeLabel"
               }
             })
             .text(function(d) { return d.parent == 0 ? '' : d.name ; })
-            .on("click", renameNode)
+            .on("click", toggleNode)
             .attr("y", function(d) { return d.children ? 25 : 5; })
             .attr("text-anchor", function(d){
               if(d.children){
@@ -518,8 +516,11 @@
               }
             })
             .on("contextmenu", function (d, i) {
-              console.log("plop")
-            });
+              renameNode(d)
+            })
+            .on("dblclick",function(d){
+              renameNode(d)
+            })
 
           // Little + to add a node
           nodeEnter.append("text")

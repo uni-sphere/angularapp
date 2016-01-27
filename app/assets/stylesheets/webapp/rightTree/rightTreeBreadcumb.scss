@@ -54,6 +54,10 @@
   }
 }
 
+.no-drop{
+  cursor: no-drop !important;
+}
+
 .protection-file-disabled{
   &, &:hover{
     box-shadow: none;
