@@ -9,13 +9,15 @@
     var cancel_warning,
       error,
       forbidden,
+      newNodeLabel,
       success;
 
-    $translate(['SUCCESS', 'ERROR', 'NW_CANCEL', 'FORBIDDEN']).then(function (translations) {
+    $translate(['SUCCESS', 'ERROR', 'NW_CANCEL', 'FORBIDDEN', 'NEW_NODE_LABEL']).then(function (translations) {
       cancel_warning = translations.NW_CANCEL;
       error = translations.ERROR;
       forbidden = translations.FORBIDDEN;
       success = translations.SUCCESS;
+      newNodeLabel = translations.NEW_NODE_LABEL;
     });
 
     service = {
@@ -209,7 +211,7 @@
 
         Restangular.all('nodes').post({parent_id: node.num, name: "Nouveau"}).then(function(newNode) {
 
-          var nodeToCreate = {name: "Nouveau", num: newNode.id, parent: node, user_id: newNode.user_id}
+          var nodeToCreate = {name: newNodeLabel, num: newNode.id, parent: node, user_id: newNode.user_id}
 
           // We create the node
           if(node.children == undefined){

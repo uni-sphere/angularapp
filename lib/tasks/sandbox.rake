@@ -78,6 +78,15 @@ namespace :sandbox do
     str.encode("UTF-8", 'binary', invalid: :replace, undef: :replace, replace: '')
   end
 
+  def add_reports(node)
+    for i in 1..10
+      node.reports.create(downloads: Random.rand(50))
+      report = Report.last
+      date = report.created_at-(11-i)*7.days
+      report.update(created_at: date)
+    end
+  end
+
   def fill_sandbox
     # Select variable
     organization = Organization.find_by_subdomain 'sandbox'
@@ -88,32 +97,46 @@ namespace :sandbox do
     parent_2 = organization.nodes.create(name: "Seconde", parent_id: node.id, user_id: user.id)
     parent_3 = organization.nodes.create(name: "Premiere", parent_id: node.id, user_id: user.id)
     parent_4 = organization.nodes.create(name: "Terminal", parent_id: node.id, user_id: user.id)
+    parent_5 = organization.nodes.create(name: "S", parent_id: parent_3.id, user_id: user.id)
+
     node_chap = organization.nodes.create(name: "Histoire", parent_id: parent_2.id, user_id: user.id)
+    add_reports(node_chap)
     parent_chap = node_chap.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Français", parent_id: parent_2.id, user_id: user.id)
+    add_reports(node)
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Physique", parent_id: parent_2.id, user_id: user.id)
+    add_reports(node)
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Biologie", parent_id: parent_2.id, user_id: user.id)
+    add_reports(node)
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
-    parent_9 = organization.nodes.create(name: "S", parent_id: parent_3.id, user_id: user.id)
+
+    node = organization.nodes.create(name: "Maths", parent_id: parent_5.id, user_id: user.id)
+    add_reports(node)
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Anglais", parent_id: parent_5.id, user_id: user.id)
+    add_reports(node)
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Histoire", parent_id: parent_5.id, user_id: user.id)
+    add_reports(node)
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+
     node = organization.nodes.create(name: "ES", parent_id: parent_3.id, user_id: user.id)
+    add_reports(node)
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "L", parent_id: parent_3.id, user_id: user.id)
+    add_reports(node)
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+
     node = organization.nodes.create(name: "S", parent_id: parent_4.id, user_id: user.id)
+    add_reports(node)
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "ES", parent_id: parent_4.id, user_id: user.id)
+    add_reports(node)
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "L", parent_id: parent_4.id, user_id: user.id)
-    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
-    
-    # Create topics
-    node = organization.nodes.create(name: "Maths", parent_id: parent_9.id, user_id: user.id)
-    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
-    node = organization.nodes.create(name: "Anglais", parent_id: parent_9.id, user_id: user.id)
-    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
-    node = organization.nodes.create(name: "Histoire", parent_id: parent_9.id, user_id: user.id)
+    add_reports(node)
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     
     # Create chapters

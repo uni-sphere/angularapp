@@ -66,8 +66,6 @@
           // We look the specific node to see if something changed
           Restangular.one('chapters').get({node_id: $rootScope.nodeEnd[0]}).then(function (res) {
 
-            console.log(res.tree)
-
             if(res.locked != $rootScope.nodeProtected){
               $rootScope.nodeProtected = res.locked;
               showNodeActions()
