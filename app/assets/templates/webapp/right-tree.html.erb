@@ -60,8 +60,12 @@
 
   <div class="right-container" id="dropcircle-container" ng-show="($root.nodeEnd && $root.listItems.length == 0 && $root.admin) || (!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin)">
     <div id="dropcircle">
-      <div ng-show="!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin">{{ 'SELECT_LEAF' | translate }}</div>
+
+      <div ng-show="$root.listItems.length == 0 && $root.nodeEnd && !$root.admin">{{ 'NEW_SUBJECT' | translate }}</div>
+      <div ng-show="!$root.nodeEnd && !$root.admin">{{ 'SELECT_LEAF' | translate }}</div>
       <div ng-show="$root.nodeEnd && $root.listItems.length == 0 && $root.admin" >DROP ZONE</div>
+
+
     </div>
   </div>
 
@@ -100,7 +104,7 @@
     <span id="tip-chrome" ng-show="$root.admin && $root.nodeEnd && !$root.isChrome " >{{ 'TIP' | translate }}</span>
     <span id="tip-chrome" ng-show="$root.admin && $root.nodeEnd && $root.isChrome">{{ 'TIP_CHROME' | translate }}</span>
 
-    <div ng-show="$root.listItems.length == 0 && $root.nodeEnd && !$root.admin">{{ 'NEW_SUBJECT' | translate }}</div>
+    <!-- <div ng-show="$root.listItems.length == 0 && $root.nodeEnd && !$root.admin">{{ 'NEW_SUBJECT' | translate }}</div> -->
     <!-- <div ng-show="!$root.nodeEnd">{{ 'SELECT_LEAF' | translate }}</div> -->
   </div>
 </div>

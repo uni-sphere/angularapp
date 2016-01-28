@@ -406,7 +406,7 @@
       ==============================*/
 
       function update(source, time) {
-        var maxWidth = scope.leftTreeWidth - 200
+        var maxWidth = scope.leftTreeWidth - 250
         var duration = time;
 
         // Compute the new tree layout.
@@ -480,7 +480,11 @@
 
         // In all case we happened a circle that toogles the nodes
         nodeEnter.append("circle")
-          .attr("class", "circleCollapse")
+          .attr("class", function(d){
+            if(d.depth != 0){
+              return "circleCollapse"
+            }
+          })
           .attr("r", 1e-6)
           .style("stroke", function(d){
             if(d.user_id == $rootScope.userId || $rootScope.superadmin){
@@ -492,6 +496,16 @@
           .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff" })
           .on('click', toggleNode)
 
+        nodeEnter.append('text')
+          .attr('font-family', 'FontAwesome')
+          .attr('font-size', function(d) { return d.size+'em'} )
+          .attr("x", -8)
+          .attr("y", 5)
+          .text(function(d) { 
+            if(d.depth == 0){
+              return '\uf19c'
+            } 
+          }); 
 
         // We have a different display when the user is an admin or not
         if($rootScope.admin){

@@ -64,6 +64,7 @@
         storageTemp.push([node.num, node.name]);
         node = node.parent
       }
+      storageTemp.push([node.num, node.name]);
       $rootScope.activeNodes = storageTemp
 
       ipCookie('activeNodes', $rootScope.activeNodes);
@@ -101,11 +102,7 @@
     /*----------  Color activeNodes  ----------*/
 
     function colorActiveNodes(node){
-      // console.log(node)
       node.active = false;
-      if(node.depth == 0){
-        node.active = true
-      }
       if(isInDoubleArray(node.num, $rootScope.activeNodes)){
         node.active = true;
       }
