@@ -455,8 +455,6 @@
         =            Update nodes            =
         ====================================*/
 
-
-
         var node = leftTreeSvg.selectAll("g.node")
           .data(nodes, function(d) { return d.id || (d.id = d.num); });
 

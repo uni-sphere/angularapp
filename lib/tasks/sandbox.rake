@@ -92,69 +92,180 @@ namespace :sandbox do
     organization = Organization.find_by_subdomain 'sandbox'
     user = User.find_by_email('hello@unisphere.eu')
     node = organization.nodes.create(name: 'University', parent_id: 0, user_id: user.id)
-    
+   
     # Create nodes
-    parent_2 = organization.nodes.create(name: "Seconde", parent_id: node.id, user_id: user.id)
-    parent_3 = organization.nodes.create(name: "Premiere", parent_id: node.id, user_id: user.id)
-    parent_4 = organization.nodes.create(name: "Terminal", parent_id: node.id, user_id: user.id)
-    parent_5 = organization.nodes.create(name: "S", parent_id: parent_3.id, user_id: user.id)
-
-    node_chap = organization.nodes.create(name: "Histoire", parent_id: parent_2.id, user_id: user.id)
+    parent_2 = organization.nodes.create(name: "Year 1", parent_id: node.id, user_id: user.id)
+    parent_3 = organization.nodes.create(name: "Year 2", parent_id: node.id, user_id: user.id)
+    parent_4 = organization.nodes.create(name: "Year 3", parent_id: node.id, user_id: user.id)
+    parent_5 = organization.nodes.create(name: "Year 4", parent_id: node.id, user_id: user.id)
+    
+    
+    # Year 1 nodes
+    node_chap = organization.nodes.create(name: "Astronomy", parent_id: parent_2.id, user_id: user.id)
     add_reports(node_chap)
+    
+    
     parent_chap = node_chap.chapters.create(title: "main", parent_id: 0, user_id: user.id)
-    node = organization.nodes.create(name: "Français", parent_id: parent_2.id, user_id: user.id)
+    node = organization.nodes.create(name: "Atomic Physics", parent_id: parent_2.id, user_id: user.id)
     add_reports(node)
+    
+    
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
-    node = organization.nodes.create(name: "Physique", parent_id: parent_2.id, user_id: user.id)
+    node = organization.nodes.create(name: "Thermal Physics", parent_id: parent_2.id, user_id: user.id)
     add_reports(node)
+    
+    
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
-    node = organization.nodes.create(name: "Biologie", parent_id: parent_2.id, user_id: user.id)
+    node = organization.nodes.create(name: "Mathematical Methods I", parent_id: parent_2.id, user_id: user.id)
     add_reports(node)
+    
+    
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Mathematical Methods II", parent_id: parent_2.id, user_id: user.id)
+    add_reports(node)
+    
+    
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Mechanics", parent_id: parent_2.id, user_id: user.id)
+    add_reports(node)
+    
+    
+    
+    
+     # Year 2 nodes
+    
 
-    node = organization.nodes.create(name: "Maths", parent_id: parent_5.id, user_id: user.id)
-    add_reports(node)
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
-    node = organization.nodes.create(name: "Anglais", parent_id: parent_5.id, user_id: user.id)
+    node = organization.nodes.create(name: "Atomic and Molecular Physics", parent_id: parent_3.id, user_id: user.id)
     add_reports(node)
-    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
-    node = organization.nodes.create(name: "Histoire", parent_id: parent_5.id, user_id: user.id)
-    add_reports(node)
-    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    
 
-    node = organization.nodes.create(name: "ES", parent_id: parent_3.id, user_id: user.id)
-    add_reports(node)
-    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
-    node = organization.nodes.create(name: "L", parent_id: parent_3.id, user_id: user.id)
-    add_reports(node)
-    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
 
-    node = organization.nodes.create(name: "S", parent_id: parent_4.id, user_id: user.id)
-    add_reports(node)
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
-    node = organization.nodes.create(name: "ES", parent_id: parent_4.id, user_id: user.id)
+    node = organization.nodes.create(name: "Electricity and Magnetism", parent_id: parent_3.id, user_id: user.id)
     add_reports(node)
+    
+   
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
-    node = organization.nodes.create(name: "L", parent_id: parent_4.id, user_id: user.id)
+    node = organization.nodes.create(name: "Mathematical Methods III", parent_id: parent_3.id, user_id: user.id)
     add_reports(node)
+    
+    
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Practical Physics", parent_id: parent_3.id, user_id: user.id)
+    add_reports(node)
+    
+        node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Quantum Physics", parent_id: parent_3.id, user_id: user.id)
+    add_reports(node)
+    
+           node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Statistical Physics", parent_id: parent_3.id, user_id: user.id)
+    add_reports(node)
+    
+    
+    
+    
+     # Year 3 nodes
+    
+
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "BSc Physcis Project", parent_id: parent_4.id, user_id: user.id)
+    add_reports(node)
+    
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Electromagnetic Theory", parent_id: parent_4.id, user_id: user.id)
+    add_reports(node)
+    
+
+  node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Lasers and Modern Optics", parent_id: parent_4.id, user_id: user.id)
+    add_reports(node)
+    
+        node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Materials and Nanomaterials", parent_id: parent_4.id, user_id: user.id)
+    add_reports(node)
+    
+    
+        
+           node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Quantum Mechanics", parent_id: parent_4.id, user_id: user.id)
+    add_reports(node)
+    
+    
+
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Solid State Physics", parent_id: parent_4.id, user_id: user.id)
+    add_reports(node)
+    
+   
+
+    
+  
+
+    
+    
+    
+    
+     # Year 4 nodes
+    
+
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Advanced Quantum Theory", parent_id: parent_5.id, user_id: user.id)
+    add_reports(node)
+    
+
+
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "High Energy Physics", parent_id: parent_5.id, user_id: user.id)
+    add_reports(node)
+    
+   
+           node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Molecular Biophysics", parent_id: parent_5.id, user_id: user.id)
+    add_reports(node)
+    
+   
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "MSci Physcis Project", parent_id: parent_5.id, user_id: user.id)
+    add_reports(node)
+    
+    
+    
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Particle Physics", parent_id: parent_5.id, user_id: user.id)
+    add_reports(node)
+    
+
+           node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node = organization.nodes.create(name: "Quantum Field Theory", parent_id: parent_5.id, user_id: user.id)
+    add_reports(node)
+    
+    
+    
+    
+    
+   
+    # Create chapters (folders)
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     
-    # Create chapters
-    parent_13 = node_chap.chapters.create(title: "Les rois de France", parent_id: parent_chap.id, user_id: user.id)
-    chap_file = node_chap.chapters.create(title: "Cours", parent_id: parent_13.id, user_id: user.id)
-    node_chap.chapters.create(title: "Images", parent_id: parent_13.id, user_id: user.id)
-    parent_16 = node_chap.chapters.create(title: "Le continent Africain", parent_id: parent_chap.id, user_id: user.id)
-    node_chap.chapters.create(title: "Cours", parent_id: parent_16.id, user_id: user.id)
-    node_chap.chapters.create(title: "Exercices", parent_id: parent_16.id, user_id: user.id)
-    parent_19 = node_chap.chapters.create(title: "La guerre de 100 ans", parent_id: parent_chap.id, user_id: user.id)
-    node_chap.chapters.create(title: "Cours", parent_id: parent_19.id, user_id: user.id)
-    node_chap.chapters.create(title: "Videos", parent_id: parent_19.id, user_id: user.id)
-    parent_22 = node_chap.chapters.create(title: "Annexes", parent_id: parent_chap.id, user_id: user.id)
-    node_chap.chapters.create(title: "Cours", parent_id: parent_22.id, user_id: user.id)
-    node_chap.chapters.create(title: "Annexes", parent_id: parent_22.id, user_id: user.id)
+    parent_13 = node_chap.chapters.create(title: "Assignments", parent_id: parent_chap.id, user_id: user.id)
+ 
+    parent_16 = node_chap.chapters.create(title: "Lecture Notes", parent_id: parent_chap.id, user_id: user.id)
+    
+    parent_19 = node_chap.chapters.create(title: "Handouts", parent_id: parent_chap.id, user_id: user.id)
+    
+    parent_21 = node_chap.chapters.create(title: "Homework", parent_id: parent_chap.id, user_id: user.id)
 
+ 
     # create documents
-    file=File.open(Rails.root + "app/assets/files/lesson1.pdf")
-    chap_file.awsdocuments.create(title: "file1.pdf", content: file, user_id: user.id, position: 1, organization_id: 1)
+    file=File.open(Rails.root + "app/assets/files/assignments.pdf")
+    file2=File.open(Rails.root + "app/assets/files/handout.pdf")
+    file3=File.open(Rails.root + "app/assets/files/homework.pdf")
+    file4=File.open(Rails.root + "app/assets/files/notes.docx")
+    parent_13.awsdocuments.create(title: "assignments.pdf", content: file, user_id: user.id, position: 1, organization_id: 1)
+    parent_16.awsdocuments.create(title: "notes.docx", content: file4, user_id: user.id, position: 1, organization_id: 1)
+    parent_19.awsdocuments.create(title: "handout.pdf", content: file2, user_id: user.id, position: 1, organization_id: 1)
+    parent_21.awsdocuments.create(title: "homework.pdf", content: file3, user_id: user.id, position: 1, organization_id: 1)
   end
 end

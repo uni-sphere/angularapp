@@ -30,6 +30,8 @@
     </ol>
   </script>
 
+  
+
   <div id="breadcrumb" ng-controller="breadcrumbCtrl">
     <div id="breadcrumb-container">
       <div id="breadcrumb-title">
@@ -56,31 +58,26 @@
     </div>
   </div>
 
-  <div id="node-admin">
-    <span  ng-show="nodeAdmin">node admin: {{$rootScope.nodeAdmin}}</span>
-  </div>
-  <div id="button-row" ng-class="{'button-hidden' : !$root.nodeEnd || !$root.admin}" ng-click="$event.stopPropagation()">
-
-    <button type="file" class="dual-submit" ngf-multiple="true" name="firstFiles" ngf-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>
-
-    <button ng-click="newChapter()" ng-controller="createChapterCtrl" class="dual-submit"  >{{ 'CHAPTER' | translate }}</button>
-  </div>
-
-  <div id="dropzone-circle" class="full-size-circle-container" ng-show="($root.nodeEnd && $root.listItems.length == 0 && $root.admin) || (!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin)">
-    <div class="full-size-circle">
-      <span ng-show="!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin" id="explamation-point">!</span>
-      <span ng-show="$root.nodeEnd && $root.listItems.length == 0 && $root.admin" id="dropzone-text">DROP ZONE</span>
+  <!-- <div class="circles">
+    <div>
+      <div>
+        <div>
+          <div>
+            All types of content (see fiddle)
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </div> -->
 
-  <div class="tip" >
-    <i class="fa fa-lightbulb-o" ng-show="$root.admin && $root.nodeEnd"></i>
-    <span id="tip-chrome" ng-show="$root.admin && $root.nodeEnd && !$root.isChrome " >{{ 'TIP' | translate }}</span>
-    <span id="tip-chrome" ng-show="$root.admin && $root.nodeEnd && $root.isChrome">{{ 'TIP_CHROME' | translate }}</span>
+  <!-- <div id="dropzoneCircle" ng-show="($root.nodeEnd && $root.listItems.length == 0 && $root.admin) || (!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin)"> 
+    <span ng-show="!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin" id="explamation-point">!</span>
+    <span ng-show="$root.nodeEnd && $root.listItems.length == 0 && $root.admin" id="dropzone-text">DROP ZONE</span>
+  </div> -->
 
-    <div ng-show="$root.listItems.length == 0 && $root.nodeEnd && !$root.admin">{{ 'NEW_SUBJECT' | translate }}</div>
-    <div ng-show="!$root.nodeEnd">{{ 'SELECT_LEAF' | translate }}</div>
-  </div>
+
+
+  
 
   <div id="document-tree" ng-controller="itemHandlingCtrl">
 
@@ -101,6 +98,24 @@
         </ol>
       </div>
     </div>
+  </div>
+
+
+  <div id="button-row" ng-class="{'button-hidden' : !$root.nodeEnd || !$root.admin}" ng-click="$event.stopPropagation()">
+
+    <button type="file" class="dual-submit" ngf-multiple="true" name="firstFiles" ngf-select ng-model="firstFiles" > {{ 'UPLOAD' | translate }} </button>
+
+    <button ng-click="newChapter()" ng-controller="createChapterCtrl" class="dual-submit"  >{{ 'CHAPTER' | translate }}</button>
+  </div>
+
+
+  <div class="tip" >
+    <i class="fa fa-lightbulb-o" ng-show="$root.admin && $root.nodeEnd"></i>
+    <span id="tip-chrome" ng-show="$root.admin && $root.nodeEnd && !$root.isChrome " >{{ 'TIP' | translate }}</span>
+    <span id="tip-chrome" ng-show="$root.admin && $root.nodeEnd && $root.isChrome">{{ 'TIP_CHROME' | translate }}</span>
+
+    <div ng-show="$root.listItems.length == 0 && $root.nodeEnd && !$root.admin">{{ 'NEW_SUBJECT' | translate }}</div>
+    <div ng-show="!$root.nodeEnd">{{ 'SELECT_LEAF' | translate }}</div>
   </div>
 </div>
 

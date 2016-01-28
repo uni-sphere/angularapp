@@ -3,12 +3,11 @@
 ===============================*/
 
 #button-row{
-  position: relative;
+  position: absolute;
   width: 100%;
   line-height: 60px;
-  padding-bottom: 20px;
-  padding-top: 10px;
   display: table;
+  bottom: 50px;
   margin: 0px auto;
   text-align: center;
 
