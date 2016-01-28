@@ -101,13 +101,15 @@
     /*----------  Color activeNodes  ----------*/
 
     function colorActiveNodes(node){
+      // console.log(node)
       node.active = false;
-      // console.log($rootScope.activeNodes)
+      if(node.depth == 0){
+        node.active = true
+      }
       if(isInDoubleArray(node.num, $rootScope.activeNodes)){
         node.active = true;
       }
       if(node.children && node.children.length !=0){
-        // console.log(node)
         angular.forEach(node.children, function(value, key){
           colorActiveNodes(value)
         })

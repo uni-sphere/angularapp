@@ -11,37 +11,46 @@
 
 .node circle {
   fill: #fff;
-  stroke-width: 0.1em;
+  stroke-width: 2px;
+  opacity: 0.6;
 }
 
 .node text {
   font-size: .8em;
-  fill: $view-tree-color;
+  fill: #4B4B4B;
+  opacity: 0.6
+}
+
+.node-active circle, .node-active text{
+  opacity: 1;
+}
+
+.node-active .nodeLabel{
+  // font-weight: bold;
 }
 
 .link {
   fill: none;
   stroke: #ccc;
-  stroke-width: 0.1em;
+  stroke-width: 1px;
 }
 
 .link-active{
   fill: none;
   stroke: cornflowerblue;
-  stroke-width: 0.1em;
+  stroke-width: 2px;
 }
-
 
 .templink{
   fill: none;
   stroke: red;
-  stroke-width: 3px;
+  stroke-width: 2px;
 }
 
 .templinkParent{
   fill: none;
   stroke: blue;
-  stroke-width: 3px;
+  stroke-width: 2px;
 }
 
 .overlay{

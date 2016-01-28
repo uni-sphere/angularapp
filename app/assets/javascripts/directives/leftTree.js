@@ -406,7 +406,7 @@
       ==============================*/
 
       function update(source, time) {
-        var maxWidth = scope.leftTreeWidth - 150
+        var maxWidth = scope.leftTreeWidth - 200
         var duration = time;
 
         // Compute the new tree layout.
@@ -421,10 +421,19 @@
             maxDepth = d.depth
           }
         });
-        var lengthLink = Math.floor(maxWidth / maxDepth);
+       
+        var firstLinkLength = Math.floor(maxWidth / (2 * maxDepth - 1))
+        var newMaxWidth = maxWidth - firstLinkLength
+        var otherLinkLength = Math.floor(newMaxWidth / (maxDepth - 1 )) 
 
         nodes.forEach(function(d) {
-          d.y = d.depth * lengthLink
+          if(d.depth == 0){
+            d.y = 0
+          } else if(d.depth == 1){
+            d.y =  firstLinkLength
+          } else{
+            d.y =  firstLinkLength + (( d.depth - 1 ) * otherLinkLength)
+          }
         });
 
         // ellipseArray = [];
@@ -621,7 +630,7 @@
         else{
            // Label of the node. When clicked it opens the node
           nodeEnter.append("text")
-            .attr("class", function(d){return d.parent == 0 ? "" : "nameNode"})
+            .attr("class", function(d){return d.parent == 0 ? "" : "nodeLabel"})
             .attr("x", function(d) { return d.children ? 0 : 15; })
             .attr("y", function(d) { return d.children ? 25 : 5; })
             .attr("text-anchor", function(d) { return d.children ? "middle" : "start"; })
@@ -637,6 +646,14 @@
         var nodeUpdate = node.transition()
           .duration(duration)
           .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+        nodeUpdate.attr("class", function(d){
+          if(d.active){
+            return "node node-active"
+          } else{
+            return "node"
+          }
+        })
 
         // We show the delete button only if the node belongs to the user
         nodeUpdate.select("text.deleteNode").style("fill-opacity", function(d){
@@ -664,7 +681,7 @@
           .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff" })
 
         // We change the position of the text if it is an leaf or not
-        nodeUpdate.select("text.nameNode, text.justDisplayNode, text.renameNode")
+        nodeUpdate.select("text.nodeLabel")
           .style("fill-opacity", 1)
           .text(function(d) { return d.parent == 0 ? '' : d.name ; })
           .attr("y", function(d) { return d.children ? 25 : 5; })
@@ -780,7 +797,6 @@
 
       function toggleNode(node) {
         if (d3.event.defaultPrevented) return; // click suppressed
-        $rootScope.resizeCircle()
         nodeCrudService.toggle(node).then(function(){
           update(node , 750);
         })

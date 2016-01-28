@@ -58,28 +58,14 @@
     </div>
   </div>
 
-  <!-- <div class="circles">
-    <div>
-      <div>
-        <div>
-          <div>
-            All types of content (see fiddle)
-          </div>
-        </div>
-      </div>
+  <div class="right-container" id="dropcircle-container" ng-show="($root.nodeEnd && $root.listItems.length == 0 && $root.admin) || (!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin)">
+    <div id="dropcircle">
+      <div ng-show="!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin">{{ 'SELECT_LEAF' | translate }}</div>
+      <div ng-show="$root.nodeEnd && $root.listItems.length == 0 && $root.admin" >DROP ZONE</div>
     </div>
-  </div> -->
+  </div>
 
-  <!-- <div id="dropzoneCircle" ng-show="($root.nodeEnd && $root.listItems.length == 0 && $root.admin) || (!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin)"> 
-    <span ng-show="!$root.nodeEnd || $root.listItems.length == 0 && !$root.admin" id="explamation-point">!</span>
-    <span ng-show="$root.nodeEnd && $root.listItems.length == 0 && $root.admin" id="dropzone-text">DROP ZONE</span>
-  </div> -->
-
-
-
-  
-
-  <div id="document-tree" ng-controller="itemHandlingCtrl">
+  <div class="right-container" ng-controller="itemHandlingCtrl">
 
     <div id="tutorial-action-buttons" ng-hide="!$root.help || $root.tutorialActionButtonSeen" ng-click="$root.tutorialActionButtonOpen = true; $event.stopPropagation(); $root.setHelp()">
       <span class="tutorial-round" ng-hide="$root.tutorialActionButtonOpen"></span>
@@ -115,7 +101,7 @@
     <span id="tip-chrome" ng-show="$root.admin && $root.nodeEnd && $root.isChrome">{{ 'TIP_CHROME' | translate }}</span>
 
     <div ng-show="$root.listItems.length == 0 && $root.nodeEnd && !$root.admin">{{ 'NEW_SUBJECT' | translate }}</div>
-    <div ng-show="!$root.nodeEnd">{{ 'SELECT_LEAF' | translate }}</div>
+    <!-- <div ng-show="!$root.nodeEnd">{{ 'SELECT_LEAF' | translate }}</div> -->
   </div>
 </div>
 

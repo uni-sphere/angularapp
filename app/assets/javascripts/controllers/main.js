@@ -30,35 +30,7 @@
       }
     }
 
-    // We initialise the size of the circle
-    $rootScope.resizeCircle = function(){
-      var initializeCircle = setInterval(function() {
-        if($('.full-size-circle-container').height() != null && $('.full-size-circle-container').height() != 0){
-          clearInterval(initializeCircle);
-          $rootScope.mini = Math.min($('.full-size-circle-container').height(), $('.full-size-circle-container').width()) - 20
-          changeCircle()
-        }
-      }, 50);
-    }
-
-    $rootScope.resizeCircle();
-
-    function changeCircle(){
-      $rootScope.mini = Math.min($('.full-size-circle-container').height(), $('.full-size-circle-container').width()) * .6
-      $('.full-size-circle').each(function(){
-        $(this).css("height", $rootScope.mini)
-        $(this).css("width", $rootScope.mini)
-        $(this).css("border-radius", $rootScope.mini/2)
-        $(this).css("margin-left", $('.full-size-circle-container').width()/2 - $rootScope.mini/2)
-      });
-    }
-
-    angular.element($window).bind('resize', function() {
-      if(window.location.pathname == '/'){
-        $rootScope.resizeCircle();
-      }
-    });
-
+  
     // We watch every click to un focus some elements
     $rootScope.looseFocusItem = function(){
       if($rootScope.tutorialDashboardOpen){
