@@ -4,7 +4,7 @@ Dropdown directives for AngularJS (1.1.5+, 1.2.x).
 
 Includes both a select-style dropdown and a menu-style dropdown.  The menu-style dropdown attaches to an existing element (button, link, div, etc), whereas the select-style dropdown replaces the element it is attached to.
 
-See examples: http://jsfiddle.net/jseppi/cTzun/53/embedded/result/
+See examples: http://jseppi.github.io/angular-dropdowns/
 
 ## Usage
 
@@ -95,6 +95,15 @@ You can specify a function to call upon dropdown value change by specifying the 
     dropdown-model="ddSelectSelected"
     dropdown-item-label="text"
     dropdown-onchange="someMethod(selected)" >
+</div>
+```
+
+You can set `dropdown-disabled` to disable the dropdown when the bound value is truthy.
+
+```html
+<div dropdown-select="ddSelectOptions"
+    dropdown-model="ddSelectSelected"
+    dropdown-disabled="isDropdownDisabled" >
 </div>
 ```
 

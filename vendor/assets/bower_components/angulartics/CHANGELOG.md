@@ -1,10 +1,101 @@
+<a name="1.0.0"></a>
+### 1.0.0 (2015-12-28)
+- Added devDependency badge
+  - Updated all dev deps and fixed karma tests
+- Added userTimings to the known handlers
+- Refactoring - use toddmotto angular styleguide and avoid anonymous functions
+- Hubspot - add register user properties
+- Marketo - fix known user identification (typo)
+- fix - default analytics-on eventType is 'click' [#402](https://github.com/angulartics/angulartics/issues/402)
+- fix - remove vendor scripts from main field of bower.json #377 #285
+
+#### Organizational changes
+- Moved scroll tracking plugin to [angulartics-scroll](http://github.com/angulartics/angulartics-scroll)
+  - Removes Jquery dependency :)
+
+<a name="0.20.3"></a>
+### 0.20.3 (2015-12-23)
+- Added SiteSpect plugin for angulartics
+- chore(es6): add support for es6 modules
+- clarify we don't support nuget
+- Fix broken CNZZ plugin
+- remove version from license header in src
+- replace slack with gitter
+
+<a name="0.20.2"></a>
+### 0.20.2 (2015-11-17)
+Add setting to exclude specific routes from pageview tracking
+
+<a name="0.20.0"></a>
+### 0.20.0 (2015-07-27)
+
+#### Organizational changes
+- Core clean-up: all plugins will no longer part of Angulartics core, each one will have its own repo
+- CommonJS: all plugins will be packaged for npm, this means they will be importable à la CommonJS module style
+- Moved Google Analytics plugin to [angulartics-google-analytics](http://github.com/angulartics/angulartics-google-analytics)
+
+<a name="0.20.0"></a>
+### 0.20.0 (2015-07-27)
+
+#### Organizational changes
+- Core clean-up: all plugins will no longer part of Angulartics core, each one will have its own repo
+- CommonJS: all plugins will be packaged for npm, this means they will be importable à la CommonJS module style
+- Moved Google Analytics plugin to [angulartics-google-analytics](http://github.com/angulartics/angulartics-google-analytics)
+
+<a name="0.19.3"></a>
+### 0.19.3 (2015-07-27)
+
+This is just a maintenance release so people who had their builds broken
+by 0.19.2 can safely upgrade 0.19.x.
+
+<a name="0.19.2"></a>
+### 0.19.2 (2015-07-17) (yanked)
+
+This version was a micro bump but removed several plugins. It has since been
+yanked from npm and bower AFAICT.
+
+<a name="0.19.0"></a>
+### 0.19.0 (2015-06-27)
+
+#### Features
+- Added support for Inspectlet (@geordie--)
+- Added New Relic Insights support (@gampleman)
+- Added Clicky support (@corinna000)
+- Added additional account names config option for Google Analytics (@ignigena)
+
+#### Bug Fixes
+
+- Changed GTM tag to generic tag (@Nickdouille)
+- Updated to Waypoints 3.1.1 and removed jQuery dependency (@corinna000)
+
+### 0.18.0 (2015-05-22)
+
+#### Bug Fixes
+
+- Omniture page tracking now correctly sends page path (@SuperheroicCoding)
+- Google Analytics plugin now properly sends properties with falsy values
+  (i.e. 0) (@birge)
+- trackRelativePath option is now properly honoured by angulartics. (@0xR)
+
+#### Features
+- Adding page property to Google Analytics (@ormagomy)
+- Google Analytics plugin now sends events to a default category 'Event' so you
+  don't need to set this if you don't want to. (@trolleycrash)
+- GoSquared support. See the appropriate plugin for options. (@pjkelly)
+- Google Analytics plugin now has support for username tracking.
+  (@ravishivt)
+- Woopra plugin now can identify the user and set user properties.
+  (@alfaproject)
+- Segment plugin now has support for the registerSetAlias method.
+  (@leore)
+
 <a name="0.17.2"></a>
 ### 0.17.2 (2015-01-15)
 
 #### Bug Fixes
 - Added missing nuspec files (https://github.com/markvp) 8134f82e43d04c8ae6dd95731151ad81ab7aabc0
 - Remove scope from analytics-on directive. Closes #195 (https://github.com/jantimon) e8bc48eea9c0aa47cd3201d36b02ea802b5b4194
-- Inline injection of $location dependency (only load $location service if needed). Closes #29 (https://github.com/elegantcoder) cb20f5caf02d00fd942315520a18491168fae73f 
+- Inline injection of $location dependency (only load $location service if needed). Closes #29 (https://github.com/elegantcoder) cb20f5caf02d00fd942315520a18491168fae73f
 - Segment - manually set the path and url becuase segment's JS lib always reports the path as '/' in `hashbang` mode 8543ef8d8cf6a933af78d9a5737c327042913a34
 - Google Analytics - check for GA before _gaq (https://github.com/mkolodny) c3b33a464547a4bed39541584f93cf9542a46f5f
 - Fix jquery-waypoints doesn't exist (may need to run `bower cache clean `) e68531de81526101aedca91e9721c9f0d2de322f
@@ -114,7 +205,7 @@ Added basic debugging provider angulartics.debug.js that uses console.log to dum
 ### 0.16.1 (2014-08-06)
 
 #### Features
-* **analytics-if** - Analytics call will only be made if the `analytic-if` condition passes. Example: `<button analytics-on analytics-if="user.isLoggedIn">` 
+* **analytics-if** - Analytics call will only be made if the `analytic-if` condition passes. Example: `<button analytics-on analytics-if="user.isLoggedIn">`
 * Better buffering
 * Support for multiple providers
 

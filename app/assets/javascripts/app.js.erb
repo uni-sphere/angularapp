@@ -19,7 +19,6 @@
     'ng-token-auth',
     'ng-rails-csrf',
     'ui.router',
-    'ngMap',
     'angularSpinner',
     'ui-notification',
     'angularModalService',
@@ -141,19 +140,6 @@
             }
           })
         }
-      }
-
-      if(window.location.host == 'localhost:3000'){
-        $stateProvider.state('home', {
-          url: '/home',
-          templateUrl: 'main/main.html',
-          controller: 'MainCtrl',
-          resolve:{
-            load: ['angularLoad', function(angularLoad){
-              return angularLoad.loadCSS('<%= asset_path "normalApp.css" %>')
-            }]
-          }
-        })
       }
 
       $urlRouterProvider.otherwise('/');

@@ -110,11 +110,22 @@ app.controller('ExampleController', function($scope, name, year, close) {
 });
 ```
 
+You can also provide a controller function directly to the modal, with or without the controllerAs attribute :
+
+```js
+ModalService.showModal({
+  template: "<div>Fry lives in {{futurama.city}}</div>",
+  controller: function() {
+    this.city = "New New York";
+  },
+  controllerAs : "futurama"
+})
+```
 #### ShowModal Options
 
 The `showModal` function takes an object with these fields:
 
-* `controller`: The name of the controller to created.
+* `controller`: The name of the controller to created. It could be a function.
 * `controllerAs` : The name of the variable on the scope the controller is assigned to - (optional).
 * `templateUrl`: The URL of the HTML template to use for the modal.
 * `template`: If `templateUrl` is not specified, you can specify `template` as raw
@@ -182,6 +193,14 @@ npm test
 
 A coverage report is written to `build\coverage`.
 
+Debug tests with:
+
+```
+npm run test-debug
+```
+
+This will run the tests in Chrome, allowing you to debug.
+
 ## FAQ
 
 Having problems? Check this FAQ first.
@@ -216,14 +235,14 @@ to manually close the modal. Then call the `close` function as normal:
 
 ```js
 app.controller('ExampleModalController', [
-  '$scope', '$element', 'close', 
+  '$scope', '$element', 'close',
   function($scope, $element, close) {
 
   $scope.closeModal = function() {
 
     //  Manually hide the modal using bootstrap.
     $element.modal('hide');
-    
+
     //  Now close as normal, but give 500ms for bootstrap to animate
     close(null, 500);
   };
@@ -249,3 +268,6 @@ Thanks go the the following contributors:
 * [joshvillbrandt](https://github.com/joshvillbrandt) - Adding support for `$templateCache`.
 * [cointilt](https://github.com/cointilt) - Allowing the modal to be added to a custom element, not just the body.
 * [kernowjoe](https://github.com/kernowjoe) - controllerAs
+* [poporul](https://github.com/poporul) - Improving the core logic around compilation and inputs.
+* [jonasnas](https://github.com/jonasnas) - Fixing template cache logic.
+* [maxdow](https://github.com/maxdow) - Added support for controller inlining.

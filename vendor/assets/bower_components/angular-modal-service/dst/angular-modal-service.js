@@ -28,22 +28,13 @@
         if(template) {
           deferred.resolve(template);
         } else if(templateUrl) {
-          // check to see if the template has already been loaded
-          var cachedTemplate = $templateCache.get(templateUrl);
-          if(cachedTemplate !== undefined) {
-            deferred.resolve(cachedTemplate);
-          }
-          // if not, let's grab the template for the first time
-          else {
-            $http({method: 'GET', url: templateUrl, cache: true})
-              .then(function(result) {
-                // save template into the cache and return the template
-                $templateCache.put(templateUrl, result.data);
-                deferred.resolve(result.data);
-              }, function(error) {
-                deferred.reject(error);
-              });
-          }
+          //  Get the template, using the $templateCache.
+          $http.get(templateUrl, {cache: $templateCache})
+            .then(function(result) {
+              deferred.resolve(result.data);
+            }, function(error) {
+              deferred.reject(error);
+            });
         } else {
           deferred.reject("No template or templateUrl has been specified.");
         }
@@ -60,12 +51,6 @@
         if(!controllerName) {
           deferred.reject("No controller has been specified.");
           return deferred.promise;
-        }
-
-        //  If a 'controllerAs' option has been provided, we change the controller
-        //  name to use 'as' syntax. $controller will automatically handle this.
-        if(options.controllerAs) {
-          controllerName = controllerName + " as " + options.controllerAs;
         }
 
         //  Get the actual html of the template.
@@ -93,9 +78,9 @@
                   //  We can now clean up the scope and remove the element from the DOM.
                   modalScope.$destroy();
                   modalElement.remove();
-                  
+
                   //  Unless we null out all of these objects we seem to suffer
-                  //  from memory leaks, if anyone can explain why then I'd 
+                  //  from memory leaks, if anyone can explain why then I'd
                   //  be very interested to know.
                   inputs.close = null;
                   deferred = null;
@@ -109,24 +94,20 @@
             };
 
             //  If we have provided any inputs, pass them to the controller.
-            if(options.inputs) {
-              for(var inputName in options.inputs) {
-                inputs[inputName] = options.inputs[inputName];
-              }
-            }
-
-            //  Parse the modal HTML into a DOM element (in template form).
-            var modalElementTemplate = angular.element(template);
+            if(options.inputs) angular.extend(inputs, options.inputs);
 
             //  Compile then link the template element, building the actual element.
             //  Set the $element on the inputs so that it can be injected if required.
-            var linkFn = $compile(modalElementTemplate);
+            var linkFn = $compile(template);
             var modalElement = linkFn(modalScope);
             inputs.$element = modalElement;
 
             //  Create the controller, explicitly specifying the scope to use.
-            var modalController = $controller(controllerName, inputs);
+            var modalController = $controller(options.controller, inputs);
 
+            if(options.controllerAs){
+              modalScope[options.controllerAs] = modalController ;
+            }
             //  Finally, append the modal to the dom.
             if (options.appendElement) {
               // append to custom append element

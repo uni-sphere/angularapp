@@ -1,5 +1,5 @@
 /**
- * @license Angulartics v0.17.2
+ * @license Angulartics
  * (c) 2013 Luis Farzati http://luisfarzati.github.io/angulartics
  * License: MIT
  */
@@ -33,4 +33,3 @@
 
   }]);
 })(angular);
-

@@ -1,5 +1,5 @@
 /**
- * @license Angulartics v0.17.2
+ * @license Angulartics
  * (c) 2013 Luis Farzati http://luisfarzati.github.io/angulartics
  * License: MIT
  */
@@ -25,14 +25,19 @@ angulartics.waitForVendorApi = function (objectName, delay, containsField, regis
  * @name angulartics
  */
 angular.module('angulartics', [])
-.provider('$analytics', function () {
+.provider('$analytics', $analytics)
+.run(['$rootScope', '$window', '$analytics', '$injector', $analyticsRun])
+.directive('analyticsOn', ['$analytics', analyticsOn]);
+
+function $analytics() {
   var settings = {
     pageTracking: {
       autoTrackFirstPage: true,
       autoTrackVirtualPages: true,
       trackRelativePath: false,
       autoBasePath: false,
-      basePath: ''
+      basePath: '',
+      excludedRoutes: []
     },
     eventTracking: {},
     bufferFlushDelay: 1000, // Support only one configuration for buffer flush delay to simplify buffering
@@ -43,30 +48,31 @@ angular.module('angulartics', [])
   var knownHandlers = [
     'pageTrack',
     'eventTrack',
+    'exceptionTrack',
     'setAlias',
     'setUsername',
-    'setAlias',
     'setUserProperties',
     'setUserPropertiesOnce',
     'setSuperProperties',
-    'setSuperPropertiesOnce'
+    'setSuperPropertiesOnce',
+    'userTimings'
   ];
   // Cache and handler properties will match values in 'knownHandlers' as the buffering functons are installed.
   var cache = {};
   var handlers = {};
 
   // General buffering handler
-  var bufferedHandler = function(handlerName){
+  function bufferedHandler(handlerName){
     return function(){
       if(angulartics.waitForVendorCount){
         if(!cache[handlerName]){ cache[handlerName] = []; }
         cache[handlerName].push(arguments);
       }
     };
-  };
+  }
 
   // As handlers are installed by plugins, they get pushed into a list and invoked in order.
-  var updateHandlers = function(handlerName, fn){
+  function updateHandlers(handlerName, fn){
     if(!handlers[handlerName]){
       handlers[handlerName] = [];
     }
@@ -77,7 +83,7 @@ angular.module('angulartics', [])
         handler.apply(this, handlerArgs);
       }, this);
     };
-  };
+  }
 
   // The api (returned by this provider) gets populated with handlers below.
   var api = {
@@ -87,27 +93,30 @@ angular.module('angulartics', [])
   // Will run setTimeout if delay is > 0
   // Runs immediately if no delay to make sure cache/buffer is flushed before anything else.
   // Plugins should take care to register handlers by order of precedence.
-  var onTimeout = function(fn, delay){
+  function onTimeout(fn, delay){
     if(delay){
       setTimeout(fn, delay);
     } else {
       fn();
     }
-  };
+  }
 
   var provider = {
     $get: function() { return api; },
     api: api,
     settings: settings,
     virtualPageviews: function (value) { this.settings.pageTracking.autoTrackVirtualPages = value; },
+    excludeRoutes: function(routes) { this.settings.pageTracking.excludedRoutes = routes; },
     firstPageview: function (value) { this.settings.pageTracking.autoTrackFirstPage = value; },
-    withBase: function (value) { this.settings.pageTracking.basePath = (value) ? angular.element('base').attr('href').slice(0, -1) : ''; },
+    withBase: function (value) {
+      this.settings.pageTracking.basePath = (value) ? angular.element(document).find('base').attr('href') : '';
+    },
     withAutoBase: function (value) { this.settings.pageTracking.autoBasePath = value; },
     developerMode: function(value) { this.settings.developerMode = value; }
   };
 
   // General function to register plugin handlers. Flushes buffers immediately upon registration according to the specified delay.
-  var register = function(handlerName, fn){
+  function register(handlerName, fn){
     api[handlerName] = updateHandlers(handlerName, fn);
     var handlerSettings = settings[handlerName];
     var handlerDelay = (handlerSettings) ? handlerSettings.bufferFlushDelay : null;
@@ -115,29 +124,45 @@ angular.module('angulartics', [])
     angular.forEach(cache[handlerName], function (args, index) {
       onTimeout(function () { fn.apply(this, args); }, index * delay);
     });
-  };
+  }
 
-  var capitalize = function (input) {
+  function capitalize(input) {
       return input.replace(/^./, function (match) {
           return match.toUpperCase();
       });
-  };
+  }
 
   // Adds to the provider a 'register#{handlerName}' function that manages multiple plugins and buffer flushing.
-  var installHandlerRegisterFunction = function(handlerName){
+  function installHandlerRegisterFunction(handlerName){
     var registerName = 'register'+capitalize(handlerName);
     provider[registerName] = function(fn){
       register(handlerName, fn);
     };
     api[handlerName] = updateHandlers(handlerName, bufferedHandler(handlerName));
-  };
+  }
 
   // Set up register functions for each known handler
   angular.forEach(knownHandlers, installHandlerRegisterFunction);
   return provider;
-})
+}
 
-.run(['$rootScope', '$window', '$analytics', '$injector', function ($rootScope, $window, $analytics, $injector) {
+function $analyticsRun($rootScope, $window, $analytics, $injector) {
+  function matchesExcludedRoute(url) {
+    for (var i = 0; i < $analytics.settings.pageTracking.excludedRoutes.length; i++) {
+      var excludedRoute = $analytics.settings.pageTracking.excludedRoutes[i];
+      if ((excludedRoute instanceof RegExp && excludedRoute.test(url)) || url.indexOf(excludedRoute) > -1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function pageTrack(url, $location) {
+    if (!matchesExcludedRoute(url)) {
+      $analytics.pageTrack(url, $location);
+    }
+  }
+
   if ($analytics.settings.pageTracking.autoTrackFirstPage) {
     $injector.invoke(['$location', function ($location) {
       /* Only track the 'first page' if there are no routes or states on the page */
@@ -159,11 +184,11 @@ angular.module('angulartics', [])
         if ($analytics.settings.pageTracking.autoBasePath) {
           $analytics.settings.pageTracking.basePath = $window.location.pathname;
         }
-        if ($analytics.settings.trackRelativePath) {
+        if ($analytics.settings.pageTracking.trackRelativePath) {
           var url = $analytics.settings.pageTracking.basePath + $location.url();
-          $analytics.pageTrack(url, $location);
+          pageTrack(url, $location);
         } else {
-          $analytics.pageTrack($location.absUrl(), $location);
+          pageTrack($location.absUrl(), $location);
         }
       }
     }]);
@@ -175,17 +200,35 @@ angular.module('angulartics', [])
         /* Add the full route to the base. */
         $analytics.settings.pageTracking.basePath = $window.location.pathname + "#";
       }
+      var noRoutesOrStates = true;
       if ($injector.has('$route')) {
+        var $route = $injector.get('$route');
+        for (var route in $route.routes) {
+          noRoutesOrStates = false;
+          break;
+        }
         $rootScope.$on('$routeChangeSuccess', function (event, current) {
           if (current && (current.$$route||current).redirectTo) return;
           var url = $analytics.settings.pageTracking.basePath + $location.url();
-          $analytics.pageTrack(url, $location);
+          pageTrack(url, $location);
         });
       }
       if ($injector.has('$state')) {
+        noRoutesOrStates = false;
         $rootScope.$on('$stateChangeSuccess', function (event, current) {
           var url = $analytics.settings.pageTracking.basePath + $location.url();
-          $analytics.pageTrack(url, $location);
+          pageTrack(url, $location);
+        });
+      }
+      if (noRoutesOrStates) {
+        $rootScope.$on('$locationChangeSuccess', function (event, current) {
+          if (current && (current.$$route || current).redirectTo) return;
+          if ($analytics.settings.pageTracking.trackRelativePath) {
+            var url = $analytics.settings.pageTracking.basePath + $location.url();
+            pageTrack(url, $location);
+          } else {
+            pageTrack($location.absUrl(), $location);
+          }
         });
       }
     }]);
@@ -197,42 +240,13 @@ angular.module('angulartics', [])
       }
     });
   }
-}])
+}
 
-.directive('analyticsOn', ['$analytics', function ($analytics) {
-  function isCommand(element) {
-    return ['a:','button:','button:button','button:submit','input:button','input:submit'].indexOf(
-      element.tagName.toLowerCase()+':'+(element.type||'')) >= 0;
-  }
-
-  function inferEventType(element) {
-    if (isCommand(element)) return 'click';
-    return 'click';
-  }
-
-  function inferEventName(element) {
-    if (isCommand(element)) return element.innerText || element.value;
-    return element.id || element.name || element.tagName;
-  }
-
-  function isProperty(name) {
-    return name.substr(0, 9) === 'analytics' && ['On', 'Event', 'If', 'Properties', 'EventType'].indexOf(name.substr(9)) === -1;
-  }
-
-  function propertyName(name) {
-    var s = name.slice(9); // slice off the 'analytics' prefix
-    if (typeof s !== 'undefined' && s!==null && s.length > 0) {
-      return s.substring(0, 1).toLowerCase() + s.substring(1);
-    }
-    else {
-      return s;
-    }
-  }
-
+function analyticsOn($analytics) {
   return {
     restrict: 'A',
     link: function ($scope, $element, $attrs) {
-      var eventType = $attrs.analyticsOn || inferEventType($element[0]);
+      var eventType = $attrs.analyticsOn || 'click';
       var trackingData = {};
 
       angular.forEach($attrs.$attr, function(attr, name) {
@@ -262,5 +276,34 @@ angular.module('angulartics', [])
       });
     }
   };
-}]);
+}
+
+function isCommand(element) {
+  return ['a:','button:','button:button','button:submit','input:button','input:submit'].indexOf(
+    element.tagName.toLowerCase()+':'+(element.type||'')) >= 0;
+}
+
+function inferEventType(element) {
+  if (isCommand(element)) return 'click';
+  return 'click';
+}
+
+function inferEventName(element) {
+  if (isCommand(element)) return element.innerText || element.value;
+  return element.id || element.name || element.tagName;
+}
+
+function isProperty(name) {
+  return name.substr(0, 9) === 'analytics' && ['On', 'Event', 'If', 'Properties', 'EventType'].indexOf(name.substr(9)) === -1;
+}
+
+function propertyName(name) {
+  var s = name.slice(9); // slice off the 'analytics' prefix
+  if (typeof s !== 'undefined' && s!==null && s.length > 0) {
+    return s.substring(0, 1).toLowerCase() + s.substring(1);
+  }
+  else {
+    return s;
+  }
+}
 })(angular);

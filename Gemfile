@@ -19,7 +19,6 @@ gem 'sass-rails'
 gem 'uglifier'
 gem 'rails_12factor'
 
-
 # front-end
 gem 'font-awesome-rails'
 gem 'autoprefixer-rails'

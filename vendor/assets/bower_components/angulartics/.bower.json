@@ -1,28 +1,11 @@
 {
   "name": "angulartics",
-  "version": "0.17.2",
+  "version": "1.0.3",
   "main": [
-    "src/angulartics.js",
-    "src/angulartics-adobe.js",
-    "src/angulartics-chartbeat.js",
-    "src/angulartics-cnzz.js",
-    "src/angulartics-flurry.js",
-    "src/angulartics-ga-cordova.js",
-    "src/angulartics-ga.js",
-    "src/angulartics-gtm.js",
-    "src/angulartics-kissmetrics.js",
-    "src/angulartics-mixpanel.js",
-    "src/angulartics-piwik.js",
-    "src/angulartics-scroll.js",
-    "src/angulartics-segmentio.js",
-    "src/angulartics-splunk.js",
-    "src/angulartics-woopra.js",
-    "src/angulartics-marketo.js",
-    "src/angulartics-intercom.js"
+    "src/angulartics.js"
   ],
   "dependencies": {
     "angular": ">= 1.1.5",
-    "waypoints": "~2.0.3",
     "SHA-1": "*"
   },
   "devDependencies": {
@@ -30,14 +13,18 @@
     "angular-route": "~1.2",
     "angular-ui-router": "~0.2"
   },
+  "resolutions": {
+    "angular": ">= 1.1.5"
+  },
   "homepage": "https://github.com/angulartics/angulartics",
-  "_release": "0.17.2",
+  "_release": "1.0.3",
   "_resolution": {
     "type": "version",
-    "tag": "0.17.2",
-    "commit": "1b8bbf0608bec2c23105e2b31e86293e9c0ed5d6"
+    "tag": "1.0.3",
+    "commit": "85413c113f99aee17f71d20ff05f9172b66f051c"
   },
   "_source": "git://github.com/angulartics/angulartics.git",
-  "_target": "~0.17.2",
-  "_originalSource": "angulartics"
+  "_target": "^1.0.3",
+  "_originalSource": "angulartics",
+  "_direct": true
 }
