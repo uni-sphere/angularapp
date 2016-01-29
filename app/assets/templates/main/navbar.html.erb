@@ -9,7 +9,9 @@
 
   <div id="user-name" ng-show="$root.admin">
     <i class="fa fa-user"></i>
-    <span>{{$root.accountEmail}}</span>
+    <span ng-hide="$root.sandbox">{{$root.accountEmail}}</span>
+    <span ng-show="$root.sandbox && $root.admin">admin@unisphere.eu</span>
+    <span ng-show="$root.sandbox && !$root.admin">student@unisphere.eu</span>
   </div>
 
   <div id="language-selection">

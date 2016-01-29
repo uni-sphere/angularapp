@@ -13,8 +13,12 @@ class Node < ActiveRecord::Base
   before_save :set_superadmin, :add_position
   
   def add_position
-    if !self.position 
+    if !self.position and self.parent_id != 0
       brothers = Node.where(parent_id: self.parent_id, archived: false)
+      logger.info " --------------------- "
+      logger.info brothers
+      logger.info brothers.count
+      logger.info " --------------------- "
       if brothers.count == 0
         last_position = 0  
       else

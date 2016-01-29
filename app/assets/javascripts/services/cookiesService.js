@@ -94,12 +94,10 @@
       $rootScope.foldedNodes = tempFoldedNodes;
     }
 
-
     /*----------  Folded chapters  ----------*/
 
     function foldedChaptersGestion(){
       return $q(function(resolve, reject){
-
         tempFoldedchapters = []
         angular.forEach(ipCookie('foldedChapters'), function(value,key){
           if($rootScope.chaptersId.indexOf(value) > -1){
@@ -124,11 +122,20 @@
         }
         tempActiveNodes.unshift([nodes.num, nodes.name])
 
-        if(($rootScope.home && ipCookie('foldedChapters') == undefined )|| ($rootScope.sandbox && ipCookie('foldedChapters') == undefined )){
-          if(nodes.node_data[2]){
-            $rootScope.foldedChapters = [nodes.node_data[2].id]
-            ipCookie('foldedChapters', $rootScope.foldedChapters);
+        // We add Assignments, Lecture Notes and Handouts in folded chapters
+        if($rootScope.sandbox ){
+          var tempFoldedChapters = []
+          if(nodes.node_data[7]){
+            tempFoldedChapters.push(nodes.node_data[7].id)
           }
+          if(nodes.node_data[3]){
+            tempFoldedChapters.push(nodes.node_data[3].id)
+          }
+          if(nodes.node_data[5]){
+            tempFoldedChapters.push(nodes.node_data[5].id)
+          }
+          $rootScope.foldedChapters = tempFoldedChapters
+          ipCookie('foldedChapters', $rootScope.foldedChapters);
         }
 
         findAndSetNode($rootScope.nodes, nodes.num)

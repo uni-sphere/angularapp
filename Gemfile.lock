@@ -283,7 +283,8 @@ GEM
     rest-client (1.7.3)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rollbar (2.2.1)
+    rollbar (2.7.1)
+      multi_json
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)
@@ -378,3 +379,6 @@ DEPENDENCIES
   sqlite3
   therubyracer
   uglifier
+
+BUNDLED WITH
+   1.10.6

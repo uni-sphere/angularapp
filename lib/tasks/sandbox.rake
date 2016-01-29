@@ -81,9 +81,9 @@ namespace :sandbox do
   def add_reports(node)
     for i in 1..10
       node.reports.create(downloads: Random.rand(50))
-      report = Report.last
-      date = report.created_at-(11-i)*7.days
-      report.update(created_at: date)
+      # report = Report.last
+      # date = report.created_at-(11-i)*7.days
+      # report.update(created_at: date)
     end
   end
 
