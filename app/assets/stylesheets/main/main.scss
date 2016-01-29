@@ -143,4 +143,32 @@ body{
 }
 
 
+#switch-permission{
+  position: fixed;
+  top: 60px;
+  background: black;
+  color: white;
+  opacity: 0.8;
+  padding: 10px 15px;
+  border-radius: 10px;
+  left: 120px;
+  font-size: .8em;
+}
+
+#select-user-type{
+  background: black;
+  color: white;
+  border: none;
+  font-size: 1em;
+  font-family: 'Open Sans', sans-serif;
+  cursor: pointer;
+}
+
+#select-user-type option{
+}
+
+#select-user-type option:hover{
+  background: green;
+}
+
 
