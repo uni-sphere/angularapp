@@ -1,0 +1,27 @@
+/*----------  Popup  ----------*/
+
+#file-dropped-position{
+  margin-bottom: 20px;
+  color: $document-color;
+}
+
+/*----------  Tree displayed while drop  ----------*/
+
+#small-ui-tree{
+  margin-left: 15px;
+  .angular-ui-tree-handle {
+    cursor: pointer;
+  }
+}
+
+#root-object{
+  color: $document-color;
+  padding-left: 9px;
+  cursor: pointer;
+  line-height: 40px;
+  font-size: .9em;
+  &:hover{
+    background: $document-hover;
+  }
+}
+

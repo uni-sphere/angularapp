@@ -17,13 +17,7 @@
     $scope.treeOptions = {
 
       dragStart: function(event){
-        $('#white-background').css("display", "block")
-        $('right-tree').css("z-index", "999")
-        $('right-tree').css("cursor", "no-drop")
-        $('#tree-root').css("cursor", "move")
-        $('.angular-ui-tree-handle').css("cursor", "move")
-        $('.dual-submit').css("cursor", "no-drop")
-        $('.round-button').addClass("no-drop")
+        styleDrag()
       },
 
       beforeDrag: function(sourceNodeScope){
@@ -40,30 +34,7 @@
 
       dropped: function(event) {
 
-        // $('left-tree').css("cursor", "no-drop")
-        // $('right-tree').css("cursor", "no-drop")
-        // $('navbar').css("cursor", "no-drop")
-        // $('sidebar').css("cursor", "no-drop")
-
-
-        // $('.angular-ui-tree-handle').css("cursor", "move")
-        // $('#tree-root').css("cursor", "move")
-        // $('#tree-root').css("display", "block")
-        // $('#tree-root').css("background", "#F2F5FD")
-
-        // document.body.style.cursor = 'default'
-        // $('.angular-ui-tree-handle').css("cursor", "pointer")
-        // $('left-tree').css("cursor", "default")
-        // $('#ui-tree-container').css("background", "white")
-
-        $('#white-background').css("display", "none")
-        $('right-tree').css("z-index", "10")
-        $('right-tree').css("cursor", "default")
-        $('#tree-root').css("cursor", "default")
-        $('.angular-ui-tree-handle').css("cursor", "pointer")
-        $('.dual-submit').css("cursor", "pointer")
-        $('.round-button').removeClass("no-drop")
-
+        removeStyleDrag()
         preliminaryActions()
         createIndexChaptersService.create($rootScope.listItems).then(function() {
           // chapter
@@ -242,6 +213,26 @@
         $rootScope.foldedChapters.push(nb);
       };
       ipCookie('foldedChapters', $rootScope.foldedChapters);
+    }
+
+    function styleDrag(){
+      $('#white-background').css("display", "block")
+      $('right-tree').css("z-index", "999")
+      $('right-tree').css("cursor", "no-drop")
+      $('#ui-tree-content').css("cursor", "move")
+      $('.angular-ui-tree-handle').css("cursor", "move")
+      $('.dual-submit').css("cursor", "no-drop")
+      $('.round-button').addClass("no-drop")
+    }
+
+    function removeStyleDrag(){
+      $('#white-background').css("display", "none")
+      $('right-tree').css("z-index", "10")
+      $('right-tree').css("cursor", "default")
+      $('#ui-tree-content').css("cursor", "default")
+      $('.angular-ui-tree-handle').css("cursor", "pointer")
+      $('.dual-submit').css("cursor", "pointer")
+      $('.round-button').removeClass("no-drop")
     }
   }
 

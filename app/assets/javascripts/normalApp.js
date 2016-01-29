@@ -5,7 +5,7 @@
 //= require angular-cookie
 //= require d3
 //= require angular-resource
-//= require angular-ui-tree
+//= require angular-ui-tree/dist/angular-ui-tree.js
 //= require underscore
 //= require ng-file-upload/ng-file-upload-shim
 //= require ng-file-upload/ng-file-upload
@@ -16,19 +16,13 @@
 //= require	angular-translate/angular-translate.min
 //= require angular-translate-loader-url/angular-translate-loader-url.min
 //= require	angular-dropdowns/dist/angular-dropdowns
-//= require	metrics-graphics/dist/metricsgraphics.min
 //= require	ng-token-auth/dist/ng-token-auth
 //= require ng-rails-csrf
-//= require ngmap/build/scripts/ng-map.min
 //= require spin.js/spin
 //= require angular-spinner/angular-spinner
 //= require angular-ui-notification/dist/angular-ui-notification.min
 //= require angular-modal-service/dst/angular-modal-service.min.js
 //= require angular-load/angular-load.js
-//= require scrollmagic/scrollmagic/minified/ScrollMagic.min.js
-//= require scrollmagic/scrollmagic/minified/plugins/animation.gsap.min.js
-//= require scrollmagic/scrollmagic/minified/plugins/animation.velocity.min.js
-//= require scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min.js
 
 //= require angular-rails-templates
 //= require app

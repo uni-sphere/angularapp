@@ -14,7 +14,6 @@
       new_chapter;
       
     $translate(['ERROR', 'NW_CANCEL', 'SUCCESS', 'FORBIDDEN', 'NEW_CHAPTER_NAME']).then(function (translations) {
-      success = translations.SUCCESS;
       error = translations.ERROR;
       forbidden = translations.FORBIDDEN;
       cancel_warning = translations.NW_CANCEL;
@@ -37,7 +36,6 @@
       }
 
       Restangular.all('chapters').post(nodeToCreate).then(function(newChapter) {
-        Notification.success(success)
 
         // We save the depth of the new chapter
         if(parent_id == 0){

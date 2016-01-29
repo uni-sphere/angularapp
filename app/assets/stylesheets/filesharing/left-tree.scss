@@ -1,0 +1,68 @@
+#view-tree{
+  position: relative;
+  float: left;
+  height: 100%;
+  width: calc(65% - 3px);
+}
+
+.circleCollapse, .nameNode, .addNode, .deleteNode, .nodeLabel{
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke-width: 2px;
+  opacity: 0.6;
+}
+
+.node text {
+  font-size: .8em;
+  fill: #4B4B4B;
+  opacity: 0.6
+}
+
+.node-active circle, .node-active text{
+  opacity: 1;
+}
+
+/*----------  Link  ----------*/
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1px;
+}
+
+.link-active{
+  fill: none;
+  stroke: cornflowerblue;
+  stroke-width: 2px;
+}
+
+/*----------  Drag & Drop  ----------*/
+
+.templink{
+  fill: none;
+  stroke: red;
+  stroke-width: 2px;
+}
+
+.templinkParent{
+  fill: none;
+  stroke: blue;
+  stroke-width: 2px;
+}
+
+.overlay{
+  background-color:#EEE;
+}
+
+.ghostCircle.show, .ghostInBetweenCircle.show, .ghostExtremityCircle.show{
+  display:block;
+}
+
+.ghostCircle, .activeDrag .ghostCircle, .ghostInBetweenCircle, .activeDrag .ghostInBetweenCircle, .ghostExtremityCircle, .activeDrag .ghostExtremityCircle{
+  display: none;
+}
+
+
