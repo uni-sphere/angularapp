@@ -73,7 +73,7 @@
         $rootScope.accountName = undefined;
         $rootScope.userId = undefined;
         $rootScope.superadmin = false;
-        $rootScope.university = "Sandbox - this mockup of unisphere is shared between all users"
+        // $rootScope.university = "Sandbox - this mockup of unisphere is shared between all users"
         $rootScope.help = false
 
         olark('api.box.hide');
@@ -91,7 +91,7 @@
       $rootScope.help = false
 
       $rootScope.admin = true
-      $rootScope.university = "My university"
+      $rootScope.university = "unisphere Sandbox - mockup application"
 
       $rootScope.accountEmail = "user@unisphere.eu"
       $rootScope.userId = 1

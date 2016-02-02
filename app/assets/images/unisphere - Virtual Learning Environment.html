@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)file:///home/hopla/blogUnisphere/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="unisphere - Virtual Learning Environment">
+    <!-- SITE TITLE -->
+    <title>unisphere - Virtual Learning Environment</title>
+    <!-- STYLESHEETS -->
+    <link href="./unisphere - Virtual Learning Environment_files/bootstrap.css" rel="stylesheet">
+    <link href="./unisphere - Virtual Learning Environment_files/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="./unisphere - Virtual Learning Environment_files/style.css" rel="stylesheet">
+    <link href="./unisphere - Virtual Learning Environment_files/responsive.css" rel="stylesheet">
+    <!-- DEMO COLORS  -->
+    <link href="./unisphere - Virtual Learning Environment_files/index.html" class="css-color" rel="stylesheet">
+
+    <!-- FAVICON  -->
+    <link rel="icon" href="file:///home/hopla/blogUnisphere/img/favicon.ico">
+    <script async="" src="./unisphere - Virtual Learning Environment_files/analytics.js"></script><script>
+    var _rollbarConfig = {
+        accessToken: "772f1abf2cb64198ba5db24670185b23",
+        captureUncaught: true,
+        payload: {
+            environment: "production"
+        }
+    };
+    // Rollbar Snippet
+    !function(r){function o(e){if(t[e])return t[e].exports;var n=t[e]={exports:{},id:e,loaded:!1};return r[e].call(n.exports,n,n.exports,o),n.loaded=!0,n.exports}var t={};return o.m=r,o.c=t,o.p="",o(0)}([function(r,o,t){"use strict";var e=t(1).Rollbar,n=t(2);_rollbarConfig.rollbarJsUrl=_rollbarConfig.rollbarJsUrl||"https://d37gvrvc0wt4s1.cloudfront.net/js/v1.8/rollbar.min.js";var a=e.init(window,_rollbarConfig),i=n(a,_rollbarConfig);a.loadFull(window,document,!_rollbarConfig.async,_rollbarConfig,i)},function(r,o){"use strict";function t(r){return function(){try{return r.apply(this,arguments)}catch(o){try{console.error("[Rollbar]: Internal error",o)}catch(t){}}}}function e(r,o,t){window._rollbarWrappedError&&(t[4]||(t[4]=window._rollbarWrappedError),t[5]||(t[5]=window._rollbarWrappedError._rollbarContext),window._rollbarWrappedError=null),r.uncaughtError.apply(r,t),o&&o.apply(window,t)}function n(r){var o=function(){var o=Array.prototype.slice.call(arguments,0);e(r,r._rollbarOldOnError,o)};return o.belongsToShim=!0,o}function a(r){this.shimId=++s,this.notifier=null,this.parentShim=r,this._rollbarOldOnError=null}function i(r){var o=a;return t(function(){if(this.notifier)return this.notifier[r].apply(this.notifier,arguments);var t=this,e="scope"===r;e&&(t=new o(this));var n=Array.prototype.slice.call(arguments,0),a={shim:t,method:r,args:n,ts:new Date};return window._rollbarShimQueue.push(a),e?t:void 0})}function l(r,o){if(o.hasOwnProperty&&o.hasOwnProperty("addEventListener")){var t=o.addEventListener;o.addEventListener=function(o,e,n){t.call(this,o,r.wrap(e),n)};var e=o.removeEventListener;o.removeEventListener=function(r,o,t){e.call(this,r,o&&o._wrapped?o._wrapped:o,t)}}}var s=0;a.init=function(r,o){var e=o.globalAlias||"Rollbar";if("object"==typeof r[e])return r[e];r._rollbarShimQueue=[],r._rollbarWrappedError=null,o=o||{};var i=new a;return t(function(){if(i.configure(o),o.captureUncaught){i._rollbarOldOnError=r.onerror,r.onerror=n(i);var t,a,s="EventTarget,Window,Node,ApplicationCache,AudioTrackList,ChannelMergerNode,CryptoOperation,EventSource,FileReader,HTMLUnknownElement,IDBDatabase,IDBRequest,IDBTransaction,KeyOperation,MediaController,MessagePort,ModalWindow,Notification,SVGElementInstance,Screen,TextTrack,TextTrackCue,TextTrackList,WebSocket,WebSocketWorker,Worker,XMLHttpRequest,XMLHttpRequestEventTarget,XMLHttpRequestUpload".split(",");for(t=0;t<s.length;++t)a=s[t],r[a]&&r[a].prototype&&l(i,r[a].prototype)}return r[e]=i,i})()},a.prototype.loadFull=function(r,o,e,n,a){var i=function(){var o;if(void 0===r._rollbarPayloadQueue){var t,e,n,i;for(o=new Error("rollbar.js did not load");t=r._rollbarShimQueue.shift();)for(n=t.args,i=0;i<n.length;++i)if(e=n[i],"function"==typeof e){e(o);break}}"function"==typeof a&&a(o)},l=!1,s=o.createElement("script"),u=o.getElementsByTagName("script")[0],p=u.parentNode;s.crossOrigin="",s.src=n.rollbarJsUrl,s.async=!e,s.onload=s.onreadystatechange=t(function(){if(!(l||this.readyState&&"loaded"!==this.readyState&&"complete"!==this.readyState)){s.onload=s.onreadystatechange=null;try{p.removeChild(s)}catch(r){}l=!0,i()}}),p.insertBefore(s,u)},a.prototype.wrap=function(r,o){try{var t;if(t="function"==typeof o?o:function(){return o||{}},"function"!=typeof r)return r;if(r._isWrap)return r;if(!r._wrapped){r._wrapped=function(){try{return r.apply(this,arguments)}catch(o){throw o._rollbarContext=t()||{},o._rollbarContext._wrappedSource=r.toString(),window._rollbarWrappedError=o,o}},r._wrapped._isWrap=!0;for(var e in r)r.hasOwnProperty(e)&&(r._wrapped[e]=r[e])}return r._wrapped}catch(n){return r}};for(var u="log,debug,info,warn,warning,error,critical,global,configure,scope,uncaughtError".split(","),p=0;p<u.length;++p)a.prototype[u[p]]=i(u[p]);r.exports={Rollbar:a,_rollbarWindowOnError:e}},function(r,o){"use strict";r.exports=function(r,o){return function(t){if(!t&&!window._rollbarInitialized){var e=window.RollbarNotifier,n=o||{},a=n.globalAlias||"Rollbar",i=window.Rollbar.init(n,r);i._processShimQueue(window._rollbarShimQueue||[]),window[a]=i,window._rollbarInitialized=!0,e.processPayloads()}}}}]);
+    // End Rollbar Snippet
+  </script>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','http://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-62034618-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+  </head>
+  <body>
+    <!-- PRELOADER -->
+    
+    <!-- MAIN NAV -->
+    <nav class="navbar navbar-default navbar-fixed-top navbar-shrink">
+      <div class="container">
+        <div class="navbar-header page-scroll">
+<!--           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-menu">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button> -->
+          <!-- MAIN NAV LOGO -->
+          <a class="logo page-scroll" href="file:///home/hopla/blogUnisphere/index.html#header"><img src="./unisphere - Virtual Learning Environment_files/logo.png" class="img-responsive" alt=""></a>
+        </div>
+        <div class="collapse navbar-collapse" id="main-menu">
+          <!-- MAIN NAV LINKS -->
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a target="_blank" href="http://unisphere.eu/">Visit our website</a>
+            </li>
+            <li class="hidden-xs">
+              <a target="_blank" href="http://sandbox.unisphere.eu/">Try our demo</a>
+            </li>
+          </ul>
+          <!-- END MAIN NAV LINKS -->
+        </div>
+      </div>
+    </nav>
+    <!-- END MAIN NAV -->
+    <!-- HEADER -->
+    <header id="header">
+      <div class="container">
+        <div class="intro-text">
+          <h1 class="intro-lead-in">unisphere <span class="intro-lead-in-small">Virtual Learning Environment</span></h1>
+          <div class="intro-heading">
+            <span id="intro-leading-fixed" class="dual-intro hidden-xs">With <strong>unisphere</strong> you can</span>
+            <div id="typed-container">
+              <div id="typed-strings" style="display: none;">
+                <p><strong>Manage</strong> your classes.</p>
+                <p><strong>Share</strong> your lessons.</p>
+                <p><strong>Submit</strong> your assignments.</p>
+              </div>
+              <span id="typed"><strong>Manage</strong> your classes.</span><span class="typed-cursor">|</span>
+            </div>
+          </div>
+
+          <div id="unisphere-description">
+            <p>unisphere is an online virtual learning environment that enables teachers to upload their entire syllabus with a single drag and drop, enables seamless file sharing between students and teachers and enable students to handin assignments.</p>
+ 
+            <p>Our goal is to reduce entropy in education.</p>
+ 
+          </div>
+        </div>
+      </div>
+      <div id="particles-js"><canvas class="particles-js-canvas-el" width="1905" height="555" style="width: 100%; height: 100%;"></canvas></div>
+    </header>
+    <!-- END HEADER -->
+
+    <section id="posts">
+
+
+      <div class="post">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="postTitle">New default Sandbox</div>
+            <div class="postDateXs visible-xs">January 13, 2016 - 11:35 AM</div>
+            <div class="postDate hidden-xs">
+              <span class="postDateDay">28</span>
+              <span class="postDateMonth">JAN</span>
+            </div>
+
+            <div class="postSummary">
+              Our new sandbox is here. You have been more and more to tweak around our sandbox to discover unisphere functionnalities. Therefore we revamped it to be even more intuitive. Now you can see the point of view of admins and students.
+            </div>
+            <div class="postImg">
+              <img src="./unisphere - Virtual Learning Environment_files/mockup.png" alt="Browser mockup">
+              <img src="./unisphere - Virtual Learning Environment_files/sandbox.png" alt="New layout sandbox">
+            </div>
+            
+            <!-- <div class="postLink">CONTINUE READING</div> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="post">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="postTitle">Even better website</div>
+            <div class="postDateXs visible-xs">January 5, 2015 - 12:12 AM</div>
+            <div class="postDate hidden-xs">
+              <span class="postDateDay">5</span>
+              <span class="postDateMonth">JAN</span>
+            </div>
+
+            <div class="postSummary">
+              We finally found the ulitimate solution to better show you what you can do with unisphere. We created beautiful gifs to showcase all unisphere functionnalities.
+            </div>
+            <div class="postImg">
+              <img src="./unisphere - Virtual Learning Environment_files/manage.gif" class="img-padded" alt="Gif showing how to manage classes">
+            </div>
+            
+            <!-- <div class="postLink">CONTINUE READING</div> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="post">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="postTitle">New website</div>
+            <div class="postDateXs visible-xs">January 2, 2015 - 12:12 AM</div>
+            <div class="postDate hidden-xs">
+              <span class="postDateDay">2</span>
+              <span class="postDateMonth">JAN</span>
+            </div>
+
+            <div class="postSummary">
+              We decided it is time to separate our sandbox from our presentation website. We believe our new website explains a lot better what we do and why you should give a try to unisphere. Also we love the design we found pretty cool libraries for the header: typed.js and particule.js! 
+            </div>
+            <div class="postImg">
+              <img src="./unisphere - Virtual Learning Environment_files/mockup.png" alt="Browser mockup">
+              <img src="./unisphere - Virtual Learning Environment_files/new-website.jpg" alt="d3.js">
+            </div>
+            
+            <!-- <div class="postLink">CONTINUE READING</div> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="post">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="postTitle">Implementation of the tree layout with d3.js</div>
+            <div class="postDateXs visible-xs">March 29, 2015 - 12:12 AM</div>
+            <div class="postDate hidden-xs">
+              <span class="postDateDay">29</span>
+              <span class="postDateMonth">MAR</span>
+            </div>
+
+            <div class="postSummary">
+              The first version of our tree layour is live. We used d3.js awesome library to get inspiration.
+            </div>
+            <div class="postImg">
+              <img src="./unisphere - Virtual Learning Environment_files/d3.jpg" alt="d3.js">
+            </div>
+            
+            <!-- <div class="postLink">CONTINUE READING</div> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="post">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="postTitle">Implementation of the tree layout with d3.js</div>
+            <div class="postDateXs visible-xs">March 29, 2015 - 12:12 AM</div>
+            <div class="postDate hidden-xs">
+              <span class="postDateDay">29</span>
+              <span class="postDateMonth">MAR</span>
+            </div>
+
+            <div class="postSummary">
+              The first version of our tree layour is live. We used d3.js awesome library to get inspiration.
+            </div>
+            <div class="postImg">
+              <img src="./unisphere - Virtual Learning Environment_files/d3.jpg" alt="d3.js">
+            </div>
+            
+            <!-- <div class="postLink">CONTINUE READING</div> -->
+          </div>
+        </div>
+      </div>
+      <div class="post">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="postTitle">Implementation of the tree layout with d3.js</div>
+            <div class="postDateXs visible-xs">March 29, 2015 - 12:12 AM</div>
+            <div class="postDate hidden-xs">
+              <span class="postDateDay">29</span>
+              <span class="postDateMonth">MAR</span>
+            </div>
+
+            <div class="postSummary">
+              The first version of our tree layour is live. We used d3.js awesome library to get inspiration.
+            </div>
+            <div class="postImg">
+              <img src="./unisphere - Virtual Learning Environment_files/d3.jpg" alt="d3.js">
+            </div>
+            
+            <!-- <div class="postLink">CONTINUE READING</div> -->
+          </div>
+        </div>
+      </div>
+
+
+      <div class="post">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="postTitle">Beginning of unisphere developement</div>
+            <div class="postDateXs visible-xs">March 13, 2015 - 12:12 AM</div>
+            <div class="postDate hidden-xs">
+              <span class="postDateDay">13</span>
+              <span class="postDateMonth">MAR</span>
+            </div>
+
+            <div class="postSummary">
+              Official beginning of the developement of unisphere. unisphere is an online virtual learning environment that enables seamless file sharing between students and teachers. 
+            </div>
+            <div class="postImg">
+              <img src="./unisphere - Virtual Learning Environment_files/unisphere-bg-clem.jpg" alt="unisphere background image">
+            </div>
+            
+            <!-- <div class="postLink">CONTINUE READING</div> -->
+          </div>
+        </div>
+      </div>
+
+ 
+    </section>
+    
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <!-- LOWER FOOTER -->
+          <div class="lower-footer">
+            <div class="pull-left">
+              <span>© 2016 unisphere. All rights reserved.</span>
+              <!-- <a href="#"> Terms of Service </a> -->
+              <!-- <a href="#"> Privacy Policy </a> -->
+            </div>
+            <div class="pull-right">
+              <!-- <a href="#"><span class="fa fa-facebook"></span></a> -->
+              <a href="./unisphere - Virtual Learning Environment_files/index.html"><span class="fa fa-twitter"></span></a>
+              <a href="./unisphere - Virtual Learning Environment_files/index.html"><span class="fa fa-linkedin"></span></a>
+              <!-- <a href="#"><span class="fa fa-youtube"></span></a> -->
+              <!-- <a href="#"><span class="fa fa-pinterest"></span></a> -->
+              <!-- <a href="#"><span class="fa fa-skype"></span></a> -->
+            </div>
+          </div>
+          <!-- END LOWER FOOTER -->
+        </div>
+      </div>
+    </footer>
+    <!-- END FOOTER -->
+    <!-- SCRIPTS -->
+    <!-- jQuery & Bootstrap -->
+    <script src="./unisphere - Virtual Learning Environment_files/jquery.js"></script>
+    <script src="./unisphere - Virtual Learning Environment_files/jquery.easing.min.js"></script>
+    <script src="./unisphere - Virtual Learning Environment_files/bootstrap.min.js"></script>
+    <!-- smoothscroll  -->
+    <script src="./unisphere - Virtual Learning Environment_files/smoothscroll.js"></script>
+    <!-- classie  -->
+    <script src="./unisphere - Virtual Learning Environment_files/classie.js"></script>
+    <!-- typed -->
+    <script src="./unisphere - Virtual Learning Environment_files/typed.min.js"></script>
+    <!-- animated header -->
+    <script src="./unisphere - Virtual Learning Environment_files/particles.js" type="text/javascript"></script>
+    <!-- contact form -->
+    <script src="./unisphere - Virtual Learning Environment_files/jqBootstrapValidation.js"></script>
+    <!-- custom script -->
+    <script src="./unisphere - Virtual Learning Environment_files/scripts.js"></script>
+  
+
+</body></html>
