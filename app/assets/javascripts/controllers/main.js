@@ -30,7 +30,6 @@
       }
     }
 
-  
     // We watch every click to un focus some elements
     $rootScope.looseFocusItem = function(){
       if($rootScope.tutorialDashboardOpen){

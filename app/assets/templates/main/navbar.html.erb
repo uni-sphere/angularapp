@@ -15,11 +15,11 @@
   </div>
 
   <div id="language-selection">
-    <div dropdown-menu="ddSelectOptions" dropdown-model="ddSelectSelected" dropdown-onchange="changeLanguage('fr')">
-      <span id="flag-img-container" ng-if="ddSelectSelected.value == 'en'">
+    <div dropdown-menu="dropDownLanguage" dropdown-model="selectedLanguage" dropdown-onchange="changeLanguage(selected)">
+      <span id="flag-img-container" ng-if="selectedLanguage.value != 'fr'">
         <%= image_tag "uk.png" %>
       </span>
-      <span id="flag-img-container" ng-if="ddSelectSelected.value == 'fr'">
+      <span id="flag-img-container" ng-if="selectedLanguage.value == 'fr'">
         <%= image_tag "fr.png"%>
       </span>
       <span class="fa fa-caret-down"></span>

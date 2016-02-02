@@ -14,7 +14,7 @@
     return directive;
 
     function link(scope){
-      scope.ddSelectOptions = [
+      scope.dropDownLanguage = [
         {
           text: 'Français',
           value: 'fr'
@@ -33,17 +33,15 @@
           listener();
           // Set the default language
           if($translate.use().indexOf("fr") > -1){
-            scope.ddSelectSelected = {text: 'French', value: 'fr'};
+            scope.selectedLanguage = {text: 'French', value: 'fr'};
           } else{
-            scope.ddSelectSelected = {text: 'English', value: 'en'};
+            scope.selectedLanguage = {text: 'English', value: 'en'};
           }
         }
       });
 
-
-
-      scope.changeLanguage = function() {
-        if (scope.ddSelectSelected.value == 'fr') {
+      scope.changeLanguage = function(language) {
+        if(language.value == 'fr') {
           $translate.use('fr');
         } else {
           $translate.use('en');
