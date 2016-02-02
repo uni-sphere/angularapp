@@ -145,14 +145,15 @@ body{
 
 #switch-permission{
   position: fixed;
-  top: 60px;
+  top: 10px;
   background: black;
   color: white;
   opacity: 0.8;
-  padding: 10px 15px;
+  padding: 4px 15px;
   border-radius: 10px;
-  left: 120px;
+  right: 120px;
   font-size: .8em;
+  z-index: 999;
 }
 
 #select-user-type{
