@@ -32,9 +32,10 @@
         }
       },
 
-      dropped: function(event) {
-
+      dragStop: function(event){
         removeStyleDrag()
+      },
+      dropped: function(event) {
         preliminaryActions()
         createIndexChaptersService.create($rootScope.listItems).then(function() {
           // chapter
