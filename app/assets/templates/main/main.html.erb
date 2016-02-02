@@ -18,7 +18,7 @@
   <div ui-view id="main-view-container"></div>
 
   <div id="switch-permission" ng-show="$root.sandbox">
-    <span>View how unisphere looks like to</span>
+    <span>{{ 'VIEW_AS' | translate }}</span>
     <select id="select-user-type" ng-model="$root.admin" ng-options="o.v as o.n for o in [{ n: 'Student', v: false }, { n: 'Admin', v: true }]"></select>
   </div>
 
