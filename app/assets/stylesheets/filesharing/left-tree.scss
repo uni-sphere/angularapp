@@ -15,10 +15,19 @@
   opacity: 0.6;
 }
 
-.node text {
+.uni-icon{
+  font-size: .8em;
+  fill: #4B4B4B;
+}
+
+.node .nodeLabel {
   font-size: .8em;
   fill: #4B4B4B;
   opacity: 0.6
+}
+
+.deleteNode, .addNode{
+  font-size: 1em;
 }
 
 .node-active circle, .node-active text{

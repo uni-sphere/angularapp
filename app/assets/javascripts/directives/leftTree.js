@@ -497,6 +497,7 @@
           .on('click', toggleNode)
 
         nodeEnter.append('text')
+          .attr("class", "uni-icon")
           .attr('font-family', 'FontAwesome')
           .attr('font-size', function(d) { return d.size+'em'} )
           .attr("x", -8)
@@ -531,11 +532,11 @@
                 return "start"
               }
             })
-            .attr("x", function(d){
-              if(!d.children){
-                return 15
-              }
-            })
+            // .attr("x", function(d){
+            //   if(!d.children){
+            //     return 35
+            //   }
+            // })
             .on("contextmenu", function (d, i) {
               renameNode(d)
             })
@@ -546,19 +547,19 @@
           // Little + to add a node
           nodeEnter.append("text")
             .attr("class", "addNode")
-            .attr("x", "-8px")
-            .attr("y", "-15px")
+            .attr("x", "20px")
+            .attr("y", "6px")
             .attr("text-anchor", "end")
             .text("+")
             .style("fill-opacity", 1e-6)
-            .style("fill", "cornflowerblue")
+            .style("fill", "#00994C")
             .on("click", addNode)
 
           // Little - to remove a node
           nodeEnter.append("text")
             .attr("class", "deleteNode")
-            .attr("x", "8px")
-            .attr("y", "-16px")
+            .attr("x", "-20px")
+            .attr("y", "6px")
             .attr("text-anchor", "start")
             .text("x")
             .style("fill-opacity", 1e-6)
@@ -708,7 +709,7 @@
           })
           .attr("x", function(d){
             if(!d.children){
-              return 15
+              return 25
             }
           })
 
