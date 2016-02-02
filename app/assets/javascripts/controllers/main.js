@@ -73,7 +73,7 @@
         $rootScope.accountName = undefined;
         $rootScope.userId = undefined;
         $rootScope.superadmin = false;
-        $rootScope.university = "My university"
+        $rootScope.university = "Sandbox - this mockup of unisphere is shared between all users"
         $rootScope.help = false
 
         olark('api.box.hide');

@@ -157,7 +157,7 @@
           controller: "RenameModalCtrl",
           inputs:{
             name: node.name,
-            length: 20,
+            length: 30,
             file: false
           }
         }).then(function(modal) {
