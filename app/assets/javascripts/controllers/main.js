@@ -91,7 +91,7 @@
       $rootScope.help = false
 
       $rootScope.admin = true
-      $rootScope.university = "unisphere Sandbox - mockup application"
+      $rootScope.university = "unisphere sandbox - mockup application"
 
       $rootScope.accountEmail = "user@unisphere.eu"
       $rootScope.userId = 1

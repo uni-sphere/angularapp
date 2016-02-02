@@ -113,9 +113,18 @@
     /*----------  Initial cookies  ----------*/
     function setInitialCookies(){
       return $q(function(resolve, reject){
-        // We find select all the node of the top branch to be active
+       
         var tempActiveNodes = []
         var nodes = $rootScope.nodes
+
+        // We fold the node year 3 et year 4
+        var tempFoldedNodes = []
+        if($rootScope.sandbox || $rootScope.local){
+          tempFoldedNodes.push(nodes.children[2].num)
+          tempFoldedNodes.push(nodes.children[3].num)
+        }
+
+        // We find select all the node of the top branch to be active
         while(nodes.children && nodes.children.length != 0){
           tempActiveNodes.unshift([nodes.num, nodes.name])
           nodes = nodes.children[0]
@@ -123,7 +132,7 @@
         tempActiveNodes.unshift([nodes.num, nodes.name])
 
         // We add Assignments, Lecture Notes and Handouts in folded chapters
-        if($rootScope.sandbox ){
+        if($rootScope.sandbox || $rootScope.local){
           var tempFoldedChapters = []
           if(nodes.node_data[7]){
             tempFoldedChapters.push(nodes.node_data[7].id)
@@ -140,15 +149,17 @@
 
         findAndSetNode($rootScope.nodes, nodes.num)
 
-        // We save the active scope and the nodeEnd to the rootScope
+        // We save the active nodes, the nodeEnd and the folded nodes to the rootScope
         $rootScope.activeNodes = tempActiveNodes
         $rootScope.nodeEnd = [nodes.num, nodes.name, nodes.user_id]
+        $rootScope.foldedNodes = tempFoldedNodes
 
         resolve();
 
         // Cookies
         ipCookie('activeNodes', $rootScope.activeNodes);
         ipCookie('nodeEnd', $rootScope.nodeEnd);
+        ipCookie('foldedNodes',  $rootScope.foldedNodes);
       })
     }
 

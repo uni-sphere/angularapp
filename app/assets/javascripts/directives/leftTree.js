@@ -506,7 +506,7 @@
             if(d.depth == 0){
               return '\uf19c'
             } 
-          }); 
+          });
 
         // We have a different display when the user is an admin or not
         if($rootScope.admin){
