@@ -15,6 +15,7 @@ namespace :sandbox do
     organization.users.create!(email: "teacher@unisphere.eu", name: "User", uid: "foo", provider: 'email', password: 'gabgabgab', help: false)
 
     fill_sandbox
+    Rake::Task['organization:create'].invoke("ifma", "http://ifma.unisphere.eu", 29.778004, -95.544143)
   end
 
   desc "Reset the sandbox every day"
@@ -27,7 +28,7 @@ namespace :sandbox do
     nodes = organization.nodes
    
     if Time.now - organization.nodes.first.created_at >= 12.hours
-       delete_chapters_and_nodes(nodes)
+       delete_content(nodes)
        fill_sandbox
 
     #   awsdocuments = organization.awsdocuments
@@ -52,31 +53,29 @@ namespace :sandbox do
     organization = Organization.find_by_subdomain 'sandbox'
     nodes = organization.nodes
 
-    delete_chapters_and_nodes(nodes)
+    delete_content(nodes)
     fill_sandbox
   end
 
-  desc "Create ifma"
-  task create_ifma: :environment do
-    Rake::Task['organization:create'].invoke("ifma", "http://ifma.unisphere.eu", 29.778004, -95.544143)
-    # rake organization:create["ifma", "http://ifma.unisphere.eu", 29.778004, -95.544143]
-  end
+  # desc "Create ifma"
+  # task create_ifma: :environment do
+  #   Rake::Task['organization:create'].invoke("ifma", "http://ifma.unisphere.eu", 29.778004, -95.544143)
+  # end
 
-  def delete_chapters_and_nodes(nodes)
+  def delete_content(nodes)
     nodes.each do |node|
       chapters = node.chapters
       chapters.each do |chapter|
+        awsdocuments = chapter.awsdocuments
+        awsdocuments.each do |awsdocument|
+          awsdocument.destroy
+        end
         chapter.destroy
       end
       node.destroy
     end
   end
 
-  def to_utf8(str)
-    str = str.force_encoding('UTF-8')
-    return str if str.valid_encoding?
-    str.encode("UTF-8", 'binary', invalid: :replace, undef: :replace, replace: '')
-  end
 
   def add_reports(node)
     for i in 1..10
@@ -99,76 +98,58 @@ namespace :sandbox do
     parent_4 = organization.nodes.create(name: "Year 3", parent_id: node.id, user_id: user.id)
     parent_5 = organization.nodes.create(name: "Year 4", parent_id: node.id, user_id: user.id)
     
-    
     # Year 1 nodes
     node_chap = organization.nodes.create(name: "Astronomy", parent_id: parent_2.id, user_id: user.id)
     add_reports(node_chap)
-    
     
     parent_chap = node_chap.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Atomic Physics", parent_id: parent_2.id, user_id: user.id)
     add_reports(node)
     
-    
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Thermal Physics", parent_id: parent_2.id, user_id: user.id)
     add_reports(node)
-    
     
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Mathematical Methods I", parent_id: parent_2.id, user_id: user.id)
     add_reports(node)
     
-    
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Mathematical Methods II", parent_id: parent_2.id, user_id: user.id)
     add_reports(node)
-    
     
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Mechanics", parent_id: parent_2.id, user_id: user.id)
     add_reports(node)
     
-    
-    
-    
      # Year 2 nodes
-    
 
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Atomic and Molecular Physics", parent_id: parent_3.id, user_id: user.id)
     add_reports(node)
-    
-
 
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Electricity and Magnetism", parent_id: parent_3.id, user_id: user.id)
     add_reports(node)
-    
    
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Mathematical Methods III", parent_id: parent_3.id, user_id: user.id)
     add_reports(node)
     
-    
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Practical Physics", parent_id: parent_3.id, user_id: user.id)
     add_reports(node)
     
-        node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Quantum Physics", parent_id: parent_3.id, user_id: user.id)
     add_reports(node)
     
-           node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Statistical Physics", parent_id: parent_3.id, user_id: user.id)
     add_reports(node)
     
-    
-    
-    
      # Year 3 nodes
     
-
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "BSc Physcis Project", parent_id: parent_4.id, user_id: user.id)
     add_reports(node)
@@ -176,75 +157,48 @@ namespace :sandbox do
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Electromagnetic Theory", parent_id: parent_4.id, user_id: user.id)
     add_reports(node)
-    
 
-  node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Lasers and Modern Optics", parent_id: parent_4.id, user_id: user.id)
     add_reports(node)
     
-        node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Materials and Nanomaterials", parent_id: parent_4.id, user_id: user.id)
     add_reports(node)
     
-    
-        
-           node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Quantum Mechanics", parent_id: parent_4.id, user_id: user.id)
     add_reports(node)
     
-    
-
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Solid State Physics", parent_id: parent_4.id, user_id: user.id)
     add_reports(node)
     
-   
-
-    
-  
-
-    
-    
-    
-    
-     # Year 4 nodes
-    
+    # Year 4 nodes
 
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Advanced Quantum Theory", parent_id: parent_5.id, user_id: user.id)
     add_reports(node)
-    
-
 
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "High Energy Physics", parent_id: parent_5.id, user_id: user.id)
     add_reports(node)
     
-   
-           node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Molecular Biophysics", parent_id: parent_5.id, user_id: user.id)
     add_reports(node)
     
-   
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "MSci Physcis Project", parent_id: parent_5.id, user_id: user.id)
     add_reports(node)
     
-    
-    
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Particle Physics", parent_id: parent_5.id, user_id: user.id)
     add_reports(node)
-    
 
-           node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
+    node.chapters.create(title: "main", parent_id: 0, user_id: user.id)
     node = organization.nodes.create(name: "Quantum Field Theory", parent_id: parent_5.id, user_id: user.id)
     add_reports(node)
-    
-    
-    
-    
-    
    
     # Create chapters (folders)
     node.chapters.create(title: "main", parent_id: 0, user_id: user.id)

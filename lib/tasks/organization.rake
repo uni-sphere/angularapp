@@ -1,8 +1,7 @@
 require "#{Rails.root}/app/helpers/subdomain_helper"
 include SubdomainHelper
 
-# use case
-# rake organization:create["ifma", "http://ifma.unisphere.eu", 29.778004, -95.544143]
+# rake organization:create\["ifma","http://ifma.unisphere.eu","29.778004","-95.544143"\]
 
 namespace :organization do
   desc "create organization"
@@ -32,6 +31,30 @@ namespace :organization do
         node.destroy
         organization.destroy
       end
+    end
+  end
+
+  # rake organization:delete_organization\["ifma"\]
+  desc "Delete organization"
+  task :delete_organization, [:name] => :environment do |t, args|
+    organization = Organization.find_by_subdomain args.name
+    nodes = organization.nodes
+
+    delete_content(nodes)
+    organization.delete
+  end
+
+  def delete_content(nodes)
+    nodes.each do |node|
+      chapters = node.chapters
+      chapters.each do |chapter|
+        awsdocuments = chapter.awsdocuments
+        awsdocuments.each do |awsdocument|
+          awsdocument.destroy
+        end
+        chapter.destroy
+      end
+      node.destroy
     end
   end
 
