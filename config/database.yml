@@ -27,11 +27,11 @@ test:
 #   timeout: 10000
 #   encoding: utf8
 
-production:
-  adapter: mysql2
-  database: "angularapp_85"
-  username: "clempops"
-  password: "#PSW44mysql"
-  host: 127.0.0.1
-  port: 55739
-  encoding: utf8
+# production:
+#   adapter: mysql2
+#   database: "angularapp_85"
+#   username: "clempops"
+#   password: "#PSW44mysql"
+#   host: 127.0.0.1
+#   port: 55739
+#   encoding: utf8
