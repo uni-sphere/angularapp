@@ -16,6 +16,7 @@
 !/log/.keep
 /tmp
 *~
+/script
 
 # Ignore uploads.
 /public/uploads/*
