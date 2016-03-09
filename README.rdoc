@@ -9,6 +9,7 @@ Teachers can easily upload their entire syllabus with a single drag and drop. St
 ==== Technologie used
 * Angular
 * d3.js
+* Ruby on Rails
 
 Visit http://sandbox.unisphere.eu
 
