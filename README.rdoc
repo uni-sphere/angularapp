@@ -1,4 +1,4 @@
-== Angular app
+== unisphere webapp
 
 Unisphere is an online virtual learning environment that enables seamless file sharing between students and teachers.
  
