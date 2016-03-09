@@ -6,3 +6,9 @@ The dynamic layout provides a fluid display of the available modules and associa
  
 Teachers can easily upload their entire syllabus with a single drag and drop. Students can hand in assignments, download coursework and receive feedback for their assignments.
 
+==== Technologie used
+* Angular
+* d3.js
+
+Visit http://sandbox.unisphere.eu
+
